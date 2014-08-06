@@ -1,0 +1,32 @@
+{
+  "bin": { "istanbul-lite": "main.js" },
+  "contributors": [{ "name": "kai zhu", "email": "kaizhu256@gmail.com" }],
+  "description": "lightweight version of istanbul coverage utility with no external dependencies",
+  "devDependencies": {
+    "istanbul": "0.2.x",
+    "istanbul-lite": "2014.x.x",
+    "jslint-lite": "2014.x.x",
+    "phantomjs": "1.9.x",
+    "slimerjs": "0.9.x"
+  },
+  "engines": { "node": ">=0.10.x" },
+  "main": "main.js",
+  "name": "istanbul-lite",
+  "os": ["darwin", "linux"],
+  "repoGithub": "kaizhu256/node-istanbul-lite",
+  "repoHeroku": "hrku01-istanbul-lite",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
+  },
+  "scripts": {
+    "install": "./utility2.sh shNpmInstall",
+    "start": "./utility2.sh shNpmStart",
+    "test": "./utility2.sh shNpmTest"
+  },
+  "stateOverride": {
+    "repoGithub": "kaizhu256/node-istanbul-lite",
+    "repoHeroku": "hrku01-istanbul-lite"
+  },
+  "version": "2014.8.7-11"
+}
