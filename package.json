@@ -1,32 +1,30 @@
 {
-  "bin": { "istanbul-lite": "main.js" },
-  "contributors": [{ "name": "kai zhu", "email": "kaizhu256@gmail.com" }],
-  "description": "lightweight version of istanbul coverage utility with no external dependencies",
+  "author": "kai zhu <kaizhu256@gmail.com>",
+  "bin": { "istanbul-lite" : "index.js" },
+  "description": "lightweight, browser/nodejs version of istanbul code-coverage with zero dependencies",
   "devDependencies": {
-    "istanbul": "0.2.x",
-    "istanbul-lite": "2014.x.x",
-    "jslint-lite": "2014.x.x",
-    "phantomjs": "1.9.x",
-    "slimerjs": "0.9.x"
+    "utility2": "2015.2.10-16"
   },
-  "engines": { "node": ">=0.10.x" },
-  "main": "main.js",
+  "engines": { "node": "^0.10.32" },
+  "keywords": [
+    "browser",
+    "cover",
+    "coverage",
+    "istanbul",
+    "instrument",
+    "utility2"
+  ],
+  "license": "MIT",
   "name": "istanbul-lite",
   "os": ["darwin", "linux"],
-  "repoGithub": "kaizhu256/node-istanbul-lite",
-  "repoHeroku": "hrku01-istanbul-lite",
   "repository" : {
     "type" : "git",
     "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
   },
   "scripts": {
-    "install": "./utility2.sh shNpmInstall",
-    "start": "./utility2.sh shNpmStart",
-    "test": "./utility2.sh shNpmTest"
+    "build-ci": "node_modules/.bin/utility2 shRun shBuildCi",
+    "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
+    "test": "node_modules/.bin/utility2 shRun shNpmTest test.js"
   },
-  "stateOverride": {
-    "repoGithub": "kaizhu256/node-istanbul-lite",
-    "repoHeroku": "hrku01-istanbul-lite"
-  },
-  "version": "2014.8.7-11"
+  "version": "2015.2.10-18"
 }

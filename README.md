@@ -1,106 +1,138 @@
-istanbul-lite
-=============
-lightweight version of istanbul coverage utility with no external dependencies
-
-[![heroku.com test server](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.screenshot.heroku.png)](https://hrku01-istanbul-lite-beta.herokuapp.com/test/test.html)
-<br><br><br><br>
+istanbul-lite [![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
+===========
+lightweight, browser/nodejs version of istanbul code-coverage with zero dependencies
 
 
 
-## build status [![travis.ci-org build status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+## build status [![travis-ci.org build status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
-![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/build.badge.svg)
+[![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
-[![saucelabs.com selenium test status](https://saucelabs.com/browser-matrix/sclb01-istanbul-lite.svg)](https://saucelabs.com/u/sclb01-istanbul-lite)
-
- branch | test server | test report | coverage report | build artifact
-:------:|:-----------:|:-----------:|:---------------:|:--------------:
-[master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [![heroku.com test server](https://kaizhu256.github.io/public/heroku-logo-light-88x31.png)](https://hrku01-istanbul-lite-master.herokuapp.com/test/test.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.html) | [![istanbul coverage report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/public/glyphicons_free/glyphicons/png/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/master)
-[beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [![heroku.com test server](https://kaizhu256.github.io/public/heroku-logo-light-88x31.png)](https://hrku01-istanbul-lite-beta.herokuapp.com/test/test.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.html) | [![istanbul coverage report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/public/glyphicons_free/glyphicons/png/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/beta)
-[alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha) | [![heroku.com test server](https://kaizhu256.github.io/public/heroku-logo-light-88x31.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com/test/test.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.html) | [![istanbul coverage report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/public/glyphicons_free/glyphicons/png/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/alpha)
+ git branch | test-report | coverage-report | build artifact
+:----------:|:-----------:|:---------------:|:--------------:
+[master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.html) | [![istanbul-lite coverage-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/master)
+[beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.html) | [![istanbul-lite coverage-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/beta)
+|[alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.html) | [![istanbul-lite coverage-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/alpha)|
 
 
 
 ## quickstart
 ```
-npm install istanbul-lite
-cd node_modules/istanbul-lite
-## start istanbul-lite server on port 8080
-npm start --server-port=8080
+# quickstart.sh
+shQuickstartSh() {
+  # npm install istanbul-lite
+  npm install istanbul-lite || return $?
+  # create foo.js
+  printf "if (true) { console.log('hello'); } else { console.log('bye'); }" > foo.js || return $?
+  # init coverage-report-dir
+  export npm_config_coverage_report_dir=coverage-report-dir
+  # run code-coverage on foo.js
+  node_modules/.bin/istanbul-lite cover foo.js || return $?
+  # create coverage-report
+  node_modules/.bin/istanbul-lite report || return $?
+}
+shQuickstartSh
 ```
+#### output
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testQuickstartSh.png)
 
 
 
-## library usage example
+## quickstart nodejs code
 ```
 // example.js
+// this example nodejs code runs code-coverage on itself
+// 1. create a clean app directory (e.g /tmp/app)
+// 2. inside app directory, save this nodejs code as example.js
+// 3. inside app directory, run the following shell command:
+//    $ npm install istanbul-lite && node example.js
 /*jslint
-  bitwise: true,
+  evil: true,
   indent:2,
-  node: true
+  node: true, nomen: true,
+  stupid: true
 */
 (function () {
   'use strict';
-  var file, istanbul_lite, script;
-  // require istanbul-lite module
-  try {
-    istanbul_lite = require('istanbul-lite');
-  } catch (error) {
-    istanbul_lite = require('./main.js');
+  // require modules
+  var fs, instrumentedScript, istanbul_lite;
+  fs = require('fs');
+  istanbul_lite = require('istanbul-lite');
+  // instrument this file
+  instrumentedScript = istanbul_lite.instrumenter.instrumentSync(
+    fs.readFileSync(__filename, 'utf8'),
+    __filename
+  );
+  if (!global.__coverage__) {
+    // re-run this file with code-coverage
+    eval(instrumentedScript);
+    // create coverage-report in coverage-report-dir
+    istanbul_lite.coverageReportWriteSync({
+      dir: __dirname + '/coverage-report-dir'
+    });
   }
-  // init file and script var
-  file = 'hello.js';
-  script = 'console.log("hello world");';
-  console.log('instrumenting file ' + file + ' with content ' + JSON.stringify(script));
-  /*
-    instrument the script with the given file name and print to stdout.
-    expected output:
-    var __cov_1 = (Function('return this'))();
-    if (!__cov_1.__coverage__) { __cov_1.__coverage__ = {}; }
-    __cov_1 = __cov_1.__coverage__;
-    if (!(__cov_1['hello.js'])) {
-       __cov_1['hello.js'] = {"path":"hello.js","s":{"1":0},"b":{},"f":{},"fnMap":{},"statementMap":{"1":{"start":{"line":1,"column":0},"end":{"line":1,"column":27}}},"branchMap":{}};
-    }
-    __cov_1 = __cov_1['hello.js'];
-    __cov_1.s['1']++;console.log('hello world')
-  */
-  console.log(istanbul_lite.instrumentSync(script, file));
 }());
 ```
+#### output
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testExampleJs.png)
 
 
 
-## description of files
-- .travis.yml
-  - travis-ci config file
-- README.md
-  - readme file
-- example.js
-  - example nodejs script demonstrating how to use this app
-- main.data
-  - data file containing embedded resources specific to this app
-- main.js
-  - this app's main program / library
-- package.json
-  - npm config file
-- utility2.data
-  - data file containing embedded resources used by travis-ci
-- utility2.js
-  - nodejs build script used by travis-ci
-- utility2.sh
-  - shell build script used by travis-ci
+## npm dependencies
+- none
 
 
 
-## todo
+## package content
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.gitLsTree.png)](https://github.com/kaizhu256/node-istanbul-lite)
+
+
+
+## build script
+```
+# build-ci.sh
+# this shell code runs the ci-build process for this package
+shBuildCi() {
+  # init env
+  . node_modules/.bin/utility2 && shInit && mkdir -p .tmp/build/coverage-report.html || return $?
+  # create package content listing
+  MODE_CI_BUILD=gitLsTree shRunScreenCapture git ls-tree --abbrev=8 --full-name -l -r HEAD || return $?
+  # run npm test on published package
+  shNpmTestPublished
+  # test quickstart
+  MODE_CI_BUILD=testQuickstartSh shRunScreenCapture shTestScriptSh quickstart.sh || return $?
+  # test example code
+  MODE_CI_BUILD=testExampleJs shRunScreenCapture shTestScriptJs example.js || return $?
+  # run npm test
+  MODE_CI_BUILD=npmTest shRunScreenCapture npm test || return $?
+}
+# run ci-build
+shBuildCi
+# save exit-code
+EXIT_CODE=$?
+# upload build artifacts to github
+if [ "$TRAVIS" ]
+then
+  shRun shBuildGithubUpload || exit $?
+fi
+# exit with $EXIT_CODE
+exit $EXIT_CODE
+```
 
 
 
 ## changelog
-#### 2014.8.7
+#### todo
+- add web demo
+
+#### 2015.2
+- add quickstart example
+- add run-with-cover
+
+#### 2014.8
 - add browser code and tests
 - change api from exports.instrument to exports.instrumentSync,
   which closely matches istanbul's Instrumenter.instrumentSync method
 
-#### 2014.7.27
+#### 2014.7
 - initial commit
