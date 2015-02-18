@@ -28,5 +28,5 @@
     "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
     "test": "node_modules/.bin/utility2 shRun shNpmTest test.js"
   },
-  "version": "2015.2.10-18"
+  "version": "2015.2.18-10"
 }
