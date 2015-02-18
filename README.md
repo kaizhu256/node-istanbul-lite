@@ -1,6 +1,6 @@
 istanbul-lite [![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
 ===========
-lightweight, browser/nodejs version of istanbul code-coverage with zero dependencies
+lightweight browser/nodejs version of istanbul code-coverage with zero dependencies
 
 
 
@@ -121,7 +121,7 @@ exit $EXIT_CODE
 
 
 
-## changelog
+## recent changelog
 #### todo
 - add web demo
 

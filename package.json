@@ -1,17 +1,19 @@
 {
   "author": "kai zhu <kaizhu256@gmail.com>",
   "bin": { "istanbul-lite" : "index.js" },
-  "description": "lightweight, browser/nodejs version of istanbul code-coverage with zero dependencies",
+  "description": "lightweight browser/nodejs version of istanbul code-coverage with zero dependencies",
   "devDependencies": {
     "utility2": "2015.2.10-16"
   },
   "engines": { "node": "^0.10.32" },
   "keywords": [
     "browser",
+    "code",
     "cover",
     "coverage",
     "istanbul",
     "instrument",
+    "lightweight",
     "utility2"
   ],
   "license": "MIT",

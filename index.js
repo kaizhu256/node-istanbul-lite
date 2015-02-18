@@ -13392,7 +13392,7 @@ module.exports = TextReport;
           }).join('\n');
       }
       if (local.modeJs === 'node') {
-        console.info('created coverage-report file:///' +
+        console.info('created coverage-report file://' +
           local.path.resolve(process.cwd(), options.dir, 'index.html'));
       }
     };
@@ -13506,11 +13506,9 @@ module.exports = TextReport;
     local.istanbul = local;
     local.modeJs = (function () {
       try {
-        // init node js env
         return module.exports && typeof process.versions.node === 'string' &&
           typeof require('child_process').spawn === 'function' && 'node';
       } catch (errorCaughtNode) {
-        // init browser js env
         return typeof navigator.userAgent === 'string' &&
           typeof document.querySelector('body') === 'object' && 'browser';
       }

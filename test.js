@@ -151,9 +151,6 @@
     break;
   }
 }((function () {
-  /*
-    this function inits js-env options
-  */
   'use strict';
   var local;
   // init shared js-env
@@ -170,6 +167,7 @@
           typeof document.querySelector('body') === 'object' && 'browser';
       }
     }());
+    // init global
     local.global = local.modeJs === 'browser' ? window : global;
     // export local
     local.global.local = local;
