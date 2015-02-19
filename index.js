@@ -13459,16 +13459,15 @@ module.exports = TextReport;
           local.global.__coverage__ = {};
         }
         process.env.npm_config_mode_cover_regexp_exclude =
-          process.env.npm_config_mode_cover_regexp_exclude || '\\bnode_modules\\b';
-        process.env.npm_config_mode_cover_regexp_include =
-          process.env.npm_config_mode_cover_regexp_include || '';
+          process.env.npm_config_mode_cover_regexp_exclude || '[^\\S\\s]';
         // init process.argv
         process.argv.splice(1, 2);
         process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
         console.info('\ncovering $ ' + process.argv.join(' ') + ' ...');
         // add coverage hook to require
         local.hook.hookRequire(function (file) {
-          return String(file).indexOf(process.cwd()) === 0 &&
+          return file.indexOf(process.cwd()) === 0 &&
+            file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
             !new RegExp(process.env.npm_config_mode_cover_regexp_exclude).test(file) &&
             new RegExp(process.env.npm_config_mode_cover_regexp_include).test(file);
         }, local.instrumentSync);
