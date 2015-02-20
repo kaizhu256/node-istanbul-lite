@@ -1,6 +1,6 @@
 istanbul-lite [![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
 ===========
-lightweight browser/nodejs version of istanbul code-coverage with zero dependencies
+lightweight browser/nodejs version of istanbul coverage with zero dependencies
 
 
 
@@ -8,11 +8,11 @@ lightweight browser/nodejs version of istanbul code-coverage with zero dependenc
 
 [![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
- git branch | test-report | coverage-report | build artifact
+ git branch | test-report | coverage | build artifact
 :----------:|:-----------:|:---------------:|:--------------:
-[master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.html) | [![istanbul-lite coverage-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/master)
-[beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.html) | [![istanbul-lite coverage-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/beta)
-|[alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.html) | [![istanbul-lite coverage-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage-report.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/alpha)|
+[master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/master/coverage.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/master)
+[beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/beta/coverage.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/beta)
+|[alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build.travis-ci.org/alpha/coverage.html/node-istanbul-lite/index.html) | [![build artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build.travis-ci.org/alpha)|
 
 
 
@@ -24,11 +24,11 @@ shQuickstartSh() {
   npm install istanbul-lite || return $?
   # create foo.js
   printf "if (true) { console.log('hello'); } else { console.log('bye'); }" > foo.js || return $?
-  # init coverage-report-dir
-  export npm_config_coverage_report_dir=coverage-report-dir
-  # run code-coverage on foo.js
+  # init coverage-dir
+  export npm_config_coverage_dir=coverage-dir
+  # run coverage on foo.js
   node_modules/.bin/istanbul-lite cover foo.js || return $?
-  # create coverage-report
+  # create coverage
   node_modules/.bin/istanbul-lite report || return $?
 }
 shQuickstartSh
@@ -41,7 +41,7 @@ shQuickstartSh
 ## quickstart nodejs code
 ```
 // example.js
-// this example nodejs code runs code-coverage on itself
+// this example nodejs code runs coverage on itself
 // 1. create a clean app directory (e.g /tmp/app)
 // 2. inside app directory, save this nodejs code as example.js
 // 3. inside app directory, run the following shell command:
@@ -64,11 +64,11 @@ shQuickstartSh
     __filename
   );
   if (!global.__coverage__) {
-    // re-run this file with code-coverage
+    // re-run this file with coverage
     eval(instrumentedScript);
-    // create coverage-report in coverage-report-dir
+    // create coverage in coverage-dir
     istanbul_lite.coverageReportWriteSync({
-      dir: __dirname + '/coverage-report-dir'
+      dir: __dirname + '/coverage-dir'
     });
   }
 }());

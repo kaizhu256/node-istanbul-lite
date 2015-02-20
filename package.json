@@ -1,7 +1,7 @@
 {
   "author": "kai zhu <kaizhu256@gmail.com>",
   "bin": { "istanbul-lite" : "index.js" },
-  "description": "lightweight browser/nodejs version of istanbul code-coverage with zero dependencies",
+  "description": "lightweight browser/nodejs version of istanbul coverage with zero dependencies",
   "devDependencies": {
     "utility2": "2015.2.10-16"
   },
