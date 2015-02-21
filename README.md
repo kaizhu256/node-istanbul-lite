@@ -38,16 +38,16 @@ shQuickstartSh
 
 
 
-## quickstart nodejs code
+## quickstart nodejs script
 ```
 /*
   example.js
 
-  this example nodejs code runs coverage on itself
+  this example nodejs script will run coverage on itself
 
   instruction
-  1. save this nodejs code as example.js
-  2. run the following shell command:
+  1. save this script as example.js
+  2. run the shell command:
      $ npm install istanbul-lite && node example.js
 */
 /*jslint
@@ -107,6 +107,8 @@ shQuickstartSh
 # build.sh
 # this shell script runs the build process for this package
 shBuild() {
+  # install phantomjs-lite
+  npm install phanomjs-lite || return $?
   # init env
   . node_modules/.bin/utility2 && shInit || return $?
   # run npm test on published package
