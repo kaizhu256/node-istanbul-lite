@@ -16,7 +16,7 @@
 
 
 
-  // init shared js-env
+  // run shared js-env code
   (function () {
     // init local
     local = {};
@@ -30,13 +30,16 @@
       }
     }());
     local.global = local.modeJs === 'browser' ? window : global;
+    local.istanbul_lite = local.modeJs === 'browser'
+      ? window.istanbul_lite
+      : require('./index.js');
     local.utility2 = local.modeJs === 'browser' ? window.utility2 : require('utility2');
   }());
   switch (local.modeJs) {
 
 
 
-  // init browser js-env
+  // run browser js-env code
   case 'browser':
     window.local = local;
     if (location.pathname === '/test/test.html') {
@@ -51,9 +54,35 @@
           local.istanbulLiteEvalInputTextarea.value,
           '/input.js'
         ));
-        local.global.istanbul_lite.coverageReportWriteSync({
-          coverage: local.global.__coverage__
-        });
+        document.querySelector(
+          '.istanbulLiteCoverageReportDiv'
+        ).innerHTML = '<style>\n' + local.istanbul_lite.baseCss
+          .replace((/(.+\{)/gm), '.istanbulLiteCoverageReportDivDiv $1')
+          .replace('margin: 3em;', 'margin: 0;')
+          .replace('margin-top: 10em;', 'margin: 20px;')
+          .replace('position: fixed;', 'position: static;')
+          .replace('width: 100%;', 'width: auto;') +
+          '.istanbulLiteCoverageReportDiv {\n' +
+            'border: 1px solid;\n' +
+            'border-radius: 5px;\n' +
+            'padding: 0 10px 10px 10px;\n' +
+          '}\n' +
+            '.istanbulLiteCoverageReportDivDiv {\n' +
+            'border: 1px solid;\n' +
+            'margin-top: 20px;\n' +
+          '}\n' +
+            '.istanbulLiteCoverageReportDivDiv a {\n' +
+            'cursor: default;\n' +
+            'pointer-events: none;\n' +
+          '}\n' +
+            '.istanbulLiteCoverageReportDivDiv .footer {\n' +
+            'display: none;\n' +
+          '}\n' +
+          '</style>\n' +
+          '<h2>coverage</h2>\n' +
+          local.global.istanbul_lite.coverageReportWriteSync({
+            coverage: local.global.__coverage__
+          });
       } catch (errorCaught) {
         document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML = '<pre>' +
           errorCaught.stack.replace((/</g), '&lt') +
@@ -68,11 +97,10 @@
 
 
 
-  // init node js-env
+  // run node js-env code
   case 'node':
     // require modules
     local.fs = require('fs');
-    local.istanbul_lite = require('./index.js');
     local.path = require('path');
 
     local._dummy_test = function (onError) {

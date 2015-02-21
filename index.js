@@ -10,23 +10,10 @@
 (function (local) {
   'use strict';
   var require, process;
+  // nop hack to pass jslint
   local.nop(process, require);
-  // init shared js-env
+  // run shared js-env code
   (function () {
-    // init global debug_print
-    local.global['debug_print'.replace('_p', 'P')] = function (arg) {
-      /*
-        this function will both print the arg to stderr and return it,
-        and jslint will nag you to remove it if used
-      */
-      // debug arguments
-      local['debug_printArguments'.replace('_p', 'P')] = arguments;
-      console.error('\n\n\ndebug_print'.replace('_p', 'P'));
-      console.error.apply(console, arguments);
-      console.error();
-      // return arg for inspection
-      return arg;
-    };
     process = local.process;
     require = function (key) {
       return local[key] || local.require(key);
@@ -12770,6 +12757,13 @@ Report.mix(HtmlReport, {
         templateData.metrics = node.metrics;
         templateData.reportClass = getReportClass(node.metrics.statements, opts.watermarks.statements);
         templateData.pathHtml = pathTemplate({ html: this.getPathHtml(node, linkMapper) });
+        templateData.base = {
+        	css: linkMapper.asset(node, 'base.css')
+        };
+        templateData.sorter = {
+            js: linkMapper.asset(node, 'sorter.js'),
+            image: linkMapper.asset(node, 'sort-arrow-sprite.png')
+        };
         templateData.prettify = {
             js: linkMapper.asset(node, 'prettify.js'),
             css: linkMapper.asset(node, 'prettify.css')
@@ -12917,23 +12911,29 @@ Report.mix(HtmlReport, {
             summarizer = new TreeSummarizer(),
             writer = opts.writer || new FileWriter(sync),
             that = this,
-            tree;
+            tree,
+            copyAssets = function (subdir) {
+                var srcDir = path.resolve(__dirname, '..', 'assets', subdir);
+                fs.readdirSync(srcDir).forEach(function (f) {
+                    var resolvedSource = path.resolve(srcDir, f),
+                        resolvedDestination = path.resolve(dir, f),
+                        stat = fs.statSync(resolvedSource);
+
+                    if (stat.isFile()) {
+                        if (opts.verbose) {
+                            console.log('Write asset: ' + resolvedDestination);
+                        }
+                        writer.copyFile(resolvedSource, resolvedDestination);
+                    }
+                });
+            };
 
         collector.files().forEach(function (key) {
             summarizer.addFileCoverageSummary(key, utils.summarizeFileCoverage(collector.fileCoverageFor(key)));
         });
         tree = summarizer.getTreeSummary();
-        fs.readdirSync(path.resolve(__dirname, '..', 'vendor')).forEach(function (f) {
-            var resolvedSource = path.resolve(__dirname, '..', 'vendor', f),
-                resolvedDestination = path.resolve(dir, f),
-                stat = fs.statSync(resolvedSource);
-
-            if (stat.isFile()) {
-                if (opts.verbose) {
-                    console.log('Write asset: ' + resolvedDestination);
-                }
-                writer.copyFile(resolvedSource, resolvedDestination);
-            }
+        [ '.', 'vendor'].forEach(function (subdir) {
+            copyAssets(subdir);
         });
         writer.on('done', function () { that.emit('done'); });
         //console.log(JSON.stringify(tree.root, undefined, 4));
@@ -13167,9 +13167,10 @@ module.exports = TextReport;
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/vendor/base.css
+// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/assets/base.css
 /* jslint-ignore-begin */
-    local.baseCss = ('body, html {\n\
+    local.baseCss = ('\
+body, html {\n\
     margin:0; padding: 0;\n\
 }\n\
 body {\n\
@@ -13350,13 +13351,14 @@ pre.prettyprint {\n\
     margin: 0 !important;\n\
 }\n\
 .com { color: #999 !important; }\n\
-.ignore-none { color: #999; font-weight: normal; }');
+.ignore-none { color: #999; font-weight: normal; }\n\
+');
 /* jslint-ignore-end */
   }());
 
 
 
-  // init shared js-env
+  // run shared js-env code
   (function () {
     // require modules
     local.fs = require('fs');
@@ -13394,12 +13396,8 @@ pre.prettyprint {\n\
         },
         // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/file-writer.js
         writer: {
-          done: function () {
-            return;
-          },
-          on: function () {
-            return;
-          },
+          done: local.nop,
+          on: local.nop,
           write: function (data) {
             options.writer.data += data;
           },
@@ -13418,6 +13416,7 @@ pre.prettyprint {\n\
       new local.TextReport(options).writeReport(collector);
       // 2. write coverage in html-format to filesystem
       tmp = new local.HtmlReport(options);
+      // disable asset-links in html-format
       if (local.modeJs === 'browser') {
         tmp.opts.linkMapper.asset = function () {
           return '';
@@ -13426,45 +13425,17 @@ pre.prettyprint {\n\
       tmp.writeReport(collector);
       // write base.css
       local.writeFileSync(options.dir + '/base.css', local.baseCss);
-      if (local.modeJs === 'browser') {
-        (document.querySelector('.istanbulLiteCoverageReportDiv') || {
-        }).innerHTML = '<style>\n' + local.baseCss
-          .replace((/(.+\{)/gm), '.istanbulLiteCoverageReportDivDiv $1')
-          .replace('margin: 3em;', 'margin: 0;')
-          .replace('margin-top: 10em;', 'margin: 20px;')
-          .replace('position: fixed;', 'position: static;')
-          .replace('width: 100%;', 'width: auto;') +
-          '.istanbulLiteCoverageReportDiv {\n' +
-            'border: 1px solid;\n' +
-            'border-radius: 5px;\n' +
-            'padding: 0 10px 10px 10px;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageReportDivDiv {\n' +
-            'border: 1px solid;\n' +
-            'margin-top: 20px;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageReportDivDiv a {\n' +
-            'cursor: default;\n' +
-            'pointer-events: none;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageReportDivDiv .footer {\n' +
-            'display: none;\n' +
-          '}\n' +
-          '</style>\n' +
-          '<h2>coverage</h2>\n' +
-          [
-            '/index.html'
-          ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
-            return ii === 0 || key.slice(-8) === '.js.html' ?
-                '<div class="istanbulLiteCoverageReportDivDiv">\n' +
-                  local.writeFileDict[key] + '</div>\n'
-              : '';
-          }).join('\n');
-      }
-      if (local.modeJs === 'node') {
-        console.info('created coverage file://' +
-          local.path.resolve(process.cwd(), options.dir, 'index.html'));
-      }
+      console.log('created coverage file://' +
+        local.path.resolve(process.cwd(), options.dir, 'index.html'));
+      // return coverage in html-format as a single document
+      return [
+        '/index.html'
+      ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
+        return ii === 0 || key.slice(-8) === '.js.html' ?
+            '<div class="istanbulLiteCoverageReportDivDiv">\n' +
+              local.writeFileDict[key] + '</div>\n'
+          : '';
+      }).join('\n');
     };
     local.instrumentSync = function (code, file) {
       /*
@@ -13514,7 +13485,10 @@ pre.prettyprint {\n\
     };
   }());
   switch (local.modeJs) {
-  // init node js-env
+
+
+
+  // run node js-env code
   case 'node':
     if (local._module === local.require.main) {
       process.env.npm_config_coverage_dir =
@@ -13533,7 +13507,7 @@ pre.prettyprint {\n\
         // init process.argv
         process.argv.splice(1, 2);
         process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
-        console.info('\ncovering $ ' + process.argv.join(' ') + ' ...');
+        console.log('\ncovering $ ' + process.argv.join(' ') + ' ...');
         // add coverage hook to require
         local.hook.hookRequire(function (file) {
           return file.indexOf(process.cwd()) === 0 &&
@@ -13565,7 +13539,7 @@ pre.prettyprint {\n\
 }((function () {
   'use strict';
   var local;
-  // init shared js-env
+  // run shared js-env code
   (function () {
     // init local
     local = {};
@@ -13585,17 +13559,35 @@ pre.prettyprint {\n\
       */
       return;
     };
+    // init global
+    local.global = local.modeJs === 'browser' ? window : global;
+    // init global debug_print
+    local.global['debug_print'.replace('_p', 'P')] = function (arg) {
+      /*
+        this function will both print the arg to stderr and return it,
+        and jslint will nag you to remove it if used
+      */
+      // debug arguments
+      local['debug_printArguments'.replace('_p', 'P')] = arguments;
+      console.error('\n\n\ndebug_print'.replace('_p', 'P'));
+      console.error.apply(console, arguments);
+      console.error();
+      // return arg for inspection
+      return arg;
+    };
   }());
   switch (local.modeJs) {
-  // init browser js-env
+  // run browser js-env code
   case 'browser':
     // export local
     window.istanbul_lite = local;
+    // mock node __dirname
     local.__dirname = '/istanbul-lite';
-    local.global = window;
+    // mock node module module
     local.module = {
       _extensions: {}
     };
+    // mock node path module
     local.path = {
       dirname: function (file) {
         return file.replace((/\/[^\/]+$/), '');
@@ -13606,15 +13598,18 @@ pre.prettyprint {\n\
           .replace((/\/\/+/), '/');
       }
     };
+    // mock node process object
     local.process = {
       cwd: function () {
         return '';
       },
       stdout: {}
     };
+    // mock node require module
     local.require = function (key) {
       return local[key] || {};
     };
+    // mock node util module
     local.util = {
       inherits: function (ctor, superCtor) {
         ctor.super_ = superCtor;
@@ -13629,13 +13624,12 @@ pre.prettyprint {\n\
       }
     };
     break;
-  // init node js-env
+  // run node js-env code
   case 'node':
     // export local
     module.exports = local;
     local.__dirname = __dirname;
     local._module = module;
-    local.global = global;
     local.process = process;
     local.require = require;
     break;
