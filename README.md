@@ -107,8 +107,6 @@ shQuickstartSh
 # build.sh
 # this shell script runs the build process for this package
 shBuild() {
-  # install phantomjs-lite
-  npm install phantomjs-lite || return $?
   # init env
   . node_modules/.bin/utility2 && shInit || return $?
   # run npm test on published package
