@@ -3,7 +3,8 @@
   "bin": { "istanbul-lite" : "index.js" },
   "description": "lightweight browser/nodejs version of istanbul coverage with zero dependencies",
   "devDependencies": {
-    "utility2": "2015.2.21-10"
+    "utility2": "2015.2.21-10",
+    "phantomjs-lite": "^2015.1.4-103"
   },
   "engines": { "node": "^0.10.32" },
   "keywords": [
