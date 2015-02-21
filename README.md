@@ -122,13 +122,13 @@ shBuild() {
     #!! return $?
   # run npm test
   MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
-  #!! # deploy to heroku
-  #!! if [ "$TRAVIS" ]
-  #!! then
+  if [ "$TRAVIS" ]
+  then
+    #!! # deploy to heroku
     #!! shRun shTestHeroku || return $?
-    #!! # if number of commits > 1000, then squash older commits
-    #!! shRun shGitBackupAndSquashAndPush 1000 > /dev/null || return $?
-  #!! fi
+    # if number of commits > 1024, then squash older commits
+    shRun shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
+  fi
 }
 # run build
 shBuild
