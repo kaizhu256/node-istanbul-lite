@@ -13297,8 +13297,8 @@ module.exports = TextReport;
     local.coverageReportWriteSync = function (optionsOverride) {
       /*
         this function will;
-        1. print coverage-report in text-format to stdout
-        2. write coverage-report in html-format to filesystem
+        1. print coverage in text-format to stdout
+        2. write coverage in html-format to filesystem
       */
       var collector, options, tmp;
       // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/file-writer.js
@@ -13315,7 +13315,7 @@ module.exports = TextReport;
       };
       options = {
         coverage: local.global.__coverage__,
-        dir: local.modeJs === 'node' ? process.env.npm_config_coverage_report_dir : '/',
+        dir: local.modeJs === 'node' ? process.env.npm_config_coverage_dir : '/',
         // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/store/fslookup.js
         sourceStore: {
           get: function (key) {
@@ -13344,9 +13344,9 @@ module.exports = TextReport;
       Object.keys(optionsOverride || {}).forEach(function (key) {
         options[key] = optionsOverride[key];
       });
-      // 1. print coverage-report in text-format to stdout
+      // 1. print coverage in text-format to stdout
       new local.TextReport(options).writeReport(collector);
-      // 2. write coverage-report in html-format to filesystem
+      // 2. write coverage in html-format to filesystem
       tmp = new local.HtmlReport(options);
       if (local.modeJs === 'browser') {
         tmp.opts.linkMapper.asset = function () {
@@ -13381,7 +13381,7 @@ module.exports = TextReport;
             'display: none;\n' +
           '}\n' +
           '</style>\n' +
-          '<h2>coverage-report</h2>\n' +
+          '<h2>coverage</h2>\n' +
           [
             '/index.html'
           ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
@@ -13392,7 +13392,7 @@ module.exports = TextReport;
           }).join('\n');
       }
       if (local.modeJs === 'node') {
-        console.info('created coverage-report file://' +
+        console.info('created coverage file://' +
           local.path.resolve(process.cwd(), options.dir, 'index.html'));
       }
     };
@@ -13447,10 +13447,10 @@ module.exports = TextReport;
   // init node js-env
   case 'node':
     if (local._module === local.require.main) {
-      process.env.npm_config_coverage_report_dir =
+      process.env.npm_config_coverage_dir =
         local.path.resolve(
           process.cwd(),
-          process.env.npm_config_coverage_report_dir || 'html-report'
+          process.env.npm_config_coverage_dir || 'html-report'
         );
       switch (process.argv[2]) {
       case 'cover':
@@ -13459,23 +13459,22 @@ module.exports = TextReport;
           local.global.__coverage__ = {};
         }
         process.env.npm_config_mode_cover_regexp_exclude =
-          process.env.npm_config_mode_cover_regexp_exclude || '\\bnode_modules\\b';
-        process.env.npm_config_mode_cover_regexp_include =
-          process.env.npm_config_mode_cover_regexp_include || '';
+          process.env.npm_config_mode_cover_regexp_exclude || '[^\\S\\s]';
         // init process.argv
         process.argv.splice(1, 2);
         process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
         console.info('\ncovering $ ' + process.argv.join(' ') + ' ...');
         // add coverage hook to require
         local.hook.hookRequire(function (file) {
-          return String(file).indexOf(process.cwd()) === 0 &&
+          return file.indexOf(process.cwd()) === 0 &&
+            file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
             !new RegExp(process.env.npm_config_mode_cover_regexp_exclude).test(file) &&
             new RegExp(process.env.npm_config_mode_cover_regexp_include).test(file);
         }, local.instrumentSync);
-        // create coverage-report on exit
+        // create coverage on exit
         process.on('exit', function () {
           local.writeFileSync(
-            process.env.npm_config_coverage_report_dir + '/coverage.json',
+            process.env.npm_config_coverage_dir + '/coverage.json',
             JSON.stringify(local.global.__coverage__)
           );
         });
@@ -13484,7 +13483,7 @@ module.exports = TextReport;
       case 'report':
         local.coverageReportWriteSync({
           coverage: JSON.parse(local.fs.readFileSync(
-            process.env.npm_config_coverage_report_dir + '/coverage.json',
+            process.env.npm_config_coverage_dir + '/coverage.json',
             'utf8'
           ))
         });
