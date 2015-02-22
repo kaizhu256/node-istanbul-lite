@@ -1,6 +1,6 @@
 istanbul-lite [![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
 =============
-lightweight browser/nodejs version of istanbul coverage with zero dependencies
+lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
@@ -16,34 +16,13 @@ lightweight browser/nodejs version of istanbul coverage with zero dependencies
 
 
 
-## quickstart
-```
-# quickstart.sh
-shQuickstartSh() {
-  # npm install istanbul-lite
-  npm install istanbul-lite || return $?
-  # create foo.js
-  printf "if (true) { console.log('hello'); } else { console.log('bye'); }" > foo.js || return $?
-  # init coverage-dir
-  export npm_config_coverage_dir=coverage-dir
-  # run coverage on foo.js
-  node_modules/.bin/istanbul-lite cover foo.js || return $?
-  # create coverage
-  node_modules/.bin/istanbul-lite report || return $?
-}
-shQuickstartSh
-```
-#### output from shell
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testQuickstartSh.png)
-
-
-
 ## quickstart nodejs script
 ```
 /*
   example.js
 
-  this example nodejs script will run coverage on itself
+  this shared browser / server script will serve a web-page
+  with browser-coverage
 
   instruction
   1. save this script as example.js
@@ -51,34 +30,186 @@ shQuickstartSh
      $ npm install istanbul-lite && node example.js
 */
 /*jslint
+  browser: true,
   evil: true,
-  indent:2,
+  indent: 2,
+  maxerr: 8,
   node: true, nomen: true,
+  regexp: true,
   stupid: true
 */
 (function () {
+  /*
+    this function will test this module
+  */
   'use strict';
-  // require modules
-  var fs, instrumentedScript, istanbul_lite;
-  fs = require('fs');
-  istanbul_lite = require('istanbul-lite');
-  // instrument this file
-  instrumentedScript = istanbul_lite.instrumenter.instrumentSync(
-    fs.readFileSync(__filename, 'utf8'),
-    __filename
-  );
-  if (!global.__coverage__) {
-    // re-run this file with coverage
-    eval(instrumentedScript);
-    // create coverage in coverage-dir
-    istanbul_lite.coverageReportWriteSync({
-      dir: __dirname + '/coverage-dir'
+  var local;
+
+
+
+  // run shared js-env code
+  (function () {
+    // init local
+    local = {};
+    local.modeJs = (function () {
+      try {
+        return module.exports && typeof process.versions.node === 'string' &&
+          typeof require('http').createServer === 'function' && 'node';
+      } catch (errorCaughtNode) {
+        return typeof navigator.userAgent === 'string' &&
+          typeof document.querySelector('body') === 'object' && 'browser';
+      }
+    }());
+    local.istanbul_lite = local.modeJs === 'browser'
+      ? window.istanbul_lite
+      : require('istanbul-lite');
+  }());
+  switch (local.modeJs) {
+
+
+
+  // run browser js-env code
+  case 'browser':
+    window.local = local;
+    local.evalAndCover = function () {
+      try {
+        window.__coverage__ = {};
+        eval(window.istanbul_lite.instrumentSync(
+          local.istanbulLiteEvalInputTextarea.value,
+          '/input.js'
+        ));
+        document.querySelector(
+          '.istanbulLiteCoverageReportDiv'
+        ).innerHTML = '<style>\n' + local.istanbul_lite.baseCss
+          .replace((/(.+\{)/gm), '.istanbulLiteCoverageReportDivDiv $1')
+          .replace('margin: 3em;', 'margin: 0;')
+          .replace('margin-top: 10em;', 'margin: 20px;')
+          .replace('position: fixed;', 'position: static;')
+          .replace('width: 100%;', 'width: auto;') +
+          '.istanbulLiteCoverageReportDiv {\n' +
+            'border: 1px solid;\n' +
+            'border-radius: 5px;\n' +
+            'padding: 0 10px 10px 10px;\n' +
+          '}\n' +
+            '.istanbulLiteCoverageReportDivDiv {\n' +
+            'border: 1px solid;\n' +
+            'margin-top: 20px;\n' +
+          '}\n' +
+            '.istanbulLiteCoverageReportDivDiv a {\n' +
+            'cursor: default;\n' +
+            'pointer-events: none;\n' +
+          '}\n' +
+            '.istanbulLiteCoverageReportDivDiv .footer {\n' +
+            'display: none;\n' +
+          '}\n' +
+          '</style>\n' +
+          '<h2>coverage</h2>\n' +
+          window.istanbul_lite.coverageReportWriteSync({
+            coverage: window.__coverage__
+          });
+      } catch (errorCaught) {
+        document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML =
+          '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
+      }
+    };
+    local.istanbulLiteEvalInputTextarea =
+      document.querySelector('.istanbulLiteEvalInputTextarea');
+    local.istanbulLiteEvalInputTextarea.addEventListener(
+      'keyup',
+      local.evalAndCover
+    );
+    local.evalAndCover();
+    break;
+
+
+
+  // run node js-env code
+  case 'node':
+    // require modules
+    local.fs = require('fs');
+    local.http = require('http');
+    local.path = require('path');
+    local.url = require('url');
+    // init asset example.js
+    local['example.js'] = local.fs.readFileSync(__filename);
+    // create server
+    local.server = local.http.createServer(function (request, response) {
+      switch (local.url.parse(request.url).pathname) {
+      // serve main-page
+      case '/':
+        response.end('<!DOCTYPE html>\n' +
+          '<html>\n' +
+          '<head>\n' +
+            '<meta charset="UTF-8">\n' +
+            '<title>istanbul-lite demo</title>\n' +
+            '<style>\n' +
+            '* {\n' +
+              'box-sizing: border-box;\n' +
+            '}\n' +
+            'body {\n' +
+              'font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n' +
+              'margin: 10px;\n' +
+            '}\n' +
+            'body > div {\n' +
+              'margin-top: 10px;\n' +
+            '}\n' +
+            'textarea {\n' +
+              'font-family: monospace;\n' +
+              'height: 8em;\n' +
+              'width: 100%;\n' +
+            '}\n' +
+            '</style>\n' +
+          '</head>\n' +
+          '<body>\n' +
+            '<div>edit / paste script below to eval and cover</div>\n' +
+            '<div>\n' +
+              '<textarea class="istanbulLiteEvalInputTextarea">if (true) {\n' +
+                'console.log("hello");\n' +
+              '} else {\n' +
+                'console.log("bye");\n' +
+              '}</textarea>\n' +
+            '</div>\n' +
+            '<div class="istanbulLiteCoverageReportDiv"></div>\n' +
+            '<script src="/istanbul-lite.js"></script>\n' +
+            '<script src="/example.js"></script>\n' +
+          '</body>\n' +
+          '</html>');
+        break;
+      // serve istanbul-lite.js
+      case '/istanbul-lite.js':
+        response.end(local.istanbul_lite.istanbulLiteJs);
+        break;
+      // serve this script
+      case '/example.js':
+        response.end(local['example.js']);
+        break;
+      // default to http 404 status-code
+      default:
+        response.statusCode = 404;
+        response.end();
+      }
     });
+    local.serverPort = 1337;
+    // start server
+    console.log('server starting on port ' + local.serverPort);
+    local.server.listen(local.serverPort, function () {
+      // this internal build-code will screen-capture the server and then exit
+      if (process.env.MODE_BUILD === 'testExampleJs') {
+        require(
+          process.env.npm_package_dir_utility2 + '/index.js'
+        ).phantomScreenCapture({
+          url: 'http://localhost:' + local.serverPort
+        }, process.exit);
+      }
+    });
+    break;
   }
 }());
 ```
 #### output from shell
 ![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testExampleJs.png)
+#### output from [phantomjs-lite](https://www.npmjs.com/package/phantomjs-lite)
+![screen-capture](https://kaizhu256.github.io/node-utility2/build/screen-capture.testExampleJs.slimerjs.png)
 
 
 
@@ -93,7 +224,7 @@ shQuickstartSh
 
 
 ## todo
-- add web demo
+- fix build
 
 
 
@@ -109,19 +240,18 @@ shQuickstartSh
 shBuild() {
   # init env
   . node_modules/.bin/utility2 && shInit || return $?
-  # run npm test on published package
-  shRun shNpmTestPublished || return $?
-  # test example script
-  MODE_BUILD=testExampleJs shRunScreenCapture shTestScriptJs example.js ||\
+  #!! # run npm test on published package
+  #!! shRun shNpmTestPublished || return $?
+  # test example js script
+  MODE_BUILD=testExampleJs\
+  MODE_OFFLINE=1\
+  MODE_LINENO_PRESERVE=1\
+  shRunScreenCapture shTestScriptJs example.js || return $?
+  # copy phantomjs screen-capture to $npm_package_dir_build
+  cp /tmp/app/.tmp/build/screen-capture.*.png $npm_package_dir_build ||\
     return $?
-  #!! # screen-capture example.js coverage
-  #!! MODE_BUILD=testExampleJs shRun shPhantomScreenCapture\
-    #!! /tmp/app/.tmp/build/coverage.html/app/example.js.html
-  #!! # copy phantomjs screen-capture to $npm_package_dir_build
-  #!! cp /tmp/app/.tmp/build/screen-capture.*.png $npm_package_dir_build ||\
-    #!! return $?
-  # run npm test
-  MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
+  #!! # run npm test
+  #!! MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   if [ "$TRAVIS" ]
   then
     #!! # deploy to heroku
@@ -132,6 +262,7 @@ shBuild() {
 }
 # run build
 shBuild
+exit
 # save exit-code
 EXIT_CODE=$?
 shBuildCleanup() {

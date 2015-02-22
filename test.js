@@ -23,17 +23,21 @@
     local.modeJs = (function () {
       try {
         return module.exports && typeof process.versions.node === 'string' &&
-          typeof require('child_process').spawn === 'function' && 'node';
+          typeof require('http').createServer === 'function' && 'node';
       } catch (errorCaughtNode) {
         return typeof navigator.userAgent === 'string' &&
           typeof document.querySelector('body') === 'object' && 'browser';
       }
     }());
-    local.global = local.modeJs === 'browser' ? window : global;
+    local.global = local.modeJs === 'browser'
+      ? window
+      : global;
     local.istanbul_lite = local.modeJs === 'browser'
       ? window.istanbul_lite
       : require('./index.js');
-    local.utility2 = local.modeJs === 'browser' ? window.utility2 : require('utility2');
+    local.utility2 = local.modeJs === 'browser'
+      ? window.utility2
+      : require('utility2');
   }());
   switch (local.modeJs) {
 
@@ -175,7 +179,7 @@ response.end('<!DOCTYPE html>\n\
         case '/test/test.js':
           response.end(local.utility2.fileCacheDict[request.urlPathNormalized].data);
           break;
-        // fallback to next middleware
+        // default to next middleware
         default:
           onNext();
         }

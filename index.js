@@ -28,7 +28,7 @@
     // nop hack to pass jslint
     local.nop(exports);
     exports = local.esprima = {};
-// https://raw.githubusercontent.com/ariya/esprima/master/esprima.js
+// https://github.com/ariya/esprima/blob/master/esprima.js
 /* jslint-ignore-begin */
 /*
   Copyright (C) 2013 Ariya Hidayat <ariya.hidayat@gmail.com>
@@ -4064,7 +4064,7 @@ parseStatement: true, parseSourceElement: true */
     // nop hack to pass jslint
     local.nop(exports);
     exports = local.estraverse = {};
-// https://raw.githubusercontent.com/constellation/estraverse/master/estraverse.js
+// https://github.com/constellation/estraverse/blob/master/estraverse.js
 /* jslint-ignore-begin */
 /*
   Copyright (C) 2012-2013 Yusuke Suzuki <utatane.tea@gmail.com>
@@ -4918,7 +4918,7 @@ parseStatement: true, parseSourceElement: true */
   (function () {
     var module;
     module = {};
-// https://raw.githubusercontent.com/constellation/esutils/master/lib/code.js
+// https://github.com/constellation/esutils/blob/master/lib/code.js
 /* jslint-ignore-begin */
 /*
   Copyright (C) 2013-2014 Yusuke Suzuki <utatane.tea@gmail.com>
@@ -5034,7 +5034,7 @@ parseStatement: true, parseSourceElement: true */
     // nop hack to pass jslint
     local.nop(exports);
     exports = local.escodegen = {};
-// https://raw.githubusercontent.com/constellation/escodegen/master/escodegen.js
+// https://github.com/constellation/escodegen/blob/master/escodegen.js
 /* jslint-ignore-begin */
 /*
   Copyright (C) 2012-2014 Yusuke Suzuki <utatane.tea@gmail.com>
@@ -7603,7 +7603,7 @@ parseStatement: true, parseSourceElement: true */
   (function () {
     var Handlebars;
     Handlebars = null;
-// https://raw.githubusercontent.com/components/handlebars.js/v1.3.0/handlebars.js
+// https://github.com/components/handlebars.js/blob/v1.3.0/handlebars.js
 /* jslint-ignore-begin */
 /*!
 
@@ -10366,7 +10366,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
     esprima = local.esprima;
     module = undefined;
     window = local;
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/instrumenter.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/instrumenter.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -11344,14 +11344,18 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
     var Report, __dirname, exports, module;
     __dirname = local.__dirname;
     exports = {};
+    // mock module in browser
     module = { exports: {} };
-    // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/store/index.js
+    // mock store in browser
+    // https://github.com/gotwarlost/istanbul/blob/master/lib/store/index.js
     local['../store'] = {};
-    // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/file-writer.js
+    // mock util/file-writer in browser
+    // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
     local['../util/file-writer'] = {};
-    // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/report/common/defaults.js
+    // https://github.com/gotwarlost/istanbul/blob/master/lib/report/common/defaults.js
+    // mock common/defaults in browser
     local['./common/defaults'] = {};
-    // init local.fs
+    // mock fs in browser
     local._fs = local.require('fs');
     local.fs = {
       mkdirSync: local._fs.mkdirSync,
@@ -11406,10 +11410,11 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
         local.writeFileDict[file] = data;
       }
     };
+    // mock mkdirp in browser
     local.mkdirp = {};
     local.writeFileDict = exports.writeFileDict || {};
-    // init Report
-    // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/report/index.js
+    // mock Report in browser
+    // https://github.com/gotwarlost/istanbul/blob/master/lib/report/index.js
     Report = local['../index'] = local['./index'] = function () {
       return;
     };
@@ -11426,7 +11431,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
         cons.prototype[key] = proto[key];
       });
     };
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/hook.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/hook.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -11619,7 +11624,7 @@ module.exports = {
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/object-utils.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/object-utils.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -11993,7 +11998,7 @@ module.exports = {
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/insertion-text.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/util/insertion-text.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -12109,7 +12114,7 @@ module.exports = InsertionText;
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/tree-summarizer.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/util/tree-summarizer.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -12329,7 +12334,7 @@ module.exports = TreeSummarizer;
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/report/common/defaults.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/report/common/defaults.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2013, Yahoo! Inc.  All rights reserved.
@@ -12383,7 +12388,7 @@ module.exports = {
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/report/html.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/report/html.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -12948,7 +12953,7 @@ module.exports = HtmlReport;
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/report/text.js
+// https://github.com/gotwarlost/istanbul/blob/master/lib/report/text.js
 /* jslint-ignore-begin */
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -13167,7 +13172,7 @@ module.exports = TextReport;
 
 
 
-// https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/assets/base.css
+// https://github.com/gotwarlost/istanbul/blob/master/lib/assets/base.css
 /* jslint-ignore-begin */
     local.baseCss = ('\
 body, html {\n\
@@ -13364,18 +13369,17 @@ pre.prettyprint {\n\
     local.fs = require('fs');
     local.module = require('module');
     local.path = require('path');
-    // init local
     local.codeDict = local.codeDict || {};
-    local.coverageReportWriteSync = function (optionsOverride) {
+    local.coverageReportWriteSync = function (options) {
       /*
         this function will;
         1. print coverage in text-format to stdout
         2. write coverage in html-format to filesystem
       */
-      var collector, options, tmp;
-      // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/file-writer.js
+      var collector, tmp;
+      // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
       collector = {
-        // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/collector.js
+        // https://github.com/gotwarlost/istanbul/blob/master/lib/collector.js
         fileCoverageFor: function (file) {
           var result = options.coverage[file];
           local['../object-utils'].addDerivedInfoForFile(result);
@@ -13385,33 +13389,29 @@ pre.prettyprint {\n\
           return Object.keys(options.coverage);
         }
       };
-      options = {
-        coverage: local.global.__coverage__,
-        dir: local.modeJs === 'node' ? process.env.npm_config_coverage_dir : '/',
-        // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/store/fslookup.js
-        sourceStore: {
-          get: function (key) {
-            return local.fs.readFileSync(key, 'utf8');
-          }
-        },
-        // https://raw.githubusercontent.com/gotwarlost/istanbul/master/lib/util/file-writer.js
-        writer: {
-          done: local.nop,
-          on: local.nop,
-          write: function (data) {
-            options.writer.data += data;
-          },
-          writeFile: function (file, callback) {
-            options.writer.data = '';
-            callback(options.writer);
-            local.writeFileSync(file, options.writer.data);
-            return;
-          }
+      options.coverage = options.coverage || local.global.__coverage__;
+      options.dir = options.dir ||
+        (local.modeJs === 'node' ? process.env.npm_config_coverage_dir : '/');
+      // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
+      options.sourceStore = options.sourceStore || {
+        get: function (key) {
+          return local.fs.readFileSync(key, 'utf8');
         }
       };
-      Object.keys(optionsOverride || {}).forEach(function (key) {
-        options[key] = optionsOverride[key];
-      });
+      // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
+      options.writer = options.writer || {
+        done: local.nop,
+        on: local.nop,
+        write: function (data) {
+          options.writer.data += data;
+        },
+        writeFile: function (file, callback) {
+          options.writer.data = '';
+          callback(options.writer);
+          local.writeFileSync(file, options.writer.data);
+          return;
+        }
+      };
       // 1. print coverage in text-format to stdout
       new local.TextReport(options).writeReport(collector);
       // 2. write coverage in html-format to filesystem
@@ -13490,6 +13490,9 @@ pre.prettyprint {\n\
 
   // run node js-env code
   case 'node':
+    // init asset istanbul-lite.js
+    local.istanbulLiteJs = '//' + local.fs.readFileSync(__filename, 'utf8');
+    // run coverage
     if (local._module === local.require.main) {
       process.env.npm_config_coverage_dir =
         local.path.resolve(
@@ -13547,7 +13550,7 @@ pre.prettyprint {\n\
     local.modeJs = (function () {
       try {
         return module.exports && typeof process.versions.node === 'string' &&
-          typeof require('child_process').spawn === 'function' && 'node';
+          typeof require('http').createServer === 'function' && 'node';
       } catch (errorCaughtNode) {
         return typeof navigator.userAgent === 'string' &&
           typeof document.querySelector('body') === 'object' && 'browser';
@@ -13581,13 +13584,13 @@ pre.prettyprint {\n\
   case 'browser':
     // export local
     window.istanbul_lite = local;
-    // mock node __dirname
+    // mock __dirname in browser
     local.__dirname = '/istanbul-lite';
-    // mock node module module
+    // mock module in browser
     local.module = {
       _extensions: {}
     };
-    // mock node path module
+    // mock path in browser
     local.path = {
       dirname: function (file) {
         return file.replace((/\/[^\/]+$/), '');
@@ -13598,18 +13601,18 @@ pre.prettyprint {\n\
           .replace((/\/\/+/), '/');
       }
     };
-    // mock node process object
+    // mock process in browser
     local.process = {
       cwd: function () {
         return '';
       },
       stdout: {}
     };
-    // mock node require module
+    // mock require in browser
     local.require = function (key) {
       return local[key] || {};
     };
-    // mock node util module
+    // mock util in browser
     local.util = {
       inherits: function (ctor, superCtor) {
         ctor.super_ = superCtor;
