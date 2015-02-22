@@ -196,7 +196,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
       // this internal build-code will screen-capture the server and then exit
       if (process.env.MODE_BUILD === 'testExampleJs') {
         require(
-          process.env.npm_package_dir_utility2 + '/index.js'
+          process.env.npm_config_dir_utility2 + '/index.js'
         ).phantomScreenCapture({
           url: 'http://localhost:' + local.serverPort
         }, process.exit);
@@ -247,9 +247,8 @@ shBuild() {
   MODE_OFFLINE=1\
   MODE_LINENO_PRESERVE=1\
   shRunScreenCapture shTestScriptJs example.js || return $?
-  # copy phantomjs screen-capture to $npm_package_dir_build
-  cp /tmp/app/.tmp/build/screen-capture.*.png $npm_package_dir_build ||\
-    return $?
+  # copy phantomjs screen-capture to $npm_config_dir_build
+  cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
   #!! # run npm test
   #!! MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   if [ "$TRAVIS" ]
@@ -278,8 +277,8 @@ shBuildCleanup() {
   shBuildPrint phantomScreenCapture\
     "add black border around phantomjs screen-capture" || return $?
   local FILE_LIST="$(ls\
-    $npm_package_dir_build/screen-capture.*.phantomjs*.png\
-    $npm_package_dir_build/screen-capture.*.slimerjs*.png\
+    $npm_config_dir_build/screen-capture.*.phantomjs*.png\
+    $npm_config_dir_build/screen-capture.*.slimerjs*.png\
     2>/dev/null)" || return $?
   if [ "$FILE_LIST" ] && (mogrify --version > /dev/null 2>&1)
   then
