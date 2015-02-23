@@ -209,7 +209,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 #### output from shell
 ![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testExampleJs.png)
 #### output from [phantomjs-lite](https://www.npmjs.com/package/phantomjs-lite)
-![screen-capture](https://kaizhu256.github.io/node-utility2/build/screen-capture.testExampleJs.slimerjs.png)
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs.png)
 
 
 
@@ -240,21 +240,19 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 shBuild() {
   # init env
   . node_modules/.bin/utility2 && shInit || return $?
-  #!! # run npm test on published package
-  #!! shRun shNpmTestPublished || return $?
+  # run npm test on published package
+  shRun shNpmTestPublished || return $?
   # test example js script
-  MODE_BUILD=testExampleJs\
-  MODE_OFFLINE=1\
-  MODE_LINENO_PRESERVE=1\
-  shRunScreenCapture shTestScriptJs example.js || return $?
+  MODE_BUILD=testExampleJs shRunScreenCapture shTestScriptJs example.js ||\
+    return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
   cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
-  #!! # run npm test
-  #!! MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
+  # run npm test
+  MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   if [ "$TRAVIS" ]
   then
-    #!! # deploy to heroku
-    #!! shRun shTestHeroku || return $?
+    # deploy to heroku
+    shRun shTestHeroku || return $?
     # if number of commits > 1024, then squash older commits
     shRun shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
   fi
