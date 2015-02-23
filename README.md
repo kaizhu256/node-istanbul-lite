@@ -242,13 +242,21 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 # build.sh
 # this shell script runs the build process for this package
 shBuild() {
+  if [ "$TRAVIS" ]
+  then
+    export HEROKU_REPO=hrku01-istanbul-lite-$CI_BRANCH || return $?
+    export TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" ||\
+      return $?
+    export TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}"\
+      || return $?
+    export npm_config_mode_slimerjs=1 || return $?
+  fi
   # init env
   . node_modules/.bin/utility2 && shInit || return $?
   # run npm test on published package
   shRun shNpmTestPublished || return $?
   # test example js script
   MODE_BUILD=testExampleJs\
-  npm_config_mode_slimerjs=1\
   shRunScreenCapture shTestScriptJs example.js || return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
   cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
