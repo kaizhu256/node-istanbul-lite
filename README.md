@@ -209,7 +209,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 #### output from shell
 ![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.png)
 #### output from [phantomjs-lite](https://www.npmjs.com/package/phantomjs-lite)
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.phantomjs.png)
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs.png)
 
 
 
@@ -244,8 +244,9 @@ shBuild() {
   # run npm test on published package
   shRun shNpmTestPublished || return $?
   # test example js script
-  MODE_BUILD=testExampleJs shRunScreenCapture shTestScriptJs example.js ||\
-    return $?
+  MODE_BUILD=testExampleJs\
+  npm_config_mode_slimerjs\
+  shRunScreenCapture shTestScriptJs example.js || return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
   cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
   # run npm test
