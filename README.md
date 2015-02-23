@@ -194,6 +194,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
     console.log('server starting on port ' + local.serverPort);
     local.server.listen(local.serverPort, function () {
       // this internal build-code will screen-capture the server and then exit
+      // debugPrint
+      console.error('npm_config_mode_slimerjs', process.env.npm_config_mode_slimerjs);
       if (process.env.MODE_BUILD === 'testExampleJs') {
         require(
           process.env.npm_config_dir_utility2 + '/index.js'
@@ -225,6 +227,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 ## todo
 - add more tests to npm test
+- deploy to heroku
 - fix build
 
 
