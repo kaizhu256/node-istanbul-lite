@@ -294,7 +294,7 @@ shBuildCleanup() {
       xargs -n 1 mogrify -frame 1 -mattecolor black || return $?
   fi
 }
-shBuildCleanup
+shBuildCleanup || exit $?
 # upload build-artifacts to github
 if [ "$TRAVIS" ]
 then
