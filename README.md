@@ -224,6 +224,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 ## todo
+- add more tests to npm test
 - fix build
 
 
@@ -259,7 +260,6 @@ shBuild() {
 }
 # run build
 shBuild
-exit
 # save exit-code
 EXIT_CODE=$?
 shBuildCleanup() {
