@@ -245,7 +245,7 @@ shBuild() {
   shRun shNpmTestPublished || return $?
   # test example js script
   MODE_BUILD=testExampleJs\
-  npm_config_mode_slimerjs\
+  npm_config_mode_slimerjs=1\
   shRunScreenCapture shTestScriptJs example.js || return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
   cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
