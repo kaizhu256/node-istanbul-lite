@@ -52,7 +52,10 @@
           '/input.js'
         ));
         innerHTML = '<style>\n' + local.istanbul_lite.baseCss
-          .replace((/(.+\{)/gm), '.istanbulLiteCoverageReportDivDiv $1')
+          .replace((/(.+\{)/g), function (match0) {
+            return '.istanbulLiteCoverageReportDivDiv ' +
+              match0.replace((/,/g), ', .istanbulLiteCoverageReportDivDiv ');
+          })
           .replace('margin: 3em;', 'margin: 0;')
           .replace('margin-top: 10em;', 'margin: 20px;')
           .replace('position: fixed;', 'position: static;')
@@ -183,12 +186,15 @@
               'margin: 10px;\n' +
             '}\n' +
             'body > div {\n' +
-              'margin-top: 10px;\n' +
+              'margin-top: 20px;\n' +
             '}\n' +
             'textarea {\n' +
               'font-family: monospace;\n' +
               'height: 8em;\n' +
               'width: 100%;\n' +
+            '}\n' +
+            '.testReportDiv {\n' +
+              'display: none;\n' +
             '}\n' +
           '</style>\n' +
         '</head>\n' +
@@ -198,9 +204,9 @@
             '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
           '</div>\n' +
           '<!-- ajax-progress end -->\n' +
+          '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
+          '<h3>{{envDict.npm_package_description}}</h3>\n' +
           '<div class="mainAppDiv">\n' +
-            '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
-            '<h3>{{envDict.npm_package_description}}</h3>\n' +
             '<div>edit / paste script below to eval and cover</div>\n' +
             '<div><textarea class="istanbulLiteEvalInputTextarea">if (true) {\n' +
               'console.log("hello");\n' +

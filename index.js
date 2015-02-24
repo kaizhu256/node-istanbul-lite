@@ -13458,19 +13458,18 @@ pre.prettyprint {\n\
     local.writeFileSync = function (file, data) {
       /*
         this function will:
-        1. create a directory for the file if it does not exist
+        1. create a dir for the file if it does not exist
         2. write the data to the file
       */
       var mkdirpSync;
       mkdirpSync = function (dir) {
         /*
-          this function creates the directory dir,
-          and the necessary parent directories if needed
+          this function will create the dir, and parent dir if needed
         */
         try {
           local.fs.mkdirSync(dir);
         } catch (errorCaught) {
-          // recursively create parent directory
+          // recursively create parent dir
           if (errorCaught.code === 'ENOENT') {
             mkdirpSync(local.path.dirname(dir));
             mkdirpSync(dir);
@@ -13558,7 +13557,7 @@ pre.prettyprint {\n\
     }());
     local.nop = function () {
       /*
-        this function performs no operation - nop
+        this function will perform no operation - nop
       */
       return;
     };
