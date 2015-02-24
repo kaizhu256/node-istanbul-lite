@@ -44,15 +44,14 @@
   case 'browser':
     window.local = local;
     local.evalAndCover = function () {
+      var innerHTML;
       try {
         window.__coverage__ = window.__coverage__ || {};
         eval(window.istanbul_lite.instrumentSync(
           local.istanbulLiteEvalInputTextarea.value,
           '/input.js'
         ));
-        document.querySelector(
-          '.istanbulLiteCoverageReportDiv'
-        ).innerHTML = '<style>\n' + local.istanbul_lite.baseCss
+        innerHTML = '<style>\n' + local.istanbul_lite.baseCss
           .replace((/(.+\{)/gm), '.istanbulLiteCoverageReportDivDiv $1')
           .replace('margin: 3em;', 'margin: 0;')
           .replace('margin-top: 10em;', 'margin: 20px;')
@@ -80,17 +79,39 @@
             coverage: { '/input.js': window.__coverage__['/input.js'] }
           });
       } catch (errorCaught) {
-        document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML = '<pre>' +
-          errorCaught.stack.replace((/</g), '&lt') +
-          '</pre>';
+        innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
       }
-      // delete input, so it can be re-covered
+      document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML = innerHTML;
+      // cleanup __coverage__
       delete window.__coverage__['/input.js'];
+      return innerHTML;
     };
     local.istanbulLiteEvalInputTextarea =
       document.querySelector('.istanbulLiteEvalInputTextarea');
     local.istanbulLiteEvalInputTextarea.addEventListener('keyup', local.evalAndCover);
     local.evalAndCover();
+    local._evalAndCover_default_test = function (onError) {
+      /*
+        this function test evalAndCover's default handling behavior
+      */
+      var data;
+      // test syntax-error handling behavior
+      local.istanbulLiteEvalInputTextarea.value = 'syntax-error!';
+      data = local.evalAndCover();
+      // validate data
+      local.utility2.assert(data.indexOf('<pre>') === 0, data);
+      local.istanbulLiteEvalInputTextarea.value = 'console.log("hello world");';
+      data = local.evalAndCover();
+      // validate data
+      local.utility2.assert(data.indexOf('<tr>' +
+        '<td class="line-count">1</td>' +
+        '<td class="line-coverage"><span class="cline-any cline-yes">1</span></td>' +
+        '<td class="text"><pre class="prettyprint lang-js">' +
+          'console.log("hello world");</pre>' +
+        '</td>' +
+        '</tr>') >= 0, data);
+      onError();
+    };
     local.utility2.testRun(local);
     break;
 
@@ -113,16 +134,17 @@
         // test mkdirpSync handling behavior
         dir: dir
       });
-      local.utility2.testTryCatch(function () {
+      try {
         local.istanbul_lite.coverageReportWriteSync({
           coverage: {},
           // test mkdirpSync error handling behavior
           dir: dir + '/index.html'
         });
-      // validate error occurred
-      }, function () {
+      } catch (errorCaught) {
+        // validate error occurred
+        local.utility2.assert(errorCaught instanceof Error, errorCaught);
         onError();
-      });
+      }
     };
     local._testPage_default_test = function (onError) {
       /*
@@ -185,10 +207,11 @@
             '} else {\n' +
               'console.log("bye");\n' +
             '}</textarea></div>\n' +
-            '<br>\n' +
-            '<div class="istanbulLiteCoverageReportDiv"></div>\n' +
           '</div>\n' +
           '<!-- main-app end -->\n' +
+          '<!-- coverage begin -->\n' +
+          '<div class="istanbulLiteCoverageReportDiv"></div>\n' +
+          '<!-- coverage end -->\n' +
           '<!-- test-report begin -->\n' +
           '<div class="testReportDiv"></div>\n' +
           '<!-- test-report end -->\n' +
