@@ -206,6 +206,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
     local.server.listen(local.serverPort, function () {
       // this internal build-code will screen-capture the server and then exit
       if (process.env.MODE_BUILD === 'testExampleJs') {
+        console.log('server stopping on port ' + local.serverPort);
         require(
           process.env.npm_config_dir_utility2 + '/index.js'
         ).phantomScreenCapture({
@@ -232,7 +233,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 # this shell script will
   # 1. npm install istanbul-lite
   # 2. create test-script foo.js
-  # 3. run offline-coverage for foo.js and create an html coverage-report
+  # 3. run offline-coverage for foo.js and create an offline-report
 
 # instruction:
   # 1. copy and paste this entire shell script into a console and press enter
@@ -245,7 +246,7 @@ shExampleSh() {
   local SCRIPT="if (true) { console.log('hello'); }" || return $?
   SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
   printf "$SCRIPT" > foo.js || return $?
-  # 3. run offline-coverage for foo.js and create an html coverage-report
+  # 3. run offline-coverage for foo.js and create an offline-report
   node_modules/.bin/istanbul-lite cover foo.js || return $?
 }
 shExampleSh
