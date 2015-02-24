@@ -21,19 +21,54 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-# quickstart in web browser
+# quickstart for offline-coverage
+#### follow the instruction in this script
+```
+# example.sh
+
+# this shell script will
+  # 1. npm install istanbul-lite
+  # 2. create a test script foo.js
+  # 3. run offline-coverage on foo.js
+  # 4. create an html-report of the coverage
+
+# instruction:
+  # 1. copy and paste this entire shell script into a console and press enter
+  # 2. open file ./html-report/index.html
+
+shExampleSh() {
+  # 1. npm install istanbul-lite
+  npm install istanbul-lite || return $?
+  # 2. create a test script foo.js
+  local SCRIPT="if (true) { console.log('hello'); }" || return $?
+  SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
+  printf "$SCRIPT" > foo.js || return $?
+  # 3. run offline-coverage on foo.js
+  node_modules/.bin/istanbul-lite cover foo.js || return $?
+  # 4. create an html-report of the coverage
+  node_modules/.bin/istanbul-lite report || return $?
+}
+shExampleSh
+```
+#### output
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testExampleSh.png)
+
+
+
+# quickstart for dynamic web-coverage
 #### follow the instruction in this script
 ```
 /*
   example.js
 
   this shared browser / node script will serve a web-page
-  with browser-coverage
+  with dynamic web-coverage and web-reporting
 
   instruction
   1. save this script as example.js
   2. run the shell command:
      $ npm install istanbul-lite && node example.js
+  3. open a browser to http://localhost:1337
 */
 /*jslint
   browser: true,
@@ -234,7 +269,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 # todo
-- add quickstart in shell
+- add screen-capture of offline-coverage report
 
 
 
@@ -263,6 +298,9 @@ shBuild() {
   shRunScreenCapture shTestScriptJs example.js || return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
   cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
+  # test example shell script
+  MODE_BUILD=testExampleSh\
+  shRunScreenCapture shTestScriptSh example.sh || return $?
   # run npm test
   MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   # deploy and test on heroku

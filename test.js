@@ -97,12 +97,10 @@
       /*
         this function test evalAndCover's default handling behavior
       */
-      var data;
-      // test syntax-error handling behavior
-      local.istanbulLiteEvalInputTextarea.value = 'syntax-error!';
-      data = local.evalAndCover();
-      // validate data
-      local.utility2.assert(data.indexOf('<pre>') === 0, data);
+      var data, value;
+      // save value
+      value = local.istanbulLiteEvalInputTextarea.value;
+      // test default handling behavior
       local.istanbulLiteEvalInputTextarea.value = 'console.log("hello world");';
       data = local.evalAndCover();
       // validate data
@@ -113,6 +111,14 @@
           'console.log("hello world");</pre>' +
         '</td>' +
         '</tr>') >= 0, data);
+      // test syntax-error handling behavior
+      local.istanbulLiteEvalInputTextarea.value = 'syntax-error!';
+      data = local.evalAndCover();
+      // validate data
+      local.utility2.assert(data.indexOf('<pre>') === 0, data);
+      // restore value
+      local.istanbulLiteEvalInputTextarea.value = value;
+      local.evalAndCover();
       onError();
     };
     local.utility2.testRun(local);
