@@ -13394,7 +13394,7 @@ pre.prettyprint {\n\
         }
       };
       options.dir = options.dir ||
-        (local.modeJs === 'node' ? process.env.npm_config_coverage_dir : '/');
+        (local.modeJs === 'node' ? process.env.npm_config_dir_coverage : '/');
       // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
       options.sourceStore = options.sourceStore || {
         get: function (key) {
@@ -13480,10 +13480,8 @@ pre.prettyprint {\n\
       try {
         local.fs.writeFileSync(file, data);
       } catch (errorCaught) {
-        if (errorCaught.code === 'ENOENT') {
-          mkdirpSync(local.path.dirname(file));
-          local.fs.writeFileSync(file, data);
-        }
+        mkdirpSync(local.path.dirname(file));
+        local.fs.writeFileSync(file, data);
       }
     };
   }());
@@ -13497,10 +13495,10 @@ pre.prettyprint {\n\
     local.istanbulLiteJs = '//' + local.fs.readFileSync(__filename, 'utf8');
     // run coverage
     if (local._module === local.require.main) {
-      process.env.npm_config_coverage_dir =
+      process.env.npm_config_dir_coverage =
         local.path.resolve(
           process.cwd(),
-          process.env.npm_config_coverage_dir || 'html-report'
+          process.env.npm_config_dir_coverage || 'html-report'
         );
       switch (process.argv[2]) {
       case 'cover':
@@ -13520,7 +13518,7 @@ pre.prettyprint {\n\
         // create coverage on exit
         process.on('exit', function () {
           local.writeFileSync(
-            process.env.npm_config_coverage_dir + '/coverage.json',
+            process.env.npm_config_dir_coverage + '/coverage.json',
             JSON.stringify(local.global.__coverage__)
           );
         });
@@ -13529,7 +13527,7 @@ pre.prettyprint {\n\
       case 'report':
         local.coverageReportWriteSync({
           coverage: JSON.parse(local.fs.readFileSync(
-            process.env.npm_config_coverage_dir + '/coverage.json',
+            process.env.npm_config_dir_coverage + '/coverage.json',
             'utf8'
           ))
         });

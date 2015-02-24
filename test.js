@@ -101,11 +101,28 @@
     // require modules
     local.fs = require('fs');
     local.path = require('path');
-    local._dummy_test = function (onError) {
+    local._coverageReportWriteSync_default_test = function (onError) {
       /*
-        this function is a dummy test
+        this function test coverageReportWriteSync's default handling behavior
       */
-      onError();
+      var dir;
+      dir = process.env.npm_config_dir_tmp +
+        '/coverage.tmp/' + Math.random() + '/' + Math.random();
+      local.istanbul_lite.coverageReportWriteSync({
+        coverage: {},
+        // test mkdirpSync handling behavior
+        dir: dir
+      });
+      local.utility2.testTryCatch(function () {
+        local.istanbul_lite.coverageReportWriteSync({
+          coverage: {},
+          // test mkdirpSync error handling behavior
+          dir: dir + '/index.html'
+        });
+      // validate error occurred
+      }, function (error) {
+        onError();
+      });
     };
     local._testPage_default_test = function (onError) {
       /*

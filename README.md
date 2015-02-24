@@ -225,7 +225,6 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 # todo
-- add more tests to npm test
 - deploy to heroku
 
 
