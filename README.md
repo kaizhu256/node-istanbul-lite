@@ -21,40 +21,6 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-# quickstart for offline-coverage
-#### follow the instruction in this script
-```
-# example.sh
-
-# this shell script will
-  # 1. npm install istanbul-lite
-  # 2. create a test script foo.js
-  # 3. run offline-coverage on foo.js
-  # 4. create an html-report of the coverage
-
-# instruction:
-  # 1. copy and paste this entire shell script into a console and press enter
-  # 2. open file ./html-report/index.html
-
-shExampleSh() {
-  # 1. npm install istanbul-lite
-  npm install istanbul-lite || return $?
-  # 2. create a test script foo.js
-  local SCRIPT="if (true) { console.log('hello'); }" || return $?
-  SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
-  printf "$SCRIPT" > foo.js || return $?
-  # 3. run offline-coverage on foo.js
-  node_modules/.bin/istanbul-lite cover foo.js || return $?
-  # 4. create an html-report of the coverage
-  node_modules/.bin/istanbul-lite report || return $?
-}
-shExampleSh
-```
-#### output
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/screen-capture.testExampleSh.png)
-
-
-
 # quickstart for dynamic web-coverage
 #### follow the instruction in this script
 ```
@@ -258,6 +224,39 @@ shExampleSh
 
 
 
+# quickstart for traditional offline-coverage
+#### follow the instruction in this script
+```
+# example.sh
+
+# this shell script will
+  # 1. npm install istanbul-lite
+  # 2. create a test script foo.js
+  # 3. run offline-coverage of foo.js and create an html coverage-report
+
+# instruction:
+  # 1. copy and paste this entire shell script into a console and press enter
+  # 2. open ./html-report/index.html to view coverage of foo.js
+
+shExampleSh() {
+  # 1. npm install istanbul-lite
+  npm install istanbul-lite || return $?
+  # 2. create a test script foo.js
+  local SCRIPT="if (true) { console.log('hello'); }" || return $?
+  SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
+  printf "$SCRIPT" > foo.js || return $?
+  # 3. run offline-coverage of foo.js and create an html coverage-report
+  node_modules/.bin/istanbul-lite cover foo.js || return $?
+}
+shExampleSh
+```
+#### output from shell
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)
+#### output from [istanbul-lite](https://www.npmjs.com/package/istanbul-lite)
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2F.tmp_2Fbuild_2Fcoverage.html_2Fapp_2Fexample.sh.html.png)
+
+
+
 # package-listing
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.png)](https://github.com/kaizhu256/node-istanbul-lite)
 
@@ -301,6 +300,9 @@ shBuild() {
   # test example shell script
   MODE_BUILD=testExampleSh\
   shRunScreenCapture shTestScriptSh example.sh || return $?
+  # screen-capture example.sh coverage
+  MODE_BUILD=testExampleSh shRun shPhantomScreenCapture\
+    /tmp/app/.tmp/build/coverage.html/app/example.sh.html || :
   # run npm test
   MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   # deploy and test on heroku

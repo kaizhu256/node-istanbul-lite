@@ -13379,6 +13379,7 @@ pre.prettyprint {\n\
         this function will;
         1. print coverage in text-format to stdout
         2. write coverage in html-format to filesystem
+        3. return coverage in html-format as a single document
       */
       var collector, tmp;
       // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
@@ -13424,13 +13425,14 @@ pre.prettyprint {\n\
         tmp.opts.linkMapper.asset = function () {
           return '';
         };
+      } else {
+        console.log('creating coverage file://' +
+          local.path.resolve(process.cwd(), options.dir, 'index.html'));
       }
       tmp.writeReport(collector);
       // write base.css
       local.writeFileSync(options.dir + '/base.css', local.baseCss);
-      console.log('created coverage file://' +
-        local.path.resolve(process.cwd(), options.dir, 'index.html'));
-      // return coverage in html-format as a single document
+      // 3. return coverage in html-format as a single document
       return [
         '/index.html'
       ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
@@ -13513,13 +13515,16 @@ pre.prettyprint {\n\
         // init process.argv
         process.argv.splice(1, 2);
         process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
-        console.log('\ncovering $ ' + process.argv.join(' ') + ' ...');
+        console.log('\ncovering $ ' + process.argv.join(' '));
         // create coverage on exit
         process.on('exit', function () {
           local.writeFileSync(
             process.env.npm_config_dir_coverage + '/coverage.json',
             JSON.stringify(local.global.__coverage__)
           );
+          local.coverageReportWriteSync({
+            coverage: local.global.__coverage__
+          });
         });
         local.module.runMain();
         break;
