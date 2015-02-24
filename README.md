@@ -16,13 +16,18 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-# quickstart
+# live test-server
+[![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testHeroku.slimerjs.png)](https://hrku01-istanbul-lite-beta.herokuapp.com?modeTest=1)
+
+
+
+# quickstart in web browser
 #### follow the instruction in this script
 ```
 /*
   example.js
 
-  this shared browser / server script will serve a web-page
+  this shared browser / node script will serve a web-page
   with browser-coverage
 
   instruction
@@ -261,8 +266,8 @@ shBuild() {
   MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   if [ "$TRAVIS" ]
   then
-    #!! # deploy to heroku
-    #!! shRun shTestHeroku || return $?
+    # deploy and test on heroku
+    shRun shTestHeroku || return $?
     # if number of commits > 1024, then squash older commits
     shRun shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
   fi
