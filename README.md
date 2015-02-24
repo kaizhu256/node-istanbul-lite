@@ -231,8 +231,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 # this shell script will
   # 1. npm install istanbul-lite
-  # 2. create a test script foo.js
-  # 3. run offline-coverage of foo.js and create an html coverage-report
+  # 2. create test-script foo.js
+  # 3. run offline-coverage for foo.js and create an html coverage-report
 
 # instruction:
   # 1. copy and paste this entire shell script into a console and press enter
@@ -241,11 +241,11 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 shExampleSh() {
   # 1. npm install istanbul-lite
   npm install istanbul-lite || return $?
-  # 2. create a test script foo.js
+  # 2. create test-script foo.js
   local SCRIPT="if (true) { console.log('hello'); }" || return $?
   SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
   printf "$SCRIPT" > foo.js || return $?
-  # 3. run offline-coverage of foo.js and create an html coverage-report
+  # 3. run offline-coverage for foo.js and create an html coverage-report
   node_modules/.bin/istanbul-lite cover foo.js || return $?
 }
 shExampleSh
@@ -253,7 +253,7 @@ shExampleSh
 #### output from shell
 ![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)
 #### output from [istanbul-lite](https://www.npmjs.com/package/istanbul-lite)
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2F.tmp_2Fbuild_2Fcoverage.html_2Fapp_2Fexample.sh.html.png)
+![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)
 
 
 
@@ -302,7 +302,7 @@ shBuild() {
   shRunScreenCapture shTestScriptSh example.sh || return $?
   # screen-capture example.sh coverage
   MODE_BUILD=testExampleSh shRun shPhantomScreenCapture\
-    /tmp/app/.tmp/build/coverage.html/app/example.sh.html || :
+    /tmp/app/html-report/app/foo.js.html || :
   # run npm test
   MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
   # deploy and test on heroku
