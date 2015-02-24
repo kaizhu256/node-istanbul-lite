@@ -29,9 +29,6 @@
           typeof document.querySelector('body') === 'object' && 'browser';
       }
     }());
-    local.global = local.modeJs === 'browser'
-      ? window
-      : global;
     local.istanbul_lite = local.modeJs === 'browser'
       ? window.istanbul_lite
       : require('./index.js');
@@ -53,8 +50,8 @@
     }
     local.evalAndCover = function () {
       try {
-        local.global.__coverage__ = {};
-        eval(local.global.istanbul_lite.instrumentSync(
+        window.__coverage__ = window.__coverage__ || {};
+        eval(window.istanbul_lite.instrumentSync(
           local.istanbulLiteEvalInputTextarea.value,
           '/input.js'
         ));
@@ -84,19 +81,22 @@
           '}\n' +
           '</style>\n' +
           '<h2>coverage</h2>\n' +
-          local.global.istanbul_lite.coverageReportWriteSync({
-            coverage: local.global.__coverage__
+          window.istanbul_lite.coverageReportWriteSync({
+            coverage: window.__coverage__
           });
       } catch (errorCaught) {
         document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML = '<pre>' +
           errorCaught.stack.replace((/</g), '&lt') +
           '</pre>';
       }
+      // delete input, so it can be re-covered
+      delete window.__coverage__['/input.js'];
     };
     local.istanbulLiteEvalInputTextarea =
       document.querySelector('.istanbulLiteEvalInputTextarea');
     local.istanbulLiteEvalInputTextarea.addEventListener('keyup', local.evalAndCover);
     local.evalAndCover();
+    local.utility2.testRun(local);
     break;
 
 
@@ -106,12 +106,22 @@
     // require modules
     local.fs = require('fs');
     local.path = require('path');
-
     local._dummy_test = function (onError) {
       /*
         this function is a dummy test
       */
       onError();
+    };
+    local._testPage_default_test = function (onError) {
+      /*
+        this function will test the test-page's default handling behavior
+      */
+      local.utility2.phantomTest({
+        url: 'http://localhost:' + local.utility2.envDict.npm_config_server_port +
+          '?modeTest=phantom&' +
+          '_testSecret={{_testSecret}}&' +
+          'timeoutDefault=' + local.utility2.timeoutDefault
+      }, onError);
     };
     // init server-assets
     [{
@@ -137,42 +147,66 @@
         // serve main-page
         case '/':
 /* jslint-ignore-begin */
-response.end('<!DOCTYPE html>\n\
+response.end(local.utility2.textFormat('\
+<!DOCTYPE html>\n\
 <html>\n\
 <head>\n\
   <meta charset="UTF-8">\n\
-  <title>istanbul-lite demo</title>\n\
+  <title>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</title>\n\
+  <link rel="stylesheet" href="/assets/utility2.css">\n\
   <style>\n\
-  * {\n\
-    box-sizing: border-box;\n\
-  }\n\
-  body {\n\
-    font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n\
-    margin: 10px;\n\
-  }\n\
-  body > div {\n\
-    margin-top: 10px;\n\
-  }\n\
-  textarea {\n\
-    font-family: monospace;\n\
-    height: 8em;\n\
-    width: 100%;\n\
-  }\n\
+    * {\n\
+      box-sizing: border-box;\n\
+    }\n\
+    body {\n\
+      font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n\
+      margin: 10px;\n\
+    }\n\
+    body > div {\n\
+      margin-top: 10px;\n\
+    }\n\
+    textarea {\n\
+      font-family: monospace;\n\
+      height: 8em;\n\
+      width: 100%;\n\
+    }\n\
   </style>\n\
 </head>\n\
 <body>\n\
-  <div>edit / paste script below to eval and cover</div>\n\
-  <div><textarea class="istanbulLiteEvalInputTextarea">if (true) {\n\
-    console.log("hello");\n\
-  } else {\n\
-    console.log("bye");\n\
-  }</textarea></div>\n\
-  <div class="istanbulLiteCoverageReportDiv"></div>\n\
+  <!-- ajax-progress begin -->\n\
+  <div class="ajaxProgressDiv" style="display: none;">\n\
+    <div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n\
+  </div>\n\
+  <!-- ajax-progress end -->\n\
+  <div class="mainAppDiv">\n\
+    <h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n\
+    <h3>{{envDict.npm_package_description}}</h3>\n\
+    <div>edit / paste script below to eval and cover</div>\n\
+    <div><textarea class="istanbulLiteEvalInputTextarea">if (true) {\n\
+      console.log("hello");\n\
+    } else {\n\
+      console.log("bye");\n\
+    }</textarea></div>\n\
+    <br>\n\
+    <div class="istanbulLiteCoverageReportDiv"></div>\n\
+  </div>\n\
+  <!-- main-app end -->\n\
+  <!-- test-report begin -->\n\
+  <div class="testReportDiv"></div>\n\
+  <!-- test-report end -->\n\
+  <!-- script begin -->\n\
   <script src="/assets/utility2.js"></script>\n\
+  <script>window.utility2.envDict = {\n\
+    npm_package_description: "{{envDict.npm_package_description}}",\n\
+    npm_package_name: "{{envDict.npm_package_name}}",\n\
+    npm_package_version: "{{envDict.npm_package_version}}"\n\
+  }</script>\n\
   <script src="/assets/istanbul-lite.js"></script>\n\
   <script src="/test/test.js"></script>\n\
+  <!-- script end -->\n\
 </body>\n\
-</html>');
+</html>\n\
+', { envDict: local.utility2.envDict }));
 /* jslint-ignore-end */
           break;
         case '/assets/istanbul-lite.js':

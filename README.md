@@ -4,7 +4,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-## build-status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+# build-status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 [![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
@@ -16,7 +16,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-## quickstart nodejs script
+# quickstart
+#### follow the instruction in this script
 ```
 /*
   example.js
@@ -213,28 +214,28 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-## package-listing
+# package-listing
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.png)](https://github.com/kaizhu256/node-istanbul-lite)
 
 
 
-## npm-dependencies
+# npm-dependencies
 - none
 
 
 
-## todo
+# todo
 - add more tests to npm test
 - deploy to heroku
 
 
 
-## changelog of last 50 commits
+# changelog of last 50 commits
 ![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLog.png)
 
 
 
-## internal build-script
+# internal build-script
 ```
 # build.sh
 # this shell script runs the build process for this package
