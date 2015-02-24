@@ -13564,6 +13564,8 @@ pre.prettyprint {\n\
     };
     // init global
     local.global = local.modeJs === 'browser' ? window : global;
+    // mock package.json for escodegen.js
+    local['./package.json'] = {};
   }());
   switch (local.modeJs) {
 
@@ -13627,8 +13629,6 @@ pre.prettyprint {\n\
     local._module = module;
     local.process = process;
     local.require = require;
-    // coverage-hack - cover istanbul-lite
-    local['./package.json'] = JSON.parse(require('fs').readFileSync('./package.json', 'utf8'));
     break;
   }
   return local;
