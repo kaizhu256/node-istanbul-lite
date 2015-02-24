@@ -12,6 +12,9 @@
   var require, process;
   // nop hack to pass jslint
   local.nop(process, require);
+
+
+
   // run shared js-env code
   (function () {
     process = local.process;
@@ -13390,7 +13393,6 @@ pre.prettyprint {\n\
           return Object.keys(options.coverage);
         }
       };
-      options.coverage = options.coverage || local.global.__coverage__;
       options.dir = options.dir ||
         (local.modeJs === 'node' ? process.env.npm_config_coverage_dir : '/');
       // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
@@ -13502,16 +13504,8 @@ pre.prettyprint {\n\
         );
       switch (process.argv[2]) {
       case 'cover':
-        if (!local.global.__coverage__) {
-          delete local.require.cache[__filename];
-          local.global.__coverage__ = {};
-        }
         process.env.npm_config_mode_cover_regexp_exclude =
           process.env.npm_config_mode_cover_regexp_exclude || '[^\\S\\s]';
-        // init process.argv
-        process.argv.splice(1, 2);
-        process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
-        console.log('\ncovering $ ' + process.argv.join(' ') + ' ...');
         // add coverage hook to require
         local.hook.hookRequire(function (file) {
           return file.indexOf(process.cwd()) === 0 &&
@@ -13519,6 +13513,14 @@ pre.prettyprint {\n\
             !new RegExp(process.env.npm_config_mode_cover_regexp_exclude).test(file) &&
             new RegExp(process.env.npm_config_mode_cover_regexp_include).test(file);
         }, local.instrumentSync);
+        // coverage-hack - cover istanbul-lite
+        if (process.env.npm_package_name === 'istanbul-lite' && !local.global.__coverage__) {
+          delete local.require.cache[__filename];
+        }
+        // init process.argv
+        process.argv.splice(1, 2);
+        process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
+        console.log('\ncovering $ ' + process.argv.join(' ') + ' ...');
         // create coverage on exit
         process.on('exit', function () {
           local.writeFileSync(
@@ -13543,6 +13545,9 @@ pre.prettyprint {\n\
 }((function () {
   'use strict';
   var local;
+
+
+
   // run shared js-env code
   (function () {
     // init local
@@ -13565,22 +13570,11 @@ pre.prettyprint {\n\
     };
     // init global
     local.global = local.modeJs === 'browser' ? window : global;
-    // init global debug_print
-    local.global['debug_print'.replace('_p', 'P')] = function (arg) {
-      /*
-        this function will both print the arg to stderr and return it,
-        and jslint will nag you to remove it if used
-      */
-      // debug arguments
-      local['debug_printArguments'.replace('_p', 'P')] = arguments;
-      console.error('\n\n\ndebug_print'.replace('_p', 'P'));
-      console.error.apply(console, arguments);
-      console.error();
-      // return arg for inspection
-      return arg;
-    };
   }());
   switch (local.modeJs) {
+
+
+
   // run browser js-env code
   case 'browser':
     // export local
@@ -13628,6 +13622,9 @@ pre.prettyprint {\n\
       }
     };
     break;
+
+
+
   // run node js-env code
   case 'node':
     // export local

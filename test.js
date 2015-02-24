@@ -43,11 +43,6 @@
   // run browser js-env code
   case 'browser':
     window.local = local;
-    if (location.pathname === '/test/test.html') {
-      // run test
-      local.utility2.testRun(local);
-      return;
-    }
     local.evalAndCover = function () {
       try {
         window.__coverage__ = window.__coverage__ || {};
@@ -82,7 +77,7 @@
           '</style>\n' +
           '<h2>coverage</h2>\n' +
           window.istanbul_lite.coverageReportWriteSync({
-            coverage: window.__coverage__
+            coverage: { '/input.js': window.__coverage__['/input.js'] }
           });
       } catch (errorCaught) {
         document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML = '<pre>' +
