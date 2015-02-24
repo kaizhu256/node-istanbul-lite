@@ -249,8 +249,8 @@ shBuild() {
     export HEROKU_REPO=hrku01-istanbul-lite-$CI_BRANCH || return $?
     export TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" ||\
       return $?
-    export TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}"\
-      || return $?
+    export TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" ||\
+      return $?
     export npm_config_mode_slimerjs=1 || return $?
   fi
   # init env
