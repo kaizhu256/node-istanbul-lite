@@ -13513,10 +13513,6 @@ pre.prettyprint {\n\
             !new RegExp(process.env.npm_config_mode_cover_regexp_exclude).test(file) &&
             new RegExp(process.env.npm_config_mode_cover_regexp_include).test(file);
         }, local.instrumentSync);
-        // coverage-hack - cover istanbul-lite
-        if (process.env.npm_package_name === 'istanbul-lite' && !local.global.__coverage__) {
-          delete local.require.cache[__filename];
-        }
         // init process.argv
         process.argv.splice(1, 2);
         process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
@@ -13633,6 +13629,8 @@ pre.prettyprint {\n\
     local._module = module;
     local.process = process;
     local.require = require;
+    // coverage-hack - cover istanbul-lite
+    local['./package.json'] = JSON.parse(require('fs').readFileSync('./package.json', 'utf8'));
     break;
   }
   return local;
