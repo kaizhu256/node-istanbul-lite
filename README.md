@@ -270,6 +270,47 @@ shExampleSh
 
 
 
+# package.json
+```
+{
+  "_packageJson": true,
+  "author": "kai zhu <kaizhu256@gmail.com>",
+  "bin": { "istanbul-lite" : "index.js" },
+  "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
+  "devDependencies": {
+    "utility2": "2015.2.24-14",
+    "phantomjs-lite": "^2015.1.4-103"
+  },
+  "engines": { "node": "^0.10.32" },
+  "keywords": [
+    "browser",
+    "code",
+    "cover",
+    "coverage",
+    "istanbul",
+    "instrument",
+    "lightweight",
+    "utility2",
+    "web"
+  ],
+  "license": "MIT",
+  "name": "istanbul-lite",
+  "os": ["darwin", "linux"],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
+  },
+  "scripts": {
+    "build2": "node_modules/.bin/utility2 shRun shBuild",
+    "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
+    "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p .tmp && node -e \"require('fs').writeFileSync('.tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='.tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
+  },
+  "version": "2015.2.24-15"
+}
+```
+
+
+
 # todo
 - none
 
