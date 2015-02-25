@@ -48,32 +48,32 @@
       try {
         window.__coverage__ = window.__coverage__ || {};
         eval(window.istanbul_lite.instrumentSync(
-          local.istanbulLiteEvalInputTextarea.value,
+          local.istanbulLiteInputTextarea.value,
           '/input.js'
         ));
         innerHTML = '<style>\n' + local.istanbul_lite.baseCss
           .replace((/(.+\{)/g), function (match0) {
-            return '.istanbulLiteCoverageReportDivDiv ' +
-              match0.replace((/,/g), ', .istanbulLiteCoverageReportDivDiv ');
+            return '.istanbulLiteCoverageDivDiv ' +
+              match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
           })
           .replace('margin: 3em;', 'margin: 0;')
           .replace('margin-top: 10em;', 'margin: 20px;')
           .replace('position: fixed;', 'position: static;')
           .replace('width: 100%;', 'width: auto;') +
-          '.istanbulLiteCoverageReportDiv {\n' +
+          '.istanbulLiteCoverageDiv {\n' +
             'border: 1px solid;\n' +
             'border-radius: 5px;\n' +
             'padding: 0 10px 10px 10px;\n' +
           '}\n' +
-            '.istanbulLiteCoverageReportDivDiv {\n' +
+            '.istanbulLiteCoverageDivDiv {\n' +
             'border: 1px solid;\n' +
             'margin-top: 20px;\n' +
           '}\n' +
-            '.istanbulLiteCoverageReportDivDiv a {\n' +
+            '.istanbulLiteCoverageDivDiv a {\n' +
             'cursor: default;\n' +
             'pointer-events: none;\n' +
           '}\n' +
-            '.istanbulLiteCoverageReportDivDiv .footer {\n' +
+            '.istanbulLiteCoverageDivDiv .footer {\n' +
             'display: none;\n' +
           '}\n' +
           '</style>\n' +
@@ -84,14 +84,13 @@
       } catch (errorCaught) {
         innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
       }
-      document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML = innerHTML;
+      document.querySelector('.istanbulLiteCoverageDiv').innerHTML = innerHTML;
       // cleanup __coverage__
       delete window.__coverage__['/input.js'];
       return innerHTML;
     };
-    local.istanbulLiteEvalInputTextarea =
-      document.querySelector('.istanbulLiteEvalInputTextarea');
-    local.istanbulLiteEvalInputTextarea.addEventListener('keyup', local.evalAndCover);
+    local.istanbulLiteInputTextarea = document.querySelector('.istanbulLiteInputTextarea');
+    local.istanbulLiteInputTextarea.addEventListener('keyup', local.evalAndCover);
     local.evalAndCover();
     local._evalAndCover_default_test = function (onError) {
       /*
@@ -99,9 +98,9 @@
       */
       var data, value;
       // save value
-      value = local.istanbulLiteEvalInputTextarea.value;
+      value = local.istanbulLiteInputTextarea.value;
       // test default handling behavior
-      local.istanbulLiteEvalInputTextarea.value = 'console.log("hello world");';
+      local.istanbulLiteInputTextarea.value = 'console.log("hello world");';
       data = local.evalAndCover();
       // validate data
       local.utility2.assert(data.indexOf('<tr>' +
@@ -112,12 +111,12 @@
         '</td>' +
         '</tr>') >= 0, data);
       // test syntax-error handling behavior
-      local.istanbulLiteEvalInputTextarea.value = 'syntax-error!';
+      local.istanbulLiteInputTextarea.value = 'syntax-error!';
       data = local.evalAndCover();
       // validate data
       local.utility2.assert(data.indexOf('<pre>') === 0, data);
       // restore value
-      local.istanbulLiteEvalInputTextarea.value = value;
+      local.istanbulLiteInputTextarea.value = value;
       local.evalAndCover();
       onError();
     };
@@ -181,7 +180,6 @@
         '<html>\n' +
         '<head>\n' +
           '<meta charset="UTF-8">\n' +
-          '<title>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</title>\n' +
           '<link rel="stylesheet" href="/assets/utility2.css">\n' +
           '<style>\n' +
             '* {\n' +
@@ -203,31 +201,24 @@
               'display: none;\n' +
             '}\n' +
           '</style>\n' +
+          '<title>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</title>\n' +
         '</head>\n' +
         '<body>\n' +
-          '<!-- ajax-progress begin -->\n' +
           '<div class="ajaxProgressDiv" style="display: none;">\n' +
             '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
           '</div>\n' +
-          '<!-- ajax-progress end -->\n' +
           '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
           '<h3>{{envDict.npm_package_description}}</h3>\n' +
-          '<div class="mainAppDiv">\n' +
+          '<div>\n' +
             '<div>edit / paste script below to eval and cover</div>\n' +
-            '<div><textarea class="istanbulLiteEvalInputTextarea">if (true) {\n' +
+            '<div><textarea class="istanbulLiteInputTextarea">if (true) {\n' +
               'console.log("hello");\n' +
             '} else {\n' +
               'console.log("bye");\n' +
             '}</textarea></div>\n' +
           '</div>\n' +
-          '<!-- main-app end -->\n' +
-          '<!-- coverage begin -->\n' +
-          '<div class="istanbulLiteCoverageReportDiv"></div>\n' +
-          '<!-- coverage end -->\n' +
-          '<!-- test-report begin -->\n' +
+          '<div class="istanbulLiteCoverageDiv"></div>\n' +
           '<div class="testReportDiv"></div>\n' +
-          '<!-- test-report end -->\n' +
-          '<!-- script begin -->\n' +
           '<script src="/assets/utility2.js"></script>\n' +
           '<script>window.utility2.envDict = {\n' +
             'npm_package_description: "{{envDict.npm_package_description}}",\n' +
@@ -236,7 +227,6 @@
           '}</script>\n' +
           '<script src="/assets/istanbul-lite.js"></script>\n' +
           '<script src="/test/test.js"></script>\n' +
-          '<!-- script end -->\n' +
         '</body>\n' +
         '</html>\n', { envDict: local.utility2.envDict })
     }].forEach(function (options) {

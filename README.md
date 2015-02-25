@@ -21,7 +21,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-# quickstart for dynamic web-coverage
+# quickstart to run dynamic web-coverage
 #### follow the instruction in this script
 ```
 /*
@@ -86,30 +86,30 @@ lightweight browser version of istanbul coverage with zero npm dependencies
           '/input.js'
         ));
         document.querySelector(
-          '.istanbulLiteCoverageReportDiv'
+          '.istanbulLiteCoverageDiv'
         ).innerHTML = '<style>\n' + local.istanbul_lite.baseCss
           .replace((/(.+\{)/g), function (match0) {
-            return '.istanbulLiteCoverageReportDivDiv ' +
-              match0.replace((/,/g), ', .istanbulLiteCoverageReportDivDiv ');
+            return '.istanbulLiteCoverageDivDiv ' +
+              match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
           })
           .replace('margin: 3em;', 'margin: 0;')
           .replace('margin-top: 10em;', 'margin: 20px;')
           .replace('position: fixed;', 'position: static;')
           .replace('width: 100%;', 'width: auto;') +
-          '.istanbulLiteCoverageReportDiv {\n' +
+          '.istanbulLiteCoverageDiv {\n' +
             'border: 1px solid;\n' +
             'border-radius: 5px;\n' +
             'padding: 0 10px 10px 10px;\n' +
           '}\n' +
-            '.istanbulLiteCoverageReportDivDiv {\n' +
+            '.istanbulLiteCoverageDivDiv {\n' +
             'border: 1px solid;\n' +
             'margin-top: 20px;\n' +
           '}\n' +
-            '.istanbulLiteCoverageReportDivDiv a {\n' +
+            '.istanbulLiteCoverageDivDiv a {\n' +
             'cursor: default;\n' +
             'pointer-events: none;\n' +
           '}\n' +
-            '.istanbulLiteCoverageReportDivDiv .footer {\n' +
+            '.istanbulLiteCoverageDivDiv .footer {\n' +
             'display: none;\n' +
           '}\n' +
           '</style>\n' +
@@ -118,7 +118,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
             coverage: window.__coverage__
           });
       } catch (errorCaught) {
-        document.querySelector('.istanbulLiteCoverageReportDiv').innerHTML =
+        document.querySelector('.istanbulLiteCoverageDiv').innerHTML =
           '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
       }
     };
@@ -180,7 +180,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
                 'console.log("bye");\n' +
               '}</textarea>\n' +
             '</div>\n' +
-            '<div class="istanbulLiteCoverageReportDiv"></div>\n' +
+            '<div class="istanbulLiteCoverageDiv"></div>\n' +
             '<script src="/istanbul-lite.js"></script>\n' +
             '<script src="/example.js"></script>\n' +
           '</body>\n' +
@@ -225,7 +225,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-# quickstart for traditional offline-coverage
+# quickstart to run traditional offline-coverage
 #### follow the instruction in this script
 ```
 # example.sh
@@ -242,10 +242,12 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 shExampleSh() {
   # 1. npm install istanbul-lite
   npm install istanbul-lite || return $?
+
   # 2. create test-script foo.js
   local SCRIPT="if (true) { console.log('hello'); }" || return $?
   SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
   printf "$SCRIPT" > foo.js || return $?
+
   # 3. run offline-coverage for foo.js and create an offline-report
   node_modules/.bin/istanbul-lite cover foo.js || return $?
 }
@@ -269,7 +271,7 @@ shExampleSh
 
 
 # todo
-- add screen-capture of offline-coverage report
+- none
 
 
 
@@ -284,37 +286,51 @@ shExampleSh
 # this shell script will run the build process for this package
 shBuild() {
   # init env
-  export HEROKU_REPO=hrku01-istanbul-lite-$CI_BRANCH || return $?
-  export TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" ||\
-    return $?
-  export TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" ||\
-    return $?
   export npm_config_mode_slimerjs=1 || return $?
   . node_modules/.bin/utility2 && shInit || return $?
+
   # run npm test on published package
   shRun shNpmTestPublished || return $?
+
   # test example js script
   MODE_BUILD=testExampleJs\
-  shRunScreenCapture shTestScriptJs example.js || return $?
+  shRunScreenCapture shReadmeTestJs example.js || return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
   cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
+
   # test example shell script
   MODE_BUILD=testExampleSh\
-  shRunScreenCapture shTestScriptSh example.sh || return $?
+  shRunScreenCapture shReadmeTestSh example.sh || return $?
   # screen-capture example.sh coverage
   MODE_BUILD=testExampleSh shRun shPhantomScreenCapture\
     /tmp/app/html-report/app/foo.js.html || :
+
   # run npm test
   MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
-  # deploy and test on heroku
-  shRun shTestHeroku || return $?
+
+  # deploy app to heroku
+  shRun shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
+
+  # test deployed app to heroku
+  if [ "$CI_BRANCH" = alpha ] ||
+    [ "$CI_BRANCH" = beta ] ||
+    [ "$CI_BRANCH" = master ]
+  then
+    local TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" ||\
+      return $?
+    TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" ||\
+      return $?
+    MODE_BUILD=herokuTest shRun shPhantomTest $TEST_URL || return $?
+  fi
+
   # if number of commits > 1024, then squash older commits
   shRun shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
 }
-# run build
 shBuild
+
 # save exit-code
 EXIT_CODE=$?
+
 shBuildCleanup() {
   # this function will cleanup build-artifacts in local build dir
   # init env
@@ -338,13 +354,16 @@ shBuildCleanup() {
   fi
 }
 shBuildCleanup || exit $?
+
 shBuildGithubUploadCleanup() {
   # this function will cleanup build-artifacts in local gh-pages repo
   return
 }
+
 # upload build-artifacts to github,
 # and if number of commits > 16, then squash older commits
 COMMIT_LIMIT=16 shRun shBuildGithubUpload || exit $?
+
 # exit with $EXIT_CODE
 exit $EXIT_CODE
 ```

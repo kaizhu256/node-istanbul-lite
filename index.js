@@ -13437,7 +13437,7 @@ pre.prettyprint {\n\
         '/index.html'
       ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
         return ii === 0 || key.slice(-8) === '.js.html' ?
-            '<div class="istanbulLiteCoverageReportDivDiv">\n' +
+            '<div class="istanbulLiteCoverageDivDiv">\n' +
               local.writeFileDict[key] + '</div>\n'
           : '';
       }).join('\n');
@@ -13460,8 +13460,8 @@ pre.prettyprint {\n\
     local.writeFileSync = function (file, data) {
       /*
         this function will:
-        1. create a dir for the file if it does not exist
-        2. write the data to the file
+        1. try to save file
+        2. if save failed, then recursively create parent dir, and then re-save file
       */
       var mkdirpSync;
       mkdirpSync = function (dir) {
@@ -13478,8 +13478,10 @@ pre.prettyprint {\n\
           }
         }
       };
+      // 1. try to save file
       try {
         local.fs.writeFileSync(file, data);
+      // 2. if save failed, then recursively create parent dir, and then re-save file
       } catch (errorCaught) {
         mkdirpSync(local.path.dirname(file));
         local.fs.writeFileSync(file, data);

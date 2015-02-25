@@ -15,7 +15,8 @@
     "istanbul",
     "instrument",
     "lightweight",
-    "utility2"
+    "utility2",
+    "web"
   ],
   "license": "MIT",
   "name": "istanbul-lite",
