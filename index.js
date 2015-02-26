@@ -11404,7 +11404,8 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
             '</div>\n' +
             '<div class="body">\n';
         }
-        return local.modeJs === 'node' ? local._fs.readFileSync(file, options)
+        return local.modeJs === 'node'
+          ? local._fs.readFileSync(file, options)
           : local.codeDict[file];
       },
       readdirSync: function () {
@@ -13384,8 +13385,9 @@ pre.prettyprint {\n\
       var collector, tmp;
       options = options || {};
       options.coverage = options.coverage || local.global.__coverage__;
-      options.dir = options.dir ||
-        (local.modeJs === 'node' ? process.env.npm_config_dir_coverage : '/');
+      options.dir = options.dir || (local.modeJs === 'node'
+        ? process.env.npm_config_dir_coverage
+        : '/');
       // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
       options.sourceStore = options.sourceStore || {
         get: function (key) {
@@ -13453,7 +13455,7 @@ pre.prettyprint {\n\
       // write base.css
       local.writeFileSync(options.dir + '/base.css', local.baseCss);
       // 3. return coverage in html-format as a single document
-      tmp = '<style>\n' + local.baseCss
+      tmp = local._istanbulLiteCoverageDiv.innerHTML = '<style>\n' + local.baseCss
         .replace((/(.+\{)/g), function (match0) {
           return '.istanbulLiteCoverageDivDiv ' +
             match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
@@ -13487,9 +13489,6 @@ pre.prettyprint {\n\
                 local.writeFileDict[key] + '</div>\n'
             : '';
         }).join('\n');
-      if (local.modeJs === 'browser') {
-        (document.querySelector('.istanbulLiteCoverageDiv') || {}).innerHTML = tmp;
-      }
       return tmp;
     };
     local.instrumentSync = function (code, file) {
