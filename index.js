@@ -13406,6 +13406,17 @@ pre.prettyprint {\n\
           return;
         }
       };
+      // filter undefined file from coverage
+      tmp = options.coverage || {};
+      options.coverage = {};
+      Object.keys(tmp).forEach(function (key) {
+        try {
+          if (options.sourceStore.get(key)) {
+            options.coverage[key] = tmp[key];
+          }
+        } catch (ignore) {
+        }
+      });
       // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
       collector = {
         // https://github.com/gotwarlost/istanbul/blob/master/lib/collector.js
@@ -13429,8 +13440,6 @@ pre.prettyprint {\n\
         };
       }
       if (local.modeJs === 'node') {
-        // cleanup __coverage__
-        delete (local.global.__coverage__ || {})['/istanbulLiteInputTextarea.js'];
         console.log('creating coverage file://' +
           local.path.resolve(process.cwd(), options.dir, 'index.html'));
       }
