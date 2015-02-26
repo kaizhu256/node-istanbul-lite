@@ -13613,9 +13613,19 @@ pre.prettyprint {\n\
       return;
     };
     // init global
-    local.global = local.modeJs === 'browser' ? window : global;
+    local.global = local.modeJs === 'browser'
+      ? window
+      : global;
     // mock package.json for escodegen.js
     local['./package.json'] = {};
+    // init _istanbulLiteInputTextareaDiv
+    local._istanbulLiteInputTextareaDiv = local.modeJs === 'browser'
+      ?  document.querySelector('.istanbulLiteInputTextareaDiv') || {}
+      : {};
+    // init _istanbulLiteCoverageDiv
+    local._istanbulLiteCoverageDiv = local.modeJs === 'browser'
+      ?  document.querySelector('.istanbulLiteCoverageDiv') || {}
+      : {};
   }());
   switch (local.modeJs) {
 
@@ -13666,6 +13676,24 @@ pre.prettyprint {\n\
           }
         });
       }
+    };
+    local.coverAndEval = function () {
+      /*
+        this function will cover and eval the text in _istanbulLiteInputTextareaDiv
+      */
+      /*jslint evil: true*/
+      var innerHTML;
+      try {
+        eval(local.global.istanbul_lite.instrumentSync(
+          local._istanbulLiteInputTextareaDiv.value || '',
+          '/istanbulLiteInputTextarea.js'
+        ));
+        innerHTML = local.coverageReportCreate();
+      } catch (errorCaught) {
+        innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
+      }
+      local._istanbulLiteCoverageDiv.innerHTML = innerHTML;
+      return innerHTML;
     };
     break;
 

@@ -1,6 +1,5 @@
 /*jslint
   bitwise: true, browser: true,
-  evil: true,
   indent: 2,
   maxerr: 8,
   node: true, nomen: true,
@@ -43,38 +42,17 @@
   // run browser js-env code
   case 'browser':
     window.local = local;
-    local.evalAndCover = function () {
-      var innerHTML;
-      try {
-        window.__coverage__ = window.__coverage__ || {};
-        eval(window.istanbul_lite.instrumentSync(
-          local.istanbulLiteInputTextarea.value,
-          '/input.js'
-        ));
-        innerHTML = window.istanbul_lite.coverageReportCreate({
-          coverage: { '/input.js': window.__coverage__['/input.js'] }
-        });
-      } catch (errorCaught) {
-        innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
-      }
-      document.querySelector('.istanbulLiteCoverageDiv').innerHTML = innerHTML;
-      // cleanup __coverage__
-      delete window.__coverage__['/input.js'];
-      return innerHTML;
-    };
-    local.istanbulLiteInputTextarea = document.querySelector('.istanbulLiteInputTextarea');
-    local.istanbulLiteInputTextarea.addEventListener('keyup', local.evalAndCover);
-    local.evalAndCover();
-    local._evalAndCover_default_test = function (onError) {
+    local.istanbulLiteInputTextareaDiv = document.querySelector('.istanbulLiteInputTextareaDiv');
+    local._coverAndEval_default_test = function (onError) {
       /*
-        this function test evalAndCover's default handling behavior
+        this function test coverAndEval's default handling behavior
       */
       var data, value;
       // save value
-      value = local.istanbulLiteInputTextarea.value;
+      value = local.istanbulLiteInputTextareaDiv.value;
       // test default handling behavior
-      local.istanbulLiteInputTextarea.value = 'console.log("hello world");';
-      data = local.evalAndCover();
+      local.istanbulLiteInputTextareaDiv.value = 'console.log("hello world");';
+      data = local.istanbul_lite.coverAndEval();
       // validate data
       local.utility2.assert(data.indexOf('<tr>' +
         '<td class="line-count">1</td>' +
@@ -84,13 +62,13 @@
         '</td>' +
         '</tr>') >= 0, data);
       // test syntax-error handling behavior
-      local.istanbulLiteInputTextarea.value = 'syntax-error!';
-      data = local.evalAndCover();
+      local.istanbulLiteInputTextareaDiv.value = 'syntax-error!';
+      data = local.istanbul_lite.coverAndEval();
       // validate data
       local.utility2.assert(data.indexOf('<pre>') === 0, data);
       // restore value
-      local.istanbulLiteInputTextarea.value = value;
-      local.evalAndCover();
+      local.istanbulLiteInputTextareaDiv.value = value;
+      local.istanbul_lite.coverAndEval();
       onError();
     };
     local.utility2.testRun(local);
@@ -154,7 +132,8 @@
       file: __filename
     }, {
       cache: '/',
-      data: local.utility2.textFormat('<!DOCTYPE html>\n' +
+      data: local.utility2.textFormat(String() +
+        '<!DOCTYPE html>\n' +
         '<html>\n' +
         '<head>\n' +
           '<meta charset="UTF-8">\n' +
@@ -164,19 +143,19 @@
               'box-sizing: border-box;\n' +
             '}\n' +
             'body {\n' +
+              'background-color: #fff;\n' +
               'font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n' +
-              'margin: 10px;\n' +
             '}\n' +
             'body > div {\n' +
               'margin-top: 20px;\n' +
             '}\n' +
-            'textarea {\n' +
-              'font-family: monospace;\n' +
-              'height: 8em;\n' +
-              'width: 100%;\n' +
-            '}\n' +
             '.testReportDiv {\n' +
               'display: none;\n' +
+            '}\n' +
+            'textarea {\n' +
+              'font-family: monospace;\n' +
+              'height: 16em;\n' +
+              'width: 100%;\n' +
             '}\n' +
           '</style>\n' +
           '<title>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</title>\n' +
@@ -188,8 +167,8 @@
           '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
           '<h3>{{envDict.npm_package_description}}</h3>\n' +
           '<div>\n' +
-            '<div>edit / paste script below to eval and cover</div>\n' +
-            '<div><textarea class="istanbulLiteInputTextarea">if (true) {\n' +
+            '<div>edit or paste script below to test and cover</div>\n' +
+            '<div><textarea class="istanbulLiteInputTextareaDiv">if (true) {\n' +
               'console.log("hello");\n' +
             '} else {\n' +
               'console.log("bye");\n' +
@@ -197,16 +176,21 @@
           '</div>\n' +
           '<div class="istanbulLiteCoverageDiv"></div>\n' +
           '<div class="testReportDiv"></div>\n' +
+          '<script src="/assets/istanbul-lite.js"></script>\n' +
           '<script src="/assets/utility2.js"></script>\n' +
           '<script>window.utility2.envDict = {\n' +
             'npm_package_description: "{{envDict.npm_package_description}}",\n' +
             'npm_package_name: "{{envDict.npm_package_name}}",\n' +
             'npm_package_version: "{{envDict.npm_package_version}}"\n' +
-          '}</script>\n' +
-          '<script src="/assets/istanbul-lite.js"></script>\n' +
+          '};\n' +
+          'document.querySelector(\n' +
+            '".istanbulLiteInputTextareaDiv"\n' +
+          ').addEventListener("keyup", window.istanbul_lite.coverAndEval);\n' +
+          'window.istanbul_lite.coverAndEval();</script>\n' +
           '<script src="/test/test.js"></script>\n' +
         '</body>\n' +
-        '</html>\n', { envDict: local.utility2.envDict })
+        '</html>\n' +
+        String(), { envDict: local.utility2.envDict })
     }].forEach(function (options) {
       console.log('cache and parse ' + options.file);
       // cache and parse the file
