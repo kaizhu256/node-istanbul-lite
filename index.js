@@ -13374,26 +13374,16 @@ pre.prettyprint {\n\
     local.module = require('module');
     local.path = require('path');
     local.codeDict = local.codeDict || {};
-    local.coverageReportWriteSync = function (options) {
+    local.coverageReportCreate = function (options) {
       /*
         this function will;
         1. print coverage in text-format to stdout
         2. write coverage in html-format to filesystem
-        3. return coverage in html-format as a single document
+        3. return coverage in html-format as single document
       */
       var collector, tmp;
-      // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
-      collector = {
-        // https://github.com/gotwarlost/istanbul/blob/master/lib/collector.js
-        fileCoverageFor: function (file) {
-          var result = options.coverage[file];
-          local['../object-utils'].addDerivedInfoForFile(result);
-          return result;
-        },
-        files: function () {
-          return Object.keys(options.coverage);
-        }
-      };
+      options = options || {};
+      options.coverage = options.coverage || local.global.__coverage__;
       options.dir = options.dir ||
         (local.modeJs === 'node' ? process.env.npm_config_dir_coverage : '/');
       // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
@@ -13416,6 +13406,18 @@ pre.prettyprint {\n\
           return;
         }
       };
+      // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
+      collector = {
+        // https://github.com/gotwarlost/istanbul/blob/master/lib/collector.js
+        fileCoverageFor: function (file) {
+          var result = options.coverage[file];
+          local['../object-utils'].addDerivedInfoForFile(result);
+          return result;
+        },
+        files: function () {
+          return Object.keys(options.coverage);
+        }
+      };
       // 1. print coverage in text-format to stdout
       new local.TextReport(options).writeReport(collector);
       // 2. write coverage in html-format to filesystem
@@ -13425,7 +13427,14 @@ pre.prettyprint {\n\
         tmp.opts.linkMapper.asset = function () {
           return '';
         };
-      } else {
+      }
+      if (local.modeJs === 'node') {
+        console.log('creating coverage file://' +
+          local.path.resolve(process.cwd(), options.dir, 'coverage.json'));
+        local.writeFileSync(
+          local.path.resolve(process.cwd(), options.dir, 'coverage.json'),
+          JSON.stringify(local.global.__coverage__)
+        );
         console.log('creating coverage file://' +
           local.path.resolve(process.cwd(), options.dir, 'index.html'));
       }
@@ -13433,14 +13442,40 @@ pre.prettyprint {\n\
       // write base.css
       local.writeFileSync(options.dir + '/base.css', local.baseCss);
       // 3. return coverage in html-format as a single document
-      return [
-        '/index.html'
-      ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
-        return ii === 0 || key.slice(-8) === '.js.html' ?
-            '<div class="istanbulLiteCoverageDivDiv">\n' +
-              local.writeFileDict[key] + '</div>\n'
-          : '';
-      }).join('\n');
+      return '<style>\n' + local.baseCss
+        .replace((/(.+\{)/g), function (match0) {
+          return '.istanbulLiteCoverageDivDiv ' +
+            match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
+        })
+        .replace('margin: 3em;', 'margin: 0;')
+        .replace('margin-top: 10em;', 'margin: 20px;')
+        .replace('position: fixed;', 'position: static;')
+        .replace('width: 100%;', 'width: auto;') +
+        '.istanbulLiteCoverageDiv {\n' +
+          'border: 1px solid;\n' +
+          'border-radius: 5px;\n' +
+          'padding: 0 10px 10px 10px;\n' +
+        '}\n' +
+          '.istanbulLiteCoverageDivDiv {\n' +
+          'border: 1px solid;\n' +
+          'margin-top: 20px;\n' +
+        '}\n' +
+          '.istanbulLiteCoverageDivDiv a {\n' +
+          'cursor: default;\n' +
+          'pointer-events: none;\n' +
+        '}\n' +
+          '.istanbulLiteCoverageDivDiv .footer {\n' +
+          'display: none;\n' +
+        '}\n' +
+        '</style>\n' +
+        '<h2>coverage</h2>\n' + [
+          '/index.html'
+        ].concat(Object.keys(local.writeFileDict).sort()).map(function (key, ii) {
+          return ii === 0 || key.slice(-8) === '.js.html' ?
+              '<div class="istanbulLiteCoverageDivDiv">\n' +
+                local.writeFileDict[key] + '</div>\n'
+            : '';
+        }).join('\n');
     };
     local.instrumentSync = function (code, file) {
       /*
@@ -13520,18 +13555,12 @@ pre.prettyprint {\n\
         console.log('\ncovering $ ' + process.argv.join(' '));
         // create coverage on exit
         process.on('exit', function () {
-          local.writeFileSync(
-            process.env.npm_config_dir_coverage + '/coverage.json',
-            JSON.stringify(local.global.__coverage__)
-          );
-          local.coverageReportWriteSync({
-            coverage: local.global.__coverage__
-          });
+          local.coverageReportCreate();
         });
         local.module.runMain();
         break;
       case 'report':
-        local.coverageReportWriteSync({
+        local.coverageReportCreate({
           coverage: JSON.parse(local.fs.readFileSync(
             process.env.npm_config_dir_coverage + '/coverage.json',
             'utf8'

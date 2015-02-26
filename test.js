@@ -51,36 +51,9 @@
           local.istanbulLiteInputTextarea.value,
           '/input.js'
         ));
-        innerHTML = '<style>\n' + local.istanbul_lite.baseCss
-          .replace((/(.+\{)/g), function (match0) {
-            return '.istanbulLiteCoverageDivDiv ' +
-              match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
-          })
-          .replace('margin: 3em;', 'margin: 0;')
-          .replace('margin-top: 10em;', 'margin: 20px;')
-          .replace('position: fixed;', 'position: static;')
-          .replace('width: 100%;', 'width: auto;') +
-          '.istanbulLiteCoverageDiv {\n' +
-            'border: 1px solid;\n' +
-            'border-radius: 5px;\n' +
-            'padding: 0 10px 10px 10px;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageDivDiv {\n' +
-            'border: 1px solid;\n' +
-            'margin-top: 20px;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageDivDiv a {\n' +
-            'cursor: default;\n' +
-            'pointer-events: none;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageDivDiv .footer {\n' +
-            'display: none;\n' +
-          '}\n' +
-          '</style>\n' +
-          '<h2>coverage</h2>\n' +
-          window.istanbul_lite.coverageReportWriteSync({
-            coverage: { '/input.js': window.__coverage__['/input.js'] }
-          });
+        innerHTML = window.istanbul_lite.coverageReportCreate({
+          coverage: { '/input.js': window.__coverage__['/input.js'] }
+        });
       } catch (errorCaught) {
         innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
       }
@@ -130,29 +103,34 @@
     // require modules
     local.fs = require('fs');
     local.path = require('path');
-    local._coverageReportWriteSync_default_test = function (onError) {
+    local._coverageReportCreate_default_test = function (onError) {
       /*
-        this function test coverageReportWriteSync's default handling behavior
+        this function test coverageReportCreate's default handling behavior
       */
       var dir;
-      dir = process.env.npm_config_dir_tmp +
-        '/coverage.tmp/' + Math.random() + '/' + Math.random();
-      local.istanbul_lite.coverageReportWriteSync({
-        coverage: {},
-        // test mkdirpSync handling behavior
-        dir: dir
-      });
-      try {
-        local.istanbul_lite.coverageReportWriteSync({
+      local.utility2.testMock([
+        // suppress console.log
+        [console, { log: local.utility2.nop }]
+      ], onError, function (onError) {
+        dir = process.env.npm_config_dir_tmp +
+          '/coverage.tmp/' + Math.random() + '/' + Math.random();
+        local.istanbul_lite.coverageReportCreate({
           coverage: {},
-          // test mkdirpSync error handling behavior
-          dir: dir + '/index.html'
+          // test mkdirpSync handling behavior
+          dir: dir
         });
-      } catch (errorCaught) {
-        // validate error occurred
-        local.utility2.assert(errorCaught instanceof Error, errorCaught);
-        onError();
-      }
+        try {
+          local.istanbul_lite.coverageReportCreate({
+            coverage: {},
+            // test mkdirpSync error handling behavior
+            dir: dir + '/index.html'
+          });
+        } catch (errorCaught) {
+          // validate error occurred
+          local.utility2.assert(errorCaught instanceof Error, errorCaught);
+          onError();
+        }
+      });
     };
     local._testPage_default_test = function (onError) {
       /*

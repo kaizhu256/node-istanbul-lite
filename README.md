@@ -87,36 +87,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
         ));
         document.querySelector(
           '.istanbulLiteCoverageDiv'
-        ).innerHTML = '<style>\n' + local.istanbul_lite.baseCss
-          .replace((/(.+\{)/g), function (match0) {
-            return '.istanbulLiteCoverageDivDiv ' +
-              match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
-          })
-          .replace('margin: 3em;', 'margin: 0;')
-          .replace('margin-top: 10em;', 'margin: 20px;')
-          .replace('position: fixed;', 'position: static;')
-          .replace('width: 100%;', 'width: auto;') +
-          '.istanbulLiteCoverageDiv {\n' +
-            'border: 1px solid;\n' +
-            'border-radius: 5px;\n' +
-            'padding: 0 10px 10px 10px;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageDivDiv {\n' +
-            'border: 1px solid;\n' +
-            'margin-top: 20px;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageDivDiv a {\n' +
-            'cursor: default;\n' +
-            'pointer-events: none;\n' +
-          '}\n' +
-            '.istanbulLiteCoverageDivDiv .footer {\n' +
-            'display: none;\n' +
-          '}\n' +
-          '</style>\n' +
-          '<h2>coverage</h2>\n' +
-          window.istanbul_lite.coverageReportWriteSync({
-            coverage: window.__coverage__
-          });
+        ).innerHTML = window.istanbul_lite.coverageReportCreate();
       } catch (errorCaught) {
         document.querySelector('.istanbulLiteCoverageDiv').innerHTML =
           '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
@@ -281,7 +252,7 @@ shExampleSh
     "utility2": "2015.2.25-10",
     "phantomjs-lite": "^2015.1.4-103"
   },
-  "engines": { "node": "^0.10.32" },
+  "engines": { "node": ">=0.10 <=0.12" },
   "keywords": [
     "browser",
     "code",

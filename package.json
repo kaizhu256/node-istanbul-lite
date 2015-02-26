@@ -7,7 +7,7 @@
     "utility2": "2015.2.25-10",
     "phantomjs-lite": "^2015.1.4-103"
   },
-  "engines": { "node": "^0.10.32" },
+  "engines": { "node": ">=0.10 <=0.12" },
   "keywords": [
     "browser",
     "code",
