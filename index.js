@@ -13429,20 +13429,22 @@ pre.prettyprint {\n\
         };
       }
       if (local.modeJs === 'node') {
-        console.log('creating coverage file://' +
-          local.path.resolve(process.cwd(), options.dir, 'coverage.json'));
-        local.writeFileSync(
-          local.path.resolve(process.cwd(), options.dir, 'coverage.json'),
-          JSON.stringify(local.global.__coverage__)
-        );
+        // cleanup __coverage__
+        delete (local.global.__coverage__ || {})['/istanbulLiteInputTextarea.js'];
         console.log('creating coverage file://' +
           local.path.resolve(process.cwd(), options.dir, 'index.html'));
       }
+      // write coverage.json
+      local.writeFileSync(
+        local.path.resolve(process.cwd(), options.dir, 'coverage.json'),
+        JSON.stringify(local.global.__coverage__)
+      );
+      // write html-report
       tmp.writeReport(collector);
       // write base.css
       local.writeFileSync(options.dir + '/base.css', local.baseCss);
       // 3. return coverage in html-format as a single document
-      return '<style>\n' + local.baseCss
+      tmp = '<style>\n' + local.baseCss
         .replace((/(.+\{)/g), function (match0) {
           return '.istanbulLiteCoverageDivDiv ' +
             match0.replace((/,/g), ', .istanbulLiteCoverageDivDiv ');
@@ -13476,6 +13478,10 @@ pre.prettyprint {\n\
                 local.writeFileDict[key] + '</div>\n'
             : '';
         }).join('\n');
+      if (local.modeJs === 'browser') {
+        (document.querySelector('.istanbulLiteCoverageDiv') || {}).innerHTML = tmp;
+      }
+      return tmp;
     };
     local.instrumentSync = function (code, file) {
       /*
@@ -13609,7 +13615,7 @@ pre.prettyprint {\n\
   // run browser js-env code
   case 'browser':
     // export local
-    window.istanbul_lite = local;
+    local.global.istanbul_lite = local;
     // mock __dirname in browser
     local.__dirname = '/istanbul-lite';
     // mock module in browser
