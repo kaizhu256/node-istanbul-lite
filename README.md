@@ -260,13 +260,13 @@ shExampleSh
 
 
 
-# package-listing
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.png)](https://github.com/kaizhu256/node-istanbul-lite)
-
-
-
 # npm-dependencies
 - none
+
+
+
+# package-listing
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.png)](https://github.com/kaizhu256/node-istanbul-lite)
 
 
 
@@ -278,7 +278,7 @@ shExampleSh
   "bin": { "istanbul-lite" : "index.js" },
   "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
   "devDependencies": {
-    "utility2": "2015.2.24-14",
+    "utility2": "2015.2.25-10",
     "phantomjs-lite": "^2015.1.4-103"
   },
   "engines": { "node": "^0.10.32" },
