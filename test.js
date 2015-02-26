@@ -154,7 +154,7 @@
             '}\n' +
             'textarea {\n' +
               'font-family: monospace;\n' +
-              'height: 16em;\n' +
+              'height: 8em;\n' +
               'width: 100%;\n' +
             '}\n' +
           '</style>\n' +
@@ -167,7 +167,7 @@
           '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
           '<h3>{{envDict.npm_package_description}}</h3>\n' +
           '<div>\n' +
-            '<div>edit or paste script below to test and cover</div>\n' +
+            '<div>edit or paste script below to cover and eval</div>\n' +
             '<div><textarea class="istanbulLiteInputTextareaDiv">if (true) {\n' +
               'console.log("hello");\n' +
             '} else {\n' +

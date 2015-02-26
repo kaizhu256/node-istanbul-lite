@@ -13683,6 +13683,8 @@ pre.prettyprint {\n\
       */
       /*jslint evil: true*/
       var innerHTML;
+      // cleanup __coverage__
+      delete (local.global.__coverage__ || {})['/istanbulLiteInputTextarea.js'];
       try {
         eval(local.global.istanbul_lite.instrumentSync(
           local._istanbulLiteInputTextareaDiv.value || '',
