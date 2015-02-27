@@ -13409,12 +13409,13 @@ pre.prettyprint {\n\
         }
       };
       // filter undefined file from coverage
-      tmp = options.coverage || {};
+      tmp = options.coverage;
       options.coverage = {};
-      Object.keys(tmp).forEach(function (key) {
+      Object.keys(tmp || {}).forEach(function (key) {
         try {
           if (options.sourceStore.get(key)) {
-            options.coverage[key] = tmp[key];
+            // json-copy to prevent side-effects on original coverage
+            options.coverage[key] = JSON.parse(JSON.stringify(tmp[key]));
           }
         } catch (ignore) {
         }

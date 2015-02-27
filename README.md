@@ -17,7 +17,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 # live test-server
-[![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testHeroku.slimerjs.png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
+[![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.herokuTest.slimerjs.png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
 
 
 
@@ -283,6 +283,7 @@ shExampleSh
 
 
 # todo
+- unify var name "exports" and "local.istanbul" to "app.istanbul"
 - rate limit keyup-event handling
 - none
 
