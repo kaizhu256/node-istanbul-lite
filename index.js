@@ -3,6 +3,7 @@
   browser: true,
   indent: 2,
   maxerr: 8,
+  maxlen: 96,
   node: true, nomen: true,
   regexp: true,
   stupid: true
@@ -11347,6 +11348,8 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
   (function () {
     var Report, __dirname, exports, module;
     __dirname = app.istanbul_lite.__dirname;
+    // jslint hack
+    app.istanbul_lite.nop(__dirname);
     exports = {};
     // mock module in browser
     module = { exports: {} };
@@ -11365,6 +11368,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
       mkdirSync: app.istanbul_lite._fs.mkdirSync,
       readFileSync: function (file, options) {
         // https://github.com/gotwarlost/istanbul/blob/master/lib/report/templates/foot.txt
+/* jslint-ignore-begin */
         if (file === __dirname + '/templates/foot.txt') {
           return '</div>\n' +
             '<div class="footer">\n' +
@@ -11404,6 +11408,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
             '</div>\n' +
             '<div class="body">\n';
         }
+/* jslint-ignore-end */
         return app.istanbul_lite.modeJs === 'node'
           ? app.istanbul_lite._fs.readFileSync(file, options)
           : app.istanbul_lite.codeDict[file];
@@ -13545,7 +13550,8 @@ pre.prettyprint {\n\
   // run node js-env code
   case 'node':
     // init asset istanbul-lite.js
-    app.istanbul_lite.istanbulLiteJs = '//' + app.istanbul_lite.fs.readFileSync(__filename, 'utf8');
+    app.istanbul_lite.istanbulLiteJs =
+      '//' + app.istanbul_lite.fs.readFileSync(__filename, 'utf8');
     // run coverage
     if (app.istanbul_lite._module === app.istanbul_lite.require.main) {
       process.env.npm_config_dir_coverage =

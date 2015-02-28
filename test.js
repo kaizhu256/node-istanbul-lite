@@ -2,6 +2,7 @@
   bitwise: true, browser: true,
   indent: 2,
   maxerr: 8,
+  maxlen: 96,
   node: true, nomen: true,
   regexp: true,
   stupid: true
