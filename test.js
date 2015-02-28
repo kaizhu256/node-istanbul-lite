@@ -11,15 +11,15 @@
     this function will test this module
   */
   'use strict';
-  var local;
+  var app;
 
 
 
   // run shared js-env code
   (function () {
-    // init local
-    local = {};
-    local.modeJs = (function () {
+    // init app
+    app = {};
+    app.modeJs = (function () {
       try {
         return module.exports && typeof process.versions.node === 'string' &&
           typeof require('http').createServer === 'function' && 'node';
@@ -28,33 +28,34 @@
           typeof document.querySelector('body') === 'object' && 'browser';
       }
     }());
-    local.istanbul_lite = local.modeJs === 'browser'
+    app.istanbul_lite = app.modeJs === 'browser'
       ? window.istanbul_lite
       : require('./index.js');
-    local.utility2 = local.modeJs === 'browser'
+    app.utility2 = app.modeJs === 'browser'
       ? window.utility2
       : require('utility2');
   }());
-  switch (local.modeJs) {
+  switch (app.modeJs) {
 
 
 
   // run browser js-env code
   case 'browser':
-    window.local = local;
-    local.istanbulLiteInputTextareaDiv = document.querySelector('.istanbulLiteInputTextareaDiv');
-    local._coverAndEval_default_test = function (onError) {
+    // export app
+    window.app = app;
+    app.istanbulLiteInputTextareaDiv = document.querySelector('.istanbulLiteInputTextareaDiv');
+    app._coverAndEval_default_test = function (onError) {
       /*
         this function test coverAndEval's default handling behavior
       */
       var data, value;
       // save value
-      value = local.istanbulLiteInputTextareaDiv.value;
+      value = app.istanbulLiteInputTextareaDiv.value;
       // test default handling behavior
-      local.istanbulLiteInputTextareaDiv.value = 'console.log("hello world");';
-      data = local.istanbul_lite.coverAndEval();
+      app.istanbulLiteInputTextareaDiv.value = 'console.log("hello world");';
+      data = app.istanbul_lite.coverAndEval();
       // validate data
-      local.utility2.assert(data.indexOf('<tr>' +
+      app.utility2.assert(data.indexOf('<tr>' +
         '<td class="line-count">1</td>' +
         '<td class="line-coverage"><span class="cline-any cline-yes">1</span></td>' +
         '<td class="text"><pre class="prettyprint lang-js">' +
@@ -62,16 +63,16 @@
         '</td>' +
         '</tr>') >= 0, data);
       // test syntax-error handling behavior
-      local.istanbulLiteInputTextareaDiv.value = 'syntax-error!';
-      data = local.istanbul_lite.coverAndEval();
+      app.istanbulLiteInputTextareaDiv.value = 'syntax-error!';
+      data = app.istanbul_lite.coverAndEval();
       // validate data
-      local.utility2.assert(data.indexOf('<pre>') === 0, data);
+      app.utility2.assert(data.indexOf('<pre>') === 0, data);
       // restore value
-      local.istanbulLiteInputTextareaDiv.value = value;
-      local.istanbul_lite.coverAndEval();
+      app.istanbulLiteInputTextareaDiv.value = value;
+      app.istanbul_lite.coverAndEval();
       onError();
     };
-    local.utility2.testRun(local);
+    app.utility2.testRun(app);
     break;
 
 
@@ -79,46 +80,46 @@
   // run node js-env code
   case 'node':
     // require modules
-    local.fs = require('fs');
-    local.path = require('path');
-    local._coverageReportCreate_default_test = function (onError) {
+    app.fs = require('fs');
+    app.path = require('path');
+    app._coverageReportCreate_default_test = function (onError) {
       /*
         this function test coverageReportCreate's default handling behavior
       */
       var dir;
-      local.utility2.testMock([
+      app.utility2.testMock([
         // suppress console.log
-        [console, { log: local.utility2.nop }]
+        [console, { log: app.utility2.nop }]
       ], onError, function (onError) {
         dir = process.env.npm_config_dir_tmp +
           '/coverage.tmp/' + Math.random() + '/' + Math.random();
-        local.istanbul_lite.coverageReportCreate({
+        app.istanbul_lite.coverageReportCreate({
           coverage: {},
           // test mkdirpSync handling behavior
           dir: dir
         });
         try {
-          local.istanbul_lite.coverageReportCreate({
+          app.istanbul_lite.coverageReportCreate({
             coverage: {},
             // test mkdirpSync error handling behavior
             dir: dir + '/index.html'
           });
         } catch (errorCaught) {
           // validate error occurred
-          local.utility2.assert(errorCaught instanceof Error, errorCaught);
+          app.utility2.assert(errorCaught instanceof Error, errorCaught);
           onError();
         }
       });
     };
-    local._testPage_default_test = function (onError) {
+    app._testPage_default_test = function (onError) {
       /*
         this function will test the test-page's default handling behavior
       */
-      local.utility2.phantomTest({
-        url: 'http://localhost:' + local.utility2.envDict.npm_config_server_port +
+      app.utility2.phantomTest({
+        url: 'http://localhost:' + app.utility2.envDict.npm_config_server_port +
           '?modeTest=phantom&' +
           '_testSecret={{_testSecret}}&' +
-          'timeoutDefault=' + local.utility2.timeoutDefault
+          'timeoutDefault=' + app.utility2.timeoutDefault
       }, onError);
     };
     // init server-assets
@@ -132,7 +133,7 @@
       file: __filename
     }, {
       cache: '/',
-      data: local.utility2.textFormat(String() +
+      data: app.utility2.textFormat(String() +
         '<!DOCTYPE html>\n' +
         '<html>\n' +
         '<head>\n' +
@@ -190,14 +191,14 @@
           '<script src="/test/test.js"></script>\n' +
         '</body>\n' +
         '</html>\n' +
-        String(), { envDict: local.utility2.envDict })
+        String(), { envDict: app.utility2.envDict })
     }].forEach(function (options) {
       console.log('cache and parse ' + options.file);
       // cache and parse the file
-      local.utility2.fileCacheAndParse(options);
+      app.utility2.fileCacheAndParse(options);
     });
     // init server-middlewares
-    local.serverMiddlewareList = [
+    app.serverMiddlewareList = [
       function (request, response, onNext) {
         /*
           this user-defined middleware will override the builtin test-middleware
@@ -206,7 +207,7 @@
         case '/':
         case '/assets/istanbul-lite.js':
         case '/test/test.js':
-          response.end(local.utility2.fileCacheDict[request.urlPathNormalized].data);
+          response.end(app.utility2.fileCacheDict[request.urlPathNormalized].data);
           break;
         // default to next middleware
         default:
@@ -214,24 +215,24 @@
         }
       },
       // builtin test-middleware
-      local.utility2.testMiddleware
+      app.utility2.testMiddleware
     ];
     // run server-test
-    local.utility2.testRunServer(local);
-    local.fs.readdirSync(__dirname).forEach(function (file) {
+    app.utility2.testRunServer(app);
+    app.fs.readdirSync(__dirname).forEach(function (file) {
       file = __dirname + '/' + file;
-      switch (local.path.extname(file)) {
+      switch (app.path.extname(file)) {
       case '.js':
       case '.json':
         // jslint the file
-        local.utility2.jslint_lite.jslintAndPrint(local.fs.readFileSync(file, 'utf8'), file);
+        app.utility2.jslint_lite.jslintAndPrint(app.fs.readFileSync(file, 'utf8'), file);
         break;
       }
       // if the file is modified, then restart the process
-      local.utility2.onFileModifiedRestart(file);
+      app.utility2.onFileModifiedRestart(file);
     });
     // init repl debugger
-    local.utility2.replStart({ local: local });
+    app.utility2.replStart({ app: app });
     break;
   }
 }());

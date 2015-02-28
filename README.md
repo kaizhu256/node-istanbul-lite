@@ -283,7 +283,6 @@ shExampleSh
 
 
 # todo
-- unify var name "exports" and "local.istanbul" to "app.istanbul"
 - rate limit keyup-event handling
 - none
 
