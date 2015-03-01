@@ -96,7 +96,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
     app.http = require('http');
     app.url = require('url');
     // init assets
-    app['/'] = (String() +
+    app['/'] =
+      (String() +
 /* jslint-ignore-begin */
 '<!DOCTYPE html>\n' +
 '<html>\n' +
@@ -163,21 +164,24 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 '</body>\n' +
 '</html>\n' +
 /* jslint-ignore-end */
-    String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
-      switch (match0) {
-      case '{{envDict.npm_package_description}}':
-        return 'coverage demo';
-      case '{{envDict.npm_package_name}}':
-        return 'istanbul-lite';
-      case '{{envDict.npm_package_version}}':
-        return '0.0.1';
-      }
-    });
+      String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
+        switch (match0) {
+        case '{{envDict.npm_package_description}}':
+          return 'coverage demo';
+        case '{{envDict.npm_package_name}}':
+          return 'istanbul-lite';
+        case '{{envDict.npm_package_version}}':
+          return '0.0.1';
+        }
+      });
     app['/assets/istanbul-lite.js'] =
       app.istanbul_lite['/assets/istanbul-lite.js'];
-    app['/assets/utility2.css'] = '';
-    app['/assets/utility2.js'] = '';
-    app['/test/test.js'] = app.fs.readFileSync(__filename);
+    app['/assets/utility2.css'] =
+      '';
+    app['/assets/utility2.js'] =
+      '';
+    app['/test/test.js'] =
+      app.fs.readFileSync(__filename);
     // create server
     app.server = app.http.createServer(function (request, response) {
       switch (app.url.parse(request.url).pathname) {
@@ -187,7 +191,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
       case '/assets/utility2.css':
       case '/assets/utility2.js':
       case '/test/test.js':
-        response.end(app[app.url.parse(request.url).pathname] || '');
+        response.end(app[app.url.parse(request.url).pathname]);
         break;
       // default to 404 Not Found
       default:
