@@ -173,7 +173,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
         return '0.0.1';
       }
     });
-    app['/assets/istanbul-lite.js'] = app.istanbul_lite.istanbulLiteJs;
+    app['/assets/istanbul-lite.js'] =
+      app.istanbul_lite['/assets/istanbul-lite.js'];
     app['/assets/utility2.css'] = '';
     app['/assets/utility2.js'] = '';
     app['/test/test.js'] = app.fs.readFileSync(__filename);
@@ -271,7 +272,7 @@ shExampleSh
   "bin": { "istanbul-lite" : "index.js" },
   "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
   "devDependencies": {
-    "utility2": "2015.3.2-10",
+    "utility2": "2015.3.2-11",
     "phantomjs-lite": "^2015.1.4-103"
   },
   "engines": { "node": ">=0.10 <=0.12" },
@@ -298,7 +299,7 @@ shExampleSh
     "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
     "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p .tmp && node -e \"require('fs').writeFileSync('.tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='.tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
   },
-  "version": "2015.3.2-10"
+  "version": "2015.3.2-11"
 }
 ```
 
