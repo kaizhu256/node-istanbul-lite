@@ -34,6 +34,35 @@
     app.utility2 = app.modeJs === 'browser'
       ? window.utility2
       : require('utility2');
+    // init tests
+    app._ajax_404_test = function (onError) {
+      /*
+        this function will test ajax's 404 http statusCode handling behavior
+      */
+      // test '/test/undefined'
+      app.utility2.ajax({
+        url: '/test/undefined'
+      }, function (error) {
+        app.utility2.testTryCatch(function () {
+          // validate error occurred
+          app.utility2.assert(error instanceof Error, error);
+          // validate 404 http statusCode
+          app.utility2.assert(error.statusCode === 404, error.statusCode);
+          onError();
+        }, onError);
+      });
+    };
+
+    app._instrumentSync_default_test = function (onError) {
+      /*
+        this function will test instrumentSync's default handling behavior
+      */
+      var data;
+      data = app.istanbul_lite.instrumentSync('1', 'test.js');
+      // validate data
+      app.utility2.assert(data.indexOf(".s[\'1\']++;1;\n") >= 0, data);
+      onError();
+    };
   }());
   switch (app.modeJs) {
 
@@ -46,7 +75,7 @@
     app.istanbulLiteInputTextarea = document.querySelector('.istanbulLiteInputTextarea');
     app._coverAndEval_default_test = function (onError) {
       /*
-        this function test coverAndEval's default handling behavior
+        this function will test coverAndEval's default handling behavior
       */
       var data, value;
       // save value
@@ -84,7 +113,7 @@
     app.path = require('path');
     app._coverageReportCreate_default_test = function (onError) {
       /*
-        this function test coverageReportCreate's default handling behavior
+        this function will test coverageReportCreate's default handling behavior
       */
       var dir;
       app.utility2.testMock([
@@ -129,7 +158,7 @@
         .replace((/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/), '$1')
         .replace((/\\n' \+(\s*?)'/g), '$1'), { envDict: app.utility2.envDict });
     app['/assets/istanbul-lite.js'] =
-      app.utility2.coverInPackage(
+      app.utility2.istanbulInstrumentInPackage(
         app.utility2.istanbul_lite['/assets/istanbul-lite.js'],
         __dirname + '/index.js',
         'istanbul-lite'
@@ -139,7 +168,7 @@
     app['/assets/utility2.js'] =
       app.utility2['/assets/utility2.js'];
     app['/test/test.js'] =
-      app.utility2.coverInPackage(
+      app.utility2.istanbulInstrumentInPackage(
         app.utility2.fs.readFileSync(__filename, 'utf8'),
         __filename,
         'istanbul-lite'

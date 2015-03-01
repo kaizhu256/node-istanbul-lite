@@ -103,7 +103,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 '<head>\n' +
   '<meta charset="UTF-8">\n' +
   '<title>\n' +
-    '{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]\n' +
+  '{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]\n' +
   '</title>\n' +
   '<link rel="stylesheet" href="/assets/utility2.css">\n' +
   '<style>\n' +
@@ -129,7 +129,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 '</head>\n' +
 '<body>\n' +
   '<div class="ajaxProgressDiv" style="display: none;">\n' +
-    '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
+  '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
   '</div>\n' +
   '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
   '<h3>{{envDict.npm_package_description}}</h3>\n' +
@@ -155,7 +155,9 @@ lightweight browser version of istanbul coverage with zero npm dependencies
   'document.querySelector(\n' +
     '".istanbulLiteInputTextarea"\n' +
   ').addEventListener("keyup", window.istanbul_lite.coverAndEval);\n' +
-  'window.istanbul_lite.coverAndEval();\n' +
+  'if (!window.utility2.modeTest) {\n' +
+    'window.istanbul_lite.coverAndEval();\n' +
+  '}\n' +
   '</script>\n' +
   '<script src="/test/test.js"></script>\n' +
 '</body>\n' +

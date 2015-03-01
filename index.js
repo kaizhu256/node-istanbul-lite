@@ -13505,7 +13505,7 @@ pre.prettyprint {\n\
         3. return instrumented code
       */
       // 1. normalize the file
-      file = app.istanbul_lite.path.resolve('/', file || String(new Date().getTime()) + '.js');
+      file = app.istanbul_lite.path.resolve('/', file);
       // 2. save code to codeDict[file] for future html-report
       app.istanbul_lite.codeDict[file] = code;
       // 3. return instrumented code
