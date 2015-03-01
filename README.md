@@ -96,8 +96,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
     app.http = require('http');
     app.url = require('url');
     // init assets
-    app['/assets/test.js'] = app.fs.readFileSync(__filename);
     app['/assets/istanbul-lite.js'] = app.istanbul_lite.istanbulLiteJs;
+    app['/test/test.js'] = app.fs.readFileSync(__filename);
     // create server
     app.server = app.http.createServer(function (request, response) {
       switch (app.url.parse(request.url).pathname) {
@@ -183,13 +183,13 @@ if (true) {\n\
         break;
       // serve assets
       case '/assets/istanbul-lite.js':
-      case '/assets/test.js':
+      case '/test/test.js':
         response.end(app[app.url.parse(request.url).pathname]);
         break;
-      // default to http 404 status-code
+      // default to 404 Not Found
       default:
         response.statusCode = 404;
-        response.end();
+        response.end('404 Not Found');
       }
     });
     app.serverPort = 1337;
@@ -296,7 +296,7 @@ shExampleSh
     "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
     "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p .tmp && node -e \"require('fs').writeFileSync('.tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='.tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
   },
-  "version": "2015.3.1-10"
+  "version": "2015.3.1-11"
 }
 ```
 
