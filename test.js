@@ -123,24 +123,27 @@
       }, onError);
     };
     // init assets
-    [{
-      cache: '/assets/istanbul-lite.js',
-      coverage: 'istanbul-lite',
-      file: __dirname + '/index.js'
-    }, {
-      cache: '/test/test.html',
-      data: app.utility2.textFormat(app.utility2.fs
+    app['/'] =
+      app.utility2.textFormat(app.utility2.fs
         .readFileSync(__dirname + '/README.md', 'utf8')
         .replace((/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/), '$1')
-        .replace((/\\n' \+(\s*?)'/g), '$1'), { envDict: app.utility2.envDict })
-    }, {
-      cache: '/test/test.js',
-      coverage: 'istanbul-lite',
-      file: __filename
-    }].forEach(function (options) {
-      // cache and parse the file
-      app.utility2.fileCacheAndParse(options);
-    });
+        .replace((/\\n' \+(\s*?)'/g), '$1'), { envDict: app.utility2.envDict });
+    app['/assets/istanbul-lite.js'] =
+      app.utility2.coverInPackage(
+        app.utility2.istanbul_lite['/assets/istanbul-lite.js'],
+        __dirname + '/index.js',
+        'istanbul-lite'
+      );
+    app['/assets/utility2.css'] =
+      app.utility2['/assets/utility2.css'];
+    app['/assets/utility2.js'] =
+      app.utility2['/assets/utility2.js'];
+    app['/test/test.js'] =
+      app.utility2.coverInPackage(
+        app.utility2.fs.readFileSync(__filename, 'utf8'),
+        __filename,
+        'istanbul-lite'
+      );
     // init server-middlewares
     app.serverMiddlewareList = [
       function (request, response, onNext) {
@@ -150,14 +153,11 @@
         switch (request.urlPathNormalized) {
         // serve assets
         case '/':
-          response.end(app.utility2.fileCacheDict['/test/test.html'].data);
-          break;
         case '/assets/istanbul-lite.js':
         case '/assets/utility2.css':
         case '/assets/utility2.js':
-        case '/test/test.html':
         case '/test/test.js':
-          response.end(app.utility2.fileCacheDict[request.urlPathNormalized].data);
+          response.end(app[request.urlPathNormalized]);
           break;
         // default to next middleware
         default:

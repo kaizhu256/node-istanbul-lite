@@ -172,6 +172,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
       }
     });
     app['/assets/istanbul-lite.js'] = app.istanbul_lite.istanbulLiteJs;
+    app['/assets/utility2.css'] = '';
+    app['/assets/utility2.js'] = '';
     app['/test/test.js'] = app.fs.readFileSync(__filename);
     // create server
     app.server = app.http.createServer(function (request, response) {
@@ -301,6 +303,7 @@ shExampleSh
 
 
 # todo
+- rename mode* to state*
 - fix jslint errors
 - none
 

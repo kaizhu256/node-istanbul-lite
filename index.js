@@ -13549,8 +13549,8 @@ pre.prettyprint {\n\
 
   // run node js-env code
   case 'node':
-    // init asset istanbul-lite.js
-    app.istanbul_lite.istanbulLiteJs =
+    // init assets
+    app.istanbul_lite['/assets/istanbul-lite.js'] =
       '//' + app.istanbul_lite.fs.readFileSync(__filename, 'utf8');
     // run coverage
     if (app.istanbul_lite._module === app.istanbul_lite.require.main) {
