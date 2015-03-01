@@ -4,7 +4,6 @@
   maxerr: 8,
   maxlen: 96,
   node: true, nomen: true,
-  regexp: true,
   stupid: true
 */
 (function () {
@@ -133,7 +132,7 @@
       data: app.utility2.textFormat(app.utility2.fs
         .readFileSync(__dirname + '/README.md', 'utf8')
         .replace((/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/), '$1')
-        .replace((/\\n\\$/gm), ''), { envDict: app.utility2.envDict })
+        .replace((/\\n' \+(\s*?)'/g), '$1'), { envDict: app.utility2.envDict })
     }, {
       cache: '/test/test.js',
       coverage: 'istanbul-lite',
