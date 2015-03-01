@@ -44,16 +44,16 @@
   case 'browser':
     // export app
     window.app = app;
-    app.istanbulLiteInputTextareaDiv = document.querySelector('.istanbulLiteInputTextareaDiv');
+    app.istanbulLiteInputTextarea = document.querySelector('.istanbulLiteInputTextarea');
     app._coverAndEval_default_test = function (onError) {
       /*
         this function test coverAndEval's default handling behavior
       */
       var data, value;
       // save value
-      value = app.istanbulLiteInputTextareaDiv.value;
+      value = app.istanbulLiteInputTextarea.value;
       // test default handling behavior
-      app.istanbulLiteInputTextareaDiv.value = 'console.log("hello world");';
+      app.istanbulLiteInputTextarea.value = 'console.log("hello world");';
       data = app.istanbul_lite.coverAndEval();
       // validate data
       app.utility2.assert(data.indexOf('<tr>' +
@@ -64,12 +64,12 @@
         '</td>' +
         '</tr>') >= 0, data);
       // test syntax-error handling behavior
-      app.istanbulLiteInputTextareaDiv.value = 'syntax-error!';
+      app.istanbulLiteInputTextarea.value = 'syntax-error!';
       data = app.istanbul_lite.coverAndEval();
       // validate data
       app.utility2.assert(data.indexOf('<pre>') === 0, data);
       // restore value
-      app.istanbulLiteInputTextareaDiv.value = value;
+      app.istanbulLiteInputTextarea.value = value;
       app.istanbul_lite.coverAndEval();
       onError();
     };
@@ -123,7 +123,7 @@
           'timeoutDefault=' + app.utility2.timeoutDefault
       }, onError);
     };
-    // init server-assets
+    // init assets
     [{
       cache: '/assets/istanbul-lite.js',
       coverage: 'istanbul-lite',
@@ -139,7 +139,6 @@
       coverage: 'istanbul-lite',
       file: __filename
     }].forEach(function (options) {
-      console.log('cache and parse ' + options.file);
       // cache and parse the file
       app.utility2.fileCacheAndParse(options);
     });

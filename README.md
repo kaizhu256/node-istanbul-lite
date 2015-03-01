@@ -38,12 +38,10 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 */
 /*jslint
   browser: true,
-  evil: true,
   indent: 2,
   maxerr: 8,
   maxlen: 80,
   node: true, nomen: true,
-  regexp: true,
   stupid: true
 */
 (function () {
@@ -63,11 +61,15 @@ lightweight browser version of istanbul coverage with zero npm dependencies
   // run browser js-env code
   if (typeof window === 'object') {
     app.coverAndEval = function () {
+      /*
+        this function will cover and eval the text in .istanbulLiteInputTextarea
+      */
+      /*jslint evil: true*/
       try {
         window.__coverage__ = {};
         eval(window.istanbul_lite.instrumentSync(
           document.querySelector('.istanbulLiteInputTextarea').value,
-          '/input.js'
+          '/istanbulLiteInputTextarea.js'
         ));
         document.querySelector(
           '.istanbulLiteCoverageDiv'
@@ -77,10 +79,12 @@ lightweight browser version of istanbul coverage with zero npm dependencies
           '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
       }
     };
+    // init event handling
     document.querySelector('.istanbulLiteInputTextarea').addEventListener(
       'keyup',
       app.coverAndEval
     );
+    // cover and eval input
     app.coverAndEval();
 
 
@@ -90,10 +94,10 @@ lightweight browser version of istanbul coverage with zero npm dependencies
     // require modules
     app.fs = require('fs');
     app.http = require('http');
-    app.path = require('path');
     app.url = require('url');
-    // init asset example.js
+    // init assets
     app['/assets/test.js'] = app.fs.readFileSync(__filename);
+    app['/assets/istanbul-lite.js'] = app.istanbul_lite.istanbulLiteJs;
     // create server
     app.server = app.http.createServer(function (request, response) {
       switch (app.url.parse(request.url).pathname) {
@@ -138,7 +142,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
   <h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n\
   <h3>{{envDict.npm_package_description}}</h3>\n\
   <div>edit or paste script below to cover and test</div>\n\
-  <textarea class="istanbulLiteInputTextareaDiv">\n\
+  <textarea class="istanbulLiteInputTextarea">\n\
 if (true) {\n\
   console.log("hello");\n\
 } else {\n\
@@ -157,7 +161,7 @@ if (true) {\n\
     npm_package_version: "{{envDict.npm_package_version}}"\n\
   };\n\
   document.querySelector(\n\
-    ".istanbulLiteInputTextareaDiv"\n\
+    ".istanbulLiteInputTextarea"\n\
   ).addEventListener("keyup", window.istanbul_lite.coverAndEval);\n\
   window.istanbul_lite.coverAndEval();\n\
   </script>\n\
@@ -166,7 +170,7 @@ if (true) {\n\
 </html>\n\
 ' +
 /* jslint-ignore-end */
-          String()).replace((/\{\{envDict\..*?\}\}/g), function (match0) {
+          String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
           switch (match0) {
           case '{{envDict.npm_package_description}}':
             return 'coverage demo';
@@ -178,13 +182,10 @@ if (true) {\n\
         }));
         response.end();
         break;
-      // serve /assets/istanbul-lite.js
+      // serve assets
       case '/assets/istanbul-lite.js':
-        response.end(app.istanbul_lite.istanbulLiteJs);
-        break;
-      // serve this script
-      case '/assets/example.js':
-        response.end(app['/assets/example.js']);
+      case '/assets/test.js':
+        response.end(app[app.url.parse(request.url).pathname]);
         break;
       // default to http 404 status-code
       default:
@@ -303,7 +304,6 @@ shExampleSh
 
 
 # todo
-- rate limit keyup-event handling
 - none
 
 

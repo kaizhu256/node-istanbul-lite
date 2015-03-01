@@ -13625,9 +13625,9 @@ pre.prettyprint {\n\
       : global;
     // mock package.json for escodegen.js
     app.istanbul_lite['./package.json'] = {};
-    // init _istanbulLiteInputTextareaDiv
-    app.istanbul_lite._istanbulLiteInputTextareaDiv = app.istanbul_lite.modeJs === 'browser'
-      ?  document.querySelector('.istanbulLiteInputTextareaDiv') || {}
+    // init _istanbulLiteInputTextarea
+    app.istanbul_lite._istanbulLiteInputTextarea = app.istanbul_lite.modeJs === 'browser'
+      ?  document.querySelector('.istanbulLiteInputTextarea') || {}
       : {};
     // init _istanbulLiteCoverageDiv
     app.istanbul_lite._istanbulLiteCoverageDiv = app.istanbul_lite.modeJs === 'browser'
@@ -13686,7 +13686,7 @@ pre.prettyprint {\n\
     };
     app.istanbul_lite.coverAndEval = function () {
       /*
-        this function will cover and eval the text in _istanbulLiteInputTextareaDiv
+        this function will cover and eval the text in .istanbulLiteInputTextarea
       */
       /*jslint evil: true*/
       var innerHTML;
@@ -13694,7 +13694,7 @@ pre.prettyprint {\n\
       delete (app.istanbul_lite.global.__coverage__ || {})['/istanbulLiteInputTextarea.js'];
       try {
         eval(app.istanbul_lite.global.istanbul_lite.instrumentSync(
-          app.istanbul_lite._istanbulLiteInputTextareaDiv.value || '',
+          app.istanbul_lite._istanbulLiteInputTextarea.value || '',
           '/istanbulLiteInputTextarea.js'
         ));
         innerHTML = app.istanbul_lite.coverageReportCreate();
