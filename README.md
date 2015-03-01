@@ -51,39 +51,22 @@ lightweight browser version of istanbul coverage with zero npm dependencies
     this function will test this module
   */
   'use strict';
-  var local;
-
-
-
-  // run shared js-env code
-  (function () {
-    // init local
-    local = {};
-    local.modeJs = (function () {
-      try {
-        return module.exports && typeof process.versions.node === 'string' &&
-          typeof require('http').createServer === 'function' && 'node';
-      } catch (errorCaughtNode) {
-        return typeof navigator.userAgent === 'string' &&
-          typeof document.querySelector('body') === 'object' && 'browser';
-      }
-    }());
-    local.istanbul_lite = local.modeJs === 'browser'
-      ? window.istanbul_lite
-      : require('istanbul-lite');
-  }());
-  switch (local.modeJs) {
+  var app;
+  // init app
+  app = {};
+  app.istanbul_lite = typeof window === 'object'
+    ? window.istanbul_lite
+    : require('istanbul-lite');
 
 
 
   // run browser js-env code
-  case 'browser':
-    window.local = local;
-    local.evalAndCover = function () {
+  if (typeof window === 'object') {
+    app.coverAndEval = function () {
       try {
         window.__coverage__ = {};
         eval(window.istanbul_lite.instrumentSync(
-          local.istanbulLiteEvalInputTextarea.value,
+          document.querySelector('.istanbulLiteInputTextarea').value,
           '/input.js'
         ));
         document.querySelector(
@@ -94,77 +77,114 @@ lightweight browser version of istanbul coverage with zero npm dependencies
           '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
       }
     };
-    local.istanbulLiteEvalInputTextarea =
-      document.querySelector('.istanbulLiteEvalInputTextarea');
-    local.istanbulLiteEvalInputTextarea.addEventListener(
+    document.querySelector('.istanbulLiteInputTextarea').addEventListener(
       'keyup',
-      local.evalAndCover
+      app.coverAndEval
     );
-    local.evalAndCover();
-    break;
+    app.coverAndEval();
 
 
 
   // run node js-env code
-  case 'node':
+  } else {
     // require modules
-    local.fs = require('fs');
-    local.http = require('http');
-    local.path = require('path');
-    local.url = require('url');
+    app.fs = require('fs');
+    app.http = require('http');
+    app.path = require('path');
+    app.url = require('url');
     // init asset example.js
-    local['example.js'] = local.fs.readFileSync(__filename);
+    app['/assets/test.js'] = app.fs.readFileSync(__filename);
     // create server
-    local.server = local.http.createServer(function (request, response) {
-      switch (local.url.parse(request.url).pathname) {
-      // serve main-page
+    app.server = app.http.createServer(function (request, response) {
+      switch (app.url.parse(request.url).pathname) {
+      // serve main-page '/'
       case '/':
-        response.end('<!DOCTYPE html>\n' +
-          '<html>\n' +
-          '<head>\n' +
-            '<meta charset="UTF-8">\n' +
-            '<title>istanbul-lite demo</title>\n' +
-            '<style>\n' +
-            '* {\n' +
-              'box-sizing: border-box;\n' +
-            '}\n' +
-            'body {\n' +
-              'font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n' +
-              'margin: 10px;\n' +
-            '}\n' +
-            'body > div {\n' +
-              'margin-top: 20px;\n' +
-            '}\n' +
-            'textarea {\n' +
-              'font-family: monospace;\n' +
-              'height: 8em;\n' +
-              'width: 100%;\n' +
-            '}\n' +
-            '</style>\n' +
-          '</head>\n' +
-          '<body>\n' +
-            '<h1>istanbul-lite demo</h1>\n' +
-            '<div>edit / paste script below to eval and cover</div>\n' +
-            '<div>\n' +
-              '<textarea class="istanbulLiteEvalInputTextarea">if (true) {\n' +
-                'console.log("hello");\n' +
-              '} else {\n' +
-                'console.log("bye");\n' +
-              '}</textarea>\n' +
-            '</div>\n' +
-            '<div class="istanbulLiteCoverageDiv"></div>\n' +
-            '<script src="/istanbul-lite.js"></script>\n' +
-            '<script src="/example.js"></script>\n' +
-          '</body>\n' +
-          '</html>');
+        response.end((String() +
+/* jslint-ignore-begin */
+'\
+<!DOCTYPE html>\n\
+<html>\n\
+<head>\n\
+  <meta charset="UTF-8">\n\
+  <title>\n\
+    {{envDict.npm_package_name}} [{{envDict.npm_package_version}}]\n\
+  </title>\n\
+  <link rel="stylesheet" href="/assets/utility2.css">\n\
+  <style>\n\
+  * {\n\
+    box-sizing: border-box;\n\
+  }\n\
+  body {\n\
+    background-color: #fff;\n\
+    font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n\
+  }\n\
+  body > div {\n\
+    margin-top: 20px;\n\
+  }\n\
+  .testReportDiv {\n\
+    display: none;\n\
+  }\n\
+  textarea {\n\
+    font-family: monospace;\n\
+    height: 8em;\n\
+    width: 100%;\n\
+  }\n\
+  </style>\n\
+</head>\n\
+<body>\n\
+  <div class="ajaxProgressDiv" style="display: none;">\n\
+    <div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n\
+  </div>\n\
+  <h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n\
+  <h3>{{envDict.npm_package_description}}</h3>\n\
+  <div>edit or paste script below to cover and test</div>\n\
+  <textarea class="istanbulLiteInputTextareaDiv">\n\
+if (true) {\n\
+  console.log("hello");\n\
+} else {\n\
+  console.log("bye");\n\
+}\n\
+  </textarea>\n\
+  <div class="testReportDiv"></div>\n\
+  <div class="istanbulLiteCoverageDiv"></div>\n\
+  <script src="/assets/istanbul-lite.js"></script>\n\
+  <script src="/assets/utility2.js"></script>\n\
+  <script>\n\
+  window.utility2 = window.utility2 || {};\n\
+  window.utility2.envDict = {\n\
+    npm_package_description: "{{envDict.npm_package_description}}",\n\
+    npm_package_name: "{{envDict.npm_package_name}}",\n\
+    npm_package_version: "{{envDict.npm_package_version}}"\n\
+  };\n\
+  document.querySelector(\n\
+    ".istanbulLiteInputTextareaDiv"\n\
+  ).addEventListener("keyup", window.istanbul_lite.coverAndEval);\n\
+  window.istanbul_lite.coverAndEval();\n\
+  </script>\n\
+  <script src="/test/test.js"></script>\n\
+</body>\n\
+</html>\n\
+' +
+/* jslint-ignore-end */
+          String()).replace((/\{\{envDict\..*?\}\}/g), function (match0) {
+          switch (match0) {
+          case '{{envDict.npm_package_description}}':
+            return 'coverage demo';
+          case '{{envDict.npm_package_name}}':
+            return 'istanbul-lite';
+          case '{{envDict.npm_package_version}}':
+            return '0.0.1';
+          }
+        }));
+        response.end();
         break;
-      // serve istanbul-lite.js
-      case '/istanbul-lite.js':
-        response.end(local.istanbul_lite.istanbulLiteJs);
+      // serve /assets/istanbul-lite.js
+      case '/assets/istanbul-lite.js':
+        response.end(app.istanbul_lite.istanbulLiteJs);
         break;
       // serve this script
-      case '/example.js':
-        response.end(local['example.js']);
+      case '/assets/example.js':
+        response.end(app['/assets/example.js']);
         break;
       // default to http 404 status-code
       default:
@@ -172,21 +192,20 @@ lightweight browser version of istanbul coverage with zero npm dependencies
         response.end();
       }
     });
-    local.serverPort = 1337;
+    app.serverPort = 1337;
     // start server
-    console.log('server starting on port ' + local.serverPort);
-    local.server.listen(local.serverPort, function () {
+    console.log('server starting on port ' + app.serverPort);
+    app.server.listen(app.serverPort, function () {
       // this internal build-code will screen-capture the server and then exit
       if (process.env.MODE_BUILD === 'testExampleJs') {
-        console.log('server stopping on port ' + local.serverPort);
+        console.log('server stopping on port ' + app.serverPort);
         require(
           process.env.npm_config_dir_utility2 + '/index.js'
         ).phantomScreenCapture({
-          url: 'http://localhost:' + local.serverPort
+          url: 'http://localhost:' + app.serverPort
         }, process.exit);
       }
     });
-    break;
   }
 }());
 ```

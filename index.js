@@ -11,7 +11,7 @@
 (function (app) {
   'use strict';
   var require, process;
-  // nop hack to pass jslint
+  // jslint-hack
   app.istanbul_lite.nop(process, require);
 
 
@@ -29,7 +29,7 @@
   /* istanbul ignore next */
   (function () {
     var exports;
-    // nop hack to pass jslint
+    // jslint-hack
     app.istanbul_lite.nop(exports);
     exports = app.istanbul_lite.esprima = {};
 // https://github.com/ariya/esprima/blob/master/esprima.js
@@ -4065,7 +4065,7 @@ parseStatement: true, parseSourceElement: true */
   /* istanbul ignore next */
   (function () {
     var exports;
-    // nop hack to pass jslint
+    // jslint-hack
     app.istanbul_lite.nop(exports);
     exports = app.istanbul_lite.estraverse = {};
 // https://github.com/constellation/estraverse/blob/master/estraverse.js
@@ -5035,7 +5035,7 @@ parseStatement: true, parseSourceElement: true */
   /* istanbul ignore next */
   (function () {
     var exports;
-    // nop hack to pass jslint
+    // jslint-hack
     app.istanbul_lite.nop(exports);
     exports = app.istanbul_lite.escodegen = {};
 // https://github.com/constellation/escodegen/blob/master/escodegen.js
@@ -10364,7 +10364,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
   /* istanbul ignore next */
   (function () {
     var escodegen, esprima, module, window;
-    // nop hack to pass jslint
+    // jslint-hack
     app.istanbul_lite.nop(escodegen, esprima, module, window);
     escodegen = app.istanbul_lite.escodegen;
     esprima = app.istanbul_lite.esprima;

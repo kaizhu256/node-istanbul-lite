@@ -129,70 +129,15 @@
       coverage: 'istanbul-lite',
       file: __dirname + '/index.js'
     }, {
+      cache: '/test/test.html',
+      data: app.utility2.textFormat(app.utility2.fs
+        .readFileSync(__dirname + '/README.md', 'utf8')
+        .replace((/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/), '$1')
+        .replace((/\\n\\$/gm), ''), { envDict: app.utility2.envDict })
+    }, {
       cache: '/test/test.js',
       coverage: 'istanbul-lite',
       file: __filename
-    }, {
-      cache: '/',
-      data: app.utility2.textFormat(String() +
-        '<!DOCTYPE html>\n' +
-        '<html>\n' +
-        '<head>\n' +
-          '<meta charset="UTF-8">\n' +
-          '<link rel="stylesheet" href="/assets/utility2.css">\n' +
-          '<style>\n' +
-            '* {\n' +
-              'box-sizing: border-box;\n' +
-            '}\n' +
-            'body {\n' +
-              'background-color: #fff;\n' +
-              'font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n' +
-            '}\n' +
-            'body > div {\n' +
-              'margin-top: 20px;\n' +
-            '}\n' +
-            '.testReportDiv {\n' +
-              'display: none;\n' +
-            '}\n' +
-            'textarea {\n' +
-              'font-family: monospace;\n' +
-              'height: 8em;\n' +
-              'width: 100%;\n' +
-            '}\n' +
-          '</style>\n' +
-          '<title>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</title>\n' +
-        '</head>\n' +
-        '<body>\n' +
-          '<div class="ajaxProgressDiv" style="display: none;">\n' +
-            '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
-          '</div>\n' +
-          '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
-          '<h3>{{envDict.npm_package_description}}</h3>\n' +
-          '<div>\n' +
-            '<div>edit or paste script below to cover and eval</div>\n' +
-            '<div><textarea class="istanbulLiteInputTextareaDiv">if (true) {\n' +
-              'console.log("hello");\n' +
-            '} else {\n' +
-              'console.log("bye");\n' +
-            '}</textarea></div>\n' +
-          '</div>\n' +
-          '<div class="istanbulLiteCoverageDiv"></div>\n' +
-          '<div class="testReportDiv"></div>\n' +
-          '<script src="/assets/istanbul-lite.js"></script>\n' +
-          '<script src="/assets/utility2.js"></script>\n' +
-          '<script>window.utility2.envDict = {\n' +
-            'npm_package_description: "{{envDict.npm_package_description}}",\n' +
-            'npm_package_name: "{{envDict.npm_package_name}}",\n' +
-            'npm_package_version: "{{envDict.npm_package_version}}"\n' +
-          '};\n' +
-          'document.querySelector(\n' +
-            '".istanbulLiteInputTextareaDiv"\n' +
-          ').addEventListener("keyup", window.istanbul_lite.coverAndEval);\n' +
-          'window.istanbul_lite.coverAndEval();</script>\n' +
-          '<script src="/test/test.js"></script>\n' +
-        '</body>\n' +
-        '</html>\n' +
-        String(), { envDict: app.utility2.envDict })
     }].forEach(function (options) {
       console.log('cache and parse ' + options.file);
       // cache and parse the file
@@ -202,11 +147,17 @@
     app.serverMiddlewareList = [
       function (request, response, onNext) {
         /*
-          this user-defined middleware will override the builtin test-middleware
+          this function is the main test-middleware
         */
         switch (request.urlPathNormalized) {
+        // serve assets
         case '/':
+          response.end(app.utility2.fileCacheDict['/test/test.html'].data);
+          break;
         case '/assets/istanbul-lite.js':
+        case '/assets/utility2.css':
+        case '/assets/utility2.js':
+        case '/test/test.html':
         case '/test/test.js':
           response.end(app.utility2.fileCacheDict[request.urlPathNormalized].data);
           break;
@@ -214,9 +165,7 @@
         default:
           onNext();
         }
-      },
-      // builtin test-middleware
-      app.utility2.testMiddleware
+      }
     ];
     // run server-test
     app.utility2.testRunServer(app);
