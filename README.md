@@ -274,7 +274,7 @@ shExampleSh
   "bin": { "istanbul-lite" : "index.js" },
   "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
   "devDependencies": {
-    "utility2": "2015.3.2-11",
+    "utility2": "2015.3.2-12",
     "phantomjs-lite": "^2015.1.4-103"
   },
   "engines": { "node": ">=0.10 <=0.12" },
@@ -299,16 +299,16 @@ shExampleSh
   "scripts": {
     "build2": "node_modules/.bin/utility2 shRun shBuild",
     "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
-    "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p .tmp && node -e \"require('fs').writeFileSync('.tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='.tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
+    "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p tmp && node -e \"require('fs').writeFileSync('tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
   },
-  "version": "2015.3.2-11"
+  "version": "2015.3.2-12"
 }
 ```
 
 
 
 # todo
-- fix jslint errors
+- jslint - use 4 space indent and 80 col maxlen
 - none
 
 
@@ -334,7 +334,7 @@ shBuild() {
   MODE_BUILD=testExampleJs\
   shRunScreenCapture shReadmeTestJs example.js || return $?
   # copy phantomjs screen-capture to $npm_config_dir_build
-  cp /tmp/app/.tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
+  cp /tmp/app/tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
 
   # test example shell script
   MODE_BUILD=testExampleSh\
