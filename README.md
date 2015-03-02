@@ -142,8 +142,8 @@ lightweight browser version of istanbul coverage with zero npm dependencies
   'console.log("bye");\n' +
 '}\n' +
   '</textarea>\n' +
-  '<div class="testReportDiv"></div>\n' +
   '<div class="istanbulLiteCoverageDiv"></div>\n' +
+  '<div class="testReportDiv"></div>\n' +
   '<script src="/assets/istanbul-lite.js"></script>\n' +
   '<script src="/assets/utility2.js"></script>\n' +
   '<script>\n' +
@@ -156,9 +156,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
   'document.querySelector(\n' +
     '".istanbulLiteInputTextarea"\n' +
   ').addEventListener("keyup", window.istanbul_lite.coverAndEval);\n' +
-  'if (!window.utility2.modeTest) {\n' +
-    'window.istanbul_lite.coverAndEval();\n' +
-  '}\n' +
+  'window.istanbul_lite.coverAndEval();\n' +
   '</script>\n' +
   '<script src="/test/test.js"></script>\n' +
 '</body>\n' +
@@ -310,7 +308,6 @@ shExampleSh
 
 
 # todo
-- rename mode* to state*
 - fix jslint errors
 - none
 
@@ -330,7 +327,7 @@ shBuild() {
   export npm_config_mode_slimerjs=1 || return $?
   . node_modules/.bin/utility2 && shInit || return $?
 
-  # run npm test on published package
+  # run npm-test on published package
   shRun shNpmTestPublished || return $?
 
   # test example js script
@@ -346,8 +343,8 @@ shBuild() {
   MODE_BUILD=testExampleSh shRun shPhantomScreenCapture\
     /tmp/app/html-report/app/foo.js.html || :
 
-  # run npm test
-  MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
+  # run npm-test
+  MODE_BUILD=npmTest shRunScreenCapture npm-test || return $?
 
   # deploy app to heroku
   shRun shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
