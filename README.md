@@ -344,7 +344,7 @@ shBuild() {
     /tmp/app/html-report/app/foo.js.html || :
 
   # run npm-test
-  MODE_BUILD=npmTest shRunScreenCapture npm-test || return $?
+  MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
 
   # deploy app to heroku
   shRun shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
