@@ -282,7 +282,6 @@ shExampleSh
 
 
 # todo
-- rename istanbulLite* to istanbul*
 - none
 
 

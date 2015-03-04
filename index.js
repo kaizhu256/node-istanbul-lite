@@ -13476,10 +13476,7 @@ pre.prettyprint {\n\
                 app['/assets/base.css']
             );
             // 3. return coverage in html-format as a single document
-            tmp = (
-                document.querySelector('.istanbulCoverageDiv') || {}
-            ).innerHTML =
-                '<style>\n' +
+            tmp = '<style>\n' +
                 app[
                     '/assets/base.css'
                 ].replace((/([\S ]+?\{)/g), function (match0) {
@@ -13517,6 +13514,11 @@ pre.prettyprint {\n\
                             app.istanbul_lite.writeFileDict[key] + '</div>\n'
                         : '';
                 }).join('\n');
+            if (app.istanbul_lite.modeJs === 'window') {
+                (
+                    document.querySelector('.istanbulCoverageDiv') || {}
+                ).innerHTML = tmp;
+            }
             return tmp;
         };
         app.istanbul_lite.instrumentSync = function (code, file) {
