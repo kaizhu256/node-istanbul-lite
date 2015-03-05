@@ -13529,6 +13529,10 @@ module.exports = TextReport;
                             app.writeFileDict[key] + '</div>\n'
                         : '';
                 }).join('\n');
+            if (app.modeJs === 'browser') {
+                (document.querySelector('.istanbulCoverageDiv') || {
+                }).innerHTML = tmp;
+            }
             return tmp;
         };
         app.istanbul_lite.instrumentSync = function (code, file) {
@@ -13755,14 +13759,14 @@ module.exports = TextReport;
                     }).value || '',
                     '/istanbulInputTextarea.js'
                 ));
-                innerHTML = app.istanbul_lite.coverageReportCreate();
+                return app.istanbul_lite.coverageReportCreate();
             } catch (errorCaught) {
-                innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') +
+                innerHTML = (document.querySelector('.istanbulCoverageDiv') || {
+                }).innerHTML = '<pre>' +
+                    errorCaught.stack.replace((/</g), '&lt') +
                     '</pre>';
+                return innerHTML;
             }
-            (document.querySelector('.istanbulCoverageDiv') || {}).innerHTML =
-                innerHTML;
-            return innerHTML;
         };
         break;
 
