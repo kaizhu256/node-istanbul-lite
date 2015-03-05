@@ -78,18 +78,18 @@ stupid: true
         // export app
         window.app = app;
         // init tests
-        app._coverAndEval_default_test = function (onError) {
+        app._coverTextarea_default_test = function (onError) {
             var data, istanbulInputTextarea, value;
             istanbulInputTextarea =
                 document.querySelector('.istanbulInputTextarea');
             /*
-            this function will test coverAndEval's default handling behavior
+            this function will test coverTextarea's default handling behavior
             */
             // save value
             value = istanbulInputTextarea.value;
             // test default handling behavior
             istanbulInputTextarea.value = 'console.log("hello world");';
-            data = app.istanbul_lite.coverAndEval();
+            data = app.istanbul_lite.coverTextarea();
             // validate data
             app.utility2.assert(data.indexOf('<tr>' +
                 '<td class="line-count">1</td>' +
@@ -102,12 +102,12 @@ stupid: true
                 '</tr>') >= 0, data);
             // test syntax error handling behavior
             istanbulInputTextarea.value = 'syntax error';
-            data = app.istanbul_lite.coverAndEval();
+            data = app.istanbul_lite.coverTextarea();
             // validate data
             app.utility2.assert(data.indexOf('<pre>') === 0, data);
             // restore value
             istanbulInputTextarea.value = value;
-            app.istanbul_lite.coverAndEval();
+            app.istanbul_lite.coverTextarea();
             onError();
         };
         // run test
@@ -180,7 +180,7 @@ stupid: true
                 });
         app['/assets/istanbul-lite.js'] =
             app.utility2.istanbulInstrumentInPackage(
-                app.utility2.istanbul_lite['/assets/istanbul-lite.js'],
+                app.istanbul_lite['/assets/istanbul-lite.js'],
                 __dirname + '/index.js',
                 'istanbul-lite'
             );

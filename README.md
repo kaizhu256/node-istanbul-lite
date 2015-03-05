@@ -42,32 +42,19 @@ maxerr: 4,
 maxlen: 80,
 node: true,
 nomen: true,
+stupid: true
 */
 (function () {
-    /*
-        this function will test this module
-    */
     'use strict';
     var app;
-    // init app
-    app = {};
-    app.istanbul_lite = typeof window === 'object'
-        ? window.istanbul_lite
-        : require('istanbul-lite');
-
-
-
-    // run browser js-env code
-    if (typeof window === 'object') {
-        return;
-
-
-
     // run node js-env code
-    } else {
+    (function () {
+        // init app
+        app = {};
         // require modules
         app.fs = require('fs');
         app.http = require('http');
+        app.istanbul_lite = require('istanbul-lite');
         app.url = require('url');
         // init assets
         app['/'] =
@@ -130,8 +117,8 @@ nomen: true,
     '};\n' +
     'document.querySelector(\n' +
         '".istanbulInputTextarea"\n' +
-    ').addEventListener("keyup", window.istanbul_lite.coverAndEval);\n' +
-    'window.istanbul_lite.coverAndEval();\n' +
+    ').addEventListener("keyup", window.istanbul_lite.coverTextarea);\n' +
+    'window.istanbul_lite.coverTextarea();\n' +
     '</script>\n' +
 '</body>\n' +
 '</html>\n' +
@@ -175,7 +162,8 @@ nomen: true,
         app.serverPort = 1337;
         console.log('server starting on port ' + app.serverPort);
         app.server.listen(app.serverPort, function () {
-            // this internal build-code will screen-capture the server and then exit
+            // this internal build-code will screen-capture the server
+            // and then exit
             if (process.env.MODE_BUILD === 'testExampleJs') {
                 console.log('server stopping on port ' + app.serverPort);
                 require(
@@ -185,7 +173,7 @@ nomen: true,
                 }, process.exit);
             }
         });
-    }
+    }());
 }());
 ```
 #### output from shell

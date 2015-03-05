@@ -11,15 +11,15 @@ stupid: true
     'use strict';
     var require, process;
     // jslint-hack
-    app.istanbul_lite.nop(process, require);
+    app.nop(process, require);
 
 
 
     // run shared js-env code
     (function () {
-        process = app.istanbul_lite.process;
+        process = app.process;
         require = function (key) {
-            return app.istanbul_lite[key] || app.istanbul_lite.require(key);
+            return app[key] || app.require(key);
         };
     }());
 
@@ -29,8 +29,8 @@ stupid: true
     (function () {
         var exports;
         // jslint-hack
-        app.istanbul_lite.nop(exports);
-        exports = app.istanbul_lite.esprima = {};
+        app.nop(exports);
+        exports = app.esprima = {};
 // https://github.com/ariya/esprima/blob/master/esprima.js
 /* jslint-ignore-begin */
 /*
@@ -4065,8 +4065,8 @@ parseStatement: true, parseSourceElement: true */
     (function () {
         var exports;
         // jslint-hack
-        app.istanbul_lite.nop(exports);
-        exports = app.istanbul_lite.estraverse = {};
+        app.nop(exports);
+        exports = app.estraverse = {};
 // https://github.com/constellation/estraverse/blob/master/estraverse.js
 /* jslint-ignore-begin */
 /*
@@ -5025,8 +5025,8 @@ parseStatement: true, parseSourceElement: true */
 }());
 /* vim: set sw=4 ts=4 et tw=80 : */
 /* jslint-ignore-end */
-        app.istanbul_lite.esutils = app.istanbul_lite.esutils || {};
-        app.istanbul_lite.esutils.code = module.exports;
+        app.esutils = app.esutils || {};
+        app.esutils.code = module.exports;
     }());
 
 
@@ -5035,8 +5035,8 @@ parseStatement: true, parseSourceElement: true */
     (function () {
         var exports;
         // jslint-hack
-        app.istanbul_lite.nop(exports);
-        exports = app.istanbul_lite.escodegen = {};
+        app.nop(exports);
+        exports = app.escodegen = {};
 // https://github.com/constellation/escodegen/blob/master/escodegen.js
 /* jslint-ignore-begin */
 /*
@@ -10355,7 +10355,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
   return __module0__;
 })();
 /* jslint-ignore-end */
-        app.istanbul_lite.handlebars = Handlebars;
+        app.handlebars = Handlebars;
     }());
 
 
@@ -10364,11 +10364,11 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
     (function () {
         var escodegen, esprima, module, window;
         // jslint-hack
-        app.istanbul_lite.nop(escodegen, esprima, module, window);
-        escodegen = app.istanbul_lite.escodegen;
-        esprima = app.istanbul_lite.esprima;
+        app.nop(escodegen, esprima, module, window);
+        escodegen = app.escodegen;
+        esprima = app.esprima;
         module = undefined;
-        window = app.istanbul_lite;
+        window = app;
 // https://github.com/gotwarlost/istanbul/blob/master/lib/instrumenter.js
 /* jslint-ignore-begin */
 /*
@@ -11349,23 +11349,23 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
         var Report, __dirname, exports, module;
         __dirname = app.istanbul_lite.__dirname;
         // jslint hack
-        app.istanbul_lite.nop(__dirname);
+        app.nop(__dirname);
         exports = {};
         // mock module in browser
         module = { exports: {} };
         // mock store in browser
         // https://github.com/gotwarlost/istanbul/blob/master/lib/store/index.js
-        app.istanbul_lite['../store'] = {};
+        app['../store'] = {};
         // mock util/file-writer in browser
         // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
-        app.istanbul_lite['../util/file-writer'] = {};
+        app['../util/file-writer'] = {};
         // https://github.com/gotwarlost/istanbul/blob/master/lib/report/common/defaults.js
         // mock common/defaults in browser
-        app.istanbul_lite['./common/defaults'] = {};
+        app['./common/defaults'] = {};
         // mock fs in browser
-        app.istanbul_lite._fs = app.istanbul_lite.require('fs');
-        app.istanbul_lite.fs = {
-            mkdirSync: app.istanbul_lite._fs.mkdirSync,
+        app._fs = app.require('fs');
+        app.fs = {
+            mkdirSync: app._fs.mkdirSync,
             readFileSync: function (file, options) {
                 // https://github.com/gotwarlost/istanbul/blob/master/lib/report/templates/foot.txt
 /* jslint-ignore-begin */
@@ -11409,23 +11409,23 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
             '<div class="body">\n';
         }
 /* jslint-ignore-end */
-                return app.istanbul_lite.modeJs === 'node'
-                    ? app.istanbul_lite._fs.readFileSync(file, options)
-                    : app.istanbul_lite.codeDict[file];
+                return app.modeJs === 'node'
+                    ? app._fs.readFileSync(file, options)
+                    : app.codeDict[file];
             },
             readdirSync: function () {
                 return [];
             },
-            writeFileSync: app.istanbul_lite._fs.writeFileSync || function (file, data) {
-                app.istanbul_lite.writeFileDict[file] = data;
+            writeFileSync: app._fs.writeFileSync || function (file, data) {
+                app.writeFileDict[file] = data;
             }
         };
         // mock mkdirp in browser
-        app.istanbul_lite.mkdirp = {};
-        app.istanbul_lite.writeFileDict = exports.writeFileDict || {};
+        app.mkdirp = {};
+        app.writeFileDict = exports.writeFileDict || {};
         // mock Report in browser
         // https://github.com/gotwarlost/istanbul/blob/master/lib/report/index.js
-        Report = app.istanbul_lite['../index'] = app.istanbul_lite['./index'] = function () {
+        Report = app['../index'] = app['./index'] = function () {
             return;
         };
         Report.prototype = {
@@ -11630,7 +11630,7 @@ module.exports = {
     unloadRequireCache: unloadRequireCache
 };
 /* jslint-ignore-end */
-        app.istanbul_lite.hook = module.exports;
+        app.hook = module.exports;
 
 
 
@@ -12004,7 +12004,7 @@ module.exports = {
     }
 }(typeof module !== 'undefined' && typeof module.exports !== 'undefined' && typeof exports !== 'undefined'));
 /* jslint-ignore-end */
-        app.istanbul_lite['../object-utils'] = module.exports;
+        app['../object-utils'] = module.exports;
 
 
 
@@ -12120,7 +12120,7 @@ InsertionText.prototype = {
 
 module.exports = InsertionText;
 /* jslint-ignore-end */
-        app.istanbul_lite['../util/insertion-text'] = module.exports;
+        app['../util/insertion-text'] = module.exports;
 
 
 
@@ -12340,7 +12340,7 @@ TreeSummarizer.prototype = {
 
 module.exports = TreeSummarizer;
 /* jslint-ignore-end */
-        app.istanbul_lite['../util/tree-summarizer'] = module.exports;
+        app['../util/tree-summarizer'] = module.exports;
 
 
 
@@ -12394,7 +12394,7 @@ module.exports = {
     }
 };
 /* jslint-ignore-end */
-        app.istanbul_lite['./common/defaults'] = module.exports;
+        app['./common/defaults'] = module.exports;
 
 
 
@@ -12959,7 +12959,7 @@ Report.mix(HtmlReport, {
 
 module.exports = HtmlReport;
 /* jslint-ignore-end */
-        app.istanbul_lite.HtmlReport = module.exports;
+        app.HtmlReport = module.exports;
 
 
 
@@ -13178,13 +13178,13 @@ Report.mix(TextReport, {
 
 module.exports = TextReport;
 /* jslint-ignore-end */
-        app.istanbul_lite.TextReport = module.exports;
+        app.TextReport = module.exports;
 
 
 
 // https://github.com/gotwarlost/istanbul/blob/master/lib/assets/base.css
 /* jslint-ignore-begin */
-    app['/assets/base.css'] = ('\
+    app.istanbul_lite['/assets/base.css'] = ('\
 body, html {\n\
     margin:0; padding: 0;\n\
 }\n\
@@ -13376,10 +13376,10 @@ pre.prettyprint {\n\
     // run shared js-env code
     (function () {
         // require modules
-        app.istanbul_lite.fs = require('fs');
-        app.istanbul_lite.module = require('module');
-        app.istanbul_lite.path = require('path');
-        app.istanbul_lite.codeDict = app.istanbul_lite.codeDict || {};
+        app.fs = require('fs');
+        app.module = require('module');
+        app.path = require('path');
+        app.codeDict = app.codeDict || {};
         app.istanbul_lite.coverageReportCreate = function (options) {
             /*
             this function will
@@ -13390,27 +13390,27 @@ pre.prettyprint {\n\
             var collector, tmp;
             options = options || {};
             options.coverage = options.coverage ||
-                app.istanbul_lite.global.__coverage__;
-            options.dir = options.dir || (app.istanbul_lite.modeJs === 'node'
+                app.global.__coverage__;
+            options.dir = options.dir || (app.modeJs === 'node'
                 ? process.env.npm_config_dir_coverage
                 : '/');
 // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
             options.sourceStore = options.sourceStore || {
                 get: function (key) {
-                    return app.istanbul_lite.fs.readFileSync(key, 'utf8');
+                    return app.fs.readFileSync(key, 'utf8');
                 }
             };
 // https://github.com/gotwarlost/istanbul/blob/master/lib/util/file-writer.js
             options.writer = options.writer || {
-                done: app.istanbul_lite.nop,
-                on: app.istanbul_lite.nop,
+                done: app.nop,
+                on: app.nop,
                 write: function (data) {
                     options.writer.data += data;
                 },
                 writeFile: function (file, callback) {
                     options.writer.data = '';
                     callback(options.writer);
-                    app.istanbul_lite.writeFileSync(file, options.writer.data);
+                    app.writeFileSync(file, options.writer.data);
                     return;
                 }
             };
@@ -13432,7 +13432,7 @@ pre.prettyprint {\n\
             collector = {
                 fileCoverageFor: function (file) {
                     var result = options.coverage[file];
-                    app.istanbul_lite[
+                    app[
                         '../object-utils'
                     ].addDerivedInfoForFile(result);
                     return result;
@@ -13442,42 +13442,42 @@ pre.prettyprint {\n\
                 }
             };
             // 1. print coverage in text-format to stdout
-            new app.istanbul_lite.TextReport(options).writeReport(collector);
+            new app.TextReport(options).writeReport(collector);
             // 2. write coverage in html-format to filesystem
-            tmp = new app.istanbul_lite.HtmlReport(options);
+            tmp = new app.HtmlReport(options);
             // disable asset-links in html-format
-            if (app.istanbul_lite.modeJs === 'browser') {
+            if (app.modeJs === 'browser') {
                 tmp.opts.linkMapper.asset = function () {
                     return '';
                 };
             }
-            if (app.istanbul_lite.modeJs === 'node') {
+            if (app.modeJs === 'node') {
                 console.log('creating coverage file://' +
-                    app.istanbul_lite.path.resolve(
+                    app.path.resolve(
                         process.cwd(),
                         options.dir,
                         'index.html'
                     ));
             }
             // write coverage.json
-            app.istanbul_lite.writeFileSync(
-                app.istanbul_lite.path.resolve(
+            app.writeFileSync(
+                app.path.resolve(
                     process.cwd(),
                     options.dir,
                     'coverage.json'
                 ),
-                JSON.stringify(app.istanbul_lite.global.__coverage__)
+                JSON.stringify(app.global.__coverage__)
             );
             // write html-report
             tmp.writeReport(collector);
             // write base.css
-            app.istanbul_lite.writeFileSync(
+            app.writeFileSync(
                 options.dir + '/base.css',
-                app['/assets/base.css']
+                app.istanbul_lite['/assets/base.css']
             );
             // 3. return coverage in html-format as a single document
             tmp = '<style>\n' +
-                app[
+                app.istanbul_lite[
                     '/assets/base.css'
                 ].replace((/([\S ]+?\{)/g), function (match0) {
                     return '.istanbulCoverageDivDiv ' +
@@ -13507,14 +13507,14 @@ pre.prettyprint {\n\
                 '<h2>coverage</h2>\n' + [
                     '/index.html'
                 ].concat(
-                    Object.keys(app.istanbul_lite.writeFileDict).sort()
+                    Object.keys(app.writeFileDict).sort()
                 ).map(function (key, ii) {
                     return ii === 0 || key.slice(-8) === '.js.html'
                         ? '<div class="istanbulCoverageDivDiv">\n' +
-                            app.istanbul_lite.writeFileDict[key] + '</div>\n'
+                            app.writeFileDict[key] + '</div>\n'
                         : '';
                 }).join('\n');
-            if (app.istanbul_lite.modeJs === 'window') {
+            if (app.modeJs === 'window') {
                 (
                     document.querySelector('.istanbulCoverageDiv') || {}
                 ).innerHTML = tmp;
@@ -13529,14 +13529,14 @@ pre.prettyprint {\n\
             3. return instrumented code
             */
             // 1. normalize the file
-            file = app.istanbul_lite.path.resolve('/', file);
+            file = app.path.resolve('/', file);
             // 2. save code to codeDict[file] for future html-report
-            app.istanbul_lite.codeDict[file] = code;
+            app.codeDict[file] = code;
             // 3. return instrumented code
-            return app.istanbul_lite.instrumenter.instrumentSync(code, file);
+            return app.instrumenter.instrumentSync(code, file);
         };
-        app.istanbul_lite.instrumenter = new app.istanbul_lite.Instrumenter();
-        app.istanbul_lite.writeFileSync = function (file, data) {
+        app.instrumenter = new app.Instrumenter();
+        app.writeFileSync = function (file, data) {
             /*
             this function will
             1. try to save file
@@ -13549,27 +13549,27 @@ pre.prettyprint {\n\
                 this function will create the dir, and parent dir if needed
                 */
                 try {
-                    app.istanbul_lite.fs.mkdirSync(dir);
+                    app.fs.mkdirSync(dir);
                 } catch (errorCaught) {
                     // recursively create parent dir
                     if (errorCaught.code === 'ENOENT') {
-                        mkdirpSync(app.istanbul_lite.path.dirname(dir));
+                        mkdirpSync(app.path.dirname(dir));
                         mkdirpSync(dir);
                     }
                 }
             };
             // 1. try to save file
             try {
-                app.istanbul_lite.fs.writeFileSync(file, data);
+                app.fs.writeFileSync(file, data);
             // 2. if save failed,
             //    then recursively create parent dir, and then re-save file
             } catch (errorCaught) {
-                mkdirpSync(app.istanbul_lite.path.dirname(file));
-                app.istanbul_lite.fs.writeFileSync(file, data);
+                mkdirpSync(app.path.dirname(file));
+                app.fs.writeFileSync(file, data);
             }
         };
     }());
-    switch (app.istanbul_lite.modeJs) {
+    switch (app.modeJs) {
 
 
 
@@ -13577,11 +13577,11 @@ pre.prettyprint {\n\
     case 'node':
         // init assets
         app.istanbul_lite['/assets/istanbul-lite.js'] =
-            '//' + app.istanbul_lite.fs.readFileSync(__filename, 'utf8');
+            '//' + app.fs.readFileSync(__filename, 'utf8');
         // run main module
-        if (app.istanbul_lite._module === app.istanbul_lite.require.main) {
+        if (app._module === app.require.main) {
             process.env.npm_config_dir_coverage =
-                app.istanbul_lite.path.resolve(
+                app.path.resolve(
                     process.cwd(),
                     process.env.npm_config_dir_coverage || 'html-report'
                 );
@@ -13592,7 +13592,7 @@ pre.prettyprint {\n\
                     process.env.npm_config_mode_cover_regexp_exclude ||
                     '[^\\S\\s]';
                 // add coverage hook to require
-                app.istanbul_lite.hook.hookRequire(function (file) {
+                app.hook.hookRequire(function (file) {
                     return file.indexOf(process.cwd()) === 0 &&
                         file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
                         !new RegExp(
@@ -13604,7 +13604,7 @@ pre.prettyprint {\n\
                 }, app.istanbul_lite.instrumentSync);
                 // init process.argv
                 process.argv.splice(1, 2);
-                process.argv[1] = app.istanbul_lite.path.resolve(
+                process.argv[1] = app.path.resolve(
                     process.cwd(),
                     process.argv[1]
                 );
@@ -13613,12 +13613,12 @@ pre.prettyprint {\n\
                 process.on('exit', function () {
                     app.istanbul_lite.coverageReportCreate();
                 });
-                app.istanbul_lite.module.runMain();
+                app.module.runMain();
                 break;
             // run report command
             case 'report':
                 app.istanbul_lite.coverageReportCreate({
-                    coverage: JSON.parse(app.istanbul_lite.fs.readFileSync(
+                    coverage: JSON.parse(app.fs.readFileSync(
                         process.env.npm_config_dir_coverage + '/coverage.json',
                         'utf8'
                     ))
@@ -13639,7 +13639,7 @@ pre.prettyprint {\n\
         // init app
         app = {};
         app.istanbul_lite = {};
-        app.istanbul_lite.modeJs = (function () {
+        app.modeJs = (function () {
             try {
                 return module.exports &&
                     typeof process.versions.node === 'string' &&
@@ -13651,40 +13651,40 @@ pre.prettyprint {\n\
                     'browser';
             }
         }());
-        app.istanbul_lite.nop = function () {
+        app.nop = function () {
             /*
             this function will perform no operation - nop
             */
             return;
         };
         // init global
-        app.istanbul_lite.global = app.istanbul_lite.modeJs === 'browser'
+        app.global = app.modeJs === 'browser'
             ? window
             : global;
         // mock package.json for escodegen.js
-        app.istanbul_lite['./package.json'] = {};
+        app['./package.json'] = {};
         // init _istanbulInputTextarea
-        app.istanbul_lite._istanbulInputTextarea =
-            app.istanbul_lite.modeJs === 'browser'
+        app._istanbulInputTextarea =
+            app.modeJs === 'browser'
             ?  document.querySelector('.istanbulInputTextarea') || {}
             : {};
     }());
-    switch (app.istanbul_lite.modeJs) {
+    switch (app.modeJs) {
 
 
 
     // run browser js-env code
     case 'browser':
         // export istanbul_lite
-        app.istanbul_lite.global.istanbul_lite = app.istanbul_lite;
+        app.global.istanbul_lite = app.istanbul_lite;
         // mock __dirname in browser
         app.istanbul_lite.__dirname = '/istanbul-lite';
         // mock module in browser
-        app.istanbul_lite.module = {
+        app.module = {
             _extensions: {}
         };
         // mock path in browser
-        app.istanbul_lite.path = {
+        app.path = {
             dirname: function (file) {
                 return file.replace((/\/[\w\-\.]+?$/), '');
             },
@@ -13695,18 +13695,18 @@ pre.prettyprint {\n\
             }
         };
         // mock process in browser
-        app.istanbul_lite.process = {
+        app.process = {
             cwd: function () {
                 return '';
             },
             stdout: {}
         };
         // mock require in browser
-        app.istanbul_lite.require = function (key) {
-            return app.istanbul_lite[key] || {};
+        app.require = function (key) {
+            return app[key] || {};
         };
         // mock util in browser
-        app.istanbul_lite.util = {
+        app.util = {
             inherits: function (ctor, superCtor) {
                 ctor.super_ = superCtor;
                 ctor.prototype = Object.create(superCtor.prototype, {
@@ -13719,7 +13719,7 @@ pre.prettyprint {\n\
                 });
             }
         };
-        app.istanbul_lite.coverAndEval = function () {
+        app.istanbul_lite.coverTextarea = function () {
             /*
             this function will cover and eval the text in .istanbulInputTextarea
             */
@@ -13727,11 +13727,11 @@ pre.prettyprint {\n\
             var innerHTML;
             // cleanup __coverage__
             delete (
-                app.istanbul_lite.global.__coverage__ || {}
+                app.global.__coverage__ || {}
             )['/istanbulInputTextarea.js'];
             try {
                 eval(app.istanbul_lite.instrumentSync(
-                    app.istanbul_lite._istanbulInputTextarea.value || '',
+                    app._istanbulInputTextarea.value || '',
                     '/istanbulInputTextarea.js'
                 ));
                 innerHTML = app.istanbul_lite.coverageReportCreate();
@@ -13752,9 +13752,9 @@ pre.prettyprint {\n\
         // export istanbul_lite
         module.exports = app.istanbul_lite;
         app.istanbul_lite.__dirname = __dirname;
-        app.istanbul_lite._module = module;
-        app.istanbul_lite.process = process;
-        app.istanbul_lite.require = require;
+        app._module = module;
+        app.process = process;
+        app.require = require;
         break;
     }
     return app;
