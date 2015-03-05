@@ -140,7 +140,7 @@ stupid: true
         app['/assets/utility2.js'] =
             '';
         app['/test/test.js'] =
-            app.fs.readFileSync(__filename);
+            '';
         // create server
         app.server = app.http.createServer(function (request, response) {
             switch (app.url.parse(request.url).pathname) {
