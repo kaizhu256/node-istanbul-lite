@@ -21,7 +21,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 
-# quickstart to run dynamic web-coverage
+# quickstart web example
 #### follow the instruction in this script
 ```
 /*
@@ -183,7 +183,7 @@ stupid: true
 
 
 
-# quickstart to run traditional offline-coverage
+# quickstart command-line example
 #### follow the instruction in this script
 ```
 # example.sh
@@ -260,7 +260,7 @@ shExampleSh
     },
     "scripts": {
         "build2": "node_modules/.bin/utility2 shRun shBuild",
-        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
+        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p tmp && node -e \"require('fs').writeFileSync('tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
     "version": "2015.3.5-10"

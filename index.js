@@ -10360,6 +10360,247 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
 
 
 
+/* jslint-ignore-begin */
+// https://github.com/gotwarlost/istanbul/blob/master/lib/assets/base.css
+app.istanbul_lite['/assets/base.css'] = '\
+body, html {\n\
+    margin:0; padding: 0;\n\
+}\n\
+body {\n\
+    font-family: Helvetica Neue, Helvetica,Arial;\n\
+    font-size: 10pt;\n\
+}\n\
+div.header, div.footer {\n\
+    background: #eee;\n\
+    padding: 1em;\n\
+}\n\
+div.header {\n\
+    z-index: 100;\n\
+    position: fixed;\n\
+    top: 0;\n\
+    border-bottom: 1px solid #666;\n\
+    width: 100%;\n\
+}\n\
+div.footer {\n\
+    border-top: 1px solid #666;\n\
+}\n\
+div.body {\n\
+    margin-top: 10em;\n\
+}\n\
+div.meta {\n\
+    font-size: 90%;\n\
+    text-align: center;\n\
+}\n\
+h1, h2, h3 {\n\
+    font-weight: normal;\n\
+}\n\
+h1 {\n\
+    font-size: 12pt;\n\
+}\n\
+h2 {\n\
+    font-size: 10pt;\n\
+}\n\
+pre {\n\
+    font-family: Consolas, Menlo, Monaco, monospace;\n\
+    margin: 0;\n\
+    padding: 0;\n\
+    line-height: 14px;\n\
+    font-size: 14px;\n\
+    -moz-tab-size: 2;\n\
+    -o-tab-size:  2;\n\
+    tab-size: 2;\n\
+}\n\
+\n\
+div.path { font-size: 110%; }\n\
+div.path a:link, div.path a:visited { color: #000; }\n\
+table.coverage { border-collapse: collapse; margin:0; padding: 0 }\n\
+\n\
+table.coverage td {\n\
+    margin: 0;\n\
+    padding: 0;\n\
+    color: #111;\n\
+    vertical-align: top;\n\
+}\n\
+table.coverage td.line-count {\n\
+    width: 50px;\n\
+    text-align: right;\n\
+    padding-right: 5px;\n\
+}\n\
+table.coverage td.line-coverage {\n\
+    color: #777 !important;\n\
+    text-align: right;\n\
+    border-left: 1px solid #666;\n\
+    border-right: 1px solid #666;\n\
+}\n\
+\n\
+table.coverage td.text {\n\
+}\n\
+\n\
+table.coverage td span.cline-any {\n\
+    display: inline-block;\n\
+    padding: 0 5px;\n\
+    width: 40px;\n\
+}\n\
+table.coverage td span.cline-neutral {\n\
+    background: #eee;\n\
+}\n\
+table.coverage td span.cline-yes {\n\
+    background: #b5d592;\n\
+    color: #999;\n\
+}\n\
+table.coverage td span.cline-no {\n\
+    background: #fc8c84;\n\
+}\n\
+\n\
+.cstat-yes { color: #111; }\n\
+.cstat-no { background: #fc8c84; color: #111; }\n\
+.fstat-no { background: #ffc520; color: #111 !important; }\n\
+.cbranch-no { background:  yellow !important; color: #111; }\n\
+\n\
+.cstat-skip { background: #ddd; color: #111; }\n\
+.fstat-skip { background: #ddd; color: #111 !important; }\n\
+.cbranch-skip { background: #ddd !important; color: #111; }\n\
+\n\
+.missing-if-branch {\n\
+    display: inline-block;\n\
+    margin-right: 10px;\n\
+    position: relative;\n\
+    padding: 0 4px;\n\
+    background: black;\n\
+    color: yellow;\n\
+}\n\
+\n\
+.skip-if-branch {\n\
+    display: none;\n\
+    margin-right: 10px;\n\
+    position: relative;\n\
+    padding: 0 4px;\n\
+    background: #ccc;\n\
+    color: white;\n\
+}\n\
+\n\
+.missing-if-branch .typ, .skip-if-branch .typ {\n\
+    color: inherit !important;\n\
+}\n\
+\n\
+.entity, .metric { font-weight: bold; }\n\
+.metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }\n\
+.metric small { font-size: 80%; font-weight: normal; color: #666; }\n\
+\n\
+div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }\n\
+div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }\n\
+div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }\n\
+div.coverage-summary th.file { border-right: none !important; }\n\
+div.coverage-summary th.pic { border-left: none !important; text-align: right; }\n\
+div.coverage-summary th.pct { border-right: none !important; }\n\
+div.coverage-summary th.abs { border-left: none !important; text-align: right; }\n\
+div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }\n\
+div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }\n\
+div.coverage-summary td.file { text-align: right; border-left: 1px solid #666; white-space: nowrap;  }\n\
+div.coverage-summary td.pic { min-width: 120px !important;  }\n\
+div.coverage-summary a:link { text-decoration: none; color: #000; }\n\
+div.coverage-summary a:visited { text-decoration: none; color: #333; }\n\
+div.coverage-summary a:hover { text-decoration: underline; }\n\
+div.coverage-summary tfoot td { border-top: 1px solid #666; }\n\
+\n\
+div.coverage-summary .sorter {\n\
+    height: 10px;\n\
+    width: 7px;\n\
+    display: inline-block;\n\
+    margin-left: 0.5em;\n\
+    background: url(sort-arrow-sprite.png) no-repeat scroll 0 0 transparent;\n\
+}\n\
+div.coverage-summary .sorted .sorter {\n\
+    background-position: 0 -20px;\n\
+}\n\
+div.coverage-summary .sorted-desc .sorter {\n\
+    background-position: 0 -10px;\n\
+}\n\
+\n\
+.high { background: #b5d592 !important; }\n\
+.medium { background: #ffe87c !important; }\n\
+.low { background: #fc8c84 !important; }\n\
+\n\
+span.cover-fill, span.cover-empty {\n\
+    display:inline-block;\n\
+    border:1px solid #444;\n\
+    background: white;\n\
+    height: 12px;\n\
+}\n\
+span.cover-fill {\n\
+    background: #ccc;\n\
+    border-right: 1px solid #444;\n\
+}\n\
+span.cover-empty {\n\
+    background: white;\n\
+    border-left: none;\n\
+}\n\
+span.cover-full {\n\
+    border-right: none !important;\n\
+}\n\
+pre.prettyprint {\n\
+    border: none !important;\n\
+    padding: 0 !important;\n\
+    margin: 0 !important;\n\
+}\n\
+.com { color: #999 !important; }\n\
+.ignore-none { color: #999; font-weight: normal; }\n\
+';
+
+
+
+// https://github.com/gotwarlost/istanbul/blob/master/lib/report/templates/foot.txt
+app.istanbul_lite['/templates/foot.txt'] = '\
+</div>\n\
+<div class="footer">\n\
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at {{datetime}}</div>\n\
+</div>\n\
+</body>\n\
+</html>\n\
+';
+
+
+
+// https://github.com/gotwarlost/istanbul/blob/master/lib/report/templates/head.txt
+app.istanbul_lite['/templates/head.txt'] = '\
+<!doctype html>\n\
+<html lang="en">\n\
+<head>\n\
+    <title>Code coverage report for {{entity}}</title>\n\
+    <meta charset="utf-8">\n\
+    <link rel="stylesheet" href="{{base.css}}">\n\
+    <style type="text/css">\n\
+        div.coverage-summary .sorter {\n\
+            background-image: url({{sorter.image}});\n\
+        }\n\
+    </style>\n\
+</head>\n\
+<body>\n\
+<div class="header {{reportClass}}">\n\
+    <h1>Code coverage report for <span class="entity">{{entity}}</span></h1>\n\
+    <h2>\n\
+        {{#with metrics.statements}}\n\
+        Statements: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        {{/with}}\n\
+        {{#with metrics.branches}}\n\
+        Branches: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        {{/with}}\n\
+        {{#with metrics.functions}}\n\
+        Functions: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        {{/with}}\n\
+        {{#with metrics.lines}}\n\
+        Lines: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        {{/with}}\n\
+        Ignored: <span class="metric">{{#show_ignores metrics}}{{/show_ignores}}</span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+    </h2>\n\
+    {{{pathHtml}}}\n\
+</div>\n\
+<div class="body">\n\
+';
+/* jslint-ignore-end */
+
+
+
     /* istanbul ignore next */
     (function () {
         var escodegen, esprima, module, window;
@@ -11367,48 +11608,12 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
         app.fs = {
             mkdirSync: app._fs.mkdirSync,
             readFileSync: function (file, options) {
-                // https://github.com/gotwarlost/istanbul/blob/master/lib/report/templates/foot.txt
-/* jslint-ignore-begin */
-        if (file === __dirname + '/templates/foot.txt') {
-          return '</div>\n' +
-            '<div class="footer">\n' +
-              '<div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at {{datetime}}</div>\n' +
-            '</div>\n' +
-            '</body>\n' +
-            '</html>\n';
-        }
-        // https://github.com/gotwarlost/istanbul/blob/master/lib/report/templates/head.txt
-        if (file === __dirname + '/templates/head.txt') {
-          return '<!doctype html>\n' +
-            '<html lang="en">\n' +
-            '<head>\n' +
-              '<title>Code coverage report for {{entity}}</title>\n' +
-              '<meta charset="utf-8">\n' +
-              '<link rel="stylesheet" href="{{base.css}}">\n' +
-            '</head>\n' +
-            '<body>\n' +
-            '<div class="header {{reportClass}}">\n' +
-              '<h1>Code coverage report for <span class="entity">{{entity}}</span></h1>\n' +
-              '<h2>\n' +
-                '{{#with metrics.statements}}\n' +
-                'Statements: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n' +
-                '{{/with}}\n' +
-                '{{#with metrics.branches}}\n' +
-                'Branches: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n' +
-                '{{/with}}\n' +
-                '{{#with metrics.functions}}\n' +
-                'Functions: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n' +
-                '{{/with}}\n' +
-                '{{#with metrics.lines}}\n' +
-                'Lines: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n' +
-                '{{/with}}\n' +
-                'Ignored: <span class="metric">{{#show_ignores metrics}}{{/show_ignores}}</span> &nbsp;&nbsp;&nbsp;&nbsp;\n' +
-              '</h2>\n' +
-              '{{{pathHtml}}}\n' +
-            '</div>\n' +
-            '<div class="body">\n';
-        }
-/* jslint-ignore-end */
+                if (file === __dirname + '/templates/foot.txt') {
+                    return app.istanbul_lite['/templates/foot.txt'];
+                }
+                if (file === __dirname + '/templates/head.txt') {
+                    return app.istanbul_lite['/templates/head.txt'];
+                }
                 return app.modeJs === 'node'
                     ? app._fs.readFileSync(file, options)
                     : app.codeDict[file];
@@ -13179,196 +13384,6 @@ Report.mix(TextReport, {
 module.exports = TextReport;
 /* jslint-ignore-end */
         app.TextReport = module.exports;
-
-
-
-// https://github.com/gotwarlost/istanbul/blob/master/lib/assets/base.css
-/* jslint-ignore-begin */
-    app.istanbul_lite['/assets/base.css'] = ('\
-body, html {\n\
-    margin:0; padding: 0;\n\
-}\n\
-body {\n\
-    font-family: Helvetica Neue, Helvetica,Arial;\n\
-    font-size: 10pt;\n\
-}\n\
-div.header, div.footer {\n\
-    background: #eee;\n\
-    padding: 1em;\n\
-}\n\
-div.header {\n\
-    z-index: 100;\n\
-    position: fixed;\n\
-    top: 0;\n\
-    border-bottom: 1px solid #666;\n\
-    width: 100%;\n\
-}\n\
-div.footer {\n\
-    border-top: 1px solid #666;\n\
-}\n\
-div.body {\n\
-    margin-top: 10em;\n\
-}\n\
-div.meta {\n\
-    font-size: 90%;\n\
-    text-align: center;\n\
-}\n\
-h1, h2, h3 {\n\
-    font-weight: normal;\n\
-}\n\
-h1 {\n\
-    font-size: 12pt;\n\
-}\n\
-h2 {\n\
-    font-size: 10pt;\n\
-}\n\
-pre {\n\
-    font-family: Consolas, Menlo, Monaco, monospace;\n\
-    margin: 0;\n\
-    padding: 0;\n\
-    line-height: 14px;\n\
-    font-size: 14px;\n\
-    -moz-tab-size: 2;\n\
-    -o-tab-size:  2;\n\
-    tab-size: 2;\n\
-}\n\
-\n\
-div.path { font-size: 110%; }\n\
-div.path a:link, div.path a:visited { color: #000; }\n\
-table.coverage { border-collapse: collapse; margin:0; padding: 0 }\n\
-\n\
-table.coverage td {\n\
-    margin: 0;\n\
-    padding: 0;\n\
-    color: #111;\n\
-    vertical-align: top;\n\
-}\n\
-table.coverage td.line-count {\n\
-    width: 50px;\n\
-    text-align: right;\n\
-    padding-right: 5px;\n\
-}\n\
-table.coverage td.line-coverage {\n\
-    color: #777 !important;\n\
-    text-align: right;\n\
-    border-left: 1px solid #666;\n\
-    border-right: 1px solid #666;\n\
-}\n\
-\n\
-table.coverage td.text {\n\
-}\n\
-\n\
-table.coverage td span.cline-any {\n\
-    display: inline-block;\n\
-    padding: 0 5px;\n\
-    width: 40px;\n\
-}\n\
-table.coverage td span.cline-neutral {\n\
-    background: #eee;\n\
-}\n\
-table.coverage td span.cline-yes {\n\
-    background: #b5d592;\n\
-    color: #999;\n\
-}\n\
-table.coverage td span.cline-no {\n\
-    background: #fc8c84;\n\
-}\n\
-\n\
-.cstat-yes { color: #111; }\n\
-.cstat-no { background: #fc8c84; color: #111; }\n\
-.fstat-no { background: #ffc520; color: #111 !important; }\n\
-.cbranch-no { background:  yellow !important; color: #111; }\n\
-\n\
-.cstat-skip { background: #ddd; color: #111; }\n\
-.fstat-skip { background: #ddd; color: #111 !important; }\n\
-.cbranch-skip { background: #ddd !important; color: #111; }\n\
-\n\
-.missing-if-branch {\n\
-    display: inline-block;\n\
-    margin-right: 10px;\n\
-    position: relative;\n\
-    padding: 0 4px;\n\
-    background: black;\n\
-    color: yellow;\n\
-}\n\
-\n\
-.skip-if-branch {\n\
-    display: none;\n\
-    margin-right: 10px;\n\
-    position: relative;\n\
-    padding: 0 4px;\n\
-    background: #ccc;\n\
-    color: white;\n\
-}\n\
-\n\
-.missing-if-branch .typ, .skip-if-branch .typ {\n\
-    color: inherit !important;\n\
-}\n\
-\n\
-.entity, .metric { font-weight: bold; }\n\
-.metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }\n\
-.metric small { font-size: 80%; font-weight: normal; color: #666; }\n\
-\n\
-div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }\n\
-div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }\n\
-div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }\n\
-div.coverage-summary th.file { border-right: none !important; }\n\
-div.coverage-summary th.pic { border-left: none !important; text-align: right; }\n\
-div.coverage-summary th.pct { border-right: none !important; }\n\
-div.coverage-summary th.abs { border-left: none !important; text-align: right; }\n\
-div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }\n\
-div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }\n\
-div.coverage-summary td.file { text-align: right; border-left: 1px solid #666; white-space: nowrap;  }\n\
-div.coverage-summary td.pic { min-width: 120px !important;  }\n\
-div.coverage-summary a:link { text-decoration: none; color: #000; }\n\
-div.coverage-summary a:visited { text-decoration: none; color: #333; }\n\
-div.coverage-summary a:hover { text-decoration: underline; }\n\
-div.coverage-summary tfoot td { border-top: 1px solid #666; }\n\
-\n\
-div.coverage-summary .sorter {\n\
-    height: 10px;\n\
-    width: 7px;\n\
-    display: inline-block;\n\
-    margin-left: 0.5em;\n\
-    background: url(sort-arrow-sprite.png) no-repeat scroll 0 0 transparent;\n\
-}\n\
-div.coverage-summary .sorted .sorter {\n\
-    background-position: 0 -20px;\n\
-}\n\
-div.coverage-summary .sorted-desc .sorter {\n\
-    background-position: 0 -10px;\n\
-}\n\
-\n\
-.high { background: #b5d592 !important; }\n\
-.medium { background: #ffe87c !important; }\n\
-.low { background: #fc8c84 !important; }\n\
-\n\
-span.cover-fill, span.cover-empty {\n\
-    display:inline-block;\n\
-    border:1px solid #444;\n\
-    background: white;\n\
-    height: 12px;\n\
-}\n\
-span.cover-fill {\n\
-    background: #ccc;\n\
-    border-right: 1px solid #444;\n\
-}\n\
-span.cover-empty {\n\
-    background: white;\n\
-    border-left: none;\n\
-}\n\
-span.cover-full {\n\
-    border-right: none !important;\n\
-}\n\
-pre.prettyprint {\n\
-    border: none !important;\n\
-    padding: 0 !important;\n\
-    margin: 0 !important;\n\
-}\n\
-.com { color: #999 !important; }\n\
-.ignore-none { color: #999; font-weight: normal; }\n\
-');
-/* jslint-ignore-end */
     }());
 
 
@@ -13514,11 +13529,6 @@ pre.prettyprint {\n\
                             app.writeFileDict[key] + '</div>\n'
                         : '';
                 }).join('\n');
-            if (app.modeJs === 'window') {
-                (
-                    document.querySelector('.istanbulCoverageDiv') || {}
-                ).innerHTML = tmp;
-            }
             return tmp;
         };
         app.istanbul_lite.instrumentSync = function (code, file) {
@@ -13575,6 +13585,21 @@ pre.prettyprint {\n\
 
     // run node js-env code
     case 'node':
+        app.istanbul_lite.instrumentInPackage = function (
+            code,
+            file,
+            packageName
+        ) {
+            /*
+            this function will cover the code,
+            only if packageName === $npm_package_name
+            */
+            return app.global.__coverage__ &&
+                packageName &&
+                packageName === process.env.npm_package_name
+                ? app.istanbul_lite.instrumentSync(code, file)
+                : code;
+        };
         // init assets
         app.istanbul_lite['/assets/istanbul-lite.js'] =
             '//' + app.fs.readFileSync(__filename, 'utf8');
@@ -13663,11 +13688,6 @@ pre.prettyprint {\n\
             : global;
         // mock package.json for escodegen.js
         app['./package.json'] = {};
-        // init _istanbulInputTextarea
-        app._istanbulInputTextarea =
-            app.modeJs === 'browser'
-            ?  document.querySelector('.istanbulInputTextarea') || {}
-            : {};
     }());
     switch (app.modeJs) {
 
@@ -13731,7 +13751,8 @@ pre.prettyprint {\n\
             )['/istanbulInputTextarea.js'];
             try {
                 eval(app.istanbul_lite.instrumentSync(
-                    app._istanbulInputTextarea.value || '',
+                    (document.querySelector('.istanbulInputTextarea') || {
+                    }).value || '',
                     '/istanbulInputTextarea.js'
                 ));
                 innerHTML = app.istanbul_lite.coverageReportCreate();

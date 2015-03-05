@@ -77,14 +77,22 @@ stupid: true
     case 'browser':
         // export app
         window.app = app;
+        // init onErrorExit
+        app.utility2.onErrorExit = function () {
+            delete window.__coverage__['/istanbulInputTextarea.js'];
+        };
         // init tests
         app._coverTextarea_default_test = function (onError) {
-            var data, istanbulInputTextarea, value;
-            istanbulInputTextarea =
-                document.querySelector('.istanbulInputTextarea');
             /*
             this function will test coverTextarea's default handling behavior
             */
+            var data, istanbulInputTextarea, value;
+            istanbulInputTextarea =
+                document.querySelector('.istanbulInputTextarea');
+            if (!istanbulInputTextarea) {
+                onError();
+                return;
+            }
             // save value
             value = istanbulInputTextarea.value;
             // test default handling behavior
@@ -155,17 +163,64 @@ stupid: true
                 }
             });
         };
+        app._instrumentInPackage_default_test = function (onError) {
+            /*
+            this function will test instrumentInPackage's
+            default handling behavior
+            */
+            var data;
+            app.utility2.testMock([
+                [app.utility2.global, { __coverage__: {} }]
+            ], onError, function (onError) {
+                // test no cover handling behavior
+                data = app.istanbul_lite.instrumentInPackage(
+                    '1',
+                    'test.js',
+                    ''
+                );
+                // validate data
+                app.utility2.assert(data === '1', data);
+                // test cover handling behavior
+                data = app.istanbul_lite.instrumentInPackage(
+                    '1',
+                    'test.js',
+                    'istanbul-lite'
+                );
+                // validate data
+                app.utility2.assert(
+                    data.indexOf(".s[\'1\']++;1;\n") >= 0,
+                    data
+                );
+                onError();
+            });
+        };
         app._testPage_default_test = function (onError) {
             /*
             this function will test the test-page's default handling behavior
             */
+            var onParallel;
+            onParallel = app.utility2.onParallel(onError);
+            onParallel.counter += 1;
+            // test test-page handling behavior
+            onParallel.counter += 1;
             app.utility2.phantomTest({
                 url: 'http://localhost:' +
                     app.utility2.envDict.npm_config_server_port +
                     '?modeTest=phantom&' +
                     '_testSecret={{_testSecret}}&' +
                     'timeoutDefault=' + app.utility2.timeoutDefault
-            }, onError);
+            }, onParallel);
+            // test standalone script handling behavior
+            onParallel.counter += 1;
+            app.utility2.phantomTest({
+                url: 'http://localhost:' +
+                    app.utility2.envDict.npm_config_server_port +
+                    '/test/script.html' +
+                    '?modeTest=phantom&' +
+                    '_testSecret={{_testSecret}}&' +
+                    'timeoutDefault=' + app.utility2.timeoutDefault
+            }, onParallel);
+            onParallel();
         };
         // init assets
         app['/'] =
@@ -179,7 +234,7 @@ stupid: true
                     envDict: app.utility2.envDict
                 });
         app['/assets/istanbul-lite.js'] =
-            app.utility2.istanbulInstrumentInPackage(
+            app.istanbul_lite.instrumentInPackage(
                 app.istanbul_lite['/assets/istanbul-lite.js'],
                 __dirname + '/index.js',
                 'istanbul-lite'
@@ -188,8 +243,13 @@ stupid: true
             app.utility2['/assets/utility2.css'];
         app['/assets/utility2.js'] =
             app.utility2['/assets/utility2.js'];
+        app['/test/script.html'] =
+            '<script src="/assets/utility2.js"></script>\n' +
+            '<script src="/assets/istanbul-lite.js"></script>\n' +
+            '<script>window.istanbul_lite.coverTextarea()</script>\n' +
+            '<script src="/test/test.js"></script>\n';
         app['/test/test.js'] =
-            app.utility2.istanbulInstrumentInPackage(
+            app.istanbul_lite.instrumentInPackage(
                 app.utility2.fs.readFileSync(__filename, 'utf8'),
                 __filename,
                 'istanbul-lite'
@@ -206,6 +266,7 @@ stupid: true
                 case '/assets/istanbul-lite.js':
                 case '/assets/utility2.css':
                 case '/assets/utility2.js':
+                case '/test/script.html':
                 case '/test/test.js':
                     response.end(app[request.urlPathNormalized]);
                     break;
