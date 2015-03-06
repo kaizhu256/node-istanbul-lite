@@ -244,7 +244,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.6-12",
+        "utility2": "2015.3.6-13",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -284,15 +284,14 @@ node_modules/.bin/utility2 shRun shIstanbulTest test.js",
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.6-12"
+    "version": "2015.3.6-13"
 }
 ```
 
 
 
 # todo
-- npm publish 2015.3.6-12
-- use new-style test-case name - testCase_*
+- npm publish 2015.3.6-13
 - none
 
 
