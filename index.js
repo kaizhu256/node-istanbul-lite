@@ -13406,6 +13406,9 @@ module.exports = TextReport;
             options = options || {};
             options.coverage = options.coverage ||
                 app.global.__coverage__;
+            if (!options.coverage) {
+                return '';
+            }
             options.dir = options.dir || (app.modeJs === 'node'
                 ? process.env.npm_config_dir_coverage
                 : '/');
@@ -13432,7 +13435,7 @@ module.exports = TextReport;
             // filter undefined file from coverage
             tmp = options.coverage;
             options.coverage = {};
-            Object.keys(tmp || {}).forEach(function (key) {
+            Object.keys(tmp).forEach(function (key) {
                 try {
                     if (options.sourceStore.get(key)) {
                         // json-copy to prevent side-effects
@@ -13457,7 +13460,9 @@ module.exports = TextReport;
                 }
             };
             // 1. print coverage in text-format to stdout
-            new app.TextReport(options).writeReport(collector);
+            if (app.modeJs === 'node') {
+                new app.TextReport(options).writeReport(collector);
+            }
             // 2. write coverage in html-format to filesystem
             tmp = new app.HtmlReport(options);
             // disable asset-links in html-format

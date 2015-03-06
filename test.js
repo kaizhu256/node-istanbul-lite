@@ -38,7 +38,7 @@ stupid: true
             ? window.utility2
             : require('utility2');
         // init tests
-        app._ajax_404_test = function (onError) {
+        app.testCase_ajax_404 = function (onError) {
             /*
             this function will test ajax's 404 http statusCode handling behavior
             */
@@ -58,7 +58,7 @@ stupid: true
                 }, onError);
             });
         };
-        app._instrumentSync_default_test = function (onError) {
+        app.testCase_instrumentSync_default = function (onError) {
             /*
             this function will test instrumentSync's default handling behavior
             */
@@ -82,7 +82,7 @@ stupid: true
             delete window.__coverage__['/istanbulInputTextarea.js'];
         };
         // init tests
-        app._coverTextarea_default_test = function (onError) {
+        app.testCase_coverTextarea_default = function (onError) {
             /*
             this function will test coverTextarea's default handling behavior
             */
@@ -130,7 +130,7 @@ stupid: true
         app.fs = require('fs');
         app.path = require('path');
         // init tests
-        app._coverageReportCreate_default_test = function (onError) {
+        app.testCase_coverageReportCreate_default = function (onError) {
             /*
             this function will test coverageReportCreate's
             default handling behavior
@@ -163,7 +163,7 @@ stupid: true
                 }
             });
         };
-        app._instrumentInPackage_default_test = function (onError) {
+        app.testCase_instrumentInPackage_default = function (onError) {
             /*
             this function will test instrumentInPackage's
             default handling behavior
@@ -194,7 +194,7 @@ stupid: true
                 onError();
             });
         };
-        app._testPage_default_test = function (onError) {
+        app.testCase_testPage_default = function (onError) {
             /*
             this function will test the test-page's default handling behavior
             */

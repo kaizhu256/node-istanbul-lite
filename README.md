@@ -130,16 +130,16 @@ stupid: true
 
 
 
-                String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
-                switch (match0) {
-                case '{{envDict.npm_package_description}}':
-                    return 'coverage demo';
-                case '{{envDict.npm_package_name}}':
-                    return 'istanbul-lite';
-                case '{{envDict.npm_package_version}}':
-                    return '0.0.1';
-                }
-            });
+            String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
+            switch (match0) {
+            case '{{envDict.npm_package_description}}':
+                return 'this is an example module';
+            case '{{envDict.npm_package_name}}':
+                return 'example-module';
+            case '{{envDict.npm_package_version}}':
+                return '0.0.1';
+            }
+        });
         app['/assets/istanbul-lite.js'] =
             app.istanbul_lite['/assets/istanbul-lite.js'];
         app['/assets/utility2.css'] =
@@ -244,7 +244,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.6-11",
+        "utility2": "2015.3.6-12",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -272,26 +272,27 @@ with zero npm dependencies",
 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport \
 && mkdir -p tmp \
-&& node -e \"require('fs').writeFileSync( \
-    'tmp/covered.istanbul-lite.js', \
-    '#!/usr/bin/env node\\n' + require('./index.js') \
-        .instrumentSync( \
-            require('fs').readFileSync('./index.js', 'utf8'), \
-            process.cwd() + '/index.js' \
-        ), \
-    { mode: 0755 } \
+&& node -e \"require('fs').writeFileSync(\n\
+    'tmp/covered.istanbul-lite.js',\n\
+    '#!/usr/bin/env node\\n' + require('./index.js')\n\
+        .instrumentSync(\n\
+            require('fs').readFileSync('./index.js', 'utf8'),\n\
+            process.cwd() + '/index.js'\n\
+        ),\n\
+    { mode: 493 }\n\
 );\" \
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.6-11"
+    "version": "2015.3.6-12"
 }
 ```
 
 
 
 # todo
-- npm publish 2015.3.6-11
+- npm publish 2015.3.6-12
+- use new-style test-case name - testCase_*
 - none
 
 
