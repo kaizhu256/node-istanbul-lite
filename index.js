@@ -13466,14 +13466,6 @@ module.exports = TextReport;
                     return '';
                 };
             }
-            if (app.modeJs === 'node') {
-                console.log('creating coverage file://' +
-                    app.path.resolve(
-                        process.cwd(),
-                        options.dir,
-                        'index.html'
-                    ));
-            }
             // write coverage.json
             app.writeFileSync(
                 app.path.resolve(
@@ -13490,6 +13482,14 @@ module.exports = TextReport;
                 options.dir + '/base.css',
                 app.istanbul_lite['/assets/base.css']
             );
+            if (app.modeJs === 'node') {
+                console.log('created coverage file://' +
+                    app.path.resolve(
+                        process.cwd(),
+                        options.dir,
+                        'index.html'
+                    ));
+            }
             // 3. return coverage in html-format as a single document
             tmp = '<style>\n' +
                 app.istanbul_lite[

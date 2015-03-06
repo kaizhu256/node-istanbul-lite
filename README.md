@@ -25,17 +25,18 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 #### follow the instruction in this script
 ```
 /*
-    example.js
+example.js
 
-    this shared browser / node script will serve a web-page
-    with dynamic web-coverage and web-reporting
+this shared browser / node script will serve a web-page
+with dynamic web-coverage and web-reporting
 
-    instruction
-    1. save this script as example.js
-    2. run the shell command:
-          $ npm install istanbul-lite && node example.js
-    3. open a browser to http://localhost:1337
+instruction
+1. save this script as example.js
+2. run the shell command:
+      $ npm install istanbul-lite && node example.js
+3. open a browser to http://localhost:1337
 */
+
 /*jslint
 browser: true,
 maxerr: 4,
@@ -44,6 +45,7 @@ node: true,
 nomen: true,
 stupid: true
 */
+
 (function () {
     'use strict';
     var app;
@@ -59,6 +61,9 @@ stupid: true
         // init assets
         app['/'] =
             (String() +
+
+
+
 /* jslint-ignore-begin */
 '<!DOCTYPE html>\n' +
 '<html>\n' +
@@ -123,6 +128,9 @@ stupid: true
 '</body>\n' +
 '</html>\n' +
 /* jslint-ignore-end */
+
+
+
             String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
                 switch (match0) {
                 case '{{envDict.npm_package_description}}':
@@ -236,7 +244,7 @@ shExampleSh
     "bin": { "istanbul-lite" : "index.js" },
     "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.5-12",
+        "utility2": "2015.3.6-10",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -263,13 +271,14 @@ shExampleSh
         "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p tmp && node -e \"require('fs').writeFileSync('tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.5-12"
+    "version": "2015.3.6-10"
 }
 ```
 
 
 
 # todo
+- npm publish 2015.3.6-10
 - none
 
 

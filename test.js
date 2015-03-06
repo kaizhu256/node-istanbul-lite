@@ -224,7 +224,7 @@ stupid: true
         };
         // init assets
         app['/'] =
-            app.utility2.textFormat(app.utility2.fs
+            app.utility2.textFormat(app.fs
                 .readFileSync(__dirname + '/README.md', 'utf8')
                 .replace(
                     (/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/),
@@ -250,7 +250,7 @@ stupid: true
             '<script src="/test/test.js"></script>\n';
         app['/test/test.js'] =
             app.istanbul_lite.instrumentInPackage(
-                app.utility2.fs.readFileSync(__filename, 'utf8'),
+                app.fs.readFileSync(__filename, 'utf8'),
                 __filename,
                 'istanbul-lite'
             );
