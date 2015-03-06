@@ -27,14 +27,14 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 /*
 example.js
 
-this shared browser / node script will serve a web-page
-with dynamic web-coverage and web-reporting
+this node script will serve a web-page
+that will dynamically cover and report arbitrary javascript code
 
 instruction
-1. save this script as example.js
-2. run the shell command:
-      $ npm install istanbul-lite && node example.js
-3. open a browser to http://localhost:1337
+    1. save this script as example.js
+    2. run the shell command:
+          $ npm install istanbul-lite && node example.js
+    3. open a browser to http://localhost:1337
 */
 
 /*jslint
@@ -59,8 +59,7 @@ stupid: true
         app.istanbul_lite = require('istanbul-lite');
         app.url = require('url');
         // init assets
-        app['/'] =
-            (String() +
+        app['/'] = (String() +
 
 
 
@@ -131,7 +130,7 @@ stupid: true
 
 
 
-            String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
+                String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
                 switch (match0) {
                 case '{{envDict.npm_package_description}}':
                     return 'coverage demo';
@@ -201,7 +200,7 @@ stupid: true
     # 2. create test-script foo.js
     # 3. run offline-coverage for foo.js and create an offline-report
 
-# instruction:
+# instruction
     # 1. copy and paste this entire shell script into a console and press enter
     # 2. open ./html-report/index.html to view coverage of foo.js
 
@@ -242,9 +241,10 @@ shExampleSh
     "_packageJson": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": { "istanbul-lite" : "index.js" },
-    "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
+    "description": "lightweight browser version of istanbul coverage \
+with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.6-10",
+        "utility2": "2015.3.6-11",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -268,17 +268,30 @@ shExampleSh
     },
     "scripts": {
         "build2": "node_modules/.bin/utility2 shRun shBuild",
-        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
-        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p tmp && node -e \"require('fs').writeFileSync('tmp/covered.istanbul-lite.js', '#!/usr/bin/env node\\n' + require('./index.js').instrumentSync(require('fs').readFileSync('./index.js', 'utf8'), process.cwd() + '/index.js'), { mode: 0755 })\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
+        "start": "npm_config_mode_auto_restart=1 \
+node_modules/.bin/utility2 shRun shIstanbulTest test.js",
+        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport \
+&& mkdir -p tmp \
+&& node -e \"require('fs').writeFileSync( \
+    'tmp/covered.istanbul-lite.js', \
+    '#!/usr/bin/env node\\n' + require('./index.js') \
+        .instrumentSync( \
+            require('fs').readFileSync('./index.js', 'utf8'), \
+            process.cwd() + '/index.js' \
+        ), \
+    { mode: 0755 } \
+);\" \
+&& npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
+node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.6-10"
+    "version": "2015.3.6-11"
 }
 ```
 
 
 
 # todo
-- npm publish 2015.3.6-10
+- npm publish 2015.3.6-11
 - none
 
 
@@ -301,16 +314,17 @@ shBuild() {
     shRun shNpmTestPublished || return $?
 
     # test example js script
-    MODE_BUILD=testExampleJs\
-    shRunScreenCapture shReadmeTestJs example.js || return $?
+    MODE_BUILD=testExampleJs \
+        shRunScreenCapture shReadmeTestJs example.js || return $?
     # copy phantomjs screen-capture to $npm_config_dir_build
-    cp /tmp/app/tmp/build/screen-capture.*.png $npm_config_dir_build || return $?
+    cp /tmp/app/tmp/build/screen-capture.*.png $npm_config_dir_build \
+        || return $?
 
     # test example shell script
-    MODE_BUILD=testExampleSh\
-    shRunScreenCapture shReadmeTestSh example.sh || return $?
+    MODE_BUILD=testExampleSh \
+        shRunScreenCapture shReadmeTestSh example.sh || return $?
     # screen-capture example.sh coverage
-    MODE_BUILD=testExampleSh shRun shPhantomScreenCapture\
+    MODE_BUILD=testExampleSh shRun shPhantomScreenCapture \
         /tmp/app/html-report/app/foo.js.html || :
 
     # run npm-test
@@ -324,10 +338,10 @@ shBuild() {
         [ "$CI_BRANCH" = beta ] ||
         [ "$CI_BRANCH" = master ]
     then
-        local TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" ||\
-            return $?
-        TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" ||\
-            return $?
+        local TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" \
+            || return $?
+        TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" \
+            || return $?
         MODE_BUILD=herokuTest shRun shPhantomTest $TEST_URL || return $?
     fi
 
@@ -346,19 +360,19 @@ shBuildCleanup() {
     # create package-listing
     MODE_BUILD=gitLsTree shRunScreenCapture shGitLsTree || return $?
     # create recent changelog of last 50 commits
-    MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" ||\
-        return $?
+    MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" \
+        || return $?
     # add black border around phantomjs screen-capture
-    shBuildPrint phantomScreenCapture\
+    shBuildPrint phantomScreenCapture \
         "add black border around phantomjs screen-capture" || return $?
-    local FILE_LIST="$(ls\
-        $npm_config_dir_build/screen-capture.*.phantomjs*.png\
-        $npm_config_dir_build/screen-capture.*.slimerjs*.png\
+    local FILE_LIST="$(ls \
+        $npm_config_dir_build/screen-capture.*.phantomjs*.png \
+        $npm_config_dir_build/screen-capture.*.slimerjs*.png \
         2>/dev/null)" || return $?
     if [ "$FILE_LIST" ] && (mogrify --version > /dev/null 2>&1)
     then
-        printf "$FILE_LIST" |\
-            xargs -n 1 mogrify -frame 1 -mattecolor black || return $?
+        printf "$FILE_LIST" \
+            | xargs -n 1 mogrify -frame 1 -mattecolor black || return $?
     fi
 }
 shBuildCleanup || exit $?

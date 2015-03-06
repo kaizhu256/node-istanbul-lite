@@ -230,6 +230,8 @@ stupid: true
                     (/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/),
                     '$1'
                 )
+                // parse '\' line-continuation
+                .replace((/\\\n/g), '')
                 .replace((/\\n' \+(\s*?)'/g), '$1'), {
                     envDict: app.utility2.envDict
                 });
