@@ -13397,10 +13397,10 @@ module.exports = TextReport;
         local.codeDict = local.codeDict || {};
         local.istanbul_lite.coverageReportCreate = function (options) {
             /*
-            this function will
-            1. print coverage in text-format to stdout
-            2. write coverage in html-format to filesystem
-            3. return coverage in html-format as single document
+                this function will
+                1. print coverage in text-format to stdout
+                2. write coverage in html-format to filesystem
+                3. return coverage in html-format as single document
             */
             var collector, tmp;
             options = options || {};
@@ -13543,10 +13543,10 @@ module.exports = TextReport;
         };
         local.istanbul_lite.instrumentSync = function (code, file, options) {
             /*
-            this function will
-            1. normalize the file
-            2. save code to codeDict[file] for future html-report
-            3. return instrumented code
+                this function will
+                1. normalize the file
+                2. save code to codeDict[file] for future html-report
+                3. return instrumented code
             */
             // 1. normalize the file
             file = local.path.resolve('/', file);
@@ -13558,15 +13558,15 @@ module.exports = TextReport;
         local.instrumenter = new local.Instrumenter();
         local.writeFileSync = function (file, data) {
             /*
-            this function will
-            1. try to save file
-            2. if save failed,
-                then recursively create parent dir, and then re-save file
+                this function will
+                1. try to save file
+                2. if save failed,
+                    then recursively create parent dir, and then re-save file
             */
             var mkdirpSync;
             mkdirpSync = function (dir) {
                 /*
-                this function will create the dir, and parent dir if needed
+                    this function will create the dir, and parent dir if needed
                 */
                 try {
                     local.fs.mkdirSync(dir);
@@ -13601,8 +13601,8 @@ module.exports = TextReport;
             packageName
         ) {
             /*
-            this function will cover the code,
-            only if packageName === $npm_package_name
+                this function will cover the code,
+                only if packageName === $npm_package_name
             */
             return local.global.__coverage__ &&
                 packageName &&
@@ -13679,7 +13679,7 @@ module.exports = TextReport;
         }());
         local.nop = function () {
             /*
-            this function will perform no operation - nop
+                this function will perform no operation - nop
             */
             return;
         };
@@ -13742,7 +13742,8 @@ module.exports = TextReport;
         };
         local.istanbul_lite.coverTextarea = function () {
             /*
-            this function will cover and eval the text in .istanbulInputTextarea
+                this function will cover and eval the text
+                in .istanbulInputTextarea
             */
             /*jslint evil: true*/
             var innerHTML;

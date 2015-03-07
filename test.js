@@ -8,7 +8,7 @@
 */
 (function () {
     /*
-    this function will test this module
+        this function will test this module
     */
     'use strict';
     var local;
@@ -44,7 +44,8 @@
         // init tests
         local.testCase_ajax_404 = function (onError) {
             /*
-            this function will test ajax's 404 http statusCode handling behavior
+                this function will test ajax's
+                404 http statusCode handling behavior
             */
             // test '/test/undefined'
             local.utility2.ajax({
@@ -64,7 +65,8 @@
         };
         local.testCase_instrumentSync_default = function (onError) {
             /*
-            this function will test instrumentSync's default handling behavior
+                this function will test instrumentSync's
+                default handling behavior
             */
             var data;
             data = local.istanbul_lite.instrumentSync('1', 'test.js');
@@ -88,7 +90,8 @@
         // init tests
         local.testCase_coverTextarea_default = function (onError) {
             /*
-            this function will test coverTextarea's default handling behavior
+                this function will test coverTextarea's
+                default handling behavior
             */
             var data, istanbulInputTextarea, value;
             istanbulInputTextarea =
@@ -136,8 +139,8 @@
         // init tests
         local.testCase_coverageReportCreate_default = function (onError) {
             /*
-            this function will test coverageReportCreate's
-            default handling behavior
+                this function will test coverageReportCreate's
+                default handling behavior
             */
             var dir;
             local.utility2.testMock([
@@ -169,8 +172,8 @@
         };
         local.testCase_instrumentInPackage_default = function (onError) {
             /*
-            this function will test instrumentInPackage's
-            default handling behavior
+                this function will test instrumentInPackage's
+                default handling behavior
             */
             var data;
             local.utility2.testMock([
@@ -200,7 +203,8 @@
         };
         local.testCase_testPage_default = function (onError) {
             /*
-            this function will test the test-page's default handling behavior
+                this function will test the test-page's
+                default handling behavior
             */
             var onParallel;
             onParallel = local.utility2.onParallel(onError);
@@ -260,7 +264,7 @@
         local.serverMiddlewareList = [
             function (request, response, onNext) {
                 /*
-                this function is the main test-middleware
+                    this function is the main test-middleware
                 */
                 switch (request.urlPathNormalized) {
                 // serve assets
