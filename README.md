@@ -38,28 +38,28 @@ instruction
 */
 
 /*jslint
-browser: true,
-maxerr: 4,
-maxlen: 80,
-node: true,
-nomen: true,
-stupid: true
+    browser: true,
+    maxerr: 4,
+    maxlen: 80,
+    node: true,
+    nomen: true,
+    stupid: true
 */
 
 (function () {
     'use strict';
-    var app;
+    var local;
     // run node js-env code
     (function () {
-        // init app
-        app = {};
+        // init local
+        local = {};
         // require modules
-        app.fs = require('fs');
-        app.http = require('http');
-        app.istanbul_lite = require('istanbul-lite');
-        app.url = require('url');
+        local.fs = require('fs');
+        local.http = require('http');
+        local.istanbul_lite = require('istanbul-lite');
+        local.url = require('url');
         // init assets
-        app['/'] = (String() +
+        local['/'] = (String() +
 
 
 
@@ -140,24 +140,24 @@ stupid: true
                 return '0.0.1';
             }
         });
-        app['/assets/istanbul-lite.js'] =
-            app.istanbul_lite['/assets/istanbul-lite.js'];
-        app['/assets/utility2.css'] =
+        local['/assets/istanbul-lite.js'] =
+            local.istanbul_lite['/assets/istanbul-lite.js'];
+        local['/assets/utility2.css'] =
             '';
-        app['/assets/utility2.js'] =
+        local['/assets/utility2.js'] =
             '';
-        app['/test/test.js'] =
+        local['/test/test.js'] =
             '';
         // create server
-        app.server = app.http.createServer(function (request, response) {
-            switch (app.url.parse(request.url).pathname) {
+        local.server = local.http.createServer(function (request, response) {
+            switch (local.url.parse(request.url).pathname) {
             // serve assets
             case '/':
             case '/assets/istanbul-lite.js':
             case '/assets/utility2.css':
             case '/assets/utility2.js':
             case '/test/test.js':
-                response.end(app[app.url.parse(request.url).pathname]);
+                response.end(local[local.url.parse(request.url).pathname]);
                 break;
             // default to 404 Not Found
             default:
@@ -166,17 +166,17 @@ stupid: true
             }
         });
         // start server
-        app.serverPort = 1337;
-        console.log('server starting on port ' + app.serverPort);
-        app.server.listen(app.serverPort, function () {
+        local.serverPort = 1337;
+        console.log('server starting on port ' + local.serverPort);
+        local.server.listen(local.serverPort, function () {
             // this internal build-code will screen-capture the server
             // and then exit
             if (process.env.MODE_BUILD === 'testExampleJs') {
-                console.log('server stopping on port ' + app.serverPort);
+                console.log('server stopping on port ' + local.serverPort);
                 require(
                     process.env.npm_config_dir_utility2 + '/index.js'
                 ).phantomScreenCapture({
-                    url: 'http://localhost:' + app.serverPort
+                    url: 'http://localhost:' + local.serverPort
                 }, process.exit);
             }
         });
@@ -244,7 +244,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.6-13",
+        "utility2": "2015.3.7-11",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -291,7 +291,6 @@ node_modules/.bin/utility2 shRun shNpmTest test.js"
 
 
 # todo
-- npm publish 2015.3.6-13
 - none
 
 
