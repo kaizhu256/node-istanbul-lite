@@ -196,24 +196,24 @@ instruction
 # example.sh
 
 # this shell script will
-    # 1. npm install istanbul-lite
-    # 2. create test-script foo.js
-    # 3. run offline-coverage for foo.js and create an offline-report
+    # npm install istanbul-lite
+    # create test-script foo.js
+    # run offline-coverage for foo.js and create an offline-report
 
 # instruction
     # 1. copy and paste this entire shell script into a console and press enter
     # 2. open ./html-report/index.html to view coverage of foo.js
 
 shExampleSh() {
-    # 1. npm install istanbul-lite
+    # npm install istanbul-lite
     npm install istanbul-lite || return $?
 
-    # 2. create test-script foo.js
+    # create test-script foo.js
     local SCRIPT="if (true) { console.log('hello'); }" || return $?
     SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
     printf "$SCRIPT" > foo.js || return $?
 
-    # 3. run offline-coverage for foo.js and create an offline-report
+    # run offline-coverage for foo.js and create an offline-report
     node_modules/.bin/istanbul-lite cover foo.js || return $?
 }
 shExampleSh
@@ -270,9 +270,9 @@ with zero npm dependencies",
         "build2": "node_modules/.bin/utility2 shRun shBuild",
         "start": "npm_config_mode_auto_restart=1 \
 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
-        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport \
-&& mkdir -p tmp \
-&& node -e \"require('fs').writeFileSync(\n\
+        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && \
+mkdir -p tmp && \
+node -e \"require('fs').writeFileSync(\n\
     'tmp/covered.istanbul-lite.js',\n\
     '#!/usr/bin/env node\\n' + require('./index.js')\n\
         .instrumentSync(\n\
@@ -316,15 +316,15 @@ shBuild() {
     MODE_BUILD=testExampleJs \
         shRunScreenCapture shReadmeTestJs example.js || return $?
     # copy phantomjs screen-capture to $npm_config_dir_build
-    cp /tmp/app/tmp/build/screen-capture.*.png $npm_config_dir_build \
-        || return $?
+    cp /tmp/app/tmp/build/screen-capture.*.png $npm_config_dir_build || \
+        return $?
 
     # test example shell script
     MODE_BUILD=testExampleSh \
         shRunScreenCapture shReadmeTestSh example.sh || return $?
     # screen-capture example.sh coverage
     MODE_BUILD=testExampleSh shRun shPhantomScreenCapture \
-        /tmp/app/html-report/app/foo.js.html || :
+        /tmp/app/html-report/app/foo.js.html || return $?
 
     # run npm-test
     MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
@@ -339,8 +339,8 @@ shBuild() {
     then
         local TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" \
             || return $?
-        TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" \
-            || return $?
+        TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" || \
+            return $?
         MODE_BUILD=herokuTest shRun shPhantomTest $TEST_URL || return $?
     fi
 
@@ -359,8 +359,8 @@ shBuildCleanup() {
     # create package-listing
     MODE_BUILD=gitLsTree shRunScreenCapture shGitLsTree || return $?
     # create recent changelog of last 50 commits
-    MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" \
-        || return $?
+    MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" || \
+        return $?
     # add black border around phantomjs screen-capture
     shBuildPrint phantomScreenCapture \
         "add black border around phantomjs screen-capture" || return $?
@@ -370,8 +370,8 @@ shBuildCleanup() {
         2>/dev/null)" || return $?
     if [ "$FILE_LIST" ] && (mogrify --version > /dev/null 2>&1)
     then
-        printf "$FILE_LIST" \
-            | xargs -n 1 mogrify -frame 1 -mattecolor black || return $?
+        printf "$FILE_LIST" | \
+            xargs -n 1 mogrify -frame 1 -mattecolor black || return $?
     fi
 }
 shBuildCleanup || exit $?
