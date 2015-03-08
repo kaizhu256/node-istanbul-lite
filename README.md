@@ -35,6 +35,7 @@ instruction
     2. run the shell command:
           $ npm install istanbul-lite && node example.js
     3. open a browser to http://localhost:1337
+    4. edit or paste script in browser to cover
 */
 
 /*jslint
@@ -184,9 +185,9 @@ instruction
 }());
 ```
 #### output from shell
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.png)
-#### output from [phantomjs-lite](https://www.npmjs.com/package/phantomjs-lite)
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs.png)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+#### output from phantomjs-lite
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs.png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
 
 
 
@@ -202,7 +203,7 @@ instruction
 
 # instruction
     # 1. copy and paste this entire shell script into a console and press enter
-    # 2. open ./html-report/index.html to view coverage of foo.js
+    # 2. view coverage in ./html-report/index.html
 
 shExampleSh() {
     # npm install istanbul-lite
@@ -219,9 +220,9 @@ shExampleSh() {
 shExampleSh
 ```
 #### output from shell
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)
-#### output from [istanbul-lite](https://www.npmjs.com/package/istanbul-lite)
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+#### output from istanbul-lite
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.js.html)
 
 
 
@@ -244,7 +245,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.7-12",
+        "utility2": "2015.3.8-11",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -284,19 +285,21 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.7-12"
+    "version": "2015.3.8-11"
 }
 ```
 
 
 
 # todo
+- npm publish 2015.3.8-11
+- update screen-capture href in README.md
 - none
 
 
 
 # changelog of last 50 commits
-![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLog.png)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLog.png)](https://github.com/kaizhu256/node-istanbul-lite/commits)
 
 
 
