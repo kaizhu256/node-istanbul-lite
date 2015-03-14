@@ -245,7 +245,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.8-11",
+        "utility2": "2015.3.14-10",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -257,6 +257,7 @@ with zero npm dependencies",
         "istanbul",
         "instrument",
         "lightweight",
+        "lite",
         "utility2",
         "web"
     ],
@@ -285,7 +286,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.8-11"
+    "version": "2015.3.14-10"
 }
 ```
 
@@ -364,18 +365,6 @@ shBuildCleanup() {
     # create recent changelog of last 50 commits
     MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" || \
         return $?
-    # add black border around phantomjs screen-capture
-    shBuildPrint phantomScreenCapture \
-        "add black border around phantomjs screen-capture" || return $?
-    local FILE_LIST="$(ls \
-        $npm_config_dir_build/screen-capture.*.phantomjs*.png \
-        $npm_config_dir_build/screen-capture.*.slimerjs*.png \
-        2>/dev/null)" || return $?
-    if [ "$FILE_LIST" ] && (mogrify --version > /dev/null 2>&1)
-    then
-        printf "$FILE_LIST" | \
-            xargs -n 1 mogrify -frame 1 -mattecolor black || return $?
-    fi
 }
 shBuildCleanup || exit $?
 
