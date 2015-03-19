@@ -245,7 +245,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.14-10",
+        "utility2": "2015.3.19-10",
         "phantomjs-lite": "^2015.1.4-103"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -286,15 +286,13 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 shRun shNpmTest test.js"
     },
-    "version": "2015.3.14-10"
+    "version": "2015.3.19-10"
 }
 ```
 
 
 
 # todo
-- npm publish 2015.3.8-11
-- update screen-capture href in README.md
 - none
 
 

@@ -146,7 +146,7 @@
             local.utility2.testMock([
                 // suppress console.log
                 [console, { log: local.utility2.nop }]
-            ], onError, function (onError) {
+            ], function (onError) {
                 dir = process.env.npm_config_dir_tmp +
                     '/coverage.tmp/' + Math.random() + '/' + Math.random();
                 local.istanbul_lite.coverageReportCreate({
@@ -168,7 +168,7 @@
                     );
                     onError();
                 }
-            });
+            }, onError);
         };
         local.testCase_instrumentInPackage_default = function (onError) {
             /*
@@ -178,7 +178,7 @@
             var data;
             local.utility2.testMock([
                 [global, { __coverage__: {} }]
-            ], onError, function (onError) {
+            ], function (onError) {
                 // test no cover handling behavior
                 data = local.istanbul_lite.instrumentInPackage(
                     '1',
@@ -199,7 +199,7 @@
                     data
                 );
                 onError();
-            });
+            }, onError);
         };
         local.testCase_testPage_default = function (onError) {
             /*
@@ -228,7 +228,7 @@
         };
         // init assets
         local['/'] =
-            local.utility2.textFormat(local.fs
+            local.utility2.stringFormat(local.fs
                 .readFileSync(__dirname + '/README.md', 'utf8')
                 .replace(
                     (/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/),
@@ -262,11 +262,11 @@
             );
         // init server-middlewares
         local.serverMiddlewareList = [
-            function (request, response, onNext) {
+            function (request, response, nextMiddleware) {
                 /*
                     this function is the main test-middleware
                 */
-                switch (request.urlPathNormalized) {
+                switch (request.urlParsed.pathnameNormalized) {
                 // serve assets
                 case '/':
                 case '/assets/istanbul-lite.js':
@@ -274,11 +274,11 @@
                 case '/assets/utility2.js':
                 case '/test/script.html':
                 case '/test/test.js':
-                    response.end(local[request.urlPathNormalized]);
+                    response.end(local[request.urlParsed.pathnameNormalized]);
                     break;
                 // default to next middleware
                 default:
-                    onNext();
+                    nextMiddleware();
                 }
             }
         ];
