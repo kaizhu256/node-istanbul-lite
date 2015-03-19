@@ -10,13 +10,9 @@
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
-        "code",
-        "cover",
-        "coverage",
-        "istanbul",
-        "instrument",
-        "lightweight",
-        "lite",
+        "code", "cover", "coverage",
+        "instrument", "istanbul",
+        "light", "lightweight", "lite",
         "utility2",
         "web"
     ],
@@ -28,9 +24,9 @@
         "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build2": "node_modules/.bin/utility2 shRun shBuild",
+        "build-ci": "node_modules/.bin/utility2 shRun shBuildCi",
         "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
-        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p tmp && node -e \"require('fs').writeFileSync(\n    'tmp/covered.istanbul-lite.js',\n    '#!/usr/bin/env node\\n' + require('./index.js')\n        .instrumentSync(\n            require('fs').readFileSync('./index.js', 'utf8'),\n            process.cwd() + '/index.js'\n        ),\n    { mode: 493 }\n);\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 shRun shNpmTest test.js"
+        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && mkdir -p tmp && node -e \"require('fs').writeFileSync(\n    'tmp/covered.istanbul-lite.js',\n    '#!/usr/bin/env node\\n' + require('./index.js')\n        .instrumentSync(\n            require('fs').readFileSync('./index.js', 'utf8'),\n            process.cwd() + '/index.js'\n        ),\n    { mode: 493 }\n);\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 test test.js"
     },
     "version": "2015.3.19-10"
 }

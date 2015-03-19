@@ -236,9 +236,8 @@
                 )
                 // parse '\' line-continuation
                 .replace((/\\\n/g), '')
-                .replace((/\\n' \+(\s*?)'/g), '$1'), {
-                    envDict: local.utility2.envDict
-                });
+                // remove "\\n' +" and "'"
+                .replace((/\\n' \+(\s*?)'/g), '$1'), { envDict: local.utility2.envDict });
         local['/assets/istanbul-lite.js'] =
             local.istanbul_lite.instrumentInPackage(
                 local.istanbul_lite['/assets/istanbul-lite.js'],

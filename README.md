@@ -251,13 +251,9 @@ with zero npm dependencies",
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
-        "code",
-        "cover",
-        "coverage",
-        "istanbul",
-        "instrument",
-        "lightweight",
-        "lite",
+        "code", "cover", "coverage",
+        "instrument", "istanbul",
+        "light", "lightweight", "lite",
         "utility2",
         "web"
     ],
@@ -269,7 +265,7 @@ with zero npm dependencies",
         "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build2": "node_modules/.bin/utility2 shRun shBuild",
+        "build-ci": "node_modules/.bin/utility2 shRun shBuildCi",
         "start": "npm_config_mode_auto_restart=1 \
 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && \
@@ -284,7 +280,7 @@ node -e \"require('fs').writeFileSync(\n\
     { mode: 493 }\n\
 );\" \
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
-node_modules/.bin/utility2 shRun shNpmTest test.js"
+node_modules/.bin/utility2 test test.js"
     },
     "version": "2015.3.19-10"
 }
@@ -304,9 +300,9 @@ node_modules/.bin/utility2 shRun shNpmTest test.js"
 
 # internal build-script
 ```
-# build.sh
-# this shell script will run the build process for this package
-shBuild() {
+# build-ci.sh
+# this shell script will run the build for this package
+shBuildCi() {
     # init env
     export npm_config_mode_slimerjs=1 || return $?
     . node_modules/.bin/utility2 && shInit || return $?
@@ -349,15 +345,13 @@ shBuild() {
     # if number of commits > 1024, then squash older commits
     shRun shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
 }
-shBuild
+shBuildCi
 
 # save exit-code
 EXIT_CODE=$?
 
 shBuildCleanup() {
     # this function will cleanup build-artifacts in local build dir
-    # init env
-    . node_modules/.bin/utility2 && shInit || return $?
     # create package-listing
     MODE_BUILD=gitLsTree shRunScreenCapture shGitLsTree || return $?
     # create recent changelog of last 50 commits
