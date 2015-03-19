@@ -300,7 +300,7 @@ node_modules/.bin/utility2 test test.js"
 
 # internal build-script
 ```
-# build-ci.sh
+# build.sh
 # this shell script will run the build for this package
 shBuildCi() {
     # init env
