@@ -1,7 +1,7 @@
 /*jslint
     browser: true,
-    maxerr: 4,
-    maxlen: 80,
+    maxerr: 8,
+    maxlen: 96,
     node: true,
     nomen: true,
     stupid: true
@@ -55,10 +55,7 @@
                     // validate error occurred
                     local.utility2.assert(error instanceof Error, error);
                     // validate 404 http statusCode
-                    local.utility2.assert(
-                        error.statusCode === 404,
-                        error.statusCode
-                    );
+                    local.utility2.assert(error.statusCode === 404, error.statusCode);
                     onError();
                 }, onError);
             });
@@ -94,8 +91,7 @@
                 default handling behavior
             */
             var data, istanbulInputTextarea, value;
-            istanbulInputTextarea =
-                document.querySelector('.istanbulInputTextarea');
+            istanbulInputTextarea = document.querySelector('.istanbulInputTextarea');
             if (!istanbulInputTextarea) {
                 onError();
                 return;
@@ -162,10 +158,7 @@
                     });
                 } catch (errorCaught) {
                     // validate error occurred
-                    local.utility2.assert(
-                        errorCaught instanceof Error,
-                        errorCaught
-                    );
+                    local.utility2.assert(errorCaught instanceof Error, errorCaught);
                     onError();
                 }
             }, onError);
@@ -180,24 +173,13 @@
                 [global, { __coverage__: {} }]
             ], function (onError) {
                 // test no cover handling behavior
-                data = local.istanbul_lite.instrumentInPackage(
-                    '1',
-                    'test.js',
-                    ''
-                );
+                data = local.istanbul_lite.instrumentInPackage('1', 'test.js', '');
                 // validate data
                 local.utility2.assert(data === '1', data);
                 // test cover handling behavior
-                data = local.istanbul_lite.instrumentInPackage(
-                    '1',
-                    'test.js',
-                    'istanbul-lite'
-                );
+                data = local.istanbul_lite.instrumentInPackage('1', 'test.js', 'istanbul-lite');
                 // validate data
-                local.utility2.assert(
-                    data.indexOf(".s[\'1\']++;1;\n") >= 0,
-                    data
-                );
+                local.utility2.assert(data.indexOf(".s[\'1\']++;1;\n") >= 0, data);
                 onError();
             }, onError);
         };
@@ -206,34 +188,31 @@
                 this function will test the test-page's
                 default handling behavior
             */
-            var onParallel;
-            onParallel = local.utility2.onParallel(onError);
-            onParallel.counter += 1;
+            var onTaskEnd;
+            onTaskEnd = local.utility2.onTaskEnd(onError);
+            onTaskEnd.counter += 1;
             // test test-page handling behavior
-            onParallel.counter += 1;
+            onTaskEnd.counter += 1;
             local.utility2.phantomTest({
                 url: 'http://localhost:' +
                     local.utility2.envDict.npm_config_server_port +
                     '?modeTest=phantom'
-            }, onParallel);
+            }, onTaskEnd);
             // test standalone-script handling behavior
-            onParallel.counter += 1;
+            onTaskEnd.counter += 1;
             local.utility2.phantomTest({
                 url: 'http://localhost:' +
                     local.utility2.envDict.npm_config_server_port +
                     '/test/script.html' +
                     '?modeTest=phantom'
-            }, onParallel);
-            onParallel();
+            }, onTaskEnd);
+            onTaskEnd();
         };
         // init assets
         local['/'] =
             local.utility2.stringFormat(local.fs
                 .readFileSync(__dirname + '/README.md', 'utf8')
-                .replace(
-                    (/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/),
-                    '$1'
-                )
+                .replace((/[\S\s]+?(<!DOCTYPE html>[\S\s]+?<\/html>)[\S\s]+/), '$1')
                 // parse '\' line-continuation
                 .replace((/\\\n/g), '')
                 // remove "\\n' +" and "'"
@@ -290,10 +269,7 @@
             case '.js':
             case '.json':
                 // jslint the file
-                local.jslint_lite.jslintAndPrint(
-                    local.fs.readFileSync(file, 'utf8'),
-                    file
-                );
+                local.jslint_lite.jslintAndPrint(local.fs.readFileSync(file, 'utf8'), file);
                 break;
             }
             // if the file is modified, then restart the process
