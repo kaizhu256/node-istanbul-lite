@@ -238,11 +238,12 @@
                 __filename,
                 'istanbul-lite'
             );
-        // init server-middlewares
-        local.serverMiddlewareList = [
+        // init middleware
+        local.middleware = local.utility2.middlewareGroupCreate([
+            local.utility2.middlewareInit,
             function (request, response, nextMiddleware) {
                 /*
-                    this function is the main test-middleware
+                    this function will run the the test-middleware
                 */
                 switch (request.urlParsed.pathnameNormalized) {
                 // serve assets
@@ -254,12 +255,14 @@
                 case '/test/test.js':
                     response.end(local[request.urlParsed.pathnameNormalized]);
                     break;
-                // default to next middleware
+                // default to nextMiddleware
                 default:
                     nextMiddleware();
                 }
             }
-        ];
+        ]);
+        // init middleware error-handler
+        local.onMiddlewareError = local.utility2.onMiddlewareError;
         // run server-test
         local.utility2.testRunServer(local);
         // init dir

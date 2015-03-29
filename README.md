@@ -22,7 +22,7 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 
 # quickstart web example
-#### to run this example, read the instruction inside the script below
+#### to run this example, follow the instruction in the script below
 ```
 /*
 example.js
@@ -192,7 +192,7 @@ instruction
 
 
 # quickstart command-line example
-#### to run this example, read the instruction inside the script below
+#### to run this example, follow the instruction in the script below
 ```
 # example.sh
 
@@ -245,8 +245,8 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.24-11",
-        "phantomjs-lite": "^2015.3.24-11"
+        "utility2": "2015.3.29-10",
+        "phantomjs-lite": "2015.3.29-13"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
@@ -282,7 +282,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.3.24-11"
+    "version": "2015.3.30-10"
 }
 ```
 
