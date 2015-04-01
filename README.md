@@ -244,6 +244,9 @@ shExampleSh
     "bin": { "istanbul-lite" : "index.js" },
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
+    "devDependencies": {
+        "utility2": "2015.3.30-10"
+    },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
@@ -299,6 +302,9 @@ node_modules/.bin/utility2 test test.js"
 # build.sh
 # this shell script will run the build for this package
 shBuild() {
+    # this function will run the main build
+    local TEST_URL || return $?
+
     # init env
     export npm_config_mode_slimerjs=1 || return $?
     . node_modules/.bin/utility2 && shInit || return $?
@@ -335,7 +341,7 @@ shBuild() {
         [ "$CI_BRANCH" = beta ] ||
         [ "$CI_BRANCH" = master ]
     then
-        local TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" \
+        TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" \
             || return $?
         TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" || \
             return $?

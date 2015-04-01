@@ -3,6 +3,9 @@
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": { "istanbul-lite" : "index.js" },
     "description": "lightweight browser version of istanbul coverage with zero npm dependencies",
+    "devDependencies": {
+        "utility2": "2015.3.30-10"
+    },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
