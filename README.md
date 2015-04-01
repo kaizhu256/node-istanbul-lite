@@ -244,10 +244,6 @@ shExampleSh
     "bin": { "istanbul-lite" : "index.js" },
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
-    "devDependencies": {
-        "utility2": "2015.3.30-10",
-        "phantomjs-lite": "^2015.3.29-13"
-    },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
@@ -306,6 +302,10 @@ shBuild() {
     # init env
     export npm_config_mode_slimerjs=1 || return $?
     . node_modules/.bin/utility2 && shInit || return $?
+
+    # npm install phantomjs-lite
+    npm install phantomjs-lite || return $?
+    export PATH=$(pwd)/node_modules/phantomjs-lite:$PATH || return $?
 
     # run npm-test on published package
     shRun shNpmTestPublished || return $?
