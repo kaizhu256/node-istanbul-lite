@@ -245,7 +245,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.4.2-10",
+        "utility2": "2015.4.2-11",
         "phantomjs-lite": "2015.4.1-12"
     },
     "engines": { "node": ">=0.10 <=0.12" },
