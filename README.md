@@ -338,8 +338,8 @@ shBuild() {
         [ "$CI_BRANCH" = beta ] ||
         [ "$CI_BRANCH" = master ]
     then
-        TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" \
-            || return $?
+        TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" || \
+            return $?
         TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" || \
             return $?
         MODE_BUILD=herokuTest shRun shPhantomTest $TEST_URL || return $?
@@ -368,9 +368,12 @@ shBuildGithubUploadCleanup() {
     return
 }
 
-# upload build-artifacts to github,
-# and if number of commits > 16, then squash older commits
-COMMIT_LIMIT=16 shRun shBuildGithubUpload || exit $?
+if [ "$(node --version)" \> "v0.12" ]
+then
+    # upload build-artifacts to github,
+    # and if number of commits > 16, then squash older commits
+    COMMIT_LIMIT=16 shRun shBuildGithubUpload || exit $?
+fi
 
 # exit with $EXIT_CODE
 exit $EXIT_CODE
