@@ -282,7 +282,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.4.2-10"
+    "version": "2015.4.2-11"
 }
 ```
 
