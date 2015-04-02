@@ -253,7 +253,15 @@
                 case '/assets/utility2.js':
                 case '/test/script.html':
                 case '/test/test.js':
-                    response.end(local[request.urlParsed.pathnameNormalized]);
+                    local.utility2
+                        .middlewareCacheControlLastModified(request, response, function () {
+                            local.utility2.serverRespondDataGzip(
+                                request,
+                                response,
+                                request.urlParsed.pathnameNormalized,
+                                local[request.urlParsed.pathnameNormalized]
+                            );
+                        });
                     break;
                 // default to nextMiddleware
                 default:

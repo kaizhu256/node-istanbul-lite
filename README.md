@@ -245,7 +245,8 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.3.30-10"
+        "utility2": "2015.4.2-10",
+        "phantomjs-lite": "2015.4.1-12"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
@@ -281,7 +282,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.3.30-10"
+    "version": "2015.4.2-10"
 }
 ```
 
@@ -308,10 +309,6 @@ shBuild() {
     # init env
     export npm_config_mode_slimerjs=1 || return $?
     . node_modules/.bin/utility2 && shInit || return $?
-
-    # npm install phantomjs-lite
-    npm install phantomjs-lite || return $?
-    export PATH=$(pwd)/node_modules/phantomjs-lite:$PATH || return $?
 
     # run npm-test on published package
     shRun shNpmTestPublished || return $?
