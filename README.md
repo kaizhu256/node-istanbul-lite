@@ -245,8 +245,8 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.4.2-11",
-        "phantomjs-lite": "2015.4.1-12"
+        "utility2": "2015.4.9-a",
+        "phantomjs-lite": "2015.4.9-a"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
@@ -282,7 +282,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.4.2-11"
+    "version": "2015.4.9-a"
 }
 ```
 
@@ -330,6 +330,8 @@ shBuild() {
     # run npm-test
     MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
 
+    [ "$(node --version)" \< "v0.12" ] && return
+
     # deploy app to heroku
     shRun shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
 
@@ -352,6 +354,7 @@ shBuild
 
 # save exit-code
 EXIT_CODE=$?
+[ "$(node --version)" \< "v0.12" ] && exit $EXIT_CODE
 
 shBuildCleanup() {
     # this function will cleanup build-artifacts in local build dir
@@ -368,12 +371,9 @@ shBuildGithubUploadCleanup() {
     return
 }
 
-if [ "$(node --version)" \> "v0.12" ]
-then
-    # upload build-artifacts to github,
-    # and if number of commits > 16, then squash older commits
-    COMMIT_LIMIT=16 shRun shBuildGithubUpload || exit $?
-fi
+# upload build-artifacts to github,
+# and if number of commits > 16, then squash older commits
+COMMIT_LIMIT=16 shRun shBuildGithubUpload || exit $?
 
 # exit with $EXIT_CODE
 exit $EXIT_CODE
