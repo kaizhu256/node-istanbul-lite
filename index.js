@@ -13988,8 +13988,10 @@ module.exports = TextReport;
                 }).join('\n');
             // update coverageReport
             if (local.modeJs === 'browser') {
-                (document.querySelector('.istanbulCoverageDiv') || {
-                }).innerHTML = tmp;
+                try {
+                    document.querySelector('.istanbulCoverageDiv').innerHTML = tmp;
+                } catch (ignore) {
+                }
             }
             return tmp;
         };
@@ -14010,33 +14012,23 @@ module.exports = TextReport;
         local.instrumenter = new local.Instrumenter();
         local.writeFileSync = function (file, data) {
             /*
-                this function will
-                1. try to save file
-                2. if save failed,
-                    then recursively create parent dir, and then re-save file
+                this function will write the data to file, and auto-mkdirp parent dir
             */
-            var mkdirpSync;
-            mkdirpSync = function (dir) {
-                /*
-                    this function will create the dir, and parent dir if needed
-                */
-                try {
-                    local.fs.mkdirSync(dir);
-                } catch (errorCaught) {
-                    // recursively create parent dir
-                    if (errorCaught.code === 'ENOENT') {
-                        mkdirpSync(local.path.dirname(dir));
-                        mkdirpSync(dir);
-                    }
-                }
-            };
-            // 1. try to save file
+            file = local.path.resolve(process.cwd(), file);
+            // write data to file
             try {
                 local.fs.writeFileSync(file, data);
-            // 2. if save failed,
-            //    then recursively create parent dir, and then re-save file
+            // if write failed, then mkdirp file's parent dir
             } catch (errorCaught) {
-                mkdirpSync(local.path.dirname(file));
+                file.split('/').slice(1, -1).reduce(function (dir, child) {
+                    dir = dir + '/' + child;
+                    try {
+                        local.fs.mkdirSync(dir);
+                    } catch (ignore) {
+                    }
+                    return dir;
+                }, '');
+                // write data to file
                 local.fs.writeFileSync(file, data);
             }
         };
@@ -14200,21 +14192,22 @@ module.exports = TextReport;
             /*jslint evil: true*/
             var innerHTML;
             // cleanup __coverage__
-            delete (
-                local.global.__coverage__ || {}
-            )['/istanbulInputTextarea.js'];
+            try {
+                delete local.global.__coverage__['/istanbulInputTextarea.js'];
+            } catch (ignore) {
+            }
             try {
                 eval(local.istanbul_lite.instrumentSync(
-                    (document.querySelector('.istanbulInputTextarea') || {
-                    }).value || '',
+                    document.querySelector('.istanbulInputTextarea').value,
                     '/istanbulInputTextarea.js'
                 ));
                 return local.istanbul_lite.coverageReportCreate();
             } catch (errorCaught) {
-                innerHTML = (document.querySelector('.istanbulCoverageDiv') || {
-                }).innerHTML = '<pre>' +
-                    errorCaught.stack.replace((/</g), '&lt') +
-                    '</pre>';
+                innerHTML = '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
+                try {
+                    document.querySelector('.istanbulCoverageDiv').innerHTML = innerHTML;
+                } catch (ignore) {
+                }
                 return innerHTML;
             }
         };

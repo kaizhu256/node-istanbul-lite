@@ -12,7 +12,6 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 |:----------:|:-----------:|:-----------:|:--------:|:---------------:|
 |[master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org)|
 |[beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org)|
-|[alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 
 
@@ -93,12 +92,15 @@ instruction
         'width: 100%;\n' +
     '}\n' +
     '</style>\n' +
+    '{{envDict.npm_config_html_head_extra}}\n' +
 '</head>\n' +
 '<body>\n' +
     '<div class="ajaxProgressDiv" style="display: none;">\n' +
-    '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
+    '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading" \
+>loading</div>\n' +
     '</div>\n' +
-    '<h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
+    '<h1 \
+>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
     '<h3>{{envDict.npm_package_description}}</h3>\n' +
     '<div>edit or paste script below to cover and test</div>\n' +
 '<textarea class="istanbulInputTextarea">\n' +
@@ -125,13 +127,14 @@ instruction
     ').addEventListener("keyup", window.istanbul_lite.coverTextarea);\n' +
     'window.istanbul_lite.coverTextarea();\n' +
     '</script>\n' +
+    '{{envDict.npm_config_html_body_extra}}\n' +
 '</body>\n' +
 '</html>\n' +
 /* jslint-ignore-end */
 
 
 
-            String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
+        String()).replace((/\{\{envDict\.\w+?\}\}/g), function (match0) {
             switch (match0) {
             case '{{envDict.npm_package_description}}':
                 return 'this is an example module';
@@ -139,16 +142,15 @@ instruction
                 return 'example-module';
             case '{{envDict.npm_package_version}}':
                 return '0.0.1';
+            default:
+                return '';
             }
         });
         local['/assets/istanbul-lite.js'] =
             local.istanbul_lite['/assets/istanbul-lite.js'];
-        local['/assets/utility2.css'] =
-            '';
-        local['/assets/utility2.js'] =
-            '';
-        local['/test/test.js'] =
-            '';
+        local['/assets/utility2.css'] = '';
+        local['/assets/utility2.js'] = '';
+        local['/test/test.js'] = '';
         // create server
         local.server = local.http.createServer(function (request, response) {
             switch (local.url.parse(request.url).pathname) {
@@ -245,16 +247,15 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.4.9-a",
-        "phantomjs-lite": "2015.4.9-a"
+        "utility2": "2015.4.23-b",
+        "phantomjs-lite": "2015.4.18-a"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
         "code", "cover", "coverage",
         "instrument", "istanbul",
-        "light", "lightweight", "lite",
-        "utility2",
+        "jscoverage",
         "web"
     ],
     "license": "MIT",
@@ -282,7 +283,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.4.9-a"
+    "version": "2015.4.24-a"
 }
 ```
 
@@ -290,6 +291,13 @@ node_modules/.bin/utility2 test test.js"
 
 # todo
 - none
+
+
+
+# done since 18755f18
+- npm publish 2015.4.24-a
+- fix potential infinite recursion in local.writeFileSync
+- hide {{envDict.npm_config_html_head_extra}}
 
 
 
@@ -330,6 +338,7 @@ shBuild() {
     # run npm-test
     MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
 
+    # do not continue if running legacy-node
     [ "$(node --version)" \< "v0.12" ] && return
 
     # deploy app to heroku
@@ -354,6 +363,8 @@ shBuild
 
 # save exit-code
 EXIT_CODE=$?
+
+# do not continue if running legacy-node
 [ "$(node --version)" \< "v0.12" ] && exit $EXIT_CODE
 
 shBuildCleanup() {
