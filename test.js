@@ -242,6 +242,12 @@
                 /*
                     this function will run the the test-middleware
                 */
+                // set main-page content-type to text/html
+                if (request.urlParsed.pathnameNormalized === '/') {
+                    local.utility2.serverRespondHeadSet(request, response, null, {
+                        'Content-Type': 'text/html; charset=UTF-8'
+                    });
+                }
                 switch (request.urlParsed.pathnameNormalized) {
                 // serve assets
                 case '/':
@@ -284,7 +290,7 @@
             local.utility2.onFileModifiedRestart(file);
         });
         // init repl debugger
-        local.utility2.replStart({ local: local });
+        local.utility2.replStart();
         break;
     }
 }((function () {
