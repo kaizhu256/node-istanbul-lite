@@ -10,18 +10,10 @@
 (function (local) {
     'use strict';
     var require, process;
-    // jslint-hack
-    local.nop(process, require);
-
-
-
-    // run shared js-env code
-    (function () {
-        process = local.process;
-        require = function (key) {
-            return local[key] || local.require(key);
-        };
-    }());
+    process = local.process;
+    require = function (key) {
+        return local[key] || local.require(key);
+    };
 
 
 
@@ -13856,14 +13848,17 @@ module.exports = TextReport;
             */
             var collector, tmp;
             options = options || {};
-            options.coverage = options.coverage ||
-                local.global.__coverage__;
-            if (!options.coverage) {
+            options.coverage = options.coverage || local.global.__coverage__;
+            if (!options.coverage || options.modeNoCoverage) {
                 return '';
             }
             options.dir = options.dir || (local.modeJs === 'node'
-                ? process.env.npm_config_dir_coverage
-                : '/');
+                ? local.path.resolve(
+                    process.cwd(),
+                    process.env.npm_config_dir_coverage ||
+                        local.istanbul_lite.coverageDirDefault
+                )
+                : local.istanbul_lite.coverageDirDefault);
 // https://github.com/gotwarlost/istanbul/blob/master/lib/store/fslookup.js
             options.sourceStore = options.sourceStore || {
                 get: function (key) {
@@ -13925,11 +13920,7 @@ module.exports = TextReport;
             }
             // write coverage.json
             local.writeFileSync(
-                local.path.resolve(
-                    process.cwd(),
-                    options.dir,
-                    'coverage.json'
-                ),
+                options.dir + '/coverage.json',
                 JSON.stringify(local.global.__coverage__)
             );
             // write html-report
@@ -13940,12 +13931,7 @@ module.exports = TextReport;
                 local.istanbul_lite['/assets/base.css']
             );
             if (local.modeJs === 'node') {
-                console.log('created coverage file://' +
-                    local.path.resolve(
-                        process.cwd(),
-                        options.dir,
-                        'index.html'
-                    ));
+                console.log('created coverage file://' + options.dir + '/index.html');
             }
             // 3. return coverage in html-format as a single document
             tmp = '<style>\n' +
@@ -14032,72 +14018,9 @@ module.exports = TextReport;
                 local.fs.writeFileSync(file, data);
             }
         };
+        // run main command-line program
+        local.mainRun();
     }());
-    switch (local.modeJs) {
-
-
-
-    // run node js-env code
-    case 'node':
-        local.istanbul_lite.instrumentInPackage = function (
-            code,
-            file,
-            packageName
-        ) {
-            /*
-                this function will cover the code,
-                only if packageName === $npm_package_name
-            */
-            return local.global.__coverage__ &&
-                packageName &&
-                packageName === process.env.npm_package_name
-                ? local.istanbul_lite.instrumentSync(code, file)
-                : code;
-        };
-        // init assets
-        local.istanbul_lite['/assets/istanbul-lite.js'] =
-            '//' + local.fs.readFileSync(__filename, 'utf8');
-        // run main module
-        if (local._module === local.require.main) {
-            process.env.npm_config_dir_coverage =
-                local.path.resolve(
-                    process.cwd(),
-                    process.env.npm_config_dir_coverage || 'html-report'
-                );
-            switch (process.argv[2]) {
-            // run cover command
-            case 'cover':
-                process.env.npm_config_mode_cover_regexp_exclude =
-                    process.env.npm_config_mode_cover_regexp_exclude ||
-                    '[^\\S\\s]';
-                // add coverage hook to require
-                local.hook.hookRequire(function (file) {
-                    return file.indexOf(process.cwd()) === 0 &&
-                        file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
-                        !new RegExp(
-                            process.env.npm_config_mode_cover_regexp_exclude
-                        ).test(file) &&
-                        new RegExp(
-                            process.env.npm_config_mode_cover_regexp_include
-                        ).test(file);
-                }, local.istanbul_lite.instrumentSync);
-                // init process.argv
-                process.argv.splice(1, 2);
-                process.argv[1] = local.path.resolve(
-                    process.cwd(),
-                    process.argv[1]
-                );
-                console.log('\ncovering $ ' + process.argv.join(' '));
-                // create coverage on exit
-                process.on('exit', function () {
-                    local.istanbul_lite.coverageReportCreate();
-                });
-                local.module.runMain();
-                break;
-            }
-        }
-        break;
-    }
 }((function () {
     'use strict';
     var local;
@@ -14108,7 +14031,6 @@ module.exports = TextReport;
     (function () {
         // init local
         local = {};
-        local.istanbul_lite = {};
         local.modeJs = (function () {
             try {
                 return module.exports &&
@@ -14131,6 +14053,8 @@ module.exports = TextReport;
         local.global = local.modeJs === 'browser'
             ? window
             : global;
+        // init istanbul_lite
+        local.istanbul_lite = { local: local };
         // mock package.json for escodegen.js
         local['./package.json'] = {};
     }());
@@ -14142,13 +14066,9 @@ module.exports = TextReport;
     case 'browser':
         // export istanbul_lite
         local.global.istanbul_lite = local.istanbul_lite;
-        // mock __dirname in browser
-        local.istanbul_lite.__dirname = '/istanbul-lite';
-        // mock module in browser
-        local.module = {
-            _extensions: {}
-        };
-        // mock path in browser
+        // init local properties
+        local.mainRun = local.nop;
+        local.module = { _extensions: {} };
         local.path = {
             dirname: function (file) {
                 return file.replace((/\/[\w\-\.]+?$/), '');
@@ -14159,18 +14079,15 @@ module.exports = TextReport;
                     .replace((/\/\/+/), '/');
             }
         };
-        // mock process in browser
         local.process = {
             cwd: function () {
                 return '';
             },
             stdout: {}
         };
-        // mock require in browser
         local.require = function (key) {
             return local[key] || {};
         };
-        // mock util in browser
         local.util = {
             inherits: function (ctor, superCtor) {
                 ctor.super_ = superCtor;
@@ -14184,6 +14101,8 @@ module.exports = TextReport;
                 });
             }
         };
+        // init istanbul_lite properties
+        local.istanbul_lite.__dirname = '/istanbul-lite';
         local.istanbul_lite.coverTextarea = function () {
             /*
                 this function will cover and eval the text
@@ -14211,6 +14130,7 @@ module.exports = TextReport;
                 return innerHTML;
             }
         };
+        local.istanbul_lite.coverageDirDefault = '/';
         break;
 
 
@@ -14219,10 +14139,61 @@ module.exports = TextReport;
     case 'node':
         // export istanbul_lite
         module.exports = local.istanbul_lite;
-        local.istanbul_lite.__dirname = __dirname;
+        // init local properties
         local._module = module;
+        local.mainRun = function () {
+            /*
+                this function will run the main command-line program
+            */
+            if (local._module !== local.require.main) {
+                return;
+            }
+            switch (process.argv[2]) {
+            // run cover command
+            case 'cover':
+                process.env.npm_config_mode_cover_regexp_exclude =
+                    process.env.npm_config_mode_cover_regexp_exclude ||
+                    '[^\\S\\s]';
+                // add coverage hook to require
+                local.hook.hookRequire(function (file) {
+                    return file.indexOf(process.cwd()) === 0 &&
+                        file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
+                        !new RegExp(process.env.npm_config_mode_cover_regexp_exclude)
+                            .test(file) &&
+                        new RegExp(process.env.npm_config_mode_cover_regexp_include)
+                            .test(file);
+                }, local.istanbul_lite.instrumentSync);
+                // init process.argv
+                process.argv.splice(1, 2);
+                process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
+                console.log('\ncovering $ ' + process.argv.join(' '));
+                // create coverage on exit
+                process.on('exit', function () {
+                    local.istanbul_lite.coverageReportCreate();
+                });
+                local.module.runMain();
+                break;
+            }
+        };
         local.process = process;
         local.require = require;
+        // init istanbul_lite properties
+        local.istanbul_lite.__dirname = __dirname;
+        local.istanbul_lite.coverageDirDefault = 'html-report';
+        local.istanbul_lite.instrumentInPackage = function (code, file, packageName) {
+            /*
+                this function will cover the code,
+                only if packageName === $npm_package_name
+            */
+            return local.global.__coverage__ &&
+                packageName &&
+                packageName === process.env.npm_package_name
+                ? local.istanbul_lite.instrumentSync(code, file)
+                : code;
+        };
+        // init assets
+        local.istanbul_lite['/assets/istanbul-lite.js'] =
+            '//' + local.require('fs').readFileSync(__filename, 'utf8');
         break;
     }
     return local;

@@ -32,8 +32,7 @@
 
         local.testCase_instrumentSync_default = function (onError) {
             /*
-                this function will test instrumentSync's
-                default handling behavior
+                this function will test instrumentSync's default handling behavior
             */
             var data;
             data = local.istanbul_lite.instrumentSync('1', 'test.js');
@@ -51,8 +50,7 @@
         // init tests
         local.testCase_coverTextarea_default = function (onError) {
             /*
-                this function will test coverTextarea's
-                default handling behavior
+                this function will test coverTextarea's default handling behavior
             */
             var data, istanbulInputTextarea, modeHtml, value;
             istanbulInputTextarea = document.querySelector('.istanbulInputTextarea') || {};
@@ -93,26 +91,43 @@
         // init tests
         local.testCase_coverageReportCreate_default = function (onError) {
             /*
-                this function will test coverageReportCreate's
-                default handling behavior
+                this function will test coverageReportCreate's default handling behavior
             */
-            var dir;
+            var data, dir, file;
+            dir = process.env.npm_config_dir_tmp +
+                '/testCase_coverageReportCreate_default';
+            // cleanup dir
+            local.utility2.fsRmrSync(dir);
+            // test mkdirp handling behavior
+            dir += '/aa/bb/cc';
+            file = dir + '/index.html';
+            // validate no file exists
+            local.utility2.assert(!local.fs.existsSync(file), file);
             local.utility2.testMock([
                 // suppress console.log
-                [console, { log: local.utility2.nop }]
+                [console, { log: local.utility2.nop }],
+                // test coverageDirDefault handling behavior
+                [local.istanbul_lite, { coverageDirDefault: dir }],
+                // test coverageDirDefault handling behavior
+                [process.env, { npm_config_dir_coverage: '' }]
             ], function (onError) {
-                dir = process.env.npm_config_dir_tmp +
-                    '/coverage.tmp/' + Math.random() + '/' + Math.random();
-                local.istanbul_lite.coverageReportCreate({
-                    coverage: {},
-                    // test mkdirpSync handling behavior
-                    dir: dir
-                });
+                // test no __coverage__ handling behavior
+                data = local.istanbul_lite.coverageReportCreate({ modeNoCoverage: true });
+                // validate data
+                local.utility2.assert(!data, data);
+                // validate no file exists
+                local.utility2.assert(!local.fs.existsSync(file), file);
+                // test __coverage__ handling behavior
+                data = local.istanbul_lite.coverageReportCreate({ coverage: {} });
+                // validate data
+                local.utility2.assert(data, data);
+                // validate file exists
+                local.utility2.assert(local.fs.existsSync(file), file);
                 try {
                     local.istanbul_lite.coverageReportCreate({
                         coverage: {},
                         // test mkdirpSync error handling behavior
-                        dir: dir + '/index.html'
+                        dir: file
                     });
                 } catch (errorCaught) {
                     // validate error occurred
@@ -124,8 +139,7 @@
 
         local.testCase_instrumentInPackage_default = function (onError) {
             /*
-                this function will test instrumentInPackage's
-                default handling behavior
+                this function will test instrumentInPackage's default handling behavior
             */
             var data;
             local.utility2.testMock([
@@ -145,8 +159,7 @@
 
         local.testCase_testPage_default = function (onError) {
             /*
-                this function will test the test-page's
-                default handling behavior
+                this function will test the test-page's default handling behavior
             */
             var onTaskEnd;
             onTaskEnd = local.utility2.onTaskEnd(onError);
@@ -159,12 +172,12 @@
                     '?' +
                     'modeTest=phantom'
             }, onTaskEnd);
-            // test standalone-script handling behavior
+            // test script-only handling behavior
             onTaskEnd.counter += 1;
             local.utility2.phantomTest({
                 url: 'http://localhost:' +
                     local.utility2.envDict.npm_config_server_port +
-                    '/test/script.html?' +
+                    '/test/script-only.html?' +
                     'modeTest=phantom'
             }, onTaskEnd);
             onTaskEnd();
@@ -181,7 +194,10 @@
         window.local = local;
         // init onErrorExit
         local.utility2.onErrorExit = function () {
-            delete window.__coverage__['/istanbulInputTextarea.js'];
+            try {
+                delete window.__coverage__['/istanbulInputTextarea.js'];
+            } catch (ignore) {
+            }
         };
         // run test
         local.utility2.testRun(local);
@@ -209,7 +225,8 @@
         );
         local['/assets/utility2.css'] = local.utility2['/assets/utility2.css'];
         local['/assets/utility2.js'] = local.utility2['/assets/utility2.js'];
-        local['/test/script.html'] = '<script src="/assets/utility2.js"></script>\n' +
+        local['/test/script-only.html'] = '<h1>script-only test</h1>\n' +
+            '<script src="/assets/utility2.js"></script>\n' +
             '<script src="/assets/istanbul-lite.js"></script>\n' +
             '<script>window.istanbul_lite.coverTextarea()</script>\n' +
             '<script src="/test/test.js"></script>\n';
@@ -231,7 +248,7 @@
                 case '/assets/istanbul-lite.js':
                 case '/assets/utility2.css':
                 case '/assets/utility2.js':
-                case '/test/script.html':
+                case '/test/script-only.html':
                 case '/test/test.js':
                     local.utility2
                         .middlewareCacheControlLastModified(request, response, function () {

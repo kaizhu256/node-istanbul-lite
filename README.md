@@ -12,11 +12,12 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 |:----------:|:-----------:|:-----------:|:--------:|:---------------:|
 |[master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org)|
 |[beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org)|
+|[alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 
 
 # live test-server
-[![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.herokuTest.slimerjs.png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
+[![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.herokuTest.slimerjs..png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
 
 
 
@@ -67,67 +68,67 @@ instruction
 '<!DOCTYPE html>\n' +
 '<html>\n' +
 '<head>\n' +
-    '<meta charset="UTF-8">\n' +
-    '<title>\n' +
-    '{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]\n' +
-    '</title>\n' +
-    '<link rel="stylesheet" href="/assets/utility2.css">\n' +
-    '<style>\n' +
-    '* {\n' +
-        'box-sizing: border-box;\n' +
-    '}\n' +
-    'body {\n' +
-        'background-color: #fff;\n' +
-        'font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n' +
-    '}\n' +
-    'body > div {\n' +
-        'margin-top: 20px;\n' +
-    '}\n' +
-    '.testReportDiv {\n' +
-        'display: none;\n' +
-    '}\n' +
-    'textarea {\n' +
-        'font-family: monospace;\n' +
-        'height: 8em;\n' +
-        'width: 100%;\n' +
-    '}\n' +
-    '</style>\n' +
-    '{{envDict.npm_config_html_head_extra}}\n' +
+'    <meta charset="UTF-8">\n' +
+'    <title>\n' +
+'    {{envDict.npm_package_name}} [{{envDict.npm_package_version}}]\n' +
+'    </title>\n' +
+'    <link rel="stylesheet" href="/assets/utility2.css">\n' +
+'    <style>\n' +
+'    * {\n' +
+'        box-sizing: border-box;\n' +
+'    }\n' +
+'    body {\n' +
+'        background-color: #fff;\n' +
+'        font-family: Helvetical Neue, Helvetica, Arial, sans-serif;\n' +
+'    }\n' +
+'    body > div {\n' +
+'        margin-top: 20px;\n' +
+'    }\n' +
+'    .testReportDiv {\n' +
+'        display: none;\n' +
+'    }\n' +
+'    textarea {\n' +
+'        font-family: monospace;\n' +
+'        height: 8em;\n' +
+'        width: 100%;\n' +
+'    }\n' +
+'    </style>\n' +
+'    {{envDict.npm_config_html_head_extra}}\n' +
 '</head>\n' +
 '<body>\n' +
-    '<div class="ajaxProgressDiv" style="display: none;">\n' +
-    '<div class="ajaxProgressBarDiv ajaxProgressBarDivLoading" \
+'    <div class="ajaxProgressDiv" style="display: none;">\n' +
+'    <div class="ajaxProgressBarDiv ajaxProgressBarDivLoading" \
 >loading</div>\n' +
-    '</div>\n' +
-    '<h1 \
+'    </div>\n' +
+'    <h1 \
 >{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
-    '<h3>{{envDict.npm_package_description}}</h3>\n' +
-    '<div>edit or paste script below to cover and test</div>\n' +
+'    <h3>{{envDict.npm_package_description}}</h3>\n' +
+'    <div>edit or paste script below to cover and test</div>\n' +
 '<textarea class="istanbulInputTextarea">\n' +
 'if (true) {\n' +
-    'console.log("hello");\n' +
+'    console.log("hello");\n' +
 '} else {\n' +
-    'console.log("bye");\n' +
+'    console.log("bye");\n' +
 '}\n' +
 '</textarea>\n' +
-    '<div class="istanbulCoverageDiv"></div>\n' +
-    '<div class="testReportDiv"></div>\n' +
-    '<script src="/assets/istanbul-lite.js"></script>\n' +
-    '<script src="/assets/utility2.js"></script>\n' +
-    '<script src="/test/test.js"></script>\n' +
-    '<script>\n' +
-    'window.utility2 = window.utility2 || {};\n' +
-    'window.utility2.envDict = {\n' +
-        'npm_package_description: "{{envDict.npm_package_description}}",\n' +
-        'npm_package_name: "{{envDict.npm_package_name}}",\n' +
-        'npm_package_version: "{{envDict.npm_package_version}}"\n' +
-    '};\n' +
-    'document.querySelector(\n' +
-        '".istanbulInputTextarea"\n' +
-    ').addEventListener("keyup", window.istanbul_lite.coverTextarea);\n' +
-    'window.istanbul_lite.coverTextarea();\n' +
-    '</script>\n' +
-    '{{envDict.npm_config_html_body_extra}}\n' +
+'    <div class="istanbulCoverageDiv"></div>\n' +
+'    <div class="testReportDiv"></div>\n' +
+'    <script src="/assets/istanbul-lite.js"></script>\n' +
+'    <script src="/assets/utility2.js"></script>\n' +
+'    <script src="/test/test.js"></script>\n' +
+'    <script>\n' +
+'    window.utility2 = window.utility2 || {};\n' +
+'    window.utility2.envDict = {\n' +
+'        npm_package_description: "{{envDict.npm_package_description}}",\n' +
+'        npm_package_name: "{{envDict.npm_package_name}}",\n' +
+'        npm_package_version: "{{envDict.npm_package_version}}"\n' +
+'    };\n' +
+'    document.querySelector(\n' +
+'        ".istanbulInputTextarea"\n' +
+'    ).addEventListener("keyup", window.istanbul_lite.coverTextarea);\n' +
+'    window.istanbul_lite.coverTextarea();\n' +
+'    </script>\n' +
+'    {{envDict.npm_config_html_body_extra}}\n' +
 '</body>\n' +
 '</html>\n' +
 /* jslint-ignore-end */
@@ -189,7 +190,7 @@ instruction
 #### output from shell
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 #### output from phantomjs-lite
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs.png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs..png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
 
 
 
@@ -247,7 +248,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.4.23-b",
+        "utility2": "2015.4.26-b",
         "phantomjs-lite": "2015.4.18-a"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -283,7 +284,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.4.24-a"
+    "version": "2015.4.26-b"
 }
 ```
 
@@ -294,10 +295,11 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# done since 18755f18
-- npm publish 2015.4.24-a
-- fix potential infinite recursion in local.writeFileSync
-- hide {{envDict.npm_config_html_head_extra}}
+# change since 5ecada55
+- npm publish 2015.4.26-b
+- fix stale screen-capture in README.md
+- fix "npm test --mode-no-coverage"
+- none
 
 
 
