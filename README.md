@@ -36,7 +36,7 @@ instruction
     2. run the shell command:
           $ npm install istanbul-lite && node example.js
     3. open a browser to http://localhost:1337
-    4. edit or paste script in browser to cover
+    4. edit or paste script in browser to interactively cover
 */
 
 /*jslint
@@ -51,6 +51,9 @@ instruction
 (function () {
     'use strict';
     var local;
+
+
+
     // run node js-env code
     (function () {
         // init local
@@ -116,7 +119,6 @@ instruction
 '    <div class="testReportDiv"></div>\n' +
 '    <script src="/assets/istanbul-lite.js"></script>\n' +
 '    <script src="/assets/utility2.js"></script>\n' +
-'    <script src="/test/test.js"></script>\n' +
 '    <script>\n' +
 '    window.utility2 = window.utility2 || {};\n' +
 '    window.utility2.envDict = {\n' +
@@ -129,6 +131,7 @@ instruction
 '    ).addEventListener("keyup", window.istanbul_lite.coverTextarea);\n' +
 '    window.istanbul_lite.coverTextarea();\n' +
 '    </script>\n' +
+'    <script src="/test/test.js"></script>\n' +
 '    {{envDict.npm_config_html_body_extra}}\n' +
 '</body>\n' +
 '</html>\n' +
@@ -195,7 +198,7 @@ instruction
 
 
 
-# quickstart command-line example
+# quickstart cli example
 #### to run this example, follow the instruction in the script below
 ```
 # example.sh
@@ -249,7 +252,7 @@ shExampleSh
     "description": "lightweight browser version of istanbul coverage \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.4.26-c",
+        "utility2": "2015.5.6-c",
         "phantomjs-lite": "2015.4.26-c"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -285,7 +288,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.4.26-c"
+    "version": "2015.5.6-a"
 }
 ```
 
@@ -296,10 +299,9 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since bc6bc62d
-- npm publish 2015.4.26-c
-- transpose build-status table
-- fix w3.org validation for main-page
+# change since d922dc6c
+- npm publish 2015.5.6-a
+- rename mainRun to cliRun
 - none
 
 
@@ -341,7 +343,7 @@ shBuild() {
     # run npm-test
     MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
 
-    # do not continue if running legacy-node
+    # if running legacy-node, then do not continue
     [ "$(node --version)" \< "v0.12" ] && return
 
     # deploy app to heroku
@@ -367,9 +369,6 @@ shBuild
 # save exit-code
 EXIT_CODE=$?
 
-# do not continue if running legacy-node
-[ "$(node --version)" \< "v0.12" ] && exit $EXIT_CODE
-
 shBuildCleanup() {
     # this function will cleanup build-artifacts in local build dir
     # create package-listing
@@ -384,6 +383,9 @@ shBuildGithubUploadCleanup() {
     # this function will cleanup build-artifacts in local gh-pages repo
     return
 }
+
+# if running legacy-node, then do not continue
+[ "$(node --version)" \< "v0.12" ] && exit $EXIT_CODE
 
 # upload build-artifacts to github,
 # and if number of commits > 16, then squash older commits

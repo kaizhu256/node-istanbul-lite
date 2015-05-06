@@ -14018,9 +14018,51 @@ module.exports = TextReport;
                 local.fs.writeFileSync(file, data);
             }
         };
-        // run main command-line program
-        local.mainRun();
     }());
+    switch (local.modeJs) {
+
+
+
+    // run node js-env code
+    case 'node':
+        // run the cli
+        local.cliRun = function () {
+            /*
+                this function will run the cli
+            */
+            if (local._module !== local.require.main) {
+                return;
+            }
+            switch (process.argv[2]) {
+            // run cover command
+            case 'cover':
+                process.env.npm_config_mode_cover_regexp_exclude =
+                    process.env.npm_config_mode_cover_regexp_exclude ||
+                    '[^\\S\\s]';
+                // add coverage hook to require
+                local.hook.hookRequire(function (file) {
+                    return file.indexOf(process.cwd()) === 0 &&
+                        file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
+                        !new RegExp(process.env.npm_config_mode_cover_regexp_exclude)
+                            .test(file) &&
+                        new RegExp(process.env.npm_config_mode_cover_regexp_include)
+                            .test(file);
+                }, local.istanbul_lite.instrumentSync);
+                // init process.argv
+                process.argv.splice(1, 2);
+                process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
+                console.log('\ncovering $ ' + process.argv.join(' '));
+                // create coverage on exit
+                process.on('exit', function () {
+                    local.istanbul_lite.coverageReportCreate();
+                });
+                local.module.runMain();
+                break;
+            }
+        };
+        local.cliRun();
+        break;
+    }
 }((function () {
     'use strict';
     var local;
@@ -14045,7 +14087,7 @@ module.exports = TextReport;
         }());
         local.nop = function () {
             /*
-                this function will perform no operation - nop
+                this function will run no operation - nop
             */
             return;
         };
@@ -14067,7 +14109,6 @@ module.exports = TextReport;
         // export istanbul_lite
         local.global.istanbul_lite = local.istanbul_lite;
         // init local properties
-        local.mainRun = local.nop;
         local.module = { _extensions: {} };
         local.path = {
             dirname: function (file) {
@@ -14141,40 +14182,6 @@ module.exports = TextReport;
         module.exports = local.istanbul_lite;
         // init local properties
         local._module = module;
-        local.mainRun = function () {
-            /*
-                this function will run the main command-line program
-            */
-            if (local._module !== local.require.main) {
-                return;
-            }
-            switch (process.argv[2]) {
-            // run cover command
-            case 'cover':
-                process.env.npm_config_mode_cover_regexp_exclude =
-                    process.env.npm_config_mode_cover_regexp_exclude ||
-                    '[^\\S\\s]';
-                // add coverage hook to require
-                local.hook.hookRequire(function (file) {
-                    return file.indexOf(process.cwd()) === 0 &&
-                        file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
-                        !new RegExp(process.env.npm_config_mode_cover_regexp_exclude)
-                            .test(file) &&
-                        new RegExp(process.env.npm_config_mode_cover_regexp_include)
-                            .test(file);
-                }, local.istanbul_lite.instrumentSync);
-                // init process.argv
-                process.argv.splice(1, 2);
-                process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
-                console.log('\ncovering $ ' + process.argv.join(' '));
-                // create coverage on exit
-                process.on('exit', function () {
-                    local.istanbul_lite.coverageReportCreate();
-                });
-                local.module.runMain();
-                break;
-            }
-        };
         local.process = process;
         local.require = require;
         // init istanbul_lite properties
