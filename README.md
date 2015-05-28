@@ -1,6 +1,8 @@
-istanbul-lite [![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
+istanbul-lite
 =============
-lightweight browser version of istanbul coverage with zero npm dependencies
+minimal browser version of istanbul coverage-tool with zero npm dependencies
+
+[![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
 
 
 
@@ -13,17 +15,33 @@ lightweight browser version of istanbul coverage with zero npm dependencies
 
 [![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
-| git-branch | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
-|:--|:--|:--|:--|
-| test-server | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com)|
-| test-report | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html)|
-| coverage | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/node-istanbul-lite/index.html)|
-| build-artifacts | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
+| git-branch : | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
+|--:|:--|:--|:--|
+| test-server : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com)|
+| test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html)|
+| coverage : | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/node-istanbul-lite/index.html)|
+| build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
+
+#### master branch
+- stable branch
+- HEAD should be tagged, npm-published package
+
+#### beta branch
+- stable branch
+- HEAD should be latest, npm-published package
+
+#### alpha branch
+- unstable branch
+- HEAD is arbitrary
+- commit history may be rewritten
 
 
 
 # quickstart web example
+
 #### to run this example, follow the instruction in the script below
+- example.js
+
 ```
 /*
 example.js
@@ -191,15 +209,20 @@ instruction
     }());
 }());
 ```
+
 #### output from shell
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+
 #### output from phantomjs-lite
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs..png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
 
 
 
 # quickstart cli example
+
 #### to run this example, follow the instruction in the script below
+- example.sh
+
 ```
 # example.sh
 
@@ -226,8 +249,10 @@ shExampleSh() {
 }
 shExampleSh
 ```
+
 #### output from shell
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+
 #### output from istanbul-lite
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.js.html)
 
@@ -249,18 +274,18 @@ shExampleSh
     "_packageJson": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": { "istanbul-lite" : "index.js" },
-    "description": "lightweight browser version of istanbul coverage \
+    "description": "minimal browser version of istanbul coverage-tool \
 with zero npm dependencies",
     "devDependencies": {
-        "utility2": "2015.5.6-c",
-        "phantomjs-lite": "2015.4.26-c"
+        "utility2": "2015.5.15-f",
+        "phantomjs-lite": "^2015.4.26-c"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
         "browser",
         "code", "cover", "coverage",
         "instrument", "istanbul",
-        "jscoverage",
+        "jscover", "jscoverage",
         "web"
     ],
     "license": "MIT",
@@ -274,7 +299,7 @@ with zero npm dependencies",
         "build-ci": "node_modules/.bin/utility2 shRun shReadmeBuild",
         "start": "npm_config_mode_auto_restart=1 \
 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
-        "test": "node_modules/.bin/utility2 shRun shReadmePackageJsonExport && \
+        "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && \
 mkdir -p tmp && \
 node -e \"require('fs').writeFileSync(\n\
     'tmp/covered.istanbul-lite.js',\n\
@@ -288,7 +313,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.5.6-a"
+    "version": "2015.5.28-a"
 }
 ```
 
@@ -299,9 +324,10 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since d922dc6c
-- npm publish 2015.5.6-a
-- rename mainRun to cliRun
+# change since 1d045739
+- npm publish 2015.5.28-a
+- remove "instanceof Error" check for error validation tests
+- require explicit creation of deferred task utility2.onReady
 - none
 
 
@@ -312,8 +338,11 @@ node_modules/.bin/utility2 test test.js"
 
 
 # internal build-script
+- build.sh
+
 ```
 # build.sh
+
 # this shell script will run the build for this package
 shBuild() {
     # this function will run the main build
@@ -329,9 +358,6 @@ shBuild() {
     # test example js script
     MODE_BUILD=testExampleJs \
         shRunScreenCapture shReadmeTestJs example.js || return $?
-    # copy phantomjs screen-capture to $npm_config_dir_build
-    cp /tmp/app/tmp/build/screen-capture.*.png $npm_config_dir_build || \
-        return $?
 
     # test example shell script
     MODE_BUILD=testExampleSh \
@@ -354,8 +380,8 @@ shBuild() {
         [ "$CI_BRANCH" = beta ] ||
         [ "$CI_BRANCH" = master ]
     then
-        TEST_URL="https://hrku01-istanbul-lite-$CI_BRANCH.herokuapp.com" || \
-            return $?
+        TEST_URL="https://hrku01-$npm_package_name-$CI_BRANCH.herokuapp.com" \
+            || return $?
         TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" || \
             return $?
         MODE_BUILD=herokuTest shRun shPhantomTest $TEST_URL || return $?

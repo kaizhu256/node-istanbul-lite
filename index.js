@@ -14180,12 +14180,12 @@ module.exports = TextReport;
     case 'node':
         // export istanbul_lite
         module.exports = local.istanbul_lite;
+        module.exports.__dirname = __dirname;
         // init local properties
         local._module = module;
         local.process = process;
         local.require = require;
         // init istanbul_lite properties
-        local.istanbul_lite.__dirname = __dirname;
         local.istanbul_lite.coverageDirDefault = 'html-report';
         local.istanbul_lite.instrumentInPackage = function (code, file, packageName) {
             /*

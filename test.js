@@ -14,22 +14,6 @@
     // run shared js-env code
     (function () {
         // init tests
-        local.testCase_ajax_404 = function (onError) {
-            /*
-                this function will test ajax's "404 not found" handling behavior
-            */
-            // test '/test/undefined'
-            local.utility2.ajax({ url: '/test/undefined' }, function (error) {
-                local.utility2.testTryCatch(function () {
-                    // validate error occurred
-                    local.utility2.assert(error instanceof Error, error);
-                    // validate 404 http statusCode
-                    local.utility2.assert(error.statusCode === 404, error.statusCode);
-                    onError();
-                }, onError);
-            });
-        };
-
         local.testCase_instrumentSync_default = function (onError) {
             /*
                 this function will test instrumentSync's default handling behavior
@@ -131,7 +115,7 @@
                     });
                 } catch (errorCaught) {
                     // validate error occurred
-                    local.utility2.assert(errorCaught instanceof Error, errorCaught);
+                    local.utility2.assert(errorCaught, errorCaught);
                     onError();
                 }
             }, onError);
@@ -190,8 +174,6 @@
 
     // run browser js-env code
     case 'browser':
-        // export local
-        window.local = local;
         // init onErrorExit
         local.utility2.onErrorExit = function () {
             try {
@@ -248,19 +230,23 @@
         local.onMiddlewareError = local.utility2.onMiddlewareError;
         // run server-test
         local.utility2.testRunServer(local);
-        // init dir
-        local.fs.readdirSync(__dirname).forEach(function (file) {
-            file = __dirname + '/' + file;
-            // if the file is modified, then restart the process
-            local.utility2.onFileModifiedRestart(file);
-            switch (local.path.extname(file)) {
-            case '.js':
-            case '.json':
-                // jslint the file
-                local.utility2.jslint_lite
-                    .jslintAndPrint(local.fs.readFileSync(file, 'utf8'), file);
-                break;
-            }
+        // jslint dir
+        [
+            __dirname
+        ].forEach(function (dir) {
+            local.fs.readdirSync(dir).forEach(function (file) {
+                file = dir + '/' + file;
+                // if the file is modified, then restart the process
+                local.utility2.onFileModifiedRestart(file);
+                switch (local.path.extname(file)) {
+                case '.js':
+                case '.json':
+                    // jslint file
+                    local.utility2.jslint_lite
+                        .jslintAndPrint(local.fs.readFileSync(file, 'utf8'), file);
+                    break;
+                }
+            });
         });
         // init repl debugger
         local.utility2.replStart();
@@ -288,14 +274,26 @@
                     'browser';
             }
         }());
+        // init global
+        local.global = local.modeJs === 'browser'
+            ? window
+            : global;
+        // export local
+        local.global.local = local;
         // init utility2
         local.utility2 = local.modeJs === 'browser'
             ? window.utility2
             : require('utility2');
+        // init onReady
+        local.utility2.onReadyInit();
         // init istanbul_lite
         local.istanbul_lite = local.modeJs === 'browser'
             ? window.istanbul_lite
             : require('./index.js');
+        // import istanbul_lite.local
+        Object.keys(local.istanbul_lite.local).forEach(function (key) {
+            local[key] = local[key] || local.istanbul_lite.local[key];
+        });
     }());
     return local;
 }())));
