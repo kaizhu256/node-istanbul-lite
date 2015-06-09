@@ -1,6 +1,6 @@
 istanbul-lite
 =============
-minimal browser version of istanbul coverage-tool with zero npm dependencies
+minimal browser version of istanbul coverage-tool with zero npm-dependencies
 
 [![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
 
@@ -19,7 +19,7 @@ minimal browser version of istanbul coverage-tool with zero npm dependencies
 |--:|:--|:--|:--|
 | test-server : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com)|
 | test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html)|
-| coverage : | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/node-istanbul-lite/index.html)|
+| coverage : | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul-lite coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 #### master branch
@@ -42,7 +42,7 @@ minimal browser version of istanbul coverage-tool with zero npm dependencies
 #### to run this example, follow the instruction in the script below
 - example.js
 
-```
+```javascript
 /*
 example.js
 
@@ -223,7 +223,7 @@ instruction
 #### to run this example, follow the instruction in the script below
 - example.sh
 
-```
+```shell
 # example.sh
 
 # this shell script will
@@ -269,15 +269,14 @@ shExampleSh
 
 
 # package.json
-```
+```json
 {
-    "_packageJson": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": { "istanbul-lite" : "index.js" },
     "description": "minimal browser version of istanbul coverage-tool \
-with zero npm dependencies",
+with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "2015.5.15-f",
+        "utility2": "2015.6.1-b",
         "phantomjs-lite": "^2015.4.26-c"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -298,7 +297,7 @@ with zero npm dependencies",
     "scripts": {
         "build-ci": "node_modules/.bin/utility2 shRun shReadmeBuild",
         "start": "npm_config_mode_auto_restart=1 \
-node_modules/.bin/utility2 shRun shIstanbulTest test.js",
+node_modules/.bin/utility2 shRun node test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && \
 mkdir -p tmp && \
 node -e \"require('fs').writeFileSync(\n\
@@ -313,7 +312,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.5.28-a"
+    "version": "0.3.14-2015.6.1-a"
 }
 ```
 
@@ -324,10 +323,11 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since 1d045739
-- npm publish 2015.5.28-a
-- remove "instanceof Error" check for error validation tests
-- require explicit creation of deferred task utility2.onReady
+# change since a97a9806
+- npm publish 0.3.14-2015.6.1-a
+- sync versioning with istanbul
+- update README.md with syntax-highlighted code-blocks
+- rename onTaskEnd to onParallel
 - none
 
 
@@ -340,7 +340,7 @@ node_modules/.bin/utility2 test test.js"
 # internal build-script
 - build.sh
 
-```
+```shell
 # build.sh
 
 # this shell script will run the build for this package
@@ -353,7 +353,7 @@ shBuild() {
     . node_modules/.bin/utility2 && shInit || return $?
 
     # run npm-test on published package
-    shRun shNpmTestPublished || return $?
+    shNpmTestPublished || return $?
 
     # test example js script
     MODE_BUILD=testExampleJs \
@@ -363,7 +363,7 @@ shBuild() {
     MODE_BUILD=testExampleSh \
         shRunScreenCapture shReadmeTestSh example.sh || return $?
     # screen-capture example.sh coverage
-    MODE_BUILD=testExampleSh shRun shPhantomScreenCapture \
+    MODE_BUILD=testExampleSh shPhantomScreenCapture \
         /tmp/app/html-report/app/foo.js.html || return $?
 
     # run npm-test
@@ -373,7 +373,7 @@ shBuild() {
     [ "$(node --version)" \< "v0.12" ] && return
 
     # deploy app to heroku
-    shRun shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
+    shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
 
     # test deployed app to heroku
     if [ "$CI_BRANCH" = alpha ] ||
@@ -384,11 +384,11 @@ shBuild() {
             || return $?
         TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" || \
             return $?
-        MODE_BUILD=herokuTest shRun shPhantomTest $TEST_URL || return $?
+        MODE_BUILD=herokuTest shPhantomTest "$TEST_URL" || return $?
     fi
 
     # if number of commits > 1024, then squash older commits
-    shRun shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
+    shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
 }
 shBuild
 
@@ -415,7 +415,7 @@ shBuildGithubUploadCleanup() {
 
 # upload build-artifacts to github,
 # and if number of commits > 16, then squash older commits
-COMMIT_LIMIT=16 shRun shBuildGithubUpload || exit $?
+COMMIT_LIMIT=16 shBuildGithubUpload || exit $?
 
 # exit with $EXIT_CODE
 exit $EXIT_CODE

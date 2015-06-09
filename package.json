@@ -1,10 +1,9 @@
 {
-    "_packageJson": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": { "istanbul-lite" : "index.js" },
-    "description": "minimal browser version of istanbul coverage-tool with zero npm dependencies",
+    "description": "minimal browser version of istanbul coverage-tool with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "2015.5.15-f",
+        "utility2": "2015.6.1-b",
         "phantomjs-lite": "^2015.4.26-c"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -24,8 +23,8 @@
     },
     "scripts": {
         "build-ci": "node_modules/.bin/utility2 shRun shReadmeBuild",
-        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun shIstanbulTest test.js",
+        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && mkdir -p tmp && node -e \"require('fs').writeFileSync(\n    'tmp/covered.istanbul-lite.js',\n    '#!/usr/bin/env node\\n' + require('./index.js')\n        .instrumentSync(\n            require('fs').readFileSync('./index.js', 'utf8'),\n            process.cwd() + '/index.js'\n        ),\n    { mode: 493 }\n);\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.5.28-a"
+    "version": "0.3.14-2015.6.1-a"
 }
