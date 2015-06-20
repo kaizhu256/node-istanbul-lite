@@ -276,7 +276,7 @@ shExampleSh
     "description": "minimal browser version of istanbul coverage-tool \
 with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "2015.6.10-a",
+        "utility2": "2015.6.10-c",
         "phantomjs-lite": "^1.9.8-2015.6.1-b"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -312,7 +312,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "0.3.15-20150620b"
+    "version": "0.3.15-20150620c"
 }
 ```
 
@@ -323,10 +323,9 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since 2090d2d4
-- npm publish 0.3.15-20150620b
-- update istanbul to 0.3.15
-- use minified handlebars v1.2.1 to reduce package size
+# change since b68c199f
+- npm publish 0.3.15-20150620c
+- fix middlewareAssetsCached
 - none
 
 
