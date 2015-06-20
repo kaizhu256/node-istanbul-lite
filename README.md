@@ -276,8 +276,8 @@ shExampleSh
     "description": "minimal browser version of istanbul coverage-tool \
 with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "2015.6.1-b",
-        "phantomjs-lite": "^2015.4.26-c"
+        "utility2": "2015.6.10-a",
+        "phantomjs-lite": "^1.9.8-2015.6.1-b"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
@@ -312,7 +312,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "0.3.14-2015.6.1-a"
+    "version": "0.3.15-20150620b"
 }
 ```
 
@@ -323,11 +323,10 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since a97a9806
-- npm publish 0.3.14-2015.6.1-a
-- sync versioning with istanbul
-- update README.md with syntax-highlighted code-blocks
-- rename onTaskEnd to onParallel
+# change since 2090d2d4
+- npm publish 0.3.15-20150620b
+- update istanbul to 0.3.15
+- use minified handlebars v1.2.1 to reduce package size
 - none
 
 
@@ -382,13 +381,9 @@ shBuild() {
     then
         TEST_URL="https://hrku01-$npm_package_name-$CI_BRANCH.herokuapp.com" \
             || return $?
-        TEST_URL="$TEST_URL?modeTest=phantom&_testSecret={{_testSecret}}" || \
-            return $?
+        TEST_URL="$TEST_URL?modeTest=phantom&timeExit={{timeExit}}" || return $?
         MODE_BUILD=herokuTest shPhantomTest "$TEST_URL" || return $?
     fi
-
-    # if number of commits > 1024, then squash older commits
-    shGitBackupAndSquashAndPush 1024 > /dev/null || return $?
 }
 shBuild
 
