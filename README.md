@@ -37,6 +37,46 @@ minimal browser version of istanbul coverage-tool with zero npm-dependencies
 
 
 
+# quickstart cli example
+
+#### to run this example, follow the instruction in the script below
+- example.sh
+
+```shell
+# example.sh
+
+# this shell script will
+    # npm install istanbul-lite
+    # create test-script foo.js
+    # run offline-coverage for foo.js and create an offline-report
+
+# instruction
+    # 1. copy and paste this entire shell script into a console and press enter
+    # 2. view coverage in ./html-report/index.html
+
+shExampleSh() {
+    # npm install istanbul-lite
+    npm install istanbul-lite || return $?
+
+    # create test-script foo.js
+    local SCRIPT="if (true) { console.log('hello'); }" || return $?
+    SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
+    printf "$SCRIPT" > foo.js || return $?
+
+    # run offline-coverage for foo.js and create an offline-report
+    node_modules/.bin/istanbul-lite cover foo.js || return $?
+}
+shExampleSh
+```
+
+#### output from shell
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+
+#### output from istanbul-lite
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.js.html)
+
+
+
 # quickstart web example
 
 #### to run this example, follow the instruction in the script below
@@ -218,46 +258,6 @@ instruction
 
 
 
-# quickstart cli example
-
-#### to run this example, follow the instruction in the script below
-- example.sh
-
-```shell
-# example.sh
-
-# this shell script will
-    # npm install istanbul-lite
-    # create test-script foo.js
-    # run offline-coverage for foo.js and create an offline-report
-
-# instruction
-    # 1. copy and paste this entire shell script into a console and press enter
-    # 2. view coverage in ./html-report/index.html
-
-shExampleSh() {
-    # npm install istanbul-lite
-    npm install istanbul-lite || return $?
-
-    # create test-script foo.js
-    local SCRIPT="if (true) { console.log('hello'); }" || return $?
-    SCRIPT="$SCRIPT else { console.log('bye'); }" || return $?
-    printf "$SCRIPT" > foo.js || return $?
-
-    # run offline-coverage for foo.js and create an offline-report
-    node_modules/.bin/istanbul-lite cover foo.js || return $?
-}
-shExampleSh
-```
-
-#### output from shell
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
-
-#### output from istanbul-lite
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.js.html)
-
-
-
 # npm-dependencies
 - none
 
@@ -276,7 +276,7 @@ shExampleSh
     "description": "minimal browser version of istanbul coverage-tool \
 with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "2015.6.10-c",
+        "utility2": "~2015.6.10-d",
         "phantomjs-lite": "^1.9.8-2015.6.1-b"
     },
     "engines": { "node": ">=0.10 <=0.12" },
@@ -312,7 +312,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "0.3.15-20150620c"
+    "version": "2015.6.1"
 }
 ```
 
@@ -323,9 +323,9 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since b68c199f
-- npm publish 0.3.15-20150620c
-- fix middlewareAssetsCached
+# change since 74538af7
+- npm publish 2015.6.1
+- fix version breakage with latest npm install
 - none
 
 
