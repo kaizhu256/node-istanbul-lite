@@ -14,11 +14,13 @@
     // run shared js-env code
     (function () {
         // init tests
-        local.testCase_instrumentSync_default = function (onError) {
+        local.testCase_instrumentSync_default = function (options, onError) {
             /*
-             * this function will test instrumentSync's default handling behavior
+             * this function will test instrumentSync's default handling-behavior
              */
             var data;
+            // jslint-hack
+            local.utility2.nop(options);
             data = local.istanbul_lite.instrumentSync('1', 'test.js');
             // validate data
             local.utility2.assert(data.indexOf(".s[\'1\']++;1;\n") >= 0, data);
@@ -32,15 +34,17 @@
     // run browser js-env code
     case 'browser':
         // init tests
-        local.testCase_coverTextarea_default = function (onError) {
+        local.testCase_coverTextarea_default = function (options, onError) {
             /*
-             * this function will test coverTextarea's default handling behavior
+             * this function will test coverTextarea's default handling-behavior
              */
             var data, istanbulInputTextarea, modeHtml, value;
+            // jslint-hack
+            local.utility2.nop(options);
             istanbulInputTextarea = document.querySelector('.istanbulInputTextarea') || {};
             // save value
             modeHtml = value = istanbulInputTextarea && istanbulInputTextarea.value;
-            // test default handling behavior
+            // test default handling-behavior
             istanbulInputTextarea.value = 'console.log("hello");';
             data = local.istanbul_lite.coverTextarea();
             // validate data
@@ -55,7 +59,7 @@
                     '</td>' +
                     '</tr>') >= 0, data);
             }
-            // test syntax error handling behavior
+            // test syntax error handling-behavior
             istanbulInputTextarea.value = 'syntax error';
             data = local.istanbul_lite.coverTextarea();
             // validate data
@@ -73,16 +77,18 @@
     // run node js-env code
     case 'node':
         // init tests
-        local.testCase_coverageReportCreate_default = function (onError) {
+        local.testCase_coverageReportCreate_default = function (options, onError) {
             /*
-             * this function will test coverageReportCreate's default handling behavior
+             * this function will test coverageReportCreate's default handling-behavior
              */
             var data, dir, file;
+            // jslint-hack
+            local.utility2.nop(options);
             dir = process.env.npm_config_dir_tmp +
                 '/testCase_coverageReportCreate_default';
             // cleanup dir
             local.utility2.fsRmrSync(dir);
-            // test mkdirp handling behavior
+            // test mkdirp handling-behavior
             dir += '/aa/bb/cc';
             file = dir + '/index.html';
             // validate no file exists
@@ -90,18 +96,18 @@
             local.utility2.testMock([
                 // suppress console.log
                 [console, { log: local.utility2.nop }],
-                // test coverageDirDefault handling behavior
+                // test coverageDirDefault handling-behavior
                 [local.istanbul_lite, { coverageDirDefault: dir }],
-                // test coverageDirDefault handling behavior
+                // test coverageDirDefault handling-behavior
                 [process.env, { npm_config_dir_coverage: '' }]
             ], function (onError) {
-                // test no __coverage__ handling behavior
+                // test no __coverage__ handling-behavior
                 data = local.istanbul_lite.coverageReportCreate({ modeNoCoverage: true });
                 // validate data
                 local.utility2.assert(!data, data);
                 // validate no file exists
                 local.utility2.assert(!local.fs.existsSync(file), file);
-                // test __coverage__ handling behavior
+                // test __coverage__ handling-behavior
                 data = local.istanbul_lite.coverageReportCreate({ coverage: {} });
                 // validate data
                 local.utility2.assert(data, data);
@@ -110,7 +116,7 @@
                 try {
                     local.istanbul_lite.coverageReportCreate({
                         coverage: {},
-                        // test mkdirpSync error handling behavior
+                        // test mkdirpSync error handling-behavior
                         dir: file
                     });
                 } catch (errorCaught) {
@@ -121,19 +127,21 @@
             }, onError);
         };
 
-        local.testCase_instrumentInPackage_default = function (onError) {
+        local.testCase_instrumentInPackage_default = function (options, onError) {
             /*
-             * this function will test instrumentInPackage's default handling behavior
+             * this function will test instrumentInPackage's default handling-behavior
              */
             var data;
+            // jslint-hack
+            local.utility2.nop(options);
             local.utility2.testMock([
                 [global, { __coverage__: {} }]
             ], function (onError) {
-                // test no cover handling behavior
+                // test no cover handling-behavior
                 data = local.istanbul_lite.instrumentInPackage('1', 'test.js', '');
                 // validate data
                 local.utility2.assert(data === '1', data);
-                // test cover handling behavior
+                // test cover handling-behavior
                 data = local.istanbul_lite.instrumentInPackage('1', 'test.js', 'istanbul-lite');
                 // validate data
                 local.utility2.assert(data.indexOf(".s[\'1\']++;1;\n") >= 0, data);
@@ -141,21 +149,23 @@
             }, onError);
         };
 
-        local.testCase_testPage_default = function (onError) {
+        local.testCase_testPage_default = function (options, onError) {
             /*
-             * this function will test the test-page's default handling behavior
+             * this function will test the test-page's default handling-behavior
              */
             var onParallel;
+            // jslint-hack
+            local.utility2.nop(options);
             onParallel = local.utility2.onParallel(onError);
             onParallel.counter += 1;
-            // test test-page handling behavior
+            // test test-page handling-behavior
             onParallel.counter += 1;
             local.utility2.phantomTest({
                 url: 'http://localhost:' +
                     local.utility2.envDict.npm_config_server_port +
                     '?modeTest=phantom&timeExit={{timeExit}}'
             }, onParallel);
-            // test script-only handling behavior
+            // test script-only handling-behavior
             onParallel.counter += 1;
             local.utility2.phantomTest({
                 url: 'http://localhost:' +
@@ -225,8 +235,8 @@
             local.utility2.middlewareInit,
             local.utility2.middlewareAssetsCached
         ]);
-        // init middleware error-handler
-        local.onMiddlewareError = local.utility2.onMiddlewareError;
+        // init error-middleware
+        local.middlewareError = local.utility2.middlewareError;
         // run server-test
         local.utility2.testRunServer(local);
         // jslint dir
