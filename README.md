@@ -2,7 +2,7 @@ istanbul-lite
 =============
 minimal browser version of istanbul coverage-tool with zero npm-dependencies
 
-[![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
+[![NPM](https://img.shields.io/npm/v/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite) [![NPM](https://img.shields.io/npm/dm/istanbul-lite.svg?style=flat-square)](https://www.npmjs.org/package/istanbul-lite)
 
 
 
@@ -12,7 +12,6 @@ minimal browser version of istanbul coverage-tool with zero npm-dependencies
 
 
 # build-status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
-
 [![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 | git-branch : | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
@@ -37,8 +36,24 @@ minimal browser version of istanbul coverage-tool with zero npm-dependencies
 
 
 
-# quickstart cli example
+# documentation
+#### this package requires
+- darwin or linux os
 
+#### this package is derived from
+- escodegen@1.6.1
+- esprima@2.5.0
+- estraverse@1.9.3
+- esutils@1.1.6
+- handlebars@1.2.1
+- istanbul-lite@0.3.18
+
+#### [api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
+[![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.docApiCreate.slimerjs._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
+
+
+
+# quickstart cli example
 #### to run this example, follow the instruction in the script below
 - example.sh
 
@@ -70,7 +85,7 @@ shExampleSh
 ```
 
 #### output from shell
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleSh.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 #### output from istanbul-lite
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite//build/screen-capture.testExampleSh.slimerjs._2Ftmp_2Fapp_2Fhtml-report_2Fapp_2Ffoo.js.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/node-istanbul-lite/index.js.html)
@@ -78,7 +93,6 @@ shExampleSh
 
 
 # quickstart web example
-
 #### to run this example, follow the instruction in the script below
 - example.js
 
@@ -100,7 +114,7 @@ instruction
 /*jslint
     browser: true,
     maxerr: 8,
-    maxlen: 80,
+    maxlen: 96,
     node: true,
     nomen: true,
     stupid: true
@@ -159,11 +173,9 @@ instruction
 '</head>\n' +
 '<body>\n' +
 '    <div class="ajaxProgressDiv" style="display: none;">\n' +
-'    <div class="ajaxProgressBarDiv ajaxProgressBarDivLoading" \
->loading</div>\n' +
+'    <div class="ajaxProgressBarDiv ajaxProgressBarDivLoading">loading</div>\n' +
 '    </div>\n' +
-'    <h1 \
->{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
+'    <h1>{{envDict.npm_package_name}} [{{envDict.npm_package_version}}]</h1>\n' +
 '    <h3>{{envDict.npm_package_description}}</h3>\n' +
 '    <div>edit or paste script below to cover and test</div>\n' +
 '<textarea class="istanbulInputTextarea">\n' +
@@ -251,7 +263,7 @@ instruction
 ```
 
 #### output from shell
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.png)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 #### output from phantomjs-lite
 [![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.testExampleJs.slimerjs..png)](https://hrku01-istanbul-lite-beta.herokuapp.com)
@@ -264,7 +276,7 @@ instruction
 
 
 # package-listing
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.png)](https://github.com/kaizhu256/node-istanbul-lite)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.svg)](https://github.com/kaizhu256/node-istanbul-lite)
 
 
 
@@ -276,8 +288,8 @@ instruction
     "description": "minimal browser version of istanbul coverage-tool \
 with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "^2015.7.10",
-        "phantomjs-lite": "^2015.6.1"
+        "utility2": "^2015.8.5",
+        "phantomjs-lite": "^2015.7.1"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
@@ -296,8 +308,12 @@ with zero npm-dependencies",
     },
     "scripts": {
         "build-ci": "node_modules/.bin/utility2 shRun shReadmeBuild",
-        "start": "npm_config_mode_auto_restart=1 \
-node_modules/.bin/utility2 shRun node test.js",
+        "build-doc": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && \
+node_modules/.bin/utility2 shRun shDocApiCreate \"{ \
+exampleFileList:['test.js','index.js'], \
+moduleDict:{'istanbul-lite':{aliasList:['istanbul_lite'],exports:require('./index.js')}} \
+}\"",
+        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && \
 mkdir -p tmp && \
 node -e \"require('fs').writeFileSync(\n\
@@ -312,7 +328,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.6.2"
+    "version": "2015.8.1"
 }
 ```
 
@@ -323,16 +339,16 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since e68780de
-- npm publish 2015.6.2
-- update README.md
+# change since 9d3a4ac3
+- npm publish 2015.8.1
+- add api documentation
 - update dependencies
 - none
 
 
 
 # changelog of last 50 commits
-[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLog.png)](https://github.com/kaizhu256/node-istanbul-lite/commits)
+[![screen-capture](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLog.svg)](https://github.com/kaizhu256/node-istanbul-lite/commits)
 
 
 
@@ -356,18 +372,19 @@ shBuild() {
     shRun shNpmTestPublished || return $?
 
     # test example js script
-    MODE_BUILD=testExampleJs \
-        shRunScreenCapture shReadmeTestJs example.js || return $?
+    MODE_BUILD=testExampleJs shRunScreenCapture shReadmeTestJs example.js || return $?
 
     # test example shell script
-    MODE_BUILD=testExampleSh \
-        shRunScreenCapture shReadmeTestSh example.sh || return $?
+    MODE_BUILD=testExampleSh shRunScreenCapture shReadmeTestSh example.sh || return $?
     # screen-capture example.sh coverage
     MODE_BUILD=testExampleSh shPhantomScreenCapture \
         /tmp/app/html-report/app/foo.js.html || return $?
 
     # run npm-test
     MODE_BUILD=npmTest shRunScreenCapture npm test || return $?
+
+    # create api-doc
+    npm run-script build-doc || return $?
 
     # if running legacy-node, then do not continue
     [ "$(node --version)" \< "v0.12" ] && return
@@ -380,8 +397,7 @@ shBuild() {
         [ "$CI_BRANCH" = beta ] ||
         [ "$CI_BRANCH" = master ]
     then
-        TEST_URL="https://hrku01-$npm_package_name-$CI_BRANCH.herokuapp.com" \
-            || return $?
+        TEST_URL="https://hrku01-$npm_package_name-$CI_BRANCH.herokuapp.com" || return $?
         TEST_URL="$TEST_URL?modeTest=phantom&timeExit={{timeExit}}" || return $?
         MODE_BUILD=herokuTest shPhantomTest "$TEST_URL" || return $?
     fi
@@ -390,29 +406,13 @@ shBuild
 
 # save exit-code
 EXIT_CODE=$?
-
-shBuildCleanup() {
-    # this function will cleanup build-artifacts in local build dir
-    # create package-listing
-    MODE_BUILD=gitLsTree shRunScreenCapture shGitLsTree || return $?
-    # create recent changelog of last 50 commits
-    MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" || \
-        return $?
-}
-shBuildCleanup || exit $?
-
-shBuildGithubUploadCleanup() {
-    # this function will cleanup build-artifacts in local gh-pages repo
-    return
-}
-
+# create package-listing
+MODE_BUILD=gitLsTree shRunScreenCapture shGitLsTree || exit $?
+# create recent changelog of last 50 commits
+MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" || exit $?
 # if running legacy-node, then do not continue
 [ "$(node --version)" \< "v0.12" ] && exit $EXIT_CODE
-
-# upload build-artifacts to github,
-# and if number of commits > 16, then squash older commits
+# upload build-artifacts to github, and if number of commits > 16, then squash older commits
 COMMIT_LIMIT=16 shBuildGithubUpload || exit $?
-
-# exit with $EXIT_CODE
 exit $EXIT_CODE
 ```

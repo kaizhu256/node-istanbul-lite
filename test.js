@@ -183,13 +183,6 @@
 
     // run browser js-env code
     case 'browser':
-        // init onErrorExit
-        local.utility2.onErrorExit = function () {
-            try {
-                delete window.__coverage__['/istanbulInputTextarea.js'];
-            } catch (ignore) {
-            }
-        };
         // run test
         local.utility2.testRun(local);
         break;

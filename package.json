@@ -3,8 +3,8 @@
     "bin": { "istanbul-lite" : "index.js" },
     "description": "minimal browser version of istanbul coverage-tool with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "^2015.7.10",
-        "phantomjs-lite": "^2015.6.1"
+        "utility2": "^2015.8.5",
+        "phantomjs-lite": "^2015.7.1"
     },
     "engines": { "node": ">=0.10 <=0.12" },
     "keywords": [
@@ -23,8 +23,9 @@
     },
     "scripts": {
         "build-ci": "node_modules/.bin/utility2 shRun shReadmeBuild",
+        "build-doc": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && node_modules/.bin/utility2 shRun shDocApiCreate \"{ exampleFileList:['test.js','index.js'], moduleDict:{'istanbul-lite':{aliasList:['istanbul_lite'],exports:require('./index.js')}} }\"",
         "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && mkdir -p tmp && node -e \"require('fs').writeFileSync(\n    'tmp/covered.istanbul-lite.js',\n    '#!/usr/bin/env node\\n' + require('./index.js')\n        .instrumentSync(\n            require('fs').readFileSync('./index.js', 'utf8'),\n            process.cwd() + '/index.js'\n        ),\n    { mode: 493 }\n);\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.6.2"
+    "version": "2015.8.1"
 }
