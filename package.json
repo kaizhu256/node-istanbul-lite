@@ -27,5 +27,5 @@
         "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
         "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && mkdir -p tmp && node -e \"require('fs').writeFileSync(\n    'tmp/covered.istanbul-lite.js',\n    '#!/usr/bin/env node\\n' + require('./index.js')\n        .instrumentSync(\n            require('fs').readFileSync('./index.js', 'utf8'),\n            process.cwd() + '/index.js'\n        ),\n    { mode: 493 }\n);\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.8.1"
+    "version": "2015.8.2"
 }

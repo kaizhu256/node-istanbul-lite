@@ -46,7 +46,7 @@ minimal browser version of istanbul coverage-tool with zero npm-dependencies
 - estraverse@1.9.3
 - esutils@1.1.6
 - handlebars@1.2.1
-- istanbul-lite@0.3.18
+- istanbul@0.3.18
 
 #### [api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
 [![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.docApiCreate.slimerjs._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
@@ -328,21 +328,21 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.8.1"
+    "version": "2015.8.2"
 }
 ```
 
 
 
 # todo
+- create flamegraph from coverage
 - none
 
 
 
-# change since 9d3a4ac3
-- npm publish 2015.8.1
-- add api documentation
-- update dependencies
+# change since 30b7aa99
+- npm publish 2015.8.2
+- update README.md
 - none
 
 
