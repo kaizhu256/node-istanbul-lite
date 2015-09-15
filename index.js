@@ -5,12 +5,12 @@
     maxlen: 96,
     node: true,
     nomen: true,
+    regexp: true,
     stupid: true
 */
 (function (local) {
     'use strict';
-    var require, process;
-    process = local.process;
+    var require;
     require = function (key) {
         return local[key] || local.require(key);
     };
@@ -6633,8 +6633,7 @@
 }());
 /* vim: set sw=4 ts=4 et tw=80 : */
 /* jslint-ignore-end */
-        local.esutils = local.esutils || {};
-        local.esutils.code = module.exports;
+        local.esutils = { code: module.exports };
     }());
 
 
@@ -9212,287 +9211,6 @@
 
     /* istanbul ignore next */
     (function () {
-        var Handlebars;
-        Handlebars = null;
-// https://github.com/components/handlebars.js/blob/v1.2.1/handlebars.min.js
-/* jslint-ignore-begin */
-/*!
-
- handlebars v1.2.1
-
-Copyright (C) 2011 by Yehuda Katz
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-@license
-*/
-var Handlebars=function(){var a=function(){"use strict";function a(a){this.string=a}var b;return a.prototype.toString=function(){return""+this.string},b=a}(),b=function(a){"use strict";function b(a){return h[a]||"&amp;"}function c(a,b){for(var c in b)Object.prototype.hasOwnProperty.call(b,c)&&(a[c]=b[c])}function d(a){return a instanceof g?a.toString():a||0===a?(a=""+a,j.test(a)?a.replace(i,b):a):""}function e(a){return a||0===a?m(a)&&0===a.length?!0:!1:!0}var f={},g=a,h={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"},i=/[&<>"'`]/g,j=/[&<>"'`]/;f.extend=c;var k=Object.prototype.toString;f.toString=k;var l=function(a){return"function"==typeof a};l(/x/)&&(l=function(a){return"function"==typeof a&&"[object Function]"===k.call(a)});var l;f.isFunction=l;var m=Array.isArray||function(a){return a&&"object"==typeof a?"[object Array]"===k.call(a):!1};return f.isArray=m,f.escapeExpression=d,f.isEmpty=e,f}(a),c=function(){"use strict";function a(){for(var a=Error.prototype.constructor.apply(this,arguments),b=0;b<c.length;b++)this[c[b]]=a[c[b]]}var b,c=["description","fileName","lineNumber","message","name","number","stack"];return a.prototype=new Error,b=a}(),d=function(a,b){"use strict";function c(a,b){this.helpers=a||{},this.partials=b||{},d(this)}function d(a){a.registerHelper("helperMissing",function(a){if(2===arguments.length)return void 0;throw new Error("Missing helper: '"+a+"'")}),a.registerHelper("blockHelperMissing",function(b,c){var d=c.inverse||function(){},e=c.fn;return m(b)&&(b=b.call(this)),b===!0?e(this):b===!1||null==b?d(this):l(b)?b.length>0?a.helpers.each(b,c):d(this):e(b)}),a.registerHelper("each",function(a,b){var c,d=b.fn,e=b.inverse,f=0,g="";if(m(a)&&(a=a.call(this)),b.data&&(c=q(b.data)),a&&"object"==typeof a)if(l(a))for(var h=a.length;h>f;f++)c&&(c.index=f,c.first=0===f,c.last=f===a.length-1),g+=d(a[f],{data:c});else for(var i in a)a.hasOwnProperty(i)&&(c&&(c.key=i,c.index=f,c.first=0===f),g+=d(a[i],{data:c}),f++);return 0===f&&(g=e(this)),g}),a.registerHelper("if",function(a,b){return m(a)&&(a=a.call(this)),!b.hash.includeZero&&!a||g.isEmpty(a)?b.inverse(this):b.fn(this)}),a.registerHelper("unless",function(b,c){return a.helpers["if"].call(this,b,{fn:c.inverse,inverse:c.fn,hash:c.hash})}),a.registerHelper("with",function(a,b){return m(a)&&(a=a.call(this)),g.isEmpty(a)?void 0:b.fn(a)}),a.registerHelper("log",function(b,c){var d=c.data&&null!=c.data.level?parseInt(c.data.level,10):1;a.log(d,b)})}function e(a,b){p.log(a,b)}var f={},g=a,h=b,i="1.2.1";f.VERSION=i;var j=4;f.COMPILER_REVISION=j;var k={1:"<= 1.0.rc.2",2:"== 1.0.0-rc.3",3:"== 1.0.0-rc.4",4:">= 1.0.0"};f.REVISION_CHANGES=k;var l=g.isArray,m=g.isFunction,n=g.toString,o="[object Object]";f.HandlebarsEnvironment=c,c.prototype={constructor:c,logger:p,log:e,registerHelper:function(a,b,c){if(n.call(a)===o){if(c||b)throw new h("Arg not supported with multiple helpers");g.extend(this.helpers,a)}else c&&(b.not=c),this.helpers[a]=b},registerPartial:function(a,b){n.call(a)===o?g.extend(this.partials,a):this.partials[a]=b}};var p={methodMap:{0:"debug",1:"info",2:"warn",3:"error"},DEBUG:0,INFO:1,WARN:2,ERROR:3,level:3,log:function(a,b){if(p.level<=a){var c=p.methodMap[a];"undefined"!=typeof console&&console[c]&&console[c].call(console,b)}}};f.logger=p,f.log=e;var q=function(a){var b={};return g.extend(b,a),b};return f.createFrame=q,f}(b,c),e=function(a,b,c){"use strict";function d(a){var b=a&&a[0]||1,c=m;if(b!==c){if(c>b){var d=n[c],e=n[b];throw new Error("Template was precompiled with an older version of Handlebars than the current runtime. Please update your precompiler to a newer version ("+d+") or downgrade your runtime to an older version ("+e+").")}throw new Error("Template was precompiled with a newer version of Handlebars than the current runtime. Please update your runtime to a newer version ("+a[1]+").")}}function e(a,b){if(!b)throw new Error("No environment passed to template");var c=function(a,c,d,e,f,g){var h=b.VM.invokePartial.apply(this,arguments);if(null!=h)return h;if(b.compile){var i={helpers:e,partials:f,data:g};return f[c]=b.compile(a,{data:void 0!==g},b),f[c](d,i)}throw new l("The partial "+c+" could not be compiled when running in runtime-only mode")},d={escapeExpression:k.escapeExpression,invokePartial:c,programs:[],program:function(a,b,c){var d=this.programs[a];return c?d=g(a,b,c):d||(d=this.programs[a]=g(a,b)),d},merge:function(a,b){var c=a||b;return a&&b&&a!==b&&(c={},k.extend(c,b),k.extend(c,a)),c},programWithDepth:b.VM.programWithDepth,noop:b.VM.noop,compilerInfo:null};return function(c,e){e=e||{};var f,g,h=e.partial?e:b;e.partial||(f=e.helpers,g=e.partials);var i=a.call(d,h,c,f,g,e.data);return e.partial||b.VM.checkRevision(d.compilerInfo),i}}function f(a,b,c){var d=Array.prototype.slice.call(arguments,3),e=function(a,e){return e=e||{},b.apply(this,[a,e.data||c].concat(d))};return e.program=a,e.depth=d.length,e}function g(a,b,c){var d=function(a,d){return d=d||{},b(a,d.data||c)};return d.program=a,d.depth=0,d}function h(a,b,c,d,e,f){var g={partial:!0,helpers:d,partials:e,data:f};if(void 0===a)throw new l("The partial "+b+" could not be found");return a instanceof Function?a(c,g):void 0}function i(){return""}var j={},k=a,l=b,m=c.COMPILER_REVISION,n=c.REVISION_CHANGES;return j.checkRevision=d,j.template=e,j.programWithDepth=f,j.program=g,j.invokePartial=h,j.noop=i,j}(b,c,d),f=function(a,b,c,d,e){"use strict";var f,g=a,h=b,i=c,j=d,k=e,l=function(){var a=new g.HandlebarsEnvironment;return j.extend(a,g),a.SafeString=h,a.Exception=i,a.Utils=j,a.VM=k,a.template=function(b){return k.template(b,a)},a},m=l();return m.create=l,f=m}(d,a,c,b,e),g=function(a){"use strict";var b,c=a,d={ProgramNode:function(a,b,c){this.type="program",this.statements=a,this.strip={},c?(this.inverse=new d.ProgramNode(c,b),this.strip.right=b.left):b&&(this.strip.left=b.right)},MustacheNode:function(a,b,c,d){if(this.type="mustache",this.hash=b,this.strip=d,null!=c&&c.charAt){var e=c.charAt(3)||c.charAt(2);this.escaped="{"!==e&&"&"!==e}else this.escaped=!!c;var f=this.id=a[0],g=this.params=a.slice(1),h=this.eligibleHelper=f.isSimple;this.isHelper=h&&(g.length||b)},PartialNode:function(a,b,c){this.type="partial",this.partialName=a,this.context=b,this.strip=c},BlockNode:function(a,b,d,e){if(a.id.original!==e.path.original)throw new c(a.id.original+" doesn't match "+e.path.original);this.type="block",this.mustache=a,this.program=b,this.inverse=d,this.strip={left:a.strip.left,right:e.strip.right},(b||d).strip.left=a.strip.right,(d||b).strip.right=e.strip.left,d&&!b&&(this.isInverse=!0)},ContentNode:function(a){this.type="content",this.string=a},HashNode:function(a){this.type="hash",this.pairs=a},IdNode:function(a){this.type="ID";for(var b="",d=[],e=0,f=0,g=a.length;g>f;f++){var h=a[f].part;if(b+=(a[f].separator||"")+h,".."===h||"."===h||"this"===h){if(d.length>0)throw new c("Invalid path: "+b);".."===h?e++:this.isScoped=!0}else d.push(h)}this.original=b,this.parts=d,this.string=d.join("."),this.depth=e,this.isSimple=1===a.length&&!this.isScoped&&0===e,this.stringModeValue=this.string},PartialNameNode:function(a){this.type="PARTIAL_NAME",this.name=a.original},DataNode:function(a){this.type="DATA",this.id=a},StringNode:function(a){this.type="STRING",this.original=this.string=this.stringModeValue=a},IntegerNode:function(a){this.type="INTEGER",this.original=this.integer=a,this.stringModeValue=Number(a)},BooleanNode:function(a){this.type="BOOLEAN",this.bool=a,this.stringModeValue="true"===a},CommentNode:function(a){this.type="comment",this.comment=a}};return b=d}(c),h=function(){"use strict";var a,b=function(){function a(a,b){return{left:"~"===a.charAt(2),right:"~"===b.charAt(0)||"~"===b.charAt(1)}}function b(){this.yy={}}var c={trace:function(){},yy:{},symbols_:{error:2,root:3,statements:4,EOF:5,program:6,simpleInverse:7,statement:8,openInverse:9,closeBlock:10,openBlock:11,mustache:12,partial:13,CONTENT:14,COMMENT:15,OPEN_BLOCK:16,inMustache:17,CLOSE:18,OPEN_INVERSE:19,OPEN_ENDBLOCK:20,path:21,OPEN:22,OPEN_UNESCAPED:23,CLOSE_UNESCAPED:24,OPEN_PARTIAL:25,partialName:26,partial_option0:27,inMustache_repetition0:28,inMustache_option0:29,dataName:30,param:31,STRING:32,INTEGER:33,BOOLEAN:34,hash:35,hash_repetition_plus0:36,hashSegment:37,ID:38,EQUALS:39,DATA:40,pathSegments:41,SEP:42,$accept:0,$end:1},terminals_:{2:"error",5:"EOF",14:"CONTENT",15:"COMMENT",16:"OPEN_BLOCK",18:"CLOSE",19:"OPEN_INVERSE",20:"OPEN_ENDBLOCK",22:"OPEN",23:"OPEN_UNESCAPED",24:"CLOSE_UNESCAPED",25:"OPEN_PARTIAL",32:"STRING",33:"INTEGER",34:"BOOLEAN",38:"ID",39:"EQUALS",40:"DATA",42:"SEP"},productions_:[0,[3,2],[3,1],[6,2],[6,3],[6,2],[6,1],[6,1],[6,0],[4,1],[4,2],[8,3],[8,3],[8,1],[8,1],[8,1],[8,1],[11,3],[9,3],[10,3],[12,3],[12,3],[13,4],[7,2],[17,3],[17,1],[31,1],[31,1],[31,1],[31,1],[31,1],[35,1],[37,3],[26,1],[26,1],[26,1],[30,2],[21,1],[41,3],[41,1],[27,0],[27,1],[28,0],[28,2],[29,0],[29,1],[36,1],[36,2]],performAction:function(b,c,d,e,f,g){var h=g.length-1;switch(f){case 1:return new e.ProgramNode(g[h-1]);case 2:return new e.ProgramNode([]);case 3:this.$=new e.ProgramNode([],g[h-1],g[h]);break;case 4:this.$=new e.ProgramNode(g[h-2],g[h-1],g[h]);break;case 5:this.$=new e.ProgramNode(g[h-1],g[h],[]);break;case 6:this.$=new e.ProgramNode(g[h]);break;case 7:this.$=new e.ProgramNode([]);break;case 8:this.$=new e.ProgramNode([]);break;case 9:this.$=[g[h]];break;case 10:g[h-1].push(g[h]),this.$=g[h-1];break;case 11:this.$=new e.BlockNode(g[h-2],g[h-1].inverse,g[h-1],g[h]);break;case 12:this.$=new e.BlockNode(g[h-2],g[h-1],g[h-1].inverse,g[h]);break;case 13:this.$=g[h];break;case 14:this.$=g[h];break;case 15:this.$=new e.ContentNode(g[h]);break;case 16:this.$=new e.CommentNode(g[h]);break;case 17:this.$=new e.MustacheNode(g[h-1][0],g[h-1][1],g[h-2],a(g[h-2],g[h]));break;case 18:this.$=new e.MustacheNode(g[h-1][0],g[h-1][1],g[h-2],a(g[h-2],g[h]));break;case 19:this.$={path:g[h-1],strip:a(g[h-2],g[h])};break;case 20:this.$=new e.MustacheNode(g[h-1][0],g[h-1][1],g[h-2],a(g[h-2],g[h]));break;case 21:this.$=new e.MustacheNode(g[h-1][0],g[h-1][1],g[h-2],a(g[h-2],g[h]));break;case 22:this.$=new e.PartialNode(g[h-2],g[h-1],a(g[h-3],g[h]));break;case 23:this.$=a(g[h-1],g[h]);break;case 24:this.$=[[g[h-2]].concat(g[h-1]),g[h]];break;case 25:this.$=[[g[h]],null];break;case 26:this.$=g[h];break;case 27:this.$=new e.StringNode(g[h]);break;case 28:this.$=new e.IntegerNode(g[h]);break;case 29:this.$=new e.BooleanNode(g[h]);break;case 30:this.$=g[h];break;case 31:this.$=new e.HashNode(g[h]);break;case 32:this.$=[g[h-2],g[h]];break;case 33:this.$=new e.PartialNameNode(g[h]);break;case 34:this.$=new e.PartialNameNode(new e.StringNode(g[h]));break;case 35:this.$=new e.PartialNameNode(new e.IntegerNode(g[h]));break;case 36:this.$=new e.DataNode(g[h]);break;case 37:this.$=new e.IdNode(g[h]);break;case 38:g[h-2].push({part:g[h],separator:g[h-1]}),this.$=g[h-2];break;case 39:this.$=[{part:g[h]}];break;case 42:this.$=[];break;case 43:g[h-1].push(g[h]);break;case 46:this.$=[g[h]];break;case 47:g[h-1].push(g[h])}},table:[{3:1,4:2,5:[1,3],8:4,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,11],22:[1,13],23:[1,14],25:[1,15]},{1:[3]},{5:[1,16],8:17,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,11],22:[1,13],23:[1,14],25:[1,15]},{1:[2,2]},{5:[2,9],14:[2,9],15:[2,9],16:[2,9],19:[2,9],20:[2,9],22:[2,9],23:[2,9],25:[2,9]},{4:20,6:18,7:19,8:4,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,21],20:[2,8],22:[1,13],23:[1,14],25:[1,15]},{4:20,6:22,7:19,8:4,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,21],20:[2,8],22:[1,13],23:[1,14],25:[1,15]},{5:[2,13],14:[2,13],15:[2,13],16:[2,13],19:[2,13],20:[2,13],22:[2,13],23:[2,13],25:[2,13]},{5:[2,14],14:[2,14],15:[2,14],16:[2,14],19:[2,14],20:[2,14],22:[2,14],23:[2,14],25:[2,14]},{5:[2,15],14:[2,15],15:[2,15],16:[2,15],19:[2,15],20:[2,15],22:[2,15],23:[2,15],25:[2,15]},{5:[2,16],14:[2,16],15:[2,16],16:[2,16],19:[2,16],20:[2,16],22:[2,16],23:[2,16],25:[2,16]},{17:23,21:24,30:25,38:[1,28],40:[1,27],41:26},{17:29,21:24,30:25,38:[1,28],40:[1,27],41:26},{17:30,21:24,30:25,38:[1,28],40:[1,27],41:26},{17:31,21:24,30:25,38:[1,28],40:[1,27],41:26},{21:33,26:32,32:[1,34],33:[1,35],38:[1,28],41:26},{1:[2,1]},{5:[2,10],14:[2,10],15:[2,10],16:[2,10],19:[2,10],20:[2,10],22:[2,10],23:[2,10],25:[2,10]},{10:36,20:[1,37]},{4:38,8:4,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,11],20:[2,7],22:[1,13],23:[1,14],25:[1,15]},{7:39,8:17,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,21],20:[2,6],22:[1,13],23:[1,14],25:[1,15]},{17:23,18:[1,40],21:24,30:25,38:[1,28],40:[1,27],41:26},{10:41,20:[1,37]},{18:[1,42]},{18:[2,42],24:[2,42],28:43,32:[2,42],33:[2,42],34:[2,42],38:[2,42],40:[2,42]},{18:[2,25],24:[2,25]},{18:[2,37],24:[2,37],32:[2,37],33:[2,37],34:[2,37],38:[2,37],40:[2,37],42:[1,44]},{21:45,38:[1,28],41:26},{18:[2,39],24:[2,39],32:[2,39],33:[2,39],34:[2,39],38:[2,39],40:[2,39],42:[2,39]},{18:[1,46]},{18:[1,47]},{24:[1,48]},{18:[2,40],21:50,27:49,38:[1,28],41:26},{18:[2,33],38:[2,33]},{18:[2,34],38:[2,34]},{18:[2,35],38:[2,35]},{5:[2,11],14:[2,11],15:[2,11],16:[2,11],19:[2,11],20:[2,11],22:[2,11],23:[2,11],25:[2,11]},{21:51,38:[1,28],41:26},{8:17,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,11],20:[2,3],22:[1,13],23:[1,14],25:[1,15]},{4:52,8:4,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,11],20:[2,5],22:[1,13],23:[1,14],25:[1,15]},{14:[2,23],15:[2,23],16:[2,23],19:[2,23],20:[2,23],22:[2,23],23:[2,23],25:[2,23]},{5:[2,12],14:[2,12],15:[2,12],16:[2,12],19:[2,12],20:[2,12],22:[2,12],23:[2,12],25:[2,12]},{14:[2,18],15:[2,18],16:[2,18],19:[2,18],20:[2,18],22:[2,18],23:[2,18],25:[2,18]},{18:[2,44],21:56,24:[2,44],29:53,30:60,31:54,32:[1,57],33:[1,58],34:[1,59],35:55,36:61,37:62,38:[1,63],40:[1,27],41:26},{38:[1,64]},{18:[2,36],24:[2,36],32:[2,36],33:[2,36],34:[2,36],38:[2,36],40:[2,36]},{14:[2,17],15:[2,17],16:[2,17],19:[2,17],20:[2,17],22:[2,17],23:[2,17],25:[2,17]},{5:[2,20],14:[2,20],15:[2,20],16:[2,20],19:[2,20],20:[2,20],22:[2,20],23:[2,20],25:[2,20]},{5:[2,21],14:[2,21],15:[2,21],16:[2,21],19:[2,21],20:[2,21],22:[2,21],23:[2,21],25:[2,21]},{18:[1,65]},{18:[2,41]},{18:[1,66]},{8:17,9:5,11:6,12:7,13:8,14:[1,9],15:[1,10],16:[1,12],19:[1,11],20:[2,4],22:[1,13],23:[1,14],25:[1,15]},{18:[2,24],24:[2,24]},{18:[2,43],24:[2,43],32:[2,43],33:[2,43],34:[2,43],38:[2,43],40:[2,43]},{18:[2,45],24:[2,45]},{18:[2,26],24:[2,26],32:[2,26],33:[2,26],34:[2,26],38:[2,26],40:[2,26]},{18:[2,27],24:[2,27],32:[2,27],33:[2,27],34:[2,27],38:[2,27],40:[2,27]},{18:[2,28],24:[2,28],32:[2,28],33:[2,28],34:[2,28],38:[2,28],40:[2,28]},{18:[2,29],24:[2,29],32:[2,29],33:[2,29],34:[2,29],38:[2,29],40:[2,29]},{18:[2,30],24:[2,30],32:[2,30],33:[2,30],34:[2,30],38:[2,30],40:[2,30]},{18:[2,31],24:[2,31],37:67,38:[1,68]},{18:[2,46],24:[2,46],38:[2,46]},{18:[2,39],24:[2,39],32:[2,39],33:[2,39],34:[2,39],38:[2,39],39:[1,69],40:[2,39],42:[2,39]},{18:[2,38],24:[2,38],32:[2,38],33:[2,38],34:[2,38],38:[2,38],40:[2,38],42:[2,38]},{5:[2,22],14:[2,22],15:[2,22],16:[2,22],19:[2,22],20:[2,22],22:[2,22],23:[2,22],25:[2,22]},{5:[2,19],14:[2,19],15:[2,19],16:[2,19],19:[2,19],20:[2,19],22:[2,19],23:[2,19],25:[2,19]},{18:[2,47],24:[2,47],38:[2,47]},{39:[1,69]},{21:56,30:60,31:70,32:[1,57],33:[1,58],34:[1,59],38:[1,28],40:[1,27],41:26},{18:[2,32],24:[2,32],38:[2,32]}],defaultActions:{3:[2,2],16:[2,1],50:[2,41]},parseError:function(a){throw new Error(a)},parse:function(a){function b(){var a;return a=c.lexer.lex()||1,"number"!=typeof a&&(a=c.symbols_[a]||a),a}var c=this,d=[0],e=[null],f=[],g=this.table,h="",i=0,j=0,k=0;this.lexer.setInput(a),this.lexer.yy=this.yy,this.yy.lexer=this.lexer,this.yy.parser=this,"undefined"==typeof this.lexer.yylloc&&(this.lexer.yylloc={});var l=this.lexer.yylloc;f.push(l);var m=this.lexer.options&&this.lexer.options.ranges;"function"==typeof this.yy.parseError&&(this.parseError=this.yy.parseError);for(var n,o,p,q,r,s,t,u,v,w={};;){if(p=d[d.length-1],this.defaultActions[p]?q=this.defaultActions[p]:((null===n||"undefined"==typeof n)&&(n=b()),q=g[p]&&g[p][n]),"undefined"==typeof q||!q.length||!q[0]){var x="";if(!k){v=[];for(s in g[p])this.terminals_[s]&&s>2&&v.push("'"+this.terminals_[s]+"'");x=this.lexer.showPosition?"Parse error on line "+(i+1)+":\n"+this.lexer.showPosition()+"\nExpecting "+v.join(", ")+", got '"+(this.terminals_[n]||n)+"'":"Parse error on line "+(i+1)+": Unexpected "+(1==n?"end of input":"'"+(this.terminals_[n]||n)+"'"),this.parseError(x,{text:this.lexer.match,token:this.terminals_[n]||n,line:this.lexer.yylineno,loc:l,expected:v})}}if(q[0]instanceof Array&&q.length>1)throw new Error("Parse Error: multiple actions possible at state: "+p+", token: "+n);switch(q[0]){case 1:d.push(n),e.push(this.lexer.yytext),f.push(this.lexer.yylloc),d.push(q[1]),n=null,o?(n=o,o=null):(j=this.lexer.yyleng,h=this.lexer.yytext,i=this.lexer.yylineno,l=this.lexer.yylloc,k>0&&k--);break;case 2:if(t=this.productions_[q[1]][1],w.$=e[e.length-t],w._$={first_line:f[f.length-(t||1)].first_line,last_line:f[f.length-1].last_line,first_column:f[f.length-(t||1)].first_column,last_column:f[f.length-1].last_column},m&&(w._$.range=[f[f.length-(t||1)].range[0],f[f.length-1].range[1]]),r=this.performAction.call(w,h,j,i,this.yy,q[1],e,f),"undefined"!=typeof r)return r;t&&(d=d.slice(0,-1*t*2),e=e.slice(0,-1*t),f=f.slice(0,-1*t)),d.push(this.productions_[q[1]][0]),e.push(w.$),f.push(w._$),u=g[d[d.length-2]][d[d.length-1]],d.push(u);break;case 3:return!0}}return!0}},d=function(){var a={EOF:1,parseError:function(a,b){if(!this.yy.parser)throw new Error(a);this.yy.parser.parseError(a,b)},setInput:function(a){return this._input=a,this._more=this._less=this.done=!1,this.yylineno=this.yyleng=0,this.yytext=this.matched=this.match="",this.conditionStack=["INITIAL"],this.yylloc={first_line:1,first_column:0,last_line:1,last_column:0},this.options.ranges&&(this.yylloc.range=[0,0]),this.offset=0,this},input:function(){var a=this._input[0];this.yytext+=a,this.yyleng++,this.offset++,this.match+=a,this.matched+=a;var b=a.match(/(?:\r\n?|\n).*/g);return b?(this.yylineno++,this.yylloc.last_line++):this.yylloc.last_column++,this.options.ranges&&this.yylloc.range[1]++,this._input=this._input.slice(1),a},unput:function(a){var b=a.length,c=a.split(/(?:\r\n?|\n)/g);this._input=a+this._input,this.yytext=this.yytext.substr(0,this.yytext.length-b-1),this.offset-=b;var d=this.match.split(/(?:\r\n?|\n)/g);this.match=this.match.substr(0,this.match.length-1),this.matched=this.matched.substr(0,this.matched.length-1),c.length-1&&(this.yylineno-=c.length-1);var e=this.yylloc.range;return this.yylloc={first_line:this.yylloc.first_line,last_line:this.yylineno+1,first_column:this.yylloc.first_column,last_column:c?(c.length===d.length?this.yylloc.first_column:0)+d[d.length-c.length].length-c[0].length:this.yylloc.first_column-b},this.options.ranges&&(this.yylloc.range=[e[0],e[0]+this.yyleng-b]),this},more:function(){return this._more=!0,this},less:function(a){this.unput(this.match.slice(a))},pastInput:function(){var a=this.matched.substr(0,this.matched.length-this.match.length);return(a.length>20?"...":"")+a.substr(-20).replace(/\n/g,"")},upcomingInput:function(){var a=this.match;return a.length<20&&(a+=this._input.substr(0,20-a.length)),(a.substr(0,20)+(a.length>20?"...":"")).replace(/\n/g,"")},showPosition:function(){var a=this.pastInput(),b=new Array(a.length+1).join("-");return a+this.upcomingInput()+"\n"+b+"^"},next:function(){if(this.done)return this.EOF;this._input||(this.done=!0);var a,b,c,d,e;this._more||(this.yytext="",this.match="");for(var f=this._currentRules(),g=0;g<f.length&&(c=this._input.match(this.rules[f[g]]),!c||b&&!(c[0].length>b[0].length)||(b=c,d=g,this.options.flex));g++);return b?(e=b[0].match(/(?:\r\n?|\n).*/g),e&&(this.yylineno+=e.length),this.yylloc={first_line:this.yylloc.last_line,last_line:this.yylineno+1,first_column:this.yylloc.last_column,last_column:e?e[e.length-1].length-e[e.length-1].match(/\r?\n?/)[0].length:this.yylloc.last_column+b[0].length},this.yytext+=b[0],this.match+=b[0],this.matches=b,this.yyleng=this.yytext.length,this.options.ranges&&(this.yylloc.range=[this.offset,this.offset+=this.yyleng]),this._more=!1,this._input=this._input.slice(b[0].length),this.matched+=b[0],a=this.performAction.call(this,this.yy,this,f[d],this.conditionStack[this.conditionStack.length-1]),this.done&&this._input&&(this.done=!1),a?a:void 0):""===this._input?this.EOF:this.parseError("Lexical error on line "+(this.yylineno+1)+". Unrecognized text.\n"+this.showPosition(),{text:"",token:null,line:this.yylineno})},lex:function(){var a=this.next();return"undefined"!=typeof a?a:this.lex()},begin:function(a){this.conditionStack.push(a)},popState:function(){return this.conditionStack.pop()},_currentRules:function(){return this.conditions[this.conditionStack[this.conditionStack.length-1]].rules},topState:function(){return this.conditionStack[this.conditionStack.length-2]},pushState:function(a){this.begin(a)}};return a.options={},a.performAction=function(a,b,c,d){function e(a,c){return b.yytext=b.yytext.substr(a,b.yyleng-c)}switch(c){case 0:if("\\\\"===b.yytext.slice(-2)?(e(0,1),this.begin("mu")):"\\"===b.yytext.slice(-1)?(e(0,1),this.begin("emu")):this.begin("mu"),b.yytext)return 14;break;case 1:return 14;case 2:return this.popState(),14;case 3:return e(0,4),this.popState(),15;case 4:return 25;case 5:return 16;case 6:return 20;case 7:return 19;case 8:return 19;case 9:return 23;case 10:return 22;case 11:this.popState(),this.begin("com");break;case 12:return e(3,5),this.popState(),15;case 13:return 22;case 14:return 39;case 15:return 38;case 16:return 38;case 17:return 42;case 18:break;case 19:return this.popState(),24;case 20:return this.popState(),18;case 21:return b.yytext=e(1,2).replace(/\\"/g,'"'),32;case 22:return b.yytext=e(1,2).replace(/\\'/g,"'"),32;case 23:return 40;case 24:return 34;case 25:return 34;case 26:return 33;case 27:return 38;case 28:return b.yytext=e(1,2),38;case 29:return"INVALID";case 30:return 5}},a.rules=[/^(?:[^\x00]*?(?=(\{\{)))/,/^(?:[^\x00]+)/,/^(?:[^\x00]{2,}?(?=(\{\{|\\\{\{|\\\\\{\{|$)))/,/^(?:[\s\S]*?--\}\})/,/^(?:\{\{(~)?>)/,/^(?:\{\{(~)?#)/,/^(?:\{\{(~)?\/)/,/^(?:\{\{(~)?\^)/,/^(?:\{\{(~)?\s*else\b)/,/^(?:\{\{(~)?\{)/,/^(?:\{\{(~)?&)/,/^(?:\{\{!--)/,/^(?:\{\{![\s\S]*?\}\})/,/^(?:\{\{(~)?)/,/^(?:=)/,/^(?:\.\.)/,/^(?:\.(?=([=~}\s\/.])))/,/^(?:[\/.])/,/^(?:\s+)/,/^(?:\}(~)?\}\})/,/^(?:(~)?\}\})/,/^(?:"(\\["]|[^"])*")/,/^(?:'(\\[']|[^'])*')/,/^(?:@)/,/^(?:true(?=([~}\s])))/,/^(?:false(?=([~}\s])))/,/^(?:-?[0-9]+(?=([~}\s])))/,/^(?:([^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=([=~}\s\/.]))))/,/^(?:\[[^\]]*\])/,/^(?:.)/,/^(?:$)/],a.conditions={mu:{rules:[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],inclusive:!1},emu:{rules:[2],inclusive:!1},com:{rules:[3],inclusive:!1},INITIAL:{rules:[0,1,30],inclusive:!0}},a}();return c.lexer=d,b.prototype=c,c.Parser=b,new b}();return a=b}(),i=function(a,b){"use strict";function c(a){return a.constructor===f.ProgramNode?a:(e.yy=f,e.parse(a))}var d={},e=a,f=b;return d.parser=e,d.parse=c,d}(h,g),j=function(a){"use strict";function b(a){this.value=a}function c(){}var d,e=a.COMPILER_REVISION,f=a.REVISION_CHANGES,g=a.log;c.prototype={nameLookup:function(a,b){var d,e;return 0===a.indexOf("depth")&&(d=!0),e=/^[0-9]+$/.test(b)?a+"["+b+"]":c.isValidJavaScriptVariableName(b)?a+"."+b:a+"['"+b+"']",d?"("+a+" && "+e+")":e},compilerInfo:function(){var a=e,b=f[a];return"this.compilerInfo = ["+a+",'"+b+"'];\n"},appendToBuffer:function(a){return this.environment.isSimple?"return "+a+";":{appendToBuffer:!0,content:a,toString:function(){return"buffer += "+a+";"}}},initializeBuffer:function(){return this.quotedString("")},namespace:"Handlebars",compile:function(a,b,c,d){this.environment=a,this.options=b||{},g("debug",this.environment.disassemble()+"\n\n"),this.name=this.environment.name,this.isChild=!!c,this.context=c||{programs:[],environments:[],aliases:{}},this.preamble(),this.stackSlot=0,this.stackVars=[],this.registers={list:[]},this.compileStack=[],this.inlineStack=[],this.compileChildren(a,b);var e,f=a.opcodes;this.i=0;for(var h=f.length;this.i<h;this.i++)e=f[this.i],"DECLARE"===e.opcode?this[e.name]=e.value:this[e.opcode].apply(this,e.args),e.opcode!==this.stripNext&&(this.stripNext=!1);return this.pushSource(""),this.createFunctionContext(d)},preamble:function(){var a=[];if(this.isChild)a.push("");else{var b=this.namespace,c="helpers = this.merge(helpers, "+b+".helpers);";this.environment.usePartial&&(c=c+" partials = this.merge(partials, "+b+".partials);"),this.options.data&&(c+=" data = data || {};"),a.push(c)}this.environment.isSimple?a.push(""):a.push(", buffer = "+this.initializeBuffer()),this.lastContext=0,this.source=a},createFunctionContext:function(a){var b=this.stackVars.concat(this.registers.list);if(b.length>0&&(this.source[1]=this.source[1]+", "+b.join(", ")),!this.isChild)for(var c in this.context.aliases)this.context.aliases.hasOwnProperty(c)&&(this.source[1]=this.source[1]+", "+c+"="+this.context.aliases[c]);this.source[1]&&(this.source[1]="var "+this.source[1].substring(2)+";"),this.isChild||(this.source[1]+="\n"+this.context.programs.join("\n")+"\n"),this.environment.isSimple||this.pushSource("return buffer;");for(var d=this.isChild?["depth0","data"]:["Handlebars","depth0","helpers","partials","data"],e=0,f=this.environment.depths.list.length;f>e;e++)d.push("depth"+this.environment.depths.list[e]);var h=this.mergeSource();if(this.isChild||(h=this.compilerInfo()+h),a)return d.push(h),Function.apply(this,d);var i="function "+(this.name||"")+"("+d.join(",")+") {\n  "+h+"}";return g("debug",i+"\n\n"),i},mergeSource:function(){for(var a,b="",c=0,d=this.source.length;d>c;c++){var e=this.source[c];e.appendToBuffer?a=a?a+"\n    + "+e.content:e.content:(a&&(b+="buffer += "+a+";\n  ",a=void 0),b+=e+"\n  ")}return b},blockValue:function(){this.context.aliases.blockHelperMissing="helpers.blockHelperMissing";var a=["depth0"];this.setupParams(0,a),this.replaceStack(function(b){return a.splice(1,0,b),"blockHelperMissing.call("+a.join(", ")+")"})},ambiguousBlockValue:function(){this.context.aliases.blockHelperMissing="helpers.blockHelperMissing";var a=["depth0"];this.setupParams(0,a);var b=this.topStack();a.splice(1,0,b),a[a.length-1]="options",this.pushSource("if (!"+this.lastHelper+") { "+b+" = blockHelperMissing.call("+a.join(", ")+"); }")},appendContent:function(a){this.pendingContent&&(a=this.pendingContent+a),this.stripNext&&(a=a.replace(/^\s+/,"")),this.pendingContent=a},strip:function(){this.pendingContent&&(this.pendingContent=this.pendingContent.replace(/\s+$/,"")),this.stripNext="strip"},append:function(){this.flushInline();var a=this.popStack();this.pushSource("if("+a+" || "+a+" === 0) { "+this.appendToBuffer(a)+" }"),this.environment.isSimple&&this.pushSource("else { "+this.appendToBuffer("''")+" }")},appendEscaped:function(){this.context.aliases.escapeExpression="this.escapeExpression",this.pushSource(this.appendToBuffer("escapeExpression("+this.popStack()+")"))},getContext:function(a){this.lastContext!==a&&(this.lastContext=a)},lookupOnContext:function(a){this.push(this.nameLookup("depth"+this.lastContext,a,"context"))},pushContext:function(){this.pushStackLiteral("depth"+this.lastContext)},resolvePossibleLambda:function(){this.context.aliases.functionType='"function"',this.replaceStack(function(a){return"typeof "+a+" === functionType ? "+a+".apply(depth0) : "+a})},lookup:function(a){this.replaceStack(function(b){return b+" == null || "+b+" === false ? "+b+" : "+this.nameLookup(b,a,"context")})},lookupData:function(){this.push("data")},pushStringParam:function(a,b){this.pushStackLiteral("depth"+this.lastContext),this.pushString(b),"string"==typeof a?this.pushString(a):this.pushStackLiteral(a)},emptyHash:function(){this.pushStackLiteral("{}"),this.options.stringParams&&(this.register("hashTypes","{}"),this.register("hashContexts","{}"))},pushHash:function(){this.hash={values:[],types:[],contexts:[]}},popHash:function(){var a=this.hash;this.hash=void 0,this.options.stringParams&&(this.register("hashContexts","{"+a.contexts.join(",")+"}"),this.register("hashTypes","{"+a.types.join(",")+"}")),this.push("{\n    "+a.values.join(",\n    ")+"\n  }")},pushString:function(a){this.pushStackLiteral(this.quotedString(a))},push:function(a){return this.inlineStack.push(a),a},pushLiteral:function(a){this.pushStackLiteral(a)},pushProgram:function(a){null!=a?this.pushStackLiteral(this.programExpression(a)):this.pushStackLiteral(null)},invokeHelper:function(a,b){this.context.aliases.helperMissing="helpers.helperMissing";var c=this.lastHelper=this.setupHelper(a,b,!0),d=this.nameLookup("depth"+this.lastContext,b,"context");this.push(c.name+" || "+d),this.replaceStack(function(a){return a+" ? "+a+".call("+c.callParams+") : helperMissing.call("+c.helperMissingParams+")"})},invokeKnownHelper:function(a,b){var c=this.setupHelper(a,b);this.push(c.name+".call("+c.callParams+")")},invokeAmbiguous:function(a,b){this.context.aliases.functionType='"function"',this.pushStackLiteral("{}");var c=this.setupHelper(0,a,b),d=this.lastHelper=this.nameLookup("helpers",a,"helper"),e=this.nameLookup("depth"+this.lastContext,a,"context"),f=this.nextStack();this.pushSource("if ("+f+" = "+d+") { "+f+" = "+f+".call("+c.callParams+"); }"),this.pushSource("else { "+f+" = "+e+"; "+f+" = typeof "+f+" === functionType ? "+f+".call("+c.callParams+") : "+f+"; }")},invokePartial:function(a){var b=[this.nameLookup("partials",a,"partial"),"'"+a+"'",this.popStack(),"helpers","partials"];this.options.data&&b.push("data"),this.context.aliases.self="this",this.push("self.invokePartial("+b.join(", ")+")")},assignToHash:function(a){var b,c,d=this.popStack();this.options.stringParams&&(c=this.popStack(),b=this.popStack());var e=this.hash;b&&e.contexts.push("'"+a+"': "+b),c&&e.types.push("'"+a+"': "+c),e.values.push("'"+a+"': ("+d+")")},compiler:c,compileChildren:function(a,b){for(var c,d,e=a.children,f=0,g=e.length;g>f;f++){c=e[f],d=new this.compiler;var h=this.matchExistingProgram(c);null==h?(this.context.programs.push(""),h=this.context.programs.length,c.index=h,c.name="program"+h,this.context.programs[h]=d.compile(c,b,this.context),this.context.environments[h]=c):(c.index=h,c.name="program"+h)}},matchExistingProgram:function(a){for(var b=0,c=this.context.environments.length;c>b;b++){var d=this.context.environments[b];if(d&&d.equals(a))return b}},programExpression:function(a){if(this.context.aliases.self="this",null==a)return"self.noop";for(var b,c=this.environment.children[a],d=c.depths.list,e=[c.index,c.name,"data"],f=0,g=d.length;g>f;f++)b=d[f],1===b?e.push("depth0"):e.push("depth"+(b-1));return(0===d.length?"self.program(":"self.programWithDepth(")+e.join(", ")+")"},register:function(a,b){this.useRegister(a),this.pushSource(a+" = "+b+";")},useRegister:function(a){this.registers[a]||(this.registers[a]=!0,this.registers.list.push(a))},pushStackLiteral:function(a){return this.push(new b(a))},pushSource:function(a){this.pendingContent&&(this.source.push(this.appendToBuffer(this.quotedString(this.pendingContent))),this.pendingContent=void 0),a&&this.source.push(a)},pushStack:function(a){this.flushInline();var b=this.incrStack();return a&&this.pushSource(b+" = "+a+";"),this.compileStack.push(b),b},replaceStack:function(a){var c,d="",e=this.isInline();if(e){var f=this.popStack(!0);if(f instanceof b)c=f.value;else{var g=this.stackSlot?this.topStackName():this.incrStack();d="("+this.push(g)+" = "+f+"),",c=this.topStack()}}else c=this.topStack();var h=a.call(this,c);return e?((this.inlineStack.length||this.compileStack.length)&&this.popStack(),this.push("("+d+h+")")):(/^stack/.test(c)||(c=this.nextStack()),this.pushSource(c+" = ("+d+h+");")),c},nextStack:function(){return this.pushStack()},incrStack:function(){return this.stackSlot++,this.stackSlot>this.stackVars.length&&this.stackVars.push("stack"+this.stackSlot),this.topStackName()},topStackName:function(){return"stack"+this.stackSlot},flushInline:function(){var a=this.inlineStack;if(a.length){this.inlineStack=[];
-for(var c=0,d=a.length;d>c;c++){var e=a[c];e instanceof b?this.compileStack.push(e):this.pushStack(e)}}},isInline:function(){return this.inlineStack.length},popStack:function(a){var c=this.isInline(),d=(c?this.inlineStack:this.compileStack).pop();return!a&&d instanceof b?d.value:(c||this.stackSlot--,d)},topStack:function(a){var c=this.isInline()?this.inlineStack:this.compileStack,d=c[c.length-1];return!a&&d instanceof b?d.value:d},quotedString:function(a){return'"'+a.replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\n/g,"\\n").replace(/\r/g,"\\r").replace(/\u2028/g,"\\u2028").replace(/\u2029/g,"\\u2029")+'"'},setupHelper:function(a,b,c){var d=[];this.setupParams(a,d,c);var e=this.nameLookup("helpers",b,"helper");return{params:d,name:e,callParams:["depth0"].concat(d).join(", "),helperMissingParams:c&&["depth0",this.quotedString(b)].concat(d).join(", ")}},setupParams:function(a,b,c){var d,e,f,g=[],h=[],i=[];g.push("hash:"+this.popStack()),e=this.popStack(),f=this.popStack(),(f||e)&&(f||(this.context.aliases.self="this",f="self.noop"),e||(this.context.aliases.self="this",e="self.noop"),g.push("inverse:"+e),g.push("fn:"+f));for(var j=0;a>j;j++)d=this.popStack(),b.push(d),this.options.stringParams&&(i.push(this.popStack()),h.push(this.popStack()));return this.options.stringParams&&(g.push("contexts:["+h.join(",")+"]"),g.push("types:["+i.join(",")+"]"),g.push("hashContexts:hashContexts"),g.push("hashTypes:hashTypes")),this.options.data&&g.push("data:data"),g="{"+g.join(",")+"}",c?(this.register("options",g),b.push("options")):b.push(g),b.join(", ")}};for(var h="break else new var case finally return void catch for switch while continue function this with default if throw delete in try do instanceof typeof abstract enum int short boolean export interface static byte extends long super char final native synchronized class float package throws const goto private transient debugger implements protected volatile double import public let yield".split(" "),i=c.RESERVED_WORDS={},j=0,k=h.length;k>j;j++)i[h[j]]=!0;return c.isValidJavaScriptVariableName=function(a){return!c.RESERVED_WORDS[a]&&/^[a-zA-Z_$][0-9a-zA-Z_$]*$/.test(a)?!0:!1},d=c}(d),k=function(a,b,c,d){"use strict";function e(){}function f(a,b){if(null==a||"string"!=typeof a&&a.constructor!==l.ProgramNode)throw new i("You must pass a string or Handlebars AST to Handlebars.precompile. You passed "+a);b=b||{},"data"in b||(b.data=!0);var c=j(a),d=(new e).compile(c,b);return(new k).compile(d,b)}function g(a,b,c){function d(){var d=j(a),f=(new e).compile(d,b),g=(new k).compile(f,b,void 0,!0);return c.template(g)}if(null==a||"string"!=typeof a&&a.constructor!==l.ProgramNode)throw new i("You must pass a string or Handlebars AST to Handlebars.compile. You passed "+a);b=b||{},"data"in b||(b.data=!0);var f;return function(a,b){return f||(f=d()),f.call(this,a,b)}}var h={},i=a,j=b.parse,k=c,l=d;return h.Compiler=e,e.prototype={compiler:e,disassemble:function(){for(var a,b,c,d=this.opcodes,e=[],f=0,g=d.length;g>f;f++)if(a=d[f],"DECLARE"===a.opcode)e.push("DECLARE "+a.name+"="+a.value);else{b=[];for(var h=0;h<a.args.length;h++)c=a.args[h],"string"==typeof c&&(c='"'+c.replace("\n","\\n")+'"'),b.push(c);e.push(a.opcode+" "+b.join(" "))}return e.join("\n")},equals:function(a){var b=this.opcodes.length;if(a.opcodes.length!==b)return!1;for(var c=0;b>c;c++){var d=this.opcodes[c],e=a.opcodes[c];if(d.opcode!==e.opcode||d.args.length!==e.args.length)return!1;for(var f=0;f<d.args.length;f++)if(d.args[f]!==e.args[f])return!1}if(b=this.children.length,a.children.length!==b)return!1;for(c=0;b>c;c++)if(!this.children[c].equals(a.children[c]))return!1;return!0},guid:0,compile:function(a,b){this.opcodes=[],this.children=[],this.depths={list:[]},this.options=b;var c=this.options.knownHelpers;if(this.options.knownHelpers={helperMissing:!0,blockHelperMissing:!0,each:!0,"if":!0,unless:!0,"with":!0,log:!0},c)for(var d in c)this.options.knownHelpers[d]=c[d];return this.accept(a)},accept:function(a){var b,c=a.strip||{};return c.left&&this.opcode("strip"),b=this[a.type](a),c.right&&this.opcode("strip"),b},program:function(a){for(var b=a.statements,c=0,d=b.length;d>c;c++)this.accept(b[c]);return this.isSimple=1===d,this.depths.list=this.depths.list.sort(function(a,b){return a-b}),this},compileProgram:function(a){var b,c=(new this.compiler).compile(a,this.options),d=this.guid++;this.usePartial=this.usePartial||c.usePartial,this.children[d]=c;for(var e=0,f=c.depths.list.length;f>e;e++)b=c.depths.list[e],2>b||this.addDepth(b-1);return d},block:function(a){var b=a.mustache,c=a.program,d=a.inverse;c&&(c=this.compileProgram(c)),d&&(d=this.compileProgram(d));var e=this.classifyMustache(b);"helper"===e?this.helperMustache(b,c,d):"simple"===e?(this.simpleMustache(b),this.opcode("pushProgram",c),this.opcode("pushProgram",d),this.opcode("emptyHash"),this.opcode("blockValue")):(this.ambiguousMustache(b,c,d),this.opcode("pushProgram",c),this.opcode("pushProgram",d),this.opcode("emptyHash"),this.opcode("ambiguousBlockValue")),this.opcode("append")},hash:function(a){var b,c,d=a.pairs;this.opcode("pushHash");for(var e=0,f=d.length;f>e;e++)b=d[e],c=b[1],this.options.stringParams?(c.depth&&this.addDepth(c.depth),this.opcode("getContext",c.depth||0),this.opcode("pushStringParam",c.stringModeValue,c.type)):this.accept(c),this.opcode("assignToHash",b[0]);this.opcode("popHash")},partial:function(a){var b=a.partialName;this.usePartial=!0,a.context?this.ID(a.context):this.opcode("push","depth0"),this.opcode("invokePartial",b.name),this.opcode("append")},content:function(a){this.opcode("appendContent",a.string)},mustache:function(a){var b=this.options,c=this.classifyMustache(a);"simple"===c?this.simpleMustache(a):"helper"===c?this.helperMustache(a):this.ambiguousMustache(a),a.escaped&&!b.noEscape?this.opcode("appendEscaped"):this.opcode("append")},ambiguousMustache:function(a,b,c){var d=a.id,e=d.parts[0],f=null!=b||null!=c;this.opcode("getContext",d.depth),this.opcode("pushProgram",b),this.opcode("pushProgram",c),this.opcode("invokeAmbiguous",e,f)},simpleMustache:function(a){var b=a.id;"DATA"===b.type?this.DATA(b):b.parts.length?this.ID(b):(this.addDepth(b.depth),this.opcode("getContext",b.depth),this.opcode("pushContext")),this.opcode("resolvePossibleLambda")},helperMustache:function(a,b,c){var d=this.setupFullMustacheParams(a,b,c),e=a.id.parts[0];if(this.options.knownHelpers[e])this.opcode("invokeKnownHelper",d.length,e);else{if(this.options.knownHelpersOnly)throw new Error("You specified knownHelpersOnly, but used the unknown helper "+e);this.opcode("invokeHelper",d.length,e)}},ID:function(a){this.addDepth(a.depth),this.opcode("getContext",a.depth);var b=a.parts[0];b?this.opcode("lookupOnContext",a.parts[0]):this.opcode("pushContext");for(var c=1,d=a.parts.length;d>c;c++)this.opcode("lookup",a.parts[c])},DATA:function(a){if(this.options.data=!0,a.id.isScoped||a.id.depth)throw new i("Scoped data references are not supported: "+a.original);this.opcode("lookupData");for(var b=a.id.parts,c=0,d=b.length;d>c;c++)this.opcode("lookup",b[c])},STRING:function(a){this.opcode("pushString",a.string)},INTEGER:function(a){this.opcode("pushLiteral",a.integer)},BOOLEAN:function(a){this.opcode("pushLiteral",a.bool)},comment:function(){},opcode:function(a){this.opcodes.push({opcode:a,args:[].slice.call(arguments,1)})},declare:function(a,b){this.opcodes.push({opcode:"DECLARE",name:a,value:b})},addDepth:function(a){if(isNaN(a))throw new Error("EWOT");0!==a&&(this.depths[a]||(this.depths[a]=!0,this.depths.list.push(a)))},classifyMustache:function(a){var b=a.isHelper,c=a.eligibleHelper,d=this.options;if(c&&!b){var e=a.id.parts[0];d.knownHelpers[e]?b=!0:d.knownHelpersOnly&&(c=!1)}return b?"helper":c?"ambiguous":"simple"},pushParams:function(a){for(var b,c=a.length;c--;)b=a[c],this.options.stringParams?(b.depth&&this.addDepth(b.depth),this.opcode("getContext",b.depth||0),this.opcode("pushStringParam",b.stringModeValue,b.type)):this[b.type](b)},setupMustacheParams:function(a){var b=a.params;return this.pushParams(b),a.hash?this.hash(a.hash):this.opcode("emptyHash"),b},setupFullMustacheParams:function(a,b,c){var d=a.params;return this.pushParams(d),this.opcode("pushProgram",b),this.opcode("pushProgram",c),a.hash?this.hash(a.hash):this.opcode("emptyHash"),d}},h.precompile=f,h.compile=g,h}(c,i,j,g),l=function(a,b,c,d,e){"use strict";var f,g=a,h=b,i=c.parser,j=c.parse,k=d.Compiler,l=d.compile,m=d.precompile,n=e,o=g.create,p=function(){var a=o();return a.compile=function(b,c){return l(b,c,a)},a.precompile=m,a.AST=h,a.Compiler=k,a.JavaScriptCompiler=n,a.Parser=i,a.parse=j,a};return g=p(),g.create=p,f=g}(f,g,i,k,j);return l}();
-/* jslint-ignore-end */
-        local.handlebars = Handlebars;
-    }());
-
-
-
-// node_modules/istanbul/lib/assets/base.css
-/* jslint-ignore-begin */
-local.istanbul_lite['/assets/base.css'] = '\
-body, html {\n\
-    margin:0; padding: 0;\n\
-}\n\
-body {\n\
-    font-family: Helvetica Neue, Helvetica,Arial;\n\
-    font-size: 10pt;\n\
-}\n\
-div.header, div.footer {\n\
-    background: #eee;\n\
-    padding: 1em;\n\
-}\n\
-div.header {\n\
-    z-index: 100;\n\
-    position: fixed;\n\
-    top: 0;\n\
-    border-bottom: 1px solid #666;\n\
-    width: 100%;\n\
-}\n\
-div.footer {\n\
-    border-top: 1px solid #666;\n\
-}\n\
-div.body {\n\
-    margin-top: 10em;\n\
-}\n\
-div.meta {\n\
-    font-size: 90%;\n\
-    text-align: center;\n\
-}\n\
-h1, h2, h3 {\n\
-    font-weight: normal;\n\
-}\n\
-h1 {\n\
-    font-size: 12pt;\n\
-}\n\
-h2 {\n\
-    font-size: 10pt;\n\
-}\n\
-pre {\n\
-    font-family: Consolas, Menlo, Monaco, monospace;\n\
-    margin: 0;\n\
-    padding: 0;\n\
-    line-height: 14px;\n\
-    font-size: 14px;\n\
-    -moz-tab-size: 2;\n\
-    -o-tab-size:  2;\n\
-    tab-size: 2;\n\
-}\n\
-\n\
-div.path { font-size: 110%; }\n\
-div.path a:link, div.path a:visited { color: #000; }\n\
-table.coverage { border-collapse: collapse; margin:0; padding: 0 }\n\
-\n\
-table.coverage td {\n\
-    margin: 0;\n\
-    padding: 0;\n\
-    color: #111;\n\
-    vertical-align: top;\n\
-}\n\
-table.coverage td.line-count {\n\
-    width: 50px;\n\
-    text-align: right;\n\
-    padding-right: 5px;\n\
-}\n\
-table.coverage td.line-coverage {\n\
-    color: #777 !important;\n\
-    text-align: right;\n\
-    border-left: 1px solid #666;\n\
-    border-right: 1px solid #666;\n\
-}\n\
-\n\
-table.coverage td.text {\n\
-}\n\
-\n\
-table.coverage td span.cline-any {\n\
-    display: inline-block;\n\
-    padding: 0 5px;\n\
-    width: 40px;\n\
-}\n\
-table.coverage td span.cline-neutral {\n\
-    background: #eee;\n\
-}\n\
-table.coverage td span.cline-yes {\n\
-    background: #b5d592;\n\
-    color: #999;\n\
-}\n\
-table.coverage td span.cline-no {\n\
-    background: #fc8c84;\n\
-}\n\
-\n\
-.cstat-yes { color: #111; }\n\
-.cstat-no { background: #fc8c84; color: #111; }\n\
-.fstat-no { background: #ffc520; color: #111 !important; }\n\
-.cbranch-no { background:  yellow !important; color: #111; }\n\
-\n\
-.cstat-skip { background: #ddd; color: #111; }\n\
-.fstat-skip { background: #ddd; color: #111 !important; }\n\
-.cbranch-skip { background: #ddd !important; color: #111; }\n\
-\n\
-.missing-if-branch {\n\
-    display: inline-block;\n\
-    margin-right: 10px;\n\
-    position: relative;\n\
-    padding: 0 4px;\n\
-    background: black;\n\
-    color: yellow;\n\
-}\n\
-\n\
-.skip-if-branch {\n\
-    display: none;\n\
-    margin-right: 10px;\n\
-    position: relative;\n\
-    padding: 0 4px;\n\
-    background: #ccc;\n\
-    color: white;\n\
-}\n\
-\n\
-.missing-if-branch .typ, .skip-if-branch .typ {\n\
-    color: inherit !important;\n\
-}\n\
-\n\
-.entity, .metric { font-weight: bold; }\n\
-.metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }\n\
-.metric small { font-size: 80%; font-weight: normal; color: #666; }\n\
-\n\
-div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }\n\
-div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }\n\
-div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }\n\
-div.coverage-summary th.file { border-right: none !important; }\n\
-div.coverage-summary th.pic { border-left: none !important; text-align: right; }\n\
-div.coverage-summary th.pct { border-right: none !important; }\n\
-div.coverage-summary th.abs { border-left: none !important; text-align: right; }\n\
-div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }\n\
-div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }\n\
-div.coverage-summary td.file { border-left: 1px solid #666; white-space: nowrap;  }\n\
-div.coverage-summary td.pic { min-width: 120px !important;  }\n\
-div.coverage-summary a:link { text-decoration: none; color: #000; }\n\
-div.coverage-summary a:visited { text-decoration: none; color: #777; }\n\
-div.coverage-summary a:hover { text-decoration: underline; }\n\
-div.coverage-summary tfoot td { border-top: 1px solid #666; }\n\
-\n\
-div.coverage-summary .sorter {\n\
-    height: 10px;\n\
-    width: 7px;\n\
-    display: inline-block;\n\
-    margin-left: 0.5em;\n\
-    background: url(sort-arrow-sprite.png) no-repeat scroll 0 0 transparent;\n\
-}\n\
-div.coverage-summary .sorted .sorter {\n\
-    background-position: 0 -20px;\n\
-}\n\
-div.coverage-summary .sorted-desc .sorter {\n\
-    background-position: 0 -10px;\n\
-}\n\
-\n\
-.high { background: #b5d592 !important; }\n\
-.medium { background: #ffe87c !important; }\n\
-.low { background: #fc8c84 !important; }\n\
-\n\
-span.cover-fill, span.cover-empty {\n\
-    display:inline-block;\n\
-    border:1px solid #444;\n\
-    background: white;\n\
-    height: 12px;\n\
-}\n\
-span.cover-fill {\n\
-    background: #ccc;\n\
-    border-right: 1px solid #444;\n\
-}\n\
-span.cover-empty {\n\
-    background: white;\n\
-    border-left: none;\n\
-}\n\
-span.cover-full {\n\
-    border-right: none !important;\n\
-}\n\
-pre.prettyprint {\n\
-    border: none !important;\n\
-    padding: 0 !important;\n\
-    margin: 0 !important;\n\
-}\n\
-.com { color: #999 !important; }\n\
-.ignore-none { color: #999; font-weight: normal; }\n\
-';
-
-
-
-// node_modules/istanbul/lib/report/templates/foot.txt
-local.istanbul_lite['/templates/foot.txt'] = '\
-</div>\n\
-<div class="footer">\n\
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at {{datetime}}</div>\n\
-</div>\n\
-</body>\n\
-</html>\n\
-';
-
-
-
-// node_modules/istanbul/lib/report/templates/head.txt
-local.istanbul_lite['/templates/head.txt'] = '\
-<!doctype html>\n\
-<html lang="en">\n\
-<head>\n\
-    <title>Code coverage report for {{entity}}</title>\n\
-    <meta charset="utf-8">\n\
-    <link rel="stylesheet" href="{{base.css}}">\n\
-    <style type="text/css">\n\
-        div.coverage-summary .sorter {\n\
-            background-image: url({{sorter.image}});\n\
-        }\n\
-    </style>\n\
-</head>\n\
-<body>\n\
-<div class="header {{reportClass}}">\n\
-    <h1>Code coverage report for <span class="entity">{{entity}}</span></h1>\n\
-    <h2>\n\
-        {{#with metrics.statements}}\n\
-        Statements: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
-        {{/with}}\n\
-        {{#with metrics.branches}}\n\
-        Branches: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
-        {{/with}}\n\
-        {{#with metrics.functions}}\n\
-        Functions: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
-        {{/with}}\n\
-        {{#with metrics.lines}}\n\
-        Lines: <span class="metric">{{pct}}% <small>({{covered}} / {{total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
-        {{/with}}\n\
-        Ignored: <span class="metric">{{#show_ignores metrics}}{{/show_ignores}}</span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
-    </h2>\n\
-    {{{pathHtml}}}\n\
-</div>\n\
-<div class="body">\n\
-';
-/* jslint-ignore-end */
-
-
-
-    /* istanbul ignore next */
-    (function () {
         var escodegen, esprima, module, window;
         // jslint-hack
         local.nop(escodegen, esprima, module, window);
@@ -10544,1915 +10262,1078 @@ local.istanbul_lite['/templates/head.txt'] = '\
 
 
 
-    /* istanbul ignore next */
-    (function () {
-        /*jslint maxlen: 160*/
-        var Report, __dirname, exports, module;
-        __dirname = local.istanbul_lite.__dirname;
-        // jslint hack
-        local.nop(__dirname);
-        exports = {};
-        // mock module in browser
-        module = { exports: {} };
-        // mock store in browser
-        // node_modules/istanbul/lib/store/index.js
-        local['../store'] = {};
-        // mock util/file-writer in browser
-        // node_modules/istanbul/lib/util/file-writer.js
-        local['../util/file-writer'] = {};
-        // node_modules/istanbul/lib/report/common/defaults.js
-        // mock common/defaults in browser
-        local['./common/defaults'] = {};
-        // mock fs in browser
-        local._fs = local.require('fs');
-        local.fs = {
-            mkdirSync: local._fs.mkdirSync,
-            readFileSync: function (file, options) {
-                if (file === __dirname + '/templates/foot.txt') {
-                    return local.istanbul_lite['/templates/foot.txt'];
-                }
-                if (file === __dirname + '/templates/head.txt') {
-                    return local.istanbul_lite['/templates/head.txt'];
-                }
-                return local.modeJs === 'node'
-                    ? local._fs.readFileSync(file, options)
-                    : local.codeDict[file];
-            },
-            readdirSync: function () {
-                return [];
-            },
-            writeFileSync: local._fs.writeFileSync || function (file, data) {
-                local.writeFileDict[file] = data;
-            }
-        };
-        // mock mkdirp in browser
-        local.mkdirp = {};
-        local.writeFileDict = exports.writeFileDict || {};
-        // mock Report in browser
-        // node_modules/istanbul/lib/report/index.js
-        Report = local['../index'] = local['./index'] = function () {
-            return;
-        };
-        Report.prototype = {
-            emit: function () {
-                return;
-            },
-            on: function () {
-                return;
-            }
-        };
-        Report.mix = function (cons, proto) {
-            Object.keys(proto).forEach(function (key) {
-                cons.prototype[key] = proto[key];
-            });
-        };
-// node_modules/istanbul/lib/hook.js
+// node_modules/istanbul/lib/assets/base.css
 /* jslint-ignore-begin */
-/*
- Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-/**
- * provides a mechanism to transform code in the scope of `require` or `vm.createScript`.
- * This mechanism is general and relies on a user-supplied `matcher` function that determines when transformations should be
- * performed and a user-supplied `transformer` function that performs the actual transform.
- * Instrumenting code for coverage is one specific example of useful hooking.
- *
- * Note that both the `matcher` and `transformer` must execute synchronously.
- *
- * For the common case of matching filesystem paths based on inclusion/ exclusion patterns, use the `matcherFor`
- * function in the istanbul API to get a matcher.
- *
- * It is up to the transformer to perform processing with side-effects, such as caching, storing the original
- * source code to disk in case of dynamically generated scripts etc. The `Store` class can help you with this.
- *
- * Usage
- * -----
- *
- *      var hook = require('istanbul').hook,
- *          myMatcher = function (file) { return file.match(/foo/); },
- *          myTransformer = function (code, file) { return 'console.log("' + file + '");' + code; };
- *
- *      hook.hookRequire(myMatcher, myTransformer);
- *
- *      var foo = require('foo'); //will now print foo's module path to console
- *
- * @class Hook
- * @module main
- */
-var path = require('path'),
-    fs = require('fs'),
-    Module = require('module'),
-    vm = require('vm'),
-    originalLoaders = {},
-    originalCreateScript = vm.createScript,
-    originalRunInThisContext = vm.runInThisContext;
-
-function transformFn(matcher, transformer, verbose) {
-
-    return function (code, filename) {
-        var shouldHook = typeof filename === 'string' && matcher(path.resolve(filename)),
-            transformed,
-            changed = false;
-
-        if (shouldHook) {
-            if (verbose) {
-                console.error('Module load hook: transform [' + filename + ']');
-            }
-            try {
-                transformed = transformer(code, filename);
-                changed = true;
-            } catch (ex) {
-                console.error('Transformation error; return original code');
-                console.error(ex);
-                transformed = code;
-            }
-        } else {
-            transformed = code;
-        }
-        return { code: transformed, changed: changed };
-    };
-}
-
-function unloadRequireCache(matcher) {
-    if (matcher && typeof require !== 'undefined' && require && require.cache) {
-        Object.keys(require.cache).forEach(function (filename) {
-            if (matcher(filename)) {
-                delete require.cache[filename];
-            }
-        });
-    }
-}
-/**
- * hooks `require` to return transformed code to the node module loader.
- * Exceptions in the transform result in the original code being used instead.
- * @method hookRequire
- * @static
- * @param matcher {Function(filePath)} a function that is called with the absolute path to the file being
- *  `require`-d. Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise
- * @param transformer {Function(code, filePath)} a function called with the original code and the associated path of the file
- *  from where the code was loaded. Should return the transformed code.
- * @param options {Object} options Optional.
- * @param {Boolean} [options.verbose] write a line to standard error every time the transformer is called
- * @param {Function} [options.postLoadHook] a function that is called with the name of the file being
- *  required. This is called after the require is processed irrespective of whether it was transformed.
- */
-function hookRequire(matcher, transformer, options) {
-    options = options || {};
-    var extensions,
-        fn = transformFn(matcher, transformer, options.verbose),
-        postLoadHook = options.postLoadHook &&
-            typeof options.postLoadHook === 'function' ? options.postLoadHook : null;
-
-    extensions = options.extensions || ['.js'];
-
-    extensions.forEach(function(ext){
-        if (!(ext in originalLoaders)) {
-            originalLoaders[ext] = Module._extensions[ext] || Module._extensions['.js'];
-        }
-        Module._extensions[ext] = function (module, filename) {
-            var ret = fn(fs.readFileSync(filename, 'utf8'), filename);
-            if (ret.changed) {
-                module._compile(ret.code, filename);
-            } else {
-                originalLoaders[ext](module, filename);
-            }
-            if (postLoadHook) {
-                postLoadHook(filename);
-            }
-        };
-    });
-}
-/**
- * unhook `require` to restore it to its original state.
- * @method unhookRequire
- * @static
- */
-function unhookRequire() {
-    Object.keys(originalLoaders).forEach(function(ext) {
-        Module._extensions[ext] = originalLoaders[ext];
-    });
-}
-/**
- * hooks `vm.createScript` to return transformed code out of which a `Script` object will be created.
- * Exceptions in the transform result in the original code being used instead.
- * @method hookCreateScript
- * @static
- * @param matcher {Function(filePath)} a function that is called with the filename passed to `vm.createScript`
- *  Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise
- * @param transformer {Function(code, filePath)} a function called with the original code and the filename passed to
- *  `vm.createScript`. Should return the transformed code.
- * @param options {Object} options Optional.
- * @param {Boolean} [options.verbose] write a line to standard error every time the transformer is called
- */
-function hookCreateScript(matcher, transformer, opts) {
-    opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.createScript = function (code, file) {
-        var ret = fn(code, file);
-        return originalCreateScript(ret.code, file);
-    };
-}
-
-/**
- * unhooks vm.createScript, restoring it to its original state.
- * @method unhookCreateScript
- * @static
- */
-function unhookCreateScript() {
-    vm.createScript = originalCreateScript;
-}
-
-
-/**
- * hooks `vm.runInThisContext` to return transformed code.
- * @method hookRunInThisContext
- * @static
- * @param matcher {Function(filePath)} a function that is called with the filename passed to `vm.createScript`
- *  Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise
- * @param transformer {Function(code, filePath)} a function called with the original code and the filename passed to
- *  `vm.createScript`. Should return the transformed code.
- * @param options {Object} options Optional.
- * @param {Boolean} [options.verbose] write a line to standard error every time the transformer is called
- */
-function hookRunInThisContext(matcher, transformer, opts) {
-    opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.runInThisContext = function (code, file) {
-        var ret = fn(code, file);
-        return originalRunInThisContext(ret.code, file);
-    };
-}
-
-/**
- * unhooks vm.runInThisContext, restoring it to its original state.
- * @method unhookRunInThisContext
- * @static
- */
-function unhookRunInThisContext() {
-    vm.runInThisContext = originalRunInThisContext;
-}
-
-
-module.exports = {
-    hookRequire: hookRequire,
-    unhookRequire: unhookRequire,
-    hookCreateScript: hookCreateScript,
-    unhookCreateScript: unhookCreateScript,
-    hookRunInThisContext : hookRunInThisContext,
-    unhookRunInThisContext : unhookRunInThisContext,
-    unloadRequireCache: unloadRequireCache
-};
-/* jslint-ignore-end */
-        local.hook = module.exports;
-
-
-
-// node_modules/istanbul/lib/object-utils.js
-/* jslint-ignore-begin */
-/*
- Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-/**
- * utility methods to process coverage objects. A coverage object has the following
- * format.
- *
- *      {
- *          "/path/to/file1.js": { file1 coverage },
- *          "/path/to/file2.js": { file2 coverage }
- *      }
- *
- *  The internals of the file coverage object are intentionally not documented since
- *  it is not a public interface.
- *
- *  *Note:* When a method of this module has the word `File` in it, it will accept
- *  one of the sub-objects of the main coverage object as an argument. Other
- *  methods accept the higher level coverage object with multiple keys.
- *
- * Works on `node` as well as the browser.
- *
- * Usage on nodejs
- * ---------------
- *
- *      var objectUtils = require('istanbul').utils;
- *
- * Usage in a browser
- * ------------------
- *
- * Load this file using a `script` tag or other means. This will set `window.coverageUtils`
- * to this module's exports.
- *
- * @class ObjectUtils
- * @module main
- * @static
- */
-(function (isNode) {
-    /**
-     * adds line coverage information to a file coverage object, reverse-engineering
-     * it from statement coverage. The object passed in is updated in place.
-     *
-     * Note that if line coverage information is already present in the object,
-     * it is not recomputed.
-     *
-     * @method addDerivedInfoForFile
-     * @static
-     * @param {Object} fileCoverage the coverage object for a single file
-     */
-    function addDerivedInfoForFile(fileCoverage) {
-        var statementMap = fileCoverage.statementMap,
-            statements = fileCoverage.s,
-            lineMap;
-
-        if (!fileCoverage.l) {
-            fileCoverage.l = lineMap = {};
-            Object.keys(statements).forEach(function (st) {
-                var line = statementMap[st].start.line,
-                    count = statements[st],
-                    prevVal = lineMap[line];
-                if (count === 0 && statementMap[st].skip) { count = 1; }
-                if (typeof prevVal === 'undefined' || prevVal < count) {
-                    lineMap[line] = count;
-                }
-            });
-        }
-    }
-    /**
-     * adds line coverage information to all file coverage objects.
-     *
-     * @method addDerivedInfo
-     * @static
-     * @param {Object} coverage the coverage object
-     */
-    function addDerivedInfo(coverage) {
-        Object.keys(coverage).forEach(function (k) {
-            addDerivedInfoForFile(coverage[k]);
-        });
-    }
-    /**
-     * removes line coverage information from all file coverage objects
-     * @method removeDerivedInfo
-     * @static
-     * @param {Object} coverage the coverage object
-     */
-    function removeDerivedInfo(coverage) {
-        Object.keys(coverage).forEach(function (k) {
-            delete coverage[k].l;
-        });
-    }
-
-    function percent(covered, total) {
-        var tmp;
-        if (total > 0) {
-            tmp = 1000 * 100 * covered / total + 5;
-            return Math.floor(tmp / 10) / 100;
-        } else {
-            return 100.00;
-        }
-    }
-
-    function computeSimpleTotals(fileCoverage, property, mapProperty) {
-        var stats = fileCoverage[property],
-            map = mapProperty ? fileCoverage[mapProperty] : null,
-            ret = { total: 0, covered: 0, skipped: 0 };
-
-        Object.keys(stats).forEach(function (key) {
-            var covered = !!stats[key],
-                skipped = map && map[key].skip;
-            ret.total += 1;
-            if (covered || skipped) {
-                ret.covered += 1;
-            }
-            if (!covered && skipped) {
-                ret.skipped += 1;
-            }
-        });
-        ret.pct = percent(ret.covered, ret.total);
-        return ret;
-    }
-
-    function computeBranchTotals(fileCoverage) {
-        var stats = fileCoverage.b,
-            branchMap = fileCoverage.branchMap,
-            ret = { total: 0, covered: 0, skipped: 0 };
-
-        Object.keys(stats).forEach(function (key) {
-            var branches = stats[key],
-                map = branchMap[key],
-                covered,
-                skipped,
-                i;
-            for (i = 0; i < branches.length; i += 1) {
-                covered = branches[i] > 0;
-                skipped = map.locations && map.locations[i] && map.locations[i].skip;
-                if (covered || skipped) {
-                    ret.covered += 1;
-                }
-                if (!covered && skipped) {
-                    ret.skipped += 1;
-                }
-            }
-            ret.total += branches.length;
-        });
-        ret.pct = percent(ret.covered, ret.total);
-        return ret;
-    }
-    /**
-     * returns a blank summary metrics object. A metrics object has the following
-     * format.
-     *
-     *      {
-     *          lines: lineMetrics,
-     *          statements: statementMetrics,
-     *          functions: functionMetrics,
-     *          branches: branchMetrics
-     *          linesCovered: lineCoveredCount
-     *      }
-     *
-     *  Each individual metric object looks as follows:
-     *
-     *      {
-     *          total: n,
-     *          covered: m,
-     *          pct: percent
-     *      }
-     *
-     * @method blankSummary
-     * @static
-     * @return {Object} a blank metrics object
-     */
-    function blankSummary() {
-        return {
-            lines: {
-                total: 0,
-                covered: 0,
-                skipped: 0,
-                pct: 'Unknown'
-            },
-            statements: {
-                total: 0,
-                covered: 0,
-                skipped: 0,
-                pct: 'Unknown'
-            },
-            functions: {
-                total: 0,
-                covered: 0,
-                skipped: 0,
-                pct: 'Unknown'
-            },
-            branches: {
-                total: 0,
-                covered: 0,
-                skipped: 0,
-                pct: 'Unknown'
-            },
-            linesCovered: {}
-        };
-    }
-    /**
-     * returns the summary metrics given the coverage object for a single file. See `blankSummary()`
-     * to understand the format of the returned object.
-     *
-     * @method summarizeFileCoverage
-     * @static
-     * @param {Object} fileCoverage the coverage object for a single file.
-     * @return {Object} the summary metrics for the file
-     */
-    function summarizeFileCoverage(fileCoverage) {
-        var ret = blankSummary();
-        addDerivedInfoForFile(fileCoverage);
-        ret.lines = computeSimpleTotals(fileCoverage, 'l');
-        ret.functions = computeSimpleTotals(fileCoverage, 'f', 'fnMap');
-        ret.statements = computeSimpleTotals(fileCoverage, 's', 'statementMap');
-        ret.branches = computeBranchTotals(fileCoverage);
-        ret.linesCovered = fileCoverage.l;
-        return ret;
-    }
-    /**
-     * merges two instances of file coverage objects *for the same file*
-     * such that the execution counts are correct.
-     *
-     * @method mergeFileCoverage
-     * @static
-     * @param {Object} first the first file coverage object for a given file
-     * @param {Object} second the second file coverage object for the same file
-     * @return {Object} an object that is a result of merging the two. Note that
-     *      the input objects are not changed in any way.
-     */
-    function mergeFileCoverage(first, second) {
-        var ret = JSON.parse(JSON.stringify(first)),
-            i;
-
-        delete ret.l; //remove derived info
-
-        Object.keys(second.s).forEach(function (k) {
-            ret.s[k] += second.s[k];
-        });
-        Object.keys(second.f).forEach(function (k) {
-            ret.f[k] += second.f[k];
-        });
-        Object.keys(second.b).forEach(function (k) {
-            var retArray = ret.b[k],
-                secondArray = second.b[k];
-            for (i = 0; i < retArray.length; i += 1) {
-                retArray[i] += secondArray[i];
-            }
-        });
-
-        return ret;
-    }
-    /**
-     * merges multiple summary metrics objects by summing up the `totals` and
-     * `covered` fields and recomputing the percentages. This function is generic
-     * and can accept any number of arguments.
-     *
-     * @method mergeSummaryObjects
-     * @static
-     * @param {Object} summary... multiple summary metrics objects
-     * @return {Object} the merged summary metrics
-     */
-    function mergeSummaryObjects() {
-        var ret = blankSummary(),
-            args = Array.prototype.slice.call(arguments),
-            keys = ['lines', 'statements', 'branches', 'functions'],
-            increment = function (obj) {
-                if (obj) {
-                    keys.forEach(function (key) {
-                        ret[key].total += obj[key].total;
-                        ret[key].covered += obj[key].covered;
-                        ret[key].skipped += obj[key].skipped;
-                    });
-
-                    // keep track of all lines we have coverage for.
-                    Object.keys(obj.linesCovered).forEach(function (key) {
-                        if (!ret.linesCovered[key]) {
-                            ret.linesCovered[key] = obj.linesCovered[key];
-                        } else {
-                            ret.linesCovered[key] += obj.linesCovered[key];
-                        }
-                    });
-                }
-            };
-        args.forEach(function (arg) {
-            increment(arg);
-        });
-        keys.forEach(function (key) {
-            ret[key].pct = percent(ret[key].covered, ret[key].total);
-        });
-
-        return ret;
-    }
-    /**
-     * returns the coverage summary for a single coverage object. This is
-     * wrapper over `summarizeFileCoverage` and `mergeSummaryObjects` for
-     * the common case of a single coverage object
-     * @method summarizeCoverage
-     * @static
-     * @param {Object} coverage  the coverage object
-     * @return {Object} summary coverage metrics across all files in the coverage object
-     */
-    function summarizeCoverage(coverage) {
-        var fileSummary = [];
-        Object.keys(coverage).forEach(function (key) {
-            fileSummary.push(summarizeFileCoverage(coverage[key]));
-        });
-        return mergeSummaryObjects.apply(null, fileSummary);
-    }
-
-    /**
-     * makes the coverage object generated by this library yuitest_coverage compatible.
-     * Note that this transformation is lossy since the returned object will not have
-     * statement and branch coverage.
-     *
-     * @method toYUICoverage
-     * @static
-     * @param {Object} coverage The `istanbul` coverage object
-     * @return {Object} a coverage object in `yuitest_coverage` format.
-     */
-    function toYUICoverage(coverage) {
-        var ret = {};
-
-        addDerivedInfo(coverage);
-
-        Object.keys(coverage).forEach(function (k) {
-            var fileCoverage = coverage[k],
-                lines = fileCoverage.l,
-                functions = fileCoverage.f,
-                fnMap = fileCoverage.fnMap,
-                o;
-
-            o = ret[k] = {
-                lines: {},
-                calledLines: 0,
-                coveredLines: 0,
-                functions: {},
-                calledFunctions: 0,
-                coveredFunctions: 0
-            };
-            Object.keys(lines).forEach(function (k) {
-                o.lines[k] = lines[k];
-                o.coveredLines += 1;
-                if (lines[k] > 0) {
-                    o.calledLines += 1;
-                }
-            });
-            Object.keys(functions).forEach(function (k) {
-                var name = fnMap[k].name + ':' + fnMap[k].line;
-                o.functions[name] = functions[k];
-                o.coveredFunctions += 1;
-                if (functions[k] > 0) {
-                    o.calledFunctions += 1;
-                }
-            });
-        });
-        return ret;
-    }
-
-    /**
-     * Creates new file coverage object with incremented hits count
-     * on skipped statements, branches and functions
-     *
-     * @method incrementIgnoredTotals
-     * @static
-     * @param {Object} cov File coverage object
-     * @return {Object} New file coverage object
-     */
-    function incrementIgnoredTotals(cov) {
-        //TODO: This may be slow in the browser and may break in older browsers
-        //      Look into using a library that works in Node and the browser
-        var fileCoverage = JSON.parse(JSON.stringify(cov));
-
-        [
-            {mapKey: 'statementMap', hitsKey: 's'},
-            {mapKey: 'branchMap', hitsKey: 'b'},
-            {mapKey: 'fnMap', hitsKey: 'f'}
-        ].forEach(function (keys) {
-            Object.keys(fileCoverage[keys.mapKey])
-                .forEach(function (key) {
-                    var map = fileCoverage[keys.mapKey][key];
-                    var hits = fileCoverage[keys.hitsKey];
-
-                    if (keys.mapKey === 'branchMap') {
-                        var locations = map.locations;
-
-                        locations.forEach(function (location, index) {
-                            if (hits[key][index] === 0 && location.skip) {
-                                hits[key][index] = 1;
-                            }
-                        });
-
-                        return;
-                    }
-
-                    if (hits[key] === 0 && map.skip) {
-                        hits[key] = 1;
-                    }
-                });
-            });
-
-        return fileCoverage;
-    }
-
-    var exportables = {
-        addDerivedInfo: addDerivedInfo,
-        addDerivedInfoForFile: addDerivedInfoForFile,
-        removeDerivedInfo: removeDerivedInfo,
-        blankSummary: blankSummary,
-        summarizeFileCoverage: summarizeFileCoverage,
-        summarizeCoverage: summarizeCoverage,
-        mergeFileCoverage: mergeFileCoverage,
-        mergeSummaryObjects: mergeSummaryObjects,
-        toYUICoverage: toYUICoverage,
-        incrementIgnoredTotals: incrementIgnoredTotals
-    };
-
-    /* istanbul ignore else: windows */
-    if (isNode) {
-        module.exports = exportables;
-    } else {
-        window.coverageUtils = exportables;
-    }
-}(typeof module !== 'undefined' && typeof module.exports !== 'undefined' && typeof exports !== 'undefined'));
-/* jslint-ignore-end */
-        local['../object-utils'] = module.exports;
-
-
-
-// node_modules/istanbul/lib/util/insertion-text.js
-/* jslint-ignore-begin */
-/*
- Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-function InsertionText(text, consumeBlanks) {
-    this.text = text;
-    this.origLength = text.length;
-    this.offsets = [];
-    this.consumeBlanks = consumeBlanks;
-    this.startPos = this.findFirstNonBlank();
-    this.endPos = this.findLastNonBlank();
-}
-
-var WHITE_RE = /[ \f\n\r\t\v\u00A0\u2028\u2029]/;
-
-InsertionText.prototype = {
-
-    findFirstNonBlank: function () {
-        var pos = -1,
-            text = this.text,
-            len = text.length,
-            i;
-        for (i = 0; i < len; i += 1) {
-            if (!text.charAt(i).match(WHITE_RE)) {
-                pos = i;
-                break;
-            }
-        }
-        return pos;
-    },
-    findLastNonBlank: function () {
-        var text = this.text,
-            len = text.length,
-            pos = text.length + 1,
-            i;
-        for (i = len - 1; i >= 0; i -= 1) {
-            if (!text.charAt(i).match(WHITE_RE)) {
-                pos = i;
-                break;
-            }
-        }
-        return pos;
-    },
-    originalLength: function () {
-        return this.origLength;
-    },
-
-    insertAt: function (col, str, insertBefore, consumeBlanks) {
-        consumeBlanks = typeof consumeBlanks === 'undefined' ? this.consumeBlanks : consumeBlanks;
-        col = col > this.originalLength() ? this.originalLength() : col;
-        col = col < 0 ? 0 : col;
-
-        if (consumeBlanks) {
-            if (col <= this.startPos) {
-                col = 0;
-            }
-            if (col > this.endPos) {
-                col = this.origLength;
-            }
-        }
-
-        var len = str.length,
-            offset = this.findOffset(col, len, insertBefore),
-            realPos = col + offset,
-            text = this.text;
-        this.text = text.substring(0, realPos) + str + text.substring(realPos);
-        return this;
-    },
-
-    findOffset: function (pos, len, insertBefore) {
-        var offsets = this.offsets,
-            offsetObj,
-            cumulativeOffset = 0,
-            i;
-
-        for (i = 0; i < offsets.length; i += 1) {
-            offsetObj = offsets[i];
-            if (offsetObj.pos < pos || (offsetObj.pos === pos && !insertBefore)) {
-                cumulativeOffset += offsetObj.len;
-            }
-            if (offsetObj.pos >= pos) {
-                break;
-            }
-        }
-        if (offsetObj && offsetObj.pos === pos) {
-            offsetObj.len += len;
-        } else {
-            offsets.splice(i, 0, { pos: pos, len: len });
-        }
-        return cumulativeOffset;
-    },
-
-    wrap: function (startPos, startText, endPos, endText, consumeBlanks) {
-        this.insertAt(startPos, startText, true, consumeBlanks);
-        this.insertAt(endPos, endText, false, consumeBlanks);
-        return this;
-    },
-
-    wrapLine: function (startText, endText) {
-        this.wrap(0, startText, this.originalLength(), endText);
-    },
-
-    toString: function () {
-        return this.text;
-    }
-};
-
-module.exports = InsertionText;
-/* jslint-ignore-end */
-        local['../util/insertion-text'] = module.exports;
-
-
-
-// node_modules/istanbul/lib/util/tree-summarizer.js
-/* jslint-ignore-begin */
-/*
- Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-var path = require('path'),
-    SEP = path.sep || '/',
-    utils = require('../object-utils');
-
-function commonArrayPrefix(first, second) {
-    var len = first.length < second.length ? first.length : second.length,
-        i,
-        ret = [];
-    for (i = 0; i < len; i += 1) {
-        if (first[i] === second[i]) {
-            ret.push(first[i]);
-        } else {
-            break;
-        }
-    }
-    return ret;
-}
-
-function findCommonArrayPrefix(args) {
-    if (args.length === 0) {
-        return [];
-    }
-
-    var separated = args.map(function (arg) { return arg.split(SEP); }),
-        ret = separated.pop();
-
-    if (separated.length === 0) {
-        return ret.slice(0, ret.length - 1);
-    } else {
-        return separated.reduce(commonArrayPrefix, ret);
-    }
-}
-
-function Node(fullName, kind, metrics) {
-    this.name = fullName;
-    this.fullName = fullName;
-    this.kind = kind;
-    this.metrics = metrics || null;
-    this.parent = null;
-    this.children = [];
-}
-
-Node.prototype = {
-    displayShortName: function () {
-        return this.relativeName;
-    },
-    fullPath: function () {
-        return this.fullName;
-    },
-    addChild: function (child) {
-        this.children.push(child);
-        child.parent = this;
-    },
-    toJSON: function () {
-        return {
-            name: this.name,
-            relativeName: this.relativeName,
-            fullName: this.fullName,
-            kind: this.kind,
-            metrics: this.metrics,
-            parent: this.parent === null ? null : this.parent.name,
-            children: this.children.map(function (node) { return node.toJSON(); })
-        };
-    }
-};
-
-function TreeSummary(summaryMap, commonPrefix) {
-    this.prefix = commonPrefix;
-    this.convertToTree(summaryMap, commonPrefix);
-}
-
-TreeSummary.prototype = {
-    getNode: function (shortName) {
-        return this.map[shortName];
-    },
-    convertToTree: function (summaryMap, arrayPrefix) {
-        var nodes = [],
-            rootPath = arrayPrefix.join(SEP) + SEP,
-            root = new Node(rootPath, 'dir'),
-            tmp,
-            tmpChildren,
-            seen = {},
-            filesUnderRoot = false;
-
-        seen[rootPath] = root;
-        Object.keys(summaryMap).forEach(function (key) {
-            var metrics = summaryMap[key],
-                node,
-                parentPath,
-                parent;
-            node = new Node(key, 'file', metrics);
-            seen[key] = node;
-            nodes.push(node);
-            parentPath = path.dirname(key) + SEP;
-            if (parentPath === SEP + SEP || parentPath === '.' + SEP) {
-                parentPath = SEP + '__root__' + SEP;
-            }
-            parent = seen[parentPath];
-            if (!parent) {
-                parent = new Node(parentPath, 'dir');
-                root.addChild(parent);
-                seen[parentPath] = parent;
-            }
-            parent.addChild(node);
-            if (parent === root) { filesUnderRoot = true; }
-        });
-
-        if (filesUnderRoot && arrayPrefix.length > 0) {
-            arrayPrefix.pop(); //start at one level above
-            tmp = root;
-            tmpChildren = tmp.children;
-            tmp.children = [];
-            root = new Node(arrayPrefix.join(SEP) + SEP, 'dir');
-            root.addChild(tmp);
-            tmpChildren.forEach(function (child) {
-                if (child.kind === 'dir') {
-                    root.addChild(child);
-                } else {
-                    tmp.addChild(child);
-                }
-            });
-        }
-        this.fixupNodes(root, arrayPrefix.join(SEP) + SEP);
-        this.calculateMetrics(root);
-        this.root = root;
-        this.map = {};
-        this.indexAndSortTree(root, this.map);
-    },
-
-    fixupNodes: function (node, prefix, parent) {
-        var that = this;
-        if (node.name.indexOf(prefix) === 0) {
-            node.name = node.name.substring(prefix.length);
-        }
-        if (node.name.charAt(0) === SEP) {
-            node.name = node.name.substring(1);
-        }
-        if (parent) {
-            if (parent.name !== '__root__' + SEP) {
-                node.relativeName = node.name.substring(parent.name.length);
-            } else {
-                node.relativeName = node.name;
-            }
-        } else {
-            node.relativeName = node.name.substring(prefix.length);
-        }
-        node.children.forEach(function (child) {
-            that.fixupNodes(child, prefix, node);
-        });
-    },
-    calculateMetrics: function (entry) {
-        var that = this,
-            fileChildren;
-        if (entry.kind !== 'dir') {return; }
-        entry.children.forEach(function (child) {
-            that.calculateMetrics(child);
-        });
-        entry.metrics = utils.mergeSummaryObjects.apply(
-            null,
-            entry.children.map(function (child) { return child.metrics; })
-        );
-        // calclulate "java-style" package metrics where there is no hierarchy
-        // across packages
-        fileChildren = entry.children.filter(function (n) { return n.kind !== 'dir'; });
-        if (fileChildren.length > 0) {
-            entry.packageMetrics = utils.mergeSummaryObjects.apply(
-                null,
-                fileChildren.map(function (child) { return child.metrics; })
-            );
-        } else {
-            entry.packageMetrics = null;
-        }
-    },
-    indexAndSortTree: function (node, map) {
-        var that = this;
-        map[node.name] = node;
-        node.children.sort(function (a, b) {
-            a = a.relativeName;
-            b = b.relativeName;
-            return a < b ? -1 : a > b ? 1 : 0;
-        });
-        node.children.forEach(function (child) {
-            that.indexAndSortTree(child, map);
-        });
-    },
-    toJSON: function () {
-        return {
-            prefix: this.prefix,
-            root: this.root.toJSON()
-        };
-    }
-};
-
-function TreeSummarizer() {
-    this.summaryMap = {};
-}
-
-TreeSummarizer.prototype = {
-    addFileCoverageSummary: function (filePath, metrics) {
-        this.summaryMap[filePath] = metrics;
-    },
-    getTreeSummary: function () {
-        var commonArrayPrefix = findCommonArrayPrefix(Object.keys(this.summaryMap));
-        return new TreeSummary(this.summaryMap, commonArrayPrefix);
-    }
-};
-
-module.exports = TreeSummarizer;
-/* jslint-ignore-end */
-        local['../util/tree-summarizer'] = module.exports;
-
-
-
-// node_modules/istanbul/lib/report/common/defaults.js
-/* jslint-ignore-begin */
-/*
- Copyright (c) 2013, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-var Report  = require('../index');
-
-module.exports = {
-    watermarks: function () {
-        return {
-            statements: [ 50, 80 ],
-            lines: [ 50, 80 ],
-            functions: [ 50, 80],
-            branches: [ 50, 80 ]
-        };
-    },
-
-    classFor: function (type, metrics, watermarks) {
-        var mark = watermarks[type],
-            value = metrics[type].pct;
-        return value >= mark[1] ? 'high' : value >= mark[0] ? 'medium' : 'low';
-    },
-
-    colorize: function (str, clazz) {
-        /* istanbul ignore if: untestable in batch mode */
-        if (process.stdout.isTTY) {
-            switch (clazz) {
-                case 'low' : str = '\u001b[91m' + str + '\u001b[0m'; break;
-                case 'medium': str = '\u001b[93m' + str + '\u001b[0m'; break;
-                case 'high': str = '\u001b[92m' + str + '\u001b[0m'; break;
-            }
-        }
-        return str;
-    },
-
-    defaultReportConfig: function () {
-        var cfg = {};
-        Report.getReportList().forEach(function (type) {
-            var rpt = Report.create(type),
-                c = rpt.getDefaultConfig();
-            if (c) {
-                cfg[type] = c;
-            }
-        });
-        return cfg;
-    }
-};
-/* jslint-ignore-end */
-        local['./common/defaults'] = module.exports;
+local['/assets/base.css'] = '\
+body, html {\n\
+    margin:0; padding: 0;\n\
+}\n\
+body {\n\
+    font-family: Helvetica Neue, Helvetica,Arial;\n\
+    font-size: 10pt;\n\
+}\n\
+div.header, div.footer {\n\
+    background: #eee;\n\
+    padding: 1em;\n\
+}\n\
+div.header {\n\
+    z-index: 100;\n\
+    position: fixed;\n\
+    top: 0;\n\
+    border-bottom: 1px solid #666;\n\
+    width: 100%;\n\
+}\n\
+div.footer {\n\
+    border-top: 1px solid #666;\n\
+}\n\
+div.body {\n\
+    margin-top: 10em;\n\
+}\n\
+div.meta {\n\
+    font-size: 90%;\n\
+    text-align: center;\n\
+}\n\
+h1, h2, h3 {\n\
+    font-weight: normal;\n\
+}\n\
+h1 {\n\
+    font-size: 12pt;\n\
+}\n\
+h2 {\n\
+    font-size: 10pt;\n\
+}\n\
+pre {\n\
+    font-family: Consolas, Menlo, Monaco, monospace;\n\
+    margin: 0;\n\
+    padding: 0;\n\
+    line-height: 14px;\n\
+    font-size: 14px;\n\
+    -moz-tab-size: 2;\n\
+    -o-tab-size:  2;\n\
+    tab-size: 2;\n\
+}\n\
+\n\
+div.path { font-size: 110%; }\n\
+div.path a:link, div.path a:visited { color: #000; }\n\
+table.coverage { border-collapse: collapse; margin:0; padding: 0 }\n\
+\n\
+table.coverage td {\n\
+    margin: 0;\n\
+    padding: 0;\n\
+    color: #111;\n\
+    vertical-align: top;\n\
+}\n\
+table.coverage td.line-count {\n\
+    width: 50px;\n\
+    text-align: right;\n\
+    padding-right: 5px;\n\
+}\n\
+table.coverage td.line-coverage {\n\
+    color: #777 !important;\n\
+    text-align: right;\n\
+    border-left: 1px solid #666;\n\
+    border-right: 1px solid #666;\n\
+}\n\
+\n\
+table.coverage td.text {\n\
+}\n\
+\n\
+table.coverage td span.cline-any {\n\
+    display: inline-block;\n\
+    padding: 0 5px;\n\
+    width: 40px;\n\
+}\n\
+table.coverage td span.cline-neutral {\n\
+    background: #eee;\n\
+}\n\
+table.coverage td span.cline-yes {\n\
+    background: #b5d592;\n\
+    color: #999;\n\
+}\n\
+table.coverage td span.cline-no {\n\
+    background: #fc8c84;\n\
+}\n\
+\n\
+.cstat-yes { color: #111; }\n\
+.cstat-no { background: #fc8c84; color: #111; }\n\
+.fstat-no { background: #ffc520; color: #111 !important; }\n\
+.cbranch-no { background:  yellow !important; color: #111; }\n\
+\n\
+.cstat-skip { background: #ddd; color: #111; }\n\
+.fstat-skip { background: #ddd; color: #111 !important; }\n\
+.cbranch-skip { background: #ddd !important; color: #111; }\n\
+\n\
+.missing-if-branch {\n\
+    display: inline-block;\n\
+    margin-right: 10px;\n\
+    position: relative;\n\
+    padding: 0 4px;\n\
+    background: black;\n\
+    color: yellow;\n\
+}\n\
+\n\
+.skip-if-branch {\n\
+    display: none;\n\
+    margin-right: 10px;\n\
+    position: relative;\n\
+    padding: 0 4px;\n\
+    background: #ccc;\n\
+    color: white;\n\
+}\n\
+\n\
+.missing-if-branch .typ, .skip-if-branch .typ {\n\
+    color: inherit !important;\n\
+}\n\
+\n\
+.entity, .metric { font-weight: bold; }\n\
+.metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }\n\
+.metric small { font-size: 80%; font-weight: normal; color: #666; }\n\
+\n\
+div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }\n\
+div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }\n\
+div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }\n\
+div.coverage-summary th.file { border-right: none !important; }\n\
+div.coverage-summary th.pic { border-left: none !important; text-align: right; }\n\
+div.coverage-summary th.pct { border-right: none !important; }\n\
+div.coverage-summary th.abs { border-left: none !important; text-align: right; }\n\
+div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }\n\
+div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }\n\
+div.coverage-summary td.file { border-left: 1px solid #666; white-space: nowrap;  }\n\
+div.coverage-summary td.pic { min-width: 120px !important;  }\n\
+div.coverage-summary a:link { text-decoration: none; color: #000; }\n\
+div.coverage-summary a:visited { text-decoration: none; color: #777; }\n\
+div.coverage-summary a:hover { text-decoration: underline; }\n\
+div.coverage-summary tfoot td { border-top: 1px solid #666; }\n\
+\n\
+div.coverage-summary .sorter {\n\
+    height: 10px;\n\
+    width: 7px;\n\
+    display: inline-block;\n\
+    margin-left: 0.5em;\n\
+}\n\
+\n\
+.high { background: #b5d592 !important; }\n\
+.medium { background: #ffe87c !important; }\n\
+.low { background: #fc8c84 !important; }\n\
+\n\
+span.cover-fill, span.cover-empty {\n\
+    display:inline-block;\n\
+    border:1px solid #444;\n\
+    background: white;\n\
+    height: 12px;\n\
+}\n\
+span.cover-fill {\n\
+    background: #ccc;\n\
+    border-right: 1px solid #444;\n\
+}\n\
+span.cover-empty {\n\
+    background: white;\n\
+    border-left: none;\n\
+}\n\
+span.cover-full {\n\
+    border-right: none !important;\n\
+}\n\
+pre.prettyprint {\n\
+    border: none !important;\n\
+    padding: 0 !important;\n\
+    margin: 0 !important;\n\
+}\n\
+.com { color: #999 !important; }\n\
+.ignore-none { color: #999; font-weight: normal; }\n\
+';
+
+
+
+// node_modules/istanbul/lib/report/templates/foot.txt
+local['/templates/foot.txt'] = '\
+</div>\n\
+<div class="footer">\n\
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at {{datetime}}</div>\n\
+</div>\n\
+</body>\n\
+</html>\n\
+';
+
+
+
+// node_modules/istanbul/lib/report/templates/head.txt
+local['/templates/head.txt'] = '\
+<!doctype html>\n\
+<html lang="en">\n\
+<head>\n\
+    <title>Code coverage report for {{entity}}</title>\n\
+    <meta charset="utf-8">\n\
+    <link rel="stylesheet" href="{{baseCss}}">\n\
+</head>\n\
+<body>\n\
+<div class="header {{metrics.statements.watermark}}">\n\
+    <h1>Code coverage report for <span class="entity">{{entity}}</span></h1>\n\
+    <h2>\n\
+        Statements: <span class="metric">{{metrics.statements.pct}}% <small>({{metrics.statements.covered}} / {{metrics.statements.total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        Branches: <span class="metric">{{metrics.branches.pct}}% <small>({{metrics.branches.covered}} / {{metrics.branches.total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        Functions: <span class="metric">{{metrics.functions.pct}}% <small>({{metrics.functions.covered}} / {{metrics.functions.total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        Lines: <span class="metric">{{metrics.lines.pct}}% <small>({{metrics.lines.covered}} / {{metrics.lines.total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+        Ignored: <span class="metric">{{showIgnores}}</span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
+    </h2>\n\
+    <div class="path">{{{pathHtml}}}</div>\n\
+</div>\n\
+<div class="body">\n\
+';
 
 
 
 // node_modules/istanbul/lib/report/html.js
-/* jslint-ignore-begin */
-/*
- Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
+local.detailTemplate = '\
+<tr>\n\
+<td class="line-count">{{showLines}}</td>\n\
+<td class="line-coverage">{{showLineExecutionCounts}}</td>\n\
+<td class="text"><pre class="prettyprint lang-js">{{showCode}}</pre></td>\n\
+</tr>\n\
+';
 
-/*jshint maxlen: 300 */
-var handlebars = require('handlebars'),
-    defaults = require('./common/defaults'),
-    path = require('path'),
-    fs = require('fs'),
-    util = require('util'),
-    FileWriter = require('../util/file-writer'),
-    Report = require('./index'),
-    Store = require('../store'),
-    InsertionText = require('../util/insertion-text'),
-    TreeSummarizer = require('../util/tree-summarizer'),
-    utils = require('../object-utils'),
-    templateFor = function (name) { return handlebars.compile(fs.readFileSync(path.resolve(__dirname, 'templates', name + '.txt'), 'utf8')); },
-    headerTemplate = templateFor('head'),
-    footerTemplate = templateFor('foot'),
-    pathTemplate = handlebars.compile('<div class="path">{{{html}}}</div>'),
-    detailTemplate = handlebars.compile([
-        '<tr>',
-        '<td class="line-count">{{#show_lines}}{{maxLines}}{{/show_lines}}</td>',
-        '<td class="line-coverage">{{#show_line_execution_counts fileCoverage}}{{maxLines}}{{/show_line_execution_counts}}</td>',
-        '<td class="text"><pre class="prettyprint lang-js">{{#show_code structured}}{{/show_code}}</pre></td>',
-        '</tr>\n'
-    ].join('')),
-    summaryTableHeader = [
-        '<div class="coverage-summary">',
-        '<table>',
-        '<thead>',
-        '<tr>',
-        '   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>',
-        '   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>',
-        '   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>',
-        '   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>',
-        '   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>',
-        '   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>',
-        '   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '</tr>',
-        '</thead>',
-        '<tbody>'
-    ].join('\n'),
-    summaryLineTemplate = handlebars.compile([
-        '<tr>',
-        '<td class="file {{reportClasses.statements}}" data-value="{{file}}"><a href="{{output}}">{{file}}</a></td>',
-        '<td data-value="{{metrics.statements.pct}}" class="pic {{reportClasses.statements}}">{{#show_picture}}{{metrics.statements.pct}}{{/show_picture}}</td>',
-        '<td data-value="{{metrics.statements.pct}}" class="pct {{reportClasses.statements}}">{{metrics.statements.pct}}%</td>',
-        '<td data-value="{{metrics.statements.total}}" class="abs {{reportClasses.statements}}">({{metrics.statements.covered}}&nbsp;/&nbsp;{{metrics.statements.total}})</td>',
-        '<td data-value="{{metrics.branches.pct}}" class="pct {{reportClasses.branches}}">{{metrics.branches.pct}}%</td>',
-        '<td data-value="{{metrics.branches.total}}" class="abs {{reportClasses.branches}}">({{metrics.branches.covered}}&nbsp;/&nbsp;{{metrics.branches.total}})</td>',
-        '<td data-value="{{metrics.functions.pct}}" class="pct {{reportClasses.functions}}">{{metrics.functions.pct}}%</td>',
-        '<td data-value="{{metrics.functions.total}}" class="abs {{reportClasses.functions}}">({{metrics.functions.covered}}&nbsp;/&nbsp;{{metrics.functions.total}})</td>',
-        '<td data-value="{{metrics.lines.pct}}" class="pct {{reportClasses.lines}}">{{metrics.lines.pct}}%</td>',
-        '<td data-value="{{metrics.lines.total}}" class="abs {{reportClasses.lines}}">({{metrics.lines.covered}}&nbsp;/&nbsp;{{metrics.lines.total}})</td>',
-        '</tr>\n'
-    ].join('\n\t')),
-    summaryTableFooter = [
-        '</tbody>',
-        '</table>',
-        '</div>'
-    ].join('\n'),
-    lt = '\u0001',
-    gt = '\u0002',
-    RE_LT = /</g,
-    RE_GT = />/g,
-    RE_AMP = /&/g,
-    RE_lt = /\u0001/g,
-    RE_gt = /\u0002/g;
 
-handlebars.registerHelper('show_picture', function (opts) {
-    var num = Number(opts.fn(this)),
-        rest,
-        cls = '';
-    if (isFinite(num)) {
-        if (num === 100) {
-            cls = ' cover-full';
-        }
-        num = Math.floor(num);
-        rest = 100 - num;
-        return '<span class="cover-fill' + cls + '" style="width: ' + num + 'px;"></span>' +
-            '<span class="cover-empty" style="width:' + rest + 'px;"></span>';
-    } else {
-        return '';
-    }
-});
 
-handlebars.registerHelper('show_ignores', function (metrics) {
-    var statements = metrics.statements.skipped,
-        functions = metrics.functions.skipped,
-        branches = metrics.branches.skipped,
-        result;
+local.summaryTableHeader = '\
+<div class="coverage-summary">\n\
+<table>\n\
+<thead>\n\
+<tr>\n\
+   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>\n\
+   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>\n\
+   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>\n\
+   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>\n\
+   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>\n\
+   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>\n\
+   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+</tr>\n\
+</thead>\n\
+<tbody>\n\
+';
 
-    if (statements === 0 && functions === 0 && branches === 0) {
-        return '<span class="ignore-none">none</span>';
-    }
 
-    result = [];
-    if (statements >0) { result.push(statements === 1 ? '1 statement': statements + ' statements'); }
-    if (functions >0) { result.push(functions === 1 ? '1 function' : functions + ' functions'); }
-    if (branches >0) { result.push(branches === 1 ? '1 branch' : branches + ' branches'); }
 
-    return result.join(', ');
-});
+local.summaryLineTemplate = '\
+<tr>\n\
+<td class="file {{metrics.statements.watermark}}" data-value="{{file}}"><a href="{{output}}">{{file}}</a></td>\n\
+<td data-value="{{metrics.statements.pct}}" class="pic {{metrics.statements.watermark}}">{{showPicture}}</td>\n\
+<td data-value="{{metrics.statements.pct}}" class="pct {{metrics.statements.watermark}}">{{metrics.statements.pct}}%</td>\n\
+<td data-value="{{metrics.statements.total}}" class="abs {{metrics.statements.watermark}}">({{metrics.statements.covered}}&nbsp;/&nbsp;{{metrics.statements.total}})</td>\n\
+<td data-value="{{metrics.branches.pct}}" class="pct {{metrics.branches.watermark}}">{{metrics.branches.pct}}%</td>\n\
+<td data-value="{{metrics.branches.total}}" class="abs {{metrics.branches.watermark}}">({{metrics.branches.covered}}&nbsp;/&nbsp;{{metrics.branches.total}})</td>\n\
+<td data-value="{{metrics.functions.pct}}" class="pct {{metrics.functions.watermark}}">{{metrics.functions.pct}}%</td>\n\
+<td data-value="{{metrics.functions.total}}" class="abs {{metrics.functions.watermark}}">({{metrics.functions.covered}}&nbsp;/&nbsp;{{metrics.functions.total}})</td>\n\
+<td data-value="{{metrics.lines.pct}}" class="pct {{metrics.lines.watermark}}">{{metrics.lines.pct}}%</td>\n\
+<td data-value="{{metrics.lines.total}}" class="abs {{metrics.lines.watermark}}">({{metrics.lines.covered}}&nbsp;/&nbsp;{{metrics.lines.total}})</td>\n\
+</tr>\n\
+';
 
-handlebars.registerHelper('show_lines', function (opts) {
-    var maxLines = Number(opts.fn(this)),
-        i,
-        array = [];
 
-    for (i = 0; i < maxLines; i += 1) {
-        array[i] = i + 1;
-    }
-    return array.join('\n');
-});
 
-handlebars.registerHelper('show_line_execution_counts', function (context, opts) {
-    var lines = context.l,
-        maxLines = Number(opts.fn(this)),
-        i,
-        lineNumber,
-        array = [],
-        covered,
-        value = '';
-
-    for (i = 0; i < maxLines; i += 1) {
-        lineNumber = i + 1;
-        value = '&nbsp;';
-        covered = 'neutral';
-        if (lines.hasOwnProperty(lineNumber)) {
-            if (lines[lineNumber] > 0) {
-                covered = 'yes';
-                value = lines[lineNumber];
-            } else {
-                covered = 'no';
-            }
-        }
-        array.push('<span class="cline-any cline-' + covered + '">' + value + '</span>');
-    }
-    return array.join('\n');
-});
-
-function customEscape(text) {
-    text = text.toString();
-    return text.replace(RE_AMP, '&amp;')
-        .replace(RE_LT, '&lt;')
-        .replace(RE_GT, '&gt;')
-        .replace(RE_lt, '<')
-        .replace(RE_gt, '>');
-}
-
-handlebars.registerHelper('show_code', function (context /*, opts */) {
-    var array = [];
-
-    context.forEach(function (item) {
-        array.push(customEscape(item.text) || '&nbsp;');
-    });
-    return array.join('\n');
-});
-
-function title(str) {
-    return ' title="' + str + '" ';
-}
-
-function annotateLines(fileCoverage, structuredText) {
-    var lineStats = fileCoverage.l;
-    if (!lineStats) { return; }
-    Object.keys(lineStats).forEach(function (lineNumber) {
-        var count = lineStats[lineNumber];
-        if (structuredText[lineNumber]) {
-          structuredText[lineNumber].covered = count > 0 ? 'yes' : 'no';
-        }
-    });
-    structuredText.forEach(function (item) {
-        if (item.covered === null) {
-            item.covered = 'neutral';
-        }
-    });
-}
-
-function annotateStatements(fileCoverage, structuredText) {
-    var statementStats = fileCoverage.s,
-        statementMeta = fileCoverage.statementMap;
-    Object.keys(statementStats).forEach(function (stName) {
-        var count = statementStats[stName],
-            meta = statementMeta[stName],
-            type = count > 0 ? 'yes' : 'no',
-            startCol = meta.start.column,
-            endCol = meta.end.column + 1,
-            startLine = meta.start.line,
-            endLine = meta.end.line,
-            openSpan = lt + 'span class="' + (meta.skip ? 'cstat-skip' : 'cstat-no') + '"' + title('statement not covered') + gt,
-            closeSpan = lt + '/span' + gt,
-            text;
-
-        if (type === 'no') {
-            if (endLine !== startLine) {
-                endLine = startLine;
-                endCol = structuredText[startLine].text.originalLength();
-            }
-            text = structuredText[startLine].text;
-            text.wrap(startCol,
-                openSpan,
-                startLine === endLine ? endCol : text.originalLength(),
-                closeSpan);
-        }
-    });
-}
-
-function annotateFunctions(fileCoverage, structuredText) {
-
-    var fnStats = fileCoverage.f,
-        fnMeta = fileCoverage.fnMap;
-    if (!fnStats) { return; }
-    Object.keys(fnStats).forEach(function (fName) {
-        var count = fnStats[fName],
-            meta = fnMeta[fName],
-            type = count > 0 ? 'yes' : 'no',
-            startCol = meta.loc.start.column,
-            endCol = meta.loc.end.column + 1,
-            startLine = meta.loc.start.line,
-            endLine = meta.loc.end.line,
-            openSpan = lt + 'span class="' + (meta.skip ? 'fstat-skip' : 'fstat-no') + '"' + title('function not covered') + gt,
-            closeSpan = lt + '/span' + gt,
-            text;
-
-        if (type === 'no') {
-            if (endLine !== startLine) {
-                endLine = startLine;
-                endCol = structuredText[startLine].text.originalLength();
-            }
-            text = structuredText[startLine].text;
-            text.wrap(startCol,
-                openSpan,
-                startLine === endLine ? endCol : text.originalLength(),
-                closeSpan);
-        }
-    });
-}
-
-function annotateBranches(fileCoverage, structuredText) {
-    var branchStats = fileCoverage.b,
-        branchMeta = fileCoverage.branchMap;
-    if (!branchStats) { return; }
-
-    Object.keys(branchStats).forEach(function (branchName) {
-        var branchArray = branchStats[branchName],
-            sumCount = branchArray.reduce(function (p, n) { return p + n; }, 0),
-            metaArray = branchMeta[branchName].locations,
-            i,
-            count,
-            meta,
-            type,
-            startCol,
-            endCol,
-            startLine,
-            endLine,
-            openSpan,
-            closeSpan,
-            text;
-
-        if (sumCount > 0) { //only highlight if partial branches are missing
-            for (i = 0; i < branchArray.length; i += 1) {
-                count = branchArray[i];
-                meta = metaArray[i];
-                type = count > 0 ? 'yes' : 'no';
-                startCol = meta.start.column;
-                endCol = meta.end.column + 1;
-                startLine = meta.start.line;
-                endLine = meta.end.line;
-                openSpan = lt + 'span class="branch-' + i + ' ' + (meta.skip ? 'cbranch-skip' : 'cbranch-no') + '"' + title('branch not covered') + gt;
-                closeSpan = lt + '/span' + gt;
-
-                if (count === 0) { //skip branches taken
-                    if (endLine !== startLine) {
-                        endLine = startLine;
-                        endCol = structuredText[startLine].text.originalLength();
-                    }
-                    text = structuredText[startLine].text;
-                    if (branchMeta[branchName].type === 'if') { // and 'if' is a special case since the else branch might not be visible, being non-existent
-                        text.insertAt(startCol, lt + 'span class="' + (meta.skip ? 'skip-if-branch' : 'missing-if-branch') + '"' +
-                            title((i === 0 ? 'if' : 'else') + ' path not taken') + gt +
-                            (i === 0 ? 'I' : 'E')  + lt + '/span' + gt, true, false);
-                    } else {
-                        text.wrap(startCol,
-                            openSpan,
-                            startLine === endLine ? endCol : text.originalLength(),
-                            closeSpan);
-                    }
-                }
-            }
-        }
-    });
-}
-
-function getReportClass(stats, watermark) {
-    var coveragePct = stats.pct,
-        identity  = 1;
-    if (coveragePct * identity === coveragePct) {
-        return coveragePct >= watermark[1] ? 'high' : coveragePct >= watermark[0] ? 'medium' : 'low';
-    } else {
-        return '';
-    }
-}
-
-function cleanPath(name) {
-    var SEP = path.sep || '/';
-    return (SEP !== '/') ? name.split(SEP).join('/') : name;
-}
-
-function isEmptySourceStore(sourceStore) {
-    if (!sourceStore) {
-        return true;
-    }
-
-    var cache = sourceStore.sourceCache;
-    return cache && !Object.keys(cache).length;
-}
-
-/**
- * a `Report` implementation that produces HTML coverage reports.
- *
- * Usage
- * -----
- *
- *      var report = require('istanbul').Report.create('html');
- *
- *
- * @class HtmlReport
- * @extends Report
- * @module report
- * @constructor
- * @param {Object} opts optional
- * @param {String} [opts.dir] the directory in which to generate reports. Defaults to `./html-report`
- */
-function HtmlReport(opts) {
-    Report.call(this);
-    this.opts = opts || {};
-    this.opts.dir = this.opts.dir || path.resolve(process.cwd(), 'html-report');
-    this.opts.sourceStore = isEmptySourceStore(this.opts.sourceStore) ?
-        Store.create('fslookup') : this.opts.sourceStore;
-    this.opts.linkMapper = this.opts.linkMapper || this.standardLinkMapper();
-    this.opts.writer = this.opts.writer || null;
-    this.opts.templateData = { datetime: Date() };
-    this.opts.watermarks = this.opts.watermarks || defaults.watermarks();
-}
-
-HtmlReport.TYPE = 'html';
-util.inherits(HtmlReport, Report);
-
-Report.mix(HtmlReport, {
-
-    synopsis: function () {
-        return 'Navigable HTML coverage report for every file and directory';
-    },
-
-    getPathHtml: function (node, linkMapper) {
-        var parent = node.parent,
-            nodePath = [],
-            linkPath = [],
-            i;
-
-        while (parent) {
-            nodePath.push(parent);
-            parent = parent.parent;
-        }
-
-        for (i = 0; i < nodePath.length; i += 1) {
-            linkPath.push('<a href="' + linkMapper.ancestor(node, i + 1) + '">' +
-                (cleanPath(nodePath[i].relativeName) || 'All files') + '</a>');
-        }
-        linkPath.reverse();
-        return linkPath.length > 0 ? linkPath.join(' &#187; ') + ' &#187; ' +
-            cleanPath(node.displayShortName()) : '';
-    },
-
-    fillTemplate: function (node, templateData) {
-        var opts = this.opts,
-            linkMapper = opts.linkMapper;
-
-        templateData.entity = node.name || 'All files';
-        templateData.metrics = node.metrics;
-        templateData.reportClass = getReportClass(node.metrics.statements, opts.watermarks.statements);
-        templateData.pathHtml = pathTemplate({ html: this.getPathHtml(node, linkMapper) });
-        templateData.base = {
-        	css: linkMapper.asset(node, 'base.css')
-        };
-        templateData.sorter = {
-            js: linkMapper.asset(node, 'sorter.js'),
-            image: linkMapper.asset(node, 'sort-arrow-sprite.png')
-        };
-        templateData.prettify = {
-            js: linkMapper.asset(node, 'prettify.js'),
-            css: linkMapper.asset(node, 'prettify.css')
-        };
-    },
-    writeDetailPage: function (writer, node, fileCoverage) {
-        var opts = this.opts,
-            sourceStore = opts.sourceStore,
-            templateData = opts.templateData,
-            sourceText = fileCoverage.code && Array.isArray(fileCoverage.code) ?
-                fileCoverage.code.join('\n') + '\n' : sourceStore.get(fileCoverage.path),
-            code = sourceText.split(/(?:\r?\n)|\r/),
-            count = 0,
-            structured = code.map(function (str) { count += 1; return { line: count, covered: null, text: new InsertionText(str, true) }; }),
-            context;
-
-        structured.unshift({ line: 0, covered: null, text: new InsertionText("") });
-
-        this.fillTemplate(node, templateData);
-        writer.write(headerTemplate(templateData));
-        writer.write('<pre><table class="coverage">\n');
-
-        annotateLines(fileCoverage, structured);
-        //note: order is important, since statements typically result in spanning the whole line and doing branches late
-        //causes mismatched tags
-        annotateBranches(fileCoverage, structured);
-        annotateFunctions(fileCoverage, structured);
-        annotateStatements(fileCoverage, structured);
-
-        structured.shift();
-        context = {
-            structured: structured,
-            maxLines: structured.length,
-            fileCoverage: fileCoverage
-        };
-        writer.write(detailTemplate(context));
-        writer.write('</table></pre>\n');
-        writer.write(footerTemplate(templateData));
-    },
-
-    writeIndexPage: function (writer, node) {
-        var linkMapper = this.opts.linkMapper,
-            templateData = this.opts.templateData,
-            children = Array.prototype.slice.apply(node.children),
-            watermarks = this.opts.watermarks;
-
-        children.sort(function (a, b) {
-            return a.name < b.name ? -1 : 1;
-        });
-
-        this.fillTemplate(node, templateData);
-        writer.write(headerTemplate(templateData));
-        writer.write(summaryTableHeader);
-        children.forEach(function (child) {
-            var metrics = child.metrics,
-                reportClasses = {
-                    statements: getReportClass(metrics.statements, watermarks.statements),
-                    lines: getReportClass(metrics.lines, watermarks.lines),
-                    functions: getReportClass(metrics.functions, watermarks.functions),
-                    branches: getReportClass(metrics.branches, watermarks.branches)
-                },
-                data = {
-                    metrics: metrics,
-                    reportClasses: reportClasses,
-                    file: cleanPath(child.displayShortName()),
-                    output: linkMapper.fromParent(child)
-                };
-            writer.write(summaryLineTemplate(data) + '\n');
-        });
-        writer.write(summaryTableFooter);
-        writer.write(footerTemplate(templateData));
-    },
-
-    writeFiles: function (writer, node, dir, collector) {
-        var that = this,
-            indexFile = path.resolve(dir, 'index.html'),
-            childFile;
-        if (this.opts.verbose) { console.error('Writing ' + indexFile); }
-        writer.writeFile(indexFile, function (contentWriter) {
-            that.writeIndexPage(contentWriter, node);
-        });
-        node.children.forEach(function (child) {
-            if (child.kind === 'dir') {
-                that.writeFiles(writer, child, path.resolve(dir, child.relativeName), collector);
-            } else {
-                childFile = path.resolve(dir, child.relativeName + '.html');
-                if (that.opts.verbose) { console.error('Writing ' + childFile); }
-                writer.writeFile(childFile, function (contentWriter) {
-                    that.writeDetailPage(contentWriter, child, collector.fileCoverageFor(child.fullPath()));
-                });
-            }
-        });
-    },
-
-    standardLinkMapper: function () {
-        return {
-            fromParent: function (node) {
-                var relativeName = cleanPath(node.relativeName);
-
-                return node.kind === 'dir' ? relativeName + 'index.html' : relativeName + '.html';
-            },
-            ancestorHref: function (node, num) {
-                var href = '',
-                    notDot = function(part) {
-                        return part !== '.';
-                    },
-                    separated,
-                    levels,
-                    i,
-                    j;
-
-                for (i = 0; i < num; i += 1) {
-                    separated = cleanPath(node.relativeName).split('/').filter(notDot);
-                    levels = separated.length - 1;
-                    for (j = 0; j < levels; j += 1) {
-                        href += '../';
-                    }
-                    node = node.parent;
-                }
-                return href;
-            },
-            ancestor: function (node, num) {
-                return this.ancestorHref(node, num) + 'index.html';
-            },
-            asset: function (node, name) {
-                var i = 0,
-                    parent = node.parent;
-                while (parent) { i += 1; parent = parent.parent; }
-                return this.ancestorHref(node, i) + name;
-            }
-        };
-    },
-
-    writeReport: function (collector, sync) {
-        var opts = this.opts,
-            dir = opts.dir,
-            summarizer = new TreeSummarizer(),
-            writer = opts.writer || new FileWriter(sync),
-            that = this,
-            tree,
-            copyAssets = function (subdir) {
-                var srcDir = path.resolve(__dirname, '..', 'assets', subdir);
-                fs.readdirSync(srcDir).forEach(function (f) {
-                    var resolvedSource = path.resolve(srcDir, f),
-                        resolvedDestination = path.resolve(dir, f),
-                        stat = fs.statSync(resolvedSource);
-
-                    if (stat.isFile()) {
-                        if (opts.verbose) {
-                            console.log('Write asset: ' + resolvedDestination);
-                        }
-                        writer.copyFile(resolvedSource, resolvedDestination);
-                    }
-                });
-            };
-
-        collector.files().forEach(function (key) {
-            summarizer.addFileCoverageSummary(key, utils.summarizeFileCoverage(collector.fileCoverageFor(key)));
-        });
-        tree = summarizer.getTreeSummary();
-        [ '.', 'vendor'].forEach(function (subdir) {
-            copyAssets(subdir);
-        });
-        writer.on('done', function () { that.emit('done'); });
-        //console.log(JSON.stringify(tree.root, undefined, 4));
-        this.writeFiles(writer, tree.root, dir, collector);
-        writer.done();
-    }
-});
-
-module.exports = HtmlReport;
+local.summaryTableFooter = '\
+</tbody>\n\
+</table>\n\
+</div>\n\
+';
 /* jslint-ignore-end */
-        local.HtmlReport = module.exports;
-
-
-
-// node_modules/istanbul/lib/report/text.js
-/* jslint-ignore-begin */
-/*
- Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-var path = require('path'),
-    mkdirp = require('mkdirp'),
-    util = require('util'),
-    fs = require('fs'),
-    defaults = require('./common/defaults'),
-    Report = require('./index'),
-    TreeSummarizer = require('../util/tree-summarizer'),
-    utils = require('../object-utils'),
-    PCT_COLS = 9,
-    MISSING_COL = 15,
-    TAB_SIZE = 1,
-    DELIM = ' |',
-    COL_DELIM = '-|';
-
-/**
- * a `Report` implementation that produces text output in a detailed table.
- *
- * Usage
- * -----
- *
- *      var report = require('istanbul').Report.create('text');
- *
- * @class TextReport
- * @extends Report
- * @module report
- * @constructor
- * @param {Object} opts optional
- * @param {String} [opts.dir] the directory in which to the text coverage report will be written, when writing to a file
- * @param {String} [opts.file] the filename for the report. When omitted, the report is written to console
- * @param {Number} [opts.maxCols] the max column width of the report. By default, the width of the report is adjusted based on the length of the paths
- *              to be reported.
- */
-function TextReport(opts) {
-    Report.call(this);
-    opts = opts || {};
-    this.dir = opts.dir || process.cwd();
-    this.file = opts.file;
-    this.summary = opts.summary;
-    this.maxCols = opts.maxCols || 0;
-    this.watermarks = opts.watermarks || defaults.watermarks();
-}
-
-TextReport.TYPE = 'text';
-util.inherits(TextReport, Report);
-
-function padding(num, ch) {
-    var str = '',
-        i;
-    ch = ch || ' ';
-    for (i = 0; i < num; i += 1) {
-        str += ch;
-    }
-    return str;
-}
-
-function fill(str, width, right, tabs, clazz) {
-    tabs = tabs || 0;
-    str = String(str);
-
-    var leadingSpaces = tabs * TAB_SIZE,
-        remaining = width - leadingSpaces,
-        leader = padding(leadingSpaces),
-        fmtStr = '',
-        fillStr,
-        strlen = str.length;
-
-    if (remaining > 0) {
-        if (remaining >= strlen) {
-            fillStr = padding(remaining - strlen);
-            fmtStr = right ? fillStr + str : str + fillStr;
-        } else {
-            fmtStr = str.substring(strlen - remaining);
-            fmtStr = '... ' + fmtStr.substring(4);
-        }
-    }
-
-    fmtStr = defaults.colorize(fmtStr, clazz);
-    return leader + fmtStr;
-}
-
-function formatName(name, maxCols, level, clazz) {
-    return fill(name, maxCols, false, level, clazz);
-}
-
-function formatPct(pct, clazz, width) {
-    return fill(pct, width || PCT_COLS, true, 0, clazz);
-}
-
-function nodeName(node) {
-    return node.displayShortName() || 'All files';
-}
-
-function tableHeader(maxNameCols) {
-    var elements = [];
-    elements.push(formatName('File', maxNameCols, 0));
-    elements.push(formatPct('% Stmts'));
-    elements.push(formatPct('% Branch'));
-    elements.push(formatPct('% Funcs'));
-    elements.push(formatPct('% Lines'));
-    elements.push(formatPct('Uncovered Lines', undefined, MISSING_COL));
-    return elements.join(' |') + ' |';
-}
-
-function collectMissingLines(kind, linesCovered) {
-  var missingLines = [];
-
-  if (kind !== 'file') {
-      return [];
-  }
-
-  Object.keys(linesCovered).forEach(function (key) {
-      if (!linesCovered[key]) {
-          missingLines.push(key);
-      }
-  });
-
-  return missingLines;
-}
-
-function tableRow(node, maxNameCols, level, watermarks) {
-    var name = nodeName(node),
-        statements = node.metrics.statements.pct,
-        branches = node.metrics.branches.pct,
-        functions = node.metrics.functions.pct,
-        lines = node.metrics.lines.pct,
-        missingLines = collectMissingLines(node.kind, node.metrics.linesCovered),
-        elements = [];
-
-    elements.push(formatName(name, maxNameCols, level, defaults.classFor('statements', node.metrics, watermarks)));
-    elements.push(formatPct(statements, defaults.classFor('statements', node.metrics, watermarks)));
-    elements.push(formatPct(branches, defaults.classFor('branches', node.metrics, watermarks)));
-    elements.push(formatPct(functions, defaults.classFor('functions', node.metrics, watermarks)));
-    elements.push(formatPct(lines, defaults.classFor('lines', node.metrics, watermarks)));
-    elements.push(formatPct(missingLines.join(','), 'low', MISSING_COL));
-
-    return elements.join(DELIM) + DELIM;
-}
-
-function findNameWidth(node, level, last) {
-    last = last || 0;
-    level = level || 0;
-    var idealWidth = TAB_SIZE * level + nodeName(node).length;
-    if (idealWidth > last) {
-        last = idealWidth;
-    }
-    node.children.forEach(function (child) {
-        last = findNameWidth(child, level + 1, last);
-    });
-    return last;
-}
-
-function makeLine(nameWidth) {
-    var name = padding(nameWidth, '-'),
-        pct = padding(PCT_COLS, '-'),
-        elements = [];
-
-    elements.push(name);
-    elements.push(pct);
-    elements.push(pct);
-    elements.push(pct);
-    elements.push(pct);
-    elements.push(padding(MISSING_COL, '-'));
-    return elements.join(COL_DELIM) + COL_DELIM;
-}
-
-function walk(node, nameWidth, array, level, watermarks) {
-    var line;
-    if (level === 0) {
-        line = makeLine(nameWidth);
-        array.push(line);
-        array.push(tableHeader(nameWidth));
-        array.push(line);
-    } else {
-        array.push(tableRow(node, nameWidth, level, watermarks));
-    }
-    node.children.forEach(function (child) {
-        walk(child, nameWidth, array, level + 1, watermarks);
-    });
-    if (level === 0) {
-        array.push(line);
-        array.push(tableRow(node, nameWidth, level, watermarks));
-        array.push(line);
-    }
-}
-
-Report.mix(TextReport, {
-    synopsis: function () {
-        return 'text report that prints a coverage line for every file, typically to console';
-    },
-    getDefaultConfig: function () {
-        return { file: null, maxCols: 0 };
-    },
-    writeReport: function (collector /*, sync */) {
-        var summarizer = new TreeSummarizer(),
-            tree,
-            root,
-            nameWidth,
-            statsWidth = 4 * (PCT_COLS + 2) + MISSING_COL,
-            maxRemaining,
-            strings = [],
-            text;
-
-        collector.files().forEach(function (key) {
-            summarizer.addFileCoverageSummary(key, utils.summarizeFileCoverage(
-                collector.fileCoverageFor(key)
-            ));
-        });
-        tree = summarizer.getTreeSummary();
-        root = tree.root;
-        nameWidth = findNameWidth(root);
-        if (this.maxCols > 0) {
-            maxRemaining = this.maxCols - statsWidth - 2;
-            if (nameWidth > maxRemaining) {
-                nameWidth = maxRemaining;
-            }
-        }
-        walk(root, nameWidth, strings, 0, this.watermarks);
-        text = strings.join('\n') + '\n';
-        if (this.file) {
-            mkdirp.sync(this.dir);
-            fs.writeFileSync(path.join(this.dir, this.file), text, 'utf8');
-        } else {
-            console.log(text);
-        }
-        this.emit('done');
-    }
-});
-
-module.exports = TextReport;
-/* jslint-ignore-end */
-        local.TextReport = module.exports;
-    }());
 
 
 
     // run shared js-env code
     (function () {
+        var __dirname, process;
+        // jslint hack
+        local.nop(__dirname);
+        __dirname = local.istanbul_lite.__dirname;
+        process = local.process;
         // require modules
-        local.fs = require('fs');
         local.module = require('module');
         local.path = require('path');
         local.codeDict = local.codeDict || {};
+
+        local.fsReadFileSync = function (file) {
+            return file === __dirname + '/templates/foot.txt'
+                ? local['/templates/foot.txt']
+                : file === __dirname + '/templates/head.txt'
+                ? local['/templates/head.txt']
+                : local.modeJs === 'browser'
+                ? local.codeDict[file]
+                : local.require('fs').readFileSync(file, 'utf8');
+        };
+
+        local.fsWriteFileDict = {};
+
+        local.fsWriteFileSync = function (file, data) {
+            /*
+             * this function will write the data to file, and auto-mkdirp parent dir
+             */
+            var writeFileSync;
+            file = local.path.resolve(process.cwd(), file);
+            writeFileSync = local.require('fs').writeFileSync || function (file, data) {
+                local.fsWriteFileDict[file] = data;
+            };
+            // write data to file
+            try {
+                writeFileSync(file, data);
+            // if write failed, then mkdirp file's parent dir
+            } catch (errorCaught) {
+                file.split('/').slice(1, -1).reduce(function (dir, child) {
+                    dir = dir + '/' + child;
+                    try {
+                        local.require('fs').mkdirSync(dir);
+                    } catch (ignore) {
+                    }
+                    return dir;
+                }, '');
+                // write data to file
+                writeFileSync(file, data);
+            }
+        };
+
+        local.instrumenter = new local.Instrumenter();
+
+        local.stringFormat = function (template, dict, valueDefault) {
+            /*
+             * this function will replace the keys in the template with the dict's key / value
+             */
+            var argList, match, replace, rgx, value;
+            dict = dict || {};
+            replace = function (match0, fragment) {
+                // jslint-hack
+                local.nop(match0);
+                return dict[match].map(function (dict) {
+                    // recursively format the array fragment
+                    return local.stringFormat(fragment, dict, valueDefault);
+                }).join('');
+            };
+            rgx = (/\{\{#[^}]+?\}\}/g);
+            while (true) {
+                // search for array fragments in the template
+                match = rgx.exec(template);
+                if (!match) {
+                    break;
+                }
+                match = match[0].slice(3, -2);
+                // if value is an array, then iteratively format the array fragment with it
+                if (Array.isArray(dict[match])) {
+                    template = template.replace(
+                        new RegExp('\\{\\{#' + match +
+                            '\\}\\}([\\S\\s]*?)\\{\\{\\/' + match +
+                            '\\}\\}'),
+                        replace
+                    );
+                }
+            }
+            // search for keys in the template
+            return template.replace((/\{\{[^}]+?\}\}/g), function (match0) {
+                argList = match0.slice(2, -2).split(' ');
+                value = dict;
+                // iteratively lookup nested values in the dict
+                argList[0].split('.').forEach(function (key) {
+                    value = value && value[key];
+                });
+                if (value === undefined) {
+                    return valueDefault === undefined
+                        ? match0
+                        : valueDefault;
+                }
+                return String(value);
+            });
+        };
+
+        local.summaryCreate = function (options) {
+            var filesUnderRoot, metricsFileDict, prefixList, tmp, walkedDict;
+            // init metricsFileDict with summary file metrics
+            metricsFileDict = {};
+            Object.keys(options.coverage).forEach(function (file) {
+                var coverageFile, count, covered, locations, skipped, startLine;
+                coverageFile = options.coverage[file];
+                // add line coverage information to a file coverage object, reverse-engineering
+                // it from statement coverage. The object passed in is updated in place.
+                coverageFile.l = {};
+                Object.keys(coverageFile.s).forEach(function (st) {
+                    count = coverageFile.s[st];
+                    startLine = coverageFile.l[coverageFile.statementMap[st].start.line];
+                    if (count === 0 && coverageFile.statementMap[st].skip) {
+                        count = 1;
+                    }
+                    if (startLine === undefined || startLine < count) {
+                        coverageFile.l[coverageFile.statementMap[st].start.line] = count;
+                    }
+                });
+                metricsFileDict[file] = {
+                    lines: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    statements: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    functions: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    branches: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    linesCovered: {}
+                };
+                // compute simple-totals
+                [
+                    ['functions', 'f', 'fnMap'],
+                    ['lines', 'l'],
+                    ['statements', 's', 'statementMap']
+                ].forEach(function (element) {
+                    tmp = metricsFileDict[file][element[0]] =
+                        { total: 0, covered: 0, skipped: 0 };
+                    Object.keys(coverageFile[element[1]]).forEach(function (key) {
+                        covered = coverageFile[element[1]][key];
+                        skipped = coverageFile[element[2]];
+                        skipped = skipped && skipped[key].skip;
+                        tmp.total += 1;
+                        if (covered || skipped) {
+                            tmp.covered += 1;
+                        }
+                        if (!covered && skipped) {
+                            tmp.skipped += 1;
+                        }
+                    });
+                });
+                // compute branch-totals
+                tmp = metricsFileDict[file].branches = { total: 0, covered: 0, skipped: 0 };
+                Object.keys(coverageFile.b).forEach(function (key) {
+                    locations = coverageFile.branchMap[key].locations;
+                    coverageFile.b[key].forEach(function (branch, ii) {
+                        covered = branch > 0;
+                        skipped = locations && locations[ii] && locations[ii].skip;
+                        if (covered || skipped) {
+                            tmp.covered += 1;
+                        }
+                        if (!covered && skipped) {
+                            tmp.skipped += 1;
+                        }
+                    });
+                    tmp.total += coverageFile.b[key].length;
+                });
+                metricsFileDict[file].linesCovered = coverageFile.l;
+            });
+            // init prefixList
+            prefixList = (function () {
+                tmp = Object.keys(metricsFileDict);
+                if (tmp.length === 0) {
+                    return [];
+                }
+                tmp = tmp.map(function (arg) {
+                    return arg.split('/');
+                });
+                prefixList = tmp.pop();
+                if (tmp.length === 0) {
+                    return prefixList.slice(0, prefixList.length - 1);
+                }
+                return tmp.reduce(function (first, second) {
+                    var len = first.length < second.length
+                            ? first.length
+                            : second.length,
+                        ii,
+                        result = [];
+                    for (ii = 0; ii < len; ii += 1) {
+                        if (first[ii] === second[ii]) {
+                            result.push(first[ii]);
+                        } else {
+                            break;
+                        }
+                    }
+                    return result;
+                }, prefixList);
+            }());
+            // init summary
+            walkedDict = {};
+            tmp = prefixList.join('/') + '/';
+            options.summary = walkedDict[tmp] = local.summaryNodeCreate(tmp, 'dir');
+            Object.keys(metricsFileDict).forEach(function (file) {
+                var node, parentPath, parent;
+                node = local.summaryNodeCreate(file, 'file', metricsFileDict[file]);
+                walkedDict[file] = node;
+                parentPath = local.path.dirname(file) + '/';
+                if (parentPath === '//' || parentPath === './') {
+                    parentPath = '/__root__/';
+                }
+                parent = walkedDict[parentPath];
+                if (!parent) {
+                    parent = walkedDict[parentPath] =
+                        local.summaryNodeCreate(parentPath, 'dir');
+                    local.summaryNodeChildAdd(options.summary, parent);
+                }
+                local.summaryNodeChildAdd(parent, node);
+                filesUnderRoot = filesUnderRoot || parent === options.summary;
+            });
+            if (filesUnderRoot && prefixList.length > 0) {
+                //start at one level above
+                prefixList.pop();
+                tmp = options.summary.children;
+                options.summary.children = [];
+                options.summary = local.summaryNodeChildAdd(
+                    local.summaryNodeCreate(prefixList.join('/') + '/', 'dir'),
+                    options.summary
+                );
+                tmp.forEach(function (child) {
+                    if (child.kind === 'dir') {
+                        local.summaryNodeChildAdd(options.summary, child);
+                    } else {
+                        local.summaryNodeChildAdd(options.summary.children[0], child);
+                    }
+                });
+            }
+            local.summaryNodeFix(options.summary, prefixList.join('/') + '/');
+            local.summaryMetricsCalculate(options.summary);
+        };
+
+        local.summaryMetricsCalculate = function (node) {
+            if (node.kind === 'dir') {
+                node.children.forEach(function (child) {
+                    local.summaryMetricsCalculate(child);
+                });
+                // merge multiple summary metrics objects by summing up the `totals` and
+                // `covered` fields and recomputing the percentages
+                node.metrics = {
+                    lines: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    statements: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    functions: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    branches: { total: 0, covered: 0, skipped: 0, pct: 'Unknown' },
+                    linesCovered: {}
+                };
+                node.children.forEach(function (metrics) {
+                    metrics = metrics.metrics;
+                    ['statements', 'branches', 'functions', 'lines'].forEach(function (key) {
+                        node.metrics[key].total += metrics[key].total;
+                        node.metrics[key].covered += metrics[key].covered;
+                        node.metrics[key].skipped += metrics[key].skipped;
+                    });
+                    // keep track of all lines we have coverage for.
+                    Object.keys(metrics.linesCovered).forEach(function (key) {
+                        if (!node.metrics.linesCovered[key]) {
+                            node.metrics.linesCovered[key] = metrics.linesCovered[key];
+                        } else {
+                            node.metrics.linesCovered[key] += metrics.linesCovered[key];
+                        }
+                    });
+                });
+            }
+            ['statements', 'branches', 'functions', 'lines'].forEach(function (key) {
+                // init percent rounded to 2 decimals
+                node.metrics[key].pct = node.metrics[key].total > 0
+                    ? Math.floor((
+                        100000 * node.metrics[key].covered / node.metrics[key].total + 5
+                    ) / 10) / 100
+                    : 100;
+                // init watermark
+                node.metrics[key].watermark =
+                    node.metrics[key].pct >= local.istanbul_lite.watermarks[key][1]
+                    ? 'high'
+                    : node.metrics[key].pct >= local.istanbul_lite.watermarks[key][0]
+                    ? 'medium'
+                    : 'low';
+            });
+        };
+
+        local.summaryNodeChildAdd = function (node, child) {
+            node.children.push(child);
+            child.parent = node;
+            return node;
+        };
+
+        local.summaryNodeCreate = function (fullName, kind, metrics) {
+            return {
+                name: fullName,
+                fullName: fullName,
+                kind: kind,
+                metrics: metrics,
+                parent: null,
+                children: []
+            };
+        };
+
+        local.summaryNodeFix = function (node, prefix, parent) {
+            node.name = node.name
+                .replace(new RegExp('^' + prefix.replace(/(.)/g, '\\$1')), '')
+                .replace((/^\//), '');
+            node.relativeName = parent
+                ? (parent.name === '__root__/'
+                    ? node.name
+                    : node.name.slice(parent.name.length))
+                : node.name.slice(prefix.length);
+            node.children.forEach(function (child) {
+                local.summaryNodeFix(child, prefix, node);
+            });
+        };
+
+
+
+        // node_modules/istanbul/lib/util/insertion-text.js
+        function InsertionText(text, consumeBlanks) {
+            var ii;
+            this.text = text;
+            this.offsets = [];
+            this.consumeBlanks = consumeBlanks;
+            this.startPos = (/[^ \f\n\r\t\v\u00A0\u2028\u2029]/).exec(text);
+            this.startPos = this.startPos
+                ? this.startPos.index
+                : -1;
+            this.endPos = text.length + 1;
+            for (ii = text.length - 1; ii >= 0; ii -= 1) {
+                if (text[ii].match((/[^ \f\n\r\t\v\u00A0\u2028\u2029]/))) {
+                    this.endPos = ii;
+                    break;
+                }
+            }
+        }
+        InsertionText.prototype = {
+            insertAt: function (pos, str, insertBefore, consumeBlanks) {
+                consumeBlanks = consumeBlanks === undefined
+                    ? this.consumeBlanks
+                    : consumeBlanks;
+                pos = Math.max(pos > this.text.length
+                    ? this.text.length
+                    : pos, 0);
+                if (consumeBlanks) {
+                    pos = pos <= this.startPos
+                        ? 0
+                        : pos > this.endPos
+                        ? this.text.length
+                        : pos;
+                }
+                var offsetObj,
+                    ii,
+                    realPos = pos;
+                for (ii = 0; ii < this.offsets.length; ii += 1) {
+                    offsetObj = this.offsets[ii];
+                    if (offsetObj.pos < pos || (offsetObj.pos === pos && !insertBefore)) {
+                        realPos += offsetObj.len;
+                    }
+                    if (offsetObj.pos >= pos) {
+                        break;
+                    }
+                }
+                if (offsetObj && offsetObj.pos === pos) {
+                    offsetObj.len += str.length;
+                } else {
+                    this.offsets.splice(ii, 0, { pos: pos, len: str.length });
+                }
+                this.text = this.text.slice(0, realPos) + str + this.text.slice(realPos);
+                return this;
+            },
+            wrap: function (startPos, startText, endPos, endText, consumeBlanks) {
+                this.insertAt(startPos, startText, true, consumeBlanks);
+                this.insertAt(endPos, endText, false, consumeBlanks);
+                return this;
+            }
+        };
+
+
+
+        function annotateLines(coverageFile, structuredText) {
+            var lineStats = coverageFile.l;
+            if (!lineStats) {
+                return;
+            }
+            Object.keys(lineStats).forEach(function (lineNumber) {
+                var count = lineStats[lineNumber];
+                if (structuredText[lineNumber]) {
+                    structuredText[lineNumber].covered = count > 0
+                        ? 'yes'
+                        : 'no';
+                }
+            });
+            structuredText.forEach(function (item) {
+                if (item.covered === null) {
+                    item.covered = 'neutral';
+                }
+            });
+        }
+        function annotateStatements(coverageFile, structuredText) {
+            var statementStats = coverageFile.s,
+                statementMeta = coverageFile.statementMap;
+            Object.keys(statementStats).forEach(function (stName) {
+                var count = statementStats[stName],
+                    meta = statementMeta[stName],
+                    type = count > 0
+                        ? 'yes'
+                        : 'no',
+                    startCol = meta.start.column,
+                    endCol = meta.end.column + 1,
+                    startLine = meta.start.line,
+                    endLine = meta.end.line,
+                    openSpan = '\u0001span class="' + (meta.skip
+                        ? 'cstat-skip'
+                        : 'cstat-no') + '" title="statement not covered" \u0002',
+                    closeSpan = '\u0001/span\u0002',
+                    text;
+                if (type === 'no') {
+                    if (endLine !== startLine) {
+                        endLine = startLine;
+                        endCol = structuredText[startLine].text.text.length;
+                    }
+                    text = structuredText[startLine].text;
+                    text.wrap(startCol,
+                        openSpan,
+                        startLine === endLine
+                            ? endCol
+                            : text.text.length,
+                        closeSpan);
+                }
+            });
+        }
+        function annotateFunctions(coverageFile, structuredText) {
+            var fnStats = coverageFile.f,
+                fnMeta = coverageFile.fnMap;
+            if (!fnStats) {
+                return;
+            }
+            Object.keys(fnStats).forEach(function (fName) {
+                var count = fnStats[fName],
+                    meta = fnMeta[fName],
+                    type = count > 0
+                        ? 'yes'
+                        : 'no',
+                    startCol = meta.loc.start.column,
+                    endCol = meta.loc.end.column + 1,
+                    startLine = meta.loc.start.line,
+                    endLine = meta.loc.end.line,
+                    openSpan = '\u0001span class="' + (meta.skip
+                        ? 'fstat-skip'
+                        : 'fstat-no') + '" title="function not covered" \u0002',
+                    closeSpan = '\u0001/span\u0002',
+                    text;
+                if (type === 'no') {
+                    if (endLine !== startLine) {
+                        endLine = startLine;
+                        endCol = structuredText[startLine].text.text.length;
+                    }
+                    text = structuredText[startLine].text;
+                    text.wrap(startCol, openSpan, startLine === endLine
+                        ? endCol
+                        : text.text.length, closeSpan);
+                }
+            });
+        }
+        function annotateBranches(coverageFile, structuredText) {
+            var branchStats = coverageFile.b,
+                branchMeta = coverageFile.branchMap;
+            if (!branchStats) {
+                return;
+            }
+            Object.keys(branchStats).forEach(function (branchName) {
+                var branchArray = branchStats[branchName],
+                    sumCount = branchArray.reduce(function (p, n) {
+                        return p + n;
+                    }, 0),
+                    metaArray = branchMeta[branchName].locations,
+                    ii,
+                    count,
+                    meta,
+                    startCol,
+                    endCol,
+                    startLine,
+                    endLine,
+                    openSpan,
+                    closeSpan,
+                    text;
+                if (sumCount > 0) { //only highlight if partial branches are missing
+                    for (ii = 0; ii < branchArray.length; ii += 1) {
+                        count = branchArray[ii];
+                        meta = metaArray[ii];
+                        startCol = meta.start.column;
+                        endCol = meta.end.column + 1;
+                        startLine = meta.start.line;
+                        endLine = meta.end.line;
+                        openSpan = '\u0001span class="branch-' + ii + ' ' + (meta.skip
+                            ? 'cbranch-skip'
+                            : 'cbranch-no') + '" title="branch not covered" \u0002';
+                        closeSpan = '\u0001/span\u0002';
+                        if (count === 0) { //skip branches taken
+                            if (endLine !== startLine) {
+                                endLine = startLine;
+                                endCol = structuredText[startLine].text.text.length;
+                            }
+                            text = structuredText[startLine].text;
+                            // and 'if' is a special case
+                            // since the else branch might not be visible, being non-existent
+                            if (branchMeta[branchName].type === 'if') {
+                                text.insertAt(startCol, '\u0001span class="' + (meta.skip
+                                    ? 'skip-if-branch'
+                                    : 'missing-if-branch') + '" title="' + (ii === 0
+                                    ? 'if'
+                                    : 'else') + ' path not taken" \u0002' + (ii === 0
+                                    ? 'I'
+                                    : 'E')  + '\u0001/span\u0002', true, false);
+                            } else {
+                                text.wrap(startCol, openSpan, startLine === endLine
+                                    ? endCol
+                                    : text.text.length, closeSpan);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        local.reportHtmlCreate = function (options, node, dir) {
+            // write index-page
+            local.fsWriteData = '';
+            node.children.sort(function (a, b) {
+                return a.name < b.name
+                    ? -1
+                    : 1;
+            });
+            local.reportHtmlFillTemplate(node, options);
+            local.fsWriteData += local.summaryTableHeader;
+            node.children.forEach(function (child) {
+                local.fsWriteData += local.stringFormat(local.summaryLineTemplate, {
+                    file: child.relativeName,
+                    metrics: child.metrics,
+                    output: child.relativeName + (child.kind === 'dir'
+                        ? 'index.html'
+                        : '.html'),
+                    showPicture: ('<span class="cover-fill' +
+                        (child.metrics.statements.pct === 100
+                        ? ' cover-full'
+                        : '') + '" style="width: ' + child.metrics.statements.pct +
+                        'px;"></span><span class="cover-empty" style="width:' +
+                        (100 - child.metrics.statements.pct) + 'px;"></span>')
+                });
+            });
+            options.footerTemplate = local.stringFormat(local['/templates/foot.txt'], {
+                datetime: new Date().toString()
+            });
+            local.fsWriteData += local.summaryTableFooter + options.footerTemplate;
+            local.fsWriteFileSync(local.path.resolve(dir, 'index.html'), local.fsWriteData);
+            // write children
+            node.children.forEach(function (child) {
+                var coverageFile, covered, ii, structuredText, value;
+                if (child.kind === 'dir') {
+                    local.reportHtmlCreate(
+                        options,
+                        child,
+                        local.path.resolve(dir, child.relativeName)
+                    );
+                    return;
+                }
+                // write detail-page
+                local.fsWriteData = '';
+                coverageFile = options.coverage[child.fullName];
+                ii = 0;
+                structuredText = ((coverageFile.code && Array.isArray(coverageFile.code)
+                    ? coverageFile.code.join('\n') + '\n'
+                    : local.fsReadFileSync(coverageFile.path)).split(/(?:\r?\n)|\r/))
+                    .map(function (str) {
+                        ii += 1;
+                        return {
+                            line: ii,
+                            covered: null,
+                            text: new InsertionText(str, true)
+                        };
+                    });
+                structuredText.unshift({ line: 0, covered: null, text: new InsertionText("") });
+                local.reportHtmlFillTemplate(child, options);
+                local.fsWriteData += '<pre><table class="coverage">\n';
+                annotateLines(coverageFile, structuredText);
+                // note: order is important, since statements typically result
+                // in spanning the whole line and doing branches late causes mismatched tags
+                annotateBranches(coverageFile, structuredText);
+                annotateFunctions(coverageFile, structuredText);
+                annotateStatements(coverageFile, structuredText);
+                structuredText.shift();
+
+                options.showLines = '';
+                for (ii = 1; ii <= structuredText.length; ii += 1) {
+                    options.showLines += ii + '\n';
+                }
+
+                options.showLineExecutionCounts = '';
+                for (ii = 1; ii <= structuredText.length; ii += 1) {
+                    value = '&nbsp;';
+                    covered = 'neutral';
+                    if (coverageFile.l.hasOwnProperty(ii)) {
+                        if (coverageFile.l[ii] > 0) {
+                            covered = 'yes';
+                            value = coverageFile.l[ii];
+                        } else {
+                            covered = 'no';
+                        }
+                    }
+                    options.showLineExecutionCounts += '<span class="cline-any cline-' +
+                        covered + '">' + value + '</span>\n';
+                }
+
+                options.showCode = structuredText.map(function (item) {
+                    return item.text.text
+                        .toString()
+                        .replace((/&/g), '&amp;')
+                        .replace((/</g), '&lt;')
+                        .replace((/>/g), '&gt;')
+                        .replace((/\u0001/g), '<')
+                        .replace((/\u0002/g), '>') || '&nbsp;';
+                }).join('\n');
+                local.fsWriteData += local.stringFormat(local.detailTemplate, options) +
+                    '</table></pre>\n' + options.footerTemplate;
+                local.fsWriteFileSync(
+                    local.path.resolve(dir, child.relativeName + '.html'),
+                    local.fsWriteData
+                );
+            });
+        };
+
+        local.reportHtmlFillTemplate = function (node, options) {
+            var ancestorHref, href, ii, jj, levels, notDot, parent, skipped;
+            ancestorHref = function (node, num) {
+                href = '';
+                notDot = function (part) {
+                    return part !== '.';
+                };
+                for (ii = 0; ii < num; ii += 1) {
+                    levels = node.relativeName.split('/').filter(notDot).length - 1;
+                    for (jj = 0; jj < levels; jj += 1) {
+                        href += '../';
+                    }
+                    node = node.parent;
+                }
+                return href;
+            };
+            options.baseCss = '';
+            if (local.modeJs === 'node') {
+                for (ii = 0, parent = node.parent;
+                        parent;
+                        ii += 1, parent = parent.parent) {
+                    local.nop();
+                }
+                options.baseCss = ancestorHref(node, ii) + 'base.css';
+            }
+            options.entity = node.name || 'All files';
+            options.metrics = node.metrics;
+            options.pathHtml = [];
+            parent = node.parent;
+            while (parent) {
+                options.pathHtml.push(parent);
+                parent = parent.parent;
+            }
+            options.pathHtml = options.pathHtml
+                .map(function (element, ii) {
+                    return '<a href="' + ancestorHref(node, ii + 1) + 'index.html">' +
+                        (element.relativeName || 'All files') + '</a>';
+                })
+                .reverse();
+            options.pathHtml = options.pathHtml.length > 0
+                ? options.pathHtml.join(' &#187; ') + ' &#187; ' + node.relativeName
+                : '';
+            options.showIgnores = '';
+            ['statements', 'branches', 'functions'].forEach(function (element) {
+                skipped = node.metrics[element].skipped;
+                if (skipped > 0) {
+                    options.showIgnores += skipped + ' ' + (skipped === 1
+                        ? element.replace((/e{0,1}s$/), '')
+                        : element) + ', ';
+                }
+            });
+            options.showIgnores =  options.showIgnores.length
+                ? options.showIgnores.slice(0, -2)
+                : '<span class="ignore-none">none</span>';
+            local.fsWriteData += local.stringFormat(local['/templates/head.txt'], options);
+        };
+
+        local.reportTextCreate = function (options) {
+            var line, nameWidth, tmp;
+            // init nameWidth
+            nameWidth = 0;
+            tmp = function (node, level) {
+                nameWidth = Math
+                    .max(level + (node.relativeName || 'All files').length, nameWidth);
+                node.children.forEach(function (child) {
+                    tmp(child, level + 1);
+                });
+            };
+            tmp(options.summary, 0);
+            // init line
+            line = new Array(nameWidth + 1).join('-') +
+                '-|----------|----------|----------|----------|----------------|\n';
+            // init coverageReportText
+            options.coverageReportText = line + local.reportTextFill(
+                'File',
+                nameWidth,
+                false,
+                0
+            ) + ' |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |\n' + line;
+            // walk tree
+            tmp = function (node, level) {
+                var tableRow, uncoveredLines;
+                // init tableRow
+                tableRow = local.reportTextFill(
+                    node.relativeName || 'All files',
+                    nameWidth,
+                    false,
+                    level,
+                    node.metrics.statements.watermark
+                ) + ' |';
+                ['statements', 'branches', 'functions', 'lines'].forEach(function (key) {
+                    tableRow += local.reportTextFill(
+                        node.metrics[key].pct,
+                        9,
+                        true,
+                        0,
+                        node.metrics[key].watermark
+                    ) + ' |';
+                });
+                uncoveredLines = '';
+                if (node.kind === 'file') {
+                    Object.keys(node.metrics.linesCovered).forEach(function (key) {
+                        if (!node.metrics.linesCovered[key]) {
+                            uncoveredLines += key + ',';
+                        }
+                    });
+                }
+                tableRow += local.reportTextFill(
+                    uncoveredLines.slice(0, -1),
+                    15,
+                    true,
+                    0,
+                    'low'
+                ) + ' |\n';
+                if (level === 0) {
+                    node.children.forEach(function (child) {
+                        tmp(child, level + 1);
+                    });
+                    options.coverageReportText += line + tableRow + line;
+                    return;
+                }
+                options.coverageReportText += tableRow;
+                node.children.forEach(function (child) {
+                    tmp(child, level + 1);
+                });
+            };
+            tmp(options.summary, 0);
+            // print options.coverageReportText to stdout
+            if (local.modeJs === 'node') {
+                console.log(options.coverageReportText);
+            }
+        };
+
+        local.reportTextFill = function (str, width, right, tabs, clazz) {
+            var strLen;
+            str = String(str);
+            strLen = str.length;
+            str = right
+                ? (new Array(width + 1).join(' ') + str).slice(-(width - tabs))
+                : (str + new Array(width + 1).join(' ')).slice(0, width - tabs);
+            if (str.length < strLen) {
+                str = '... ' + str.slice(4);
+            }
+            switch (clazz) {
+            case 'low':
+                str = '\u001b[91m' + str + '\u001b[0m';
+                break;
+            case 'medium':
+                str = '\u001b[93m' + str + '\u001b[0m';
+                break;
+            case 'high':
+                str = '\u001b[92m' + str + '\u001b[0m';
+                break;
+            }
+            return new Array(tabs + 1).join(' ') + str;
+        };
+
+
+
+        // init functions
         local.istanbul_lite.coverageReportCreate = function (options) {
             /*
              * this function will
@@ -12460,96 +11341,52 @@ module.exports = TextReport;
              * 2. write coverage in html-format to filesystem
              * 3. return coverage in html-format as single document
              */
-            var collector, tmp;
+            var tmp;
             options = options || {};
             options.coverage = options.coverage || local.global.__coverage__;
             if (!options.coverage || options.modeNoCoverage) {
                 return '';
             }
-            options.dir = options.dir || (local.modeJs === 'node'
-                ? local.path.resolve(
-                    process.cwd(),
-                    process.env.npm_config_dir_coverage ||
-                        local.istanbul_lite.coverageDirDefault
-                )
-                : local.istanbul_lite.coverageDirDefault);
-            // node_modules/istanbul/lib/store/fslookup.js
-            options.sourceStore = options.sourceStore || {
-                get: function (key) {
-                    return local.fs.readFileSync(key, 'utf8');
-                }
-            };
-            // node_modules/istanbul/lib/util/file-writer.js
-            options.writer = options.writer || {
-                done: local.nop,
-                on: local.nop,
-                write: function (data) {
-                    options.writer.data += data;
-                },
-                writeFile: function (file, callback) {
-                    options.writer.data = '';
-                    callback(options.writer);
-                    local.writeFileSync(file, options.writer.data);
-                    return;
-                }
-            };
             // filter undefined file from coverage
             tmp = options.coverage;
             options.coverage = {};
             Object.keys(tmp).forEach(function (key) {
                 try {
-                    if (options.sourceStore.get(key)) {
+                    if (local.fsReadFileSync(key)) {
                         // json-copy to prevent side-effects
                         // on original coverage
-                        options.coverage[key] =
-                            JSON.parse(JSON.stringify(tmp[key]));
+                        options.coverage[key] = JSON.parse(JSON.stringify(tmp[key]));
                     }
                 } catch (ignore) {
                 }
             });
-            // node_modules/istanbul/lib/collector.js
-            collector = {
-                fileCoverageFor: function (file) {
-                    var result = options.coverage[file];
-                    local[
-                        '../object-utils'
-                    ].addDerivedInfoForFile(result);
-                    return result;
-                },
-                files: function () {
-                    return Object.keys(options.coverage);
-                }
-            };
+            options.dir = options.dir || (local.modeJs === 'browser'
+                ? local.istanbul_lite.coverageDirDefault
+                : local.path.resolve(
+                    process.cwd(),
+                    process.env.npm_config_dir_coverage ||
+                        local.istanbul_lite.coverageDirDefault
+                ));
+            // init summary
+            local.summaryCreate(options);
             // 1. print coverage in text-format to stdout
-            if (local.modeJs === 'node') {
-                new local.TextReport(options).writeReport(collector);
-            }
+            local.reportTextCreate(options);
             // 2. write coverage in html-format to filesystem
-            tmp = new local.HtmlReport(options);
-            // disable asset-links in html-format
-            if (local.modeJs === 'browser') {
-                tmp.opts.linkMapper.asset = function () {
-                    return '';
-                };
-            }
             // write coverage.json
-            local.writeFileSync(
+            local.fsWriteFileSync(
                 options.dir + '/coverage.json',
                 JSON.stringify(local.global.__coverage__)
             );
             // write html-report
-            tmp.writeReport(collector);
+            local.reportHtmlCreate(options, options.summary, options.dir);
             // write base.css
-            local.writeFileSync(
-                options.dir + '/base.css',
-                local.istanbul_lite['/assets/base.css']
-            );
+            local.fsWriteFileSync(options.dir + '/base.css', local['/assets/base.css']);
             if (local.modeJs === 'node') {
                 console.log('created coverage file://' + options.dir + '/index.html');
             }
             // 3. return coverage in html-format as a single document
             tmp = '<style>\n' +
-                local.istanbul_lite[
+                local[
                     '/assets/base.css'
                 ].replace((/([\S ]+?\{)/g), function (match0) {
                     return '.istanbulCoverageDivDiv ' +
@@ -12579,11 +11416,11 @@ module.exports = TextReport;
                 '<h2>coverage</h2>\n' + [
                     '/index.html'
                 ].concat(
-                    Object.keys(local.writeFileDict).sort()
+                    Object.keys(local.fsWriteFileDict).sort()
                 ).map(function (key, ii) {
                     return ii === 0 || key.slice(-8) === '.js.html'
                         ? '<div class="istanbulCoverageDivDiv">\n' +
-                            local.writeFileDict[key] + '</div>\n'
+                            local.fsWriteFileDict[key] + '</div>\n'
                         : '';
                 }).join('\n');
             // update coverageReport
@@ -12595,6 +11432,7 @@ module.exports = TextReport;
             }
             return tmp;
         };
+
         local.istanbul_lite.instrumentSync = function (code, file, options) {
             /*
              * this function will
@@ -12609,28 +11447,12 @@ module.exports = TextReport;
             // 3. return instrumented code
             return local.instrumenter.instrumentSync(code, file, options);
         };
-        local.instrumenter = new local.Instrumenter();
-        local.writeFileSync = function (file, data) {
-            /*
-             * this function will write the data to file, and auto-mkdirp parent dir
-             */
-            file = local.path.resolve(process.cwd(), file);
-            // write data to file
-            try {
-                local.fs.writeFileSync(file, data);
-            // if write failed, then mkdirp file's parent dir
-            } catch (errorCaught) {
-                file.split('/').slice(1, -1).reduce(function (dir, child) {
-                    dir = dir + '/' + child;
-                    try {
-                        local.fs.mkdirSync(dir);
-                    } catch (ignore) {
-                    }
-                    return dir;
-                }, '');
-                // write data to file
-                local.fs.writeFileSync(file, data);
-            }
+
+        local.istanbul_lite.watermarks = {
+            branches: [ 50, 80 ],
+            functions: [ 50, 80],
+            lines: [ 50, 80 ],
+            statements: [ 50, 80 ]
         };
     }());
     switch (local.modeJs) {
@@ -12654,14 +11476,28 @@ module.exports = TextReport;
                     process.env.npm_config_mode_cover_regexp_exclude ||
                     '[^\\S\\s]';
                 // add coverage hook to require
-                local.hook.hookRequire(function (file) {
-                    return file.indexOf(process.cwd()) === 0 &&
-                        file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
-                        !new RegExp(process.env.npm_config_mode_cover_regexp_exclude)
-                            .test(file) &&
-                        new RegExp(process.env.npm_config_mode_cover_regexp_include)
-                            .test(file);
-                }, local.istanbul_lite.instrumentSync);
+                local.istanbul_lite._moduleExtenstionsJs =
+                    local.istanbul_lite._moduleExtenstionsJs || local.module._extensions['.js'];
+                local.module._extensions['.js'] = function (module, file) {
+                    file = local.path.resolve(file);
+                    if (typeof file === 'string' &&
+                            file.indexOf(process.cwd()) === 0 &&
+                            file.indexOf(process.cwd() + '/node_modules/') !== 0 &&
+                            !new RegExp(process.env.npm_config_mode_cover_regexp_exclude)
+                                .test(file) &&
+                            new RegExp(process.env.npm_config_mode_cover_regexp_include)
+                                .test(file)) {
+                        module._compile(
+                            local.istanbul_lite.instrumentSync(
+                                local.fsReadFileSync(file),
+                                file
+                            ),
+                            file
+                        );
+                    } else {
+                        local.istanbul_lite._moduleExtenstionsJs(module, file);
+                    }
+                };
                 // init process.argv
                 process.argv.splice(1, 2);
                 process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
@@ -12689,14 +11525,14 @@ module.exports = TextReport;
         local = {};
         local.modeJs = (function () {
             try {
+                return typeof navigator.userAgent === 'string' &&
+                    typeof document.querySelector('body') === 'object' &&
+                    'browser';
+            } catch (errorCaughtBrowser) {
                 return module.exports &&
                     typeof process.versions.node === 'string' &&
                     typeof require('http').createServer === 'function' &&
                     'node';
-            } catch (errorCaughtNode) {
-                return typeof navigator.userAgent === 'string' &&
-                    typeof document.querySelector('body') === 'object' &&
-                    'browser';
             }
         }());
         local.nop = function () {
@@ -12737,24 +11573,10 @@ module.exports = TextReport;
         local.process = {
             cwd: function () {
                 return '';
-            },
-            stdout: {}
+            }
         };
         local.require = function (key) {
             return local[key] || {};
-        };
-        local.util = {
-            inherits: function (ctor, superCtor) {
-                ctor.super_ = superCtor;
-                ctor.prototype = Object.create(superCtor.prototype, {
-                    constructor: {
-                        value: ctor,
-                        enumerable: false,
-                        writable: true,
-                        configurable: true
-                    }
-                });
-            }
         };
         // init istanbul_lite properties
         local.istanbul_lite.__dirname = '/istanbul-lite';
@@ -12800,7 +11622,7 @@ module.exports = TextReport;
         local.process = process;
         local.require = require;
         // init istanbul_lite properties
-        local.istanbul_lite.coverageDirDefault = 'html-report';
+        local.istanbul_lite.coverageDirDefault = 'coverage.html';
         local.istanbul_lite.instrumentInPackage = function (code, file, packageName) {
             /*
              * this function will cover the code,

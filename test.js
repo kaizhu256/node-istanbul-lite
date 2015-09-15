@@ -14,6 +14,34 @@
     // run shared js-env code
     (function () {
         // init tests
+        local.testCase_coverageReportCreate_path = function (options, onError) {
+            /*
+             * this function will test coverageReportCreate's path handling-behavior
+             */
+            // jslint-hack
+            local.utility2.nop(options);
+            // test path handling-behavior
+            [
+                ['.', '..', '../', '../../', './', '././', '/'],
+                ['/aa.js', '/aa/bb.js']
+            ].forEach(function (pathList) {
+                pathList.forEach(function (path) {
+                    /*jslint evil: true*/
+                    // cover path
+                    eval(local.istanbul_lite.instrumentSync('null', path));
+                });
+                // create report with covered path
+                local.istanbul_lite.coverageReportCreate();
+                // reset coverage
+                Object.keys(local.global.__coverage__).forEach(function (key) {
+                    if (!(/index|istanbul|test|utility2/).test(key)) {
+                        delete local.global.__coverage__[key];
+                    }
+                });
+            });
+            onError();
+        };
+
         local.testCase_instrumentSync_default = function (options, onError) {
             /*
              * this function will test instrumentSync's default handling-behavior
@@ -49,15 +77,15 @@
             data = local.istanbul_lite.coverTextarea();
             // validate data
             if (modeHtml) {
-                local.utility2.assert(data.indexOf('<tr>' +
-                    '<td class="line-count">1</td>' +
+                local.utility2.assert(data.indexOf('<tr>\n' +
+                    '<td class="line-count">1\n</td>\n' +
                     '<td class="line-coverage">' +
-                        '<span class="cline-any cline-yes">1</span>' +
-                    '</td>' +
+                        '<span class="cline-any cline-yes">1</span>\n' +
+                    '</td>\n' +
                     '<td class="text"><pre class="prettyprint lang-js">' +
                         'console.log("hello");</pre>' +
-                    '</td>' +
-                    '</tr>') >= 0, data);
+                    '</td>\n' +
+                    '</tr>\n') >= 0, data);
             }
             // test syntax error handling-behavior
             istanbulInputTextarea.value = 'syntax error';
@@ -77,47 +105,46 @@
     // run node js-env code
     case 'node':
         // init tests
-        local.testCase_coverageReportCreate_default = function (options, onError) {
+        local.testCase_coverageReportCreate_misc = function (options, onError) {
             /*
-             * this function will test coverageReportCreate's default handling-behavior
+             * this function will test coverageReportCreate's misc handling-behavior
              */
-            var data, dir, file;
-            // jslint-hack
-            local.utility2.nop(options);
-            dir = process.env.npm_config_dir_tmp +
-                '/testCase_coverageReportCreate_default';
+            options = {};
+            options.dir = process.env.npm_config_dir_tmp +
+                '/testCase_coverageReportCreate_misc';
             // cleanup dir
-            local.utility2.fsRmrSync(dir);
+            local.utility2.fsRmrSync(options.dir);
             // test mkdirp handling-behavior
-            dir += '/aa/bb/cc';
-            file = dir + '/index.html';
+            options.dir += '/aa/bb/cc';
+            options.file = options.dir + '/index.html';
             // validate no file exists
-            local.utility2.assert(!local.fs.existsSync(file), file);
+            local.utility2.assert(!local.fs.existsSync(options.file), options.file);
             local.utility2.testMock([
                 // suppress console.log
                 [console, { log: local.utility2.nop }],
                 // test coverageDirDefault handling-behavior
-                [local.istanbul_lite, { coverageDirDefault: dir }],
+                [local.istanbul_lite, { coverageDirDefault: options.dir }],
                 // test coverageDirDefault handling-behavior
                 [process.env, { npm_config_dir_coverage: '' }]
             ], function (onError) {
                 // test no __coverage__ handling-behavior
-                data = local.istanbul_lite.coverageReportCreate({ modeNoCoverage: true });
+                options.data = local.istanbul_lite
+                    .coverageReportCreate({ modeNoCoverage: true });
                 // validate data
-                local.utility2.assert(!data, data);
+                local.utility2.assert(!options.data, options.data);
                 // validate no file exists
-                local.utility2.assert(!local.fs.existsSync(file), file);
+                local.utility2.assert(!local.fs.existsSync(options.file), options.file);
                 // test __coverage__ handling-behavior
-                data = local.istanbul_lite.coverageReportCreate({ coverage: {} });
+                options.data = local.istanbul_lite.coverageReportCreate({ coverage: {} });
                 // validate data
-                local.utility2.assert(data, data);
+                local.utility2.assert(options.data, options.data);
                 // validate file exists
-                local.utility2.assert(local.fs.existsSync(file), file);
+                local.utility2.assert(local.fs.existsSync(options.file), options.file);
                 try {
                     local.istanbul_lite.coverageReportCreate({
                         coverage: {},
                         // test mkdirpSync error handling-behavior
-                        dir: file
+                        dir: options.file
                     });
                 } catch (errorCaught) {
                     // validate error occurred
