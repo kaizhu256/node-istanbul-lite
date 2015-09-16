@@ -11113,9 +11113,8 @@ local.summaryTableFooter = '\
                 local.fsWriteData = '';
                 coverageFile = options.coverage[child.fullName];
                 ii = 0;
-                structuredText = ((coverageFile.code && Array.isArray(coverageFile.code)
-                    ? coverageFile.code.join('\n') + '\n'
-                    : local.fsReadFileSync(coverageFile.path)).split(/(?:\r?\n)|\r/))
+                structuredText = local.fsReadFileSync(coverageFile.path)
+                    .split(/(?:\r?\n)|\r/)
                     .map(function (str) {
                         ii += 1;
                         return {

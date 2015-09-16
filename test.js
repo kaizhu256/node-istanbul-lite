@@ -28,7 +28,11 @@
                 pathList.forEach(function (path) {
                     /*jslint evil: true*/
                     // cover path
-                    eval(local.istanbul_lite.instrumentSync('null', path));
+                    eval(local.istanbul_lite.instrumentSync(
+                        // test skip handling-behavior
+                        '/* istanbul ignore next */\nnull && null',
+                        path
+                    ));
                 });
                 // create report with covered path
                 local.istanbul_lite.coverageReportCreate();
