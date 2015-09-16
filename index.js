@@ -10475,7 +10475,7 @@ local['/templates/head.txt'] = '\
         Lines: <span class="metric">{{metrics.lines.pct}}% <small>({{metrics.lines.covered}} / {{metrics.lines.total}})</small></span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
         Ignored: <span class="metric">{{showIgnores}}</span> &nbsp;&nbsp;&nbsp;&nbsp;\n\
     </h2>\n\
-    <div class="path">{{{pathHtml}}}</div>\n\
+    <div class="path">{{pathHtml}}</div>\n\
 </div>\n\
 <div class="body">\n\
 ';
