@@ -14,36 +14,63 @@
     // run shared js-env code
     (function () {
         // init tests
-        local.testCase_coverageReportCreate_path = function (options, onError) {
+        local.testCase_coverageReportCreate_default = function (options, onError) {
             /*
-             * this function will test coverageReportCreate's path handling-behavior
+             * this function will test coverageReportCreate's default handling-behavior
              */
             // jslint-hack
             local.utility2.nop(options);
-            // test path handling-behavior
-            [
-                ['.', '..', '../', '../../', './', '././', '/'],
-                ['/aa.js', '/aa/bb.js']
-            ].forEach(function (pathList) {
-                pathList.forEach(function (path) {
-                    /*jslint evil: true*/
+            local.utility2.testMock([
+                // suppress console.log
+                [console, { log: local.utility2.nop }]
+            ], function (onError) {
+                /*jslint evil: true*/
+                // test path handling-behavior
+                [
+                    // test relative-path handing-behavior
+                    ['.', '..', '../', '../../', './', '././', '/'],
+                    // test dir-path handling-behavior
+                    ['/aa.js', '/aa/bb.js']
+                ].forEach(function (pathList) {
+                    pathList.forEach(function (path) {
+                        // cover path
+                        eval(local.istanbul_lite.instrumentSync(
+                            // test skip handling-behavior
+                            'null',
+                            path
+                        ));
+                    });
+                    // create report with covered path
+                    local.istanbul_lite.coverageReportCreate();
+                    // reset coverage
+                    Object.keys(local.global.__coverage__).forEach(function (key) {
+                        if (!(/index|istanbul|test|utility2/).test(key)) {
+                            delete local.global.__coverage__[key];
+                        }
+                    });
+                });
+                // test file-content handling-behavior
+                [
+                    // test no-content handling-behavior
+                    '',
+                    // test uncovereed-code handling-behavior
+                    'null && null',
+                    // test skip handling-behavior
+                    '/* istanbul ignore next */\nnull && null'
+                ].forEach(function (content) {
                     // cover path
-                    eval(local.istanbul_lite.instrumentSync(
-                        // test skip handling-behavior
-                        '/* istanbul ignore next */\nnull && null',
-                        path
-                    ));
+                    eval(local.istanbul_lite.instrumentSync(content, 'aa.js'));
+                    // create report with covered content
+                    local.istanbul_lite.coverageReportCreate();
+                    // reset coverage
+                    Object.keys(local.global.__coverage__).forEach(function (key) {
+                        if (!(/index|istanbul|test|utility2/).test(key)) {
+                            delete local.global.__coverage__[key];
+                        }
+                    });
                 });
-                // create report with covered path
-                local.istanbul_lite.coverageReportCreate();
-                // reset coverage
-                Object.keys(local.global.__coverage__).forEach(function (key) {
-                    if (!(/index|istanbul|test|utility2/).test(key)) {
-                        delete local.global.__coverage__[key];
-                    }
-                });
-            });
-            onError();
+                onError();
+            }, onError);
         };
 
         local.testCase_instrumentSync_default = function (options, onError) {
@@ -109,13 +136,13 @@
     // run node js-env code
     case 'node':
         // init tests
-        local.testCase_coverageReportCreate_misc = function (options, onError) {
+        local.testCase_coverageReportCreate_mkdirp = function (options, onError) {
             /*
-             * this function will test coverageReportCreate's misc handling-behavior
+             * this function will test coverageReportCreate's mkdirp handling-behavior
              */
             options = {};
             options.dir = process.env.npm_config_dir_tmp +
-                '/testCase_coverageReportCreate_misc';
+                '/testCase_coverageReportCreate_mkdirp';
             // cleanup dir
             local.utility2.fsRmrSync(options.dir);
             // test mkdirp handling-behavior
