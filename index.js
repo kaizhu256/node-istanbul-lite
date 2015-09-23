@@ -10592,7 +10592,7 @@ local.summaryTableFooter = '\
             }
         };
 
-        local.instrumenter = new local.Instrumenter();
+        local.instrumenter = new local.Instrumenter({ embedSource: true, noAutoWrap: true });
 
         local.stringFormat = function (template, dict, valueDefault) {
             /*
@@ -11113,8 +11113,7 @@ local.summaryTableFooter = '\
                 local.fsWriteData = '';
                 coverageFile = options.coverage[child.fullName];
                 ii = 0;
-                structuredText = local.fsReadFileSync(coverageFile.path)
-                    .split(/(?:\r?\n)|\r/)
+                structuredText = coverageFile.code
                     .map(function (str) {
                         ii += 1;
                         return {
