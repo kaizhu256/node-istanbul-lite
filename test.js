@@ -55,8 +55,8 @@
                     '',
                     // test uncovereed-code handling-behavior
                     'null && null',
-                    // test skip handling-behavior
-                    '/* istanbul ignore next */\nnull && null'
+                    // test skip === 1 handling-behavior
+                    '(function () {\n/* istanbul ignore next */\nnull && null;\n}());'
                 ].forEach(function (content) {
                     // cover path
                     eval(local.istanbul_lite.instrumentSync(content, 'aa.js'));
@@ -83,6 +83,17 @@
             data = local.istanbul_lite.instrumentSync('1', 'test.js');
             // validate data
             local.utility2.assert(data.indexOf(".s[\'1\']++;1;\n") >= 0, data);
+            onError();
+        };
+
+        local.testCase_zz_coverage_cleanup = function (options, onError) {
+            /*
+             * this function will cleanup __coverage__
+             */
+            // jslint-hack
+            local.utility2.nop(options);
+            // cleanup __coverage__
+            delete local.global.__coverage__['/istanbulInputTextarea.js'];
             onError();
         };
     }());

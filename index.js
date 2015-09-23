@@ -10549,19 +10549,10 @@ local.summaryTableFooter = '\
         __dirname = local.istanbul_lite.__dirname;
         process = local.process;
         // require modules
+        local.fs = require('fs');
         local.module = require('module');
         local.path = require('path');
         local.codeDict = local.codeDict || {};
-
-        local.fsReadFileSync = function (file) {
-            return file === __dirname + '/templates/foot.txt'
-                ? local['/templates/foot.txt']
-                : file === __dirname + '/templates/head.txt'
-                ? local['/templates/head.txt']
-                : local.modeJs === 'browser'
-                ? local.codeDict[file]
-                : local.require('fs').readFileSync(file, 'utf8');
-        };
 
         local.fsWriteFileDict = {};
 
@@ -10569,26 +10560,22 @@ local.summaryTableFooter = '\
             /*
              * this function will write the data to file, and auto-mkdirp parent dir
              */
-            var writeFileSync;
             file = local.path.resolve(process.cwd(), file);
-            writeFileSync = local.require('fs').writeFileSync || function (file, data) {
-                local.fsWriteFileDict[file] = data;
-            };
             // write data to file
             try {
-                writeFileSync(file, data);
+                local.fs.writeFileSync(file, data);
             // if write failed, then mkdirp file's parent dir
             } catch (errorCaught) {
                 file.split('/').slice(1, -1).reduce(function (dir, child) {
                     dir = dir + '/' + child;
                     try {
-                        local.require('fs').mkdirSync(dir);
+                        local.fs.mkdirSync(dir);
                     } catch (ignore) {
                     }
                     return dir;
                 }, '');
                 // write data to file
-                writeFileSync(file, data);
+                local.fs.writeFileSync(file, data);
             }
         };
 
@@ -11345,19 +11332,6 @@ local.summaryTableFooter = '\
             if (!options.coverage || options.modeNoCoverage) {
                 return '';
             }
-            // filter undefined file from coverage
-            tmp = options.coverage;
-            options.coverage = {};
-            Object.keys(tmp).forEach(function (key) {
-                try {
-                    if (local.fsReadFileSync(key)) {
-                        // json-copy to prevent side-effects
-                        // on original coverage
-                        options.coverage[key] = JSON.parse(JSON.stringify(tmp[key]));
-                    }
-                } catch (ignore) {
-                }
-            });
             options.dir = options.dir || (local.modeJs === 'browser'
                 ? local.istanbul_lite.coverageDirDefault
                 : local.path.resolve(
@@ -11459,6 +11433,9 @@ local.summaryTableFooter = '\
 
     // run node js-env code
     case 'node':
+        // init assets
+        local.istanbul_lite['/assets/istanbul-lite.js'] =
+            '//' + local.fs.readFileSync(__filename, 'utf8');
         // run the cli
         local.cliRun = function () {
             /*
@@ -11487,7 +11464,7 @@ local.summaryTableFooter = '\
                                 .test(file)) {
                         module._compile(
                             local.istanbul_lite.instrumentSync(
-                                local.fsReadFileSync(file),
+                                local.fs.readFileSync(file, 'utf8'),
                                 file
                             ),
                             file
@@ -11557,6 +11534,11 @@ local.summaryTableFooter = '\
         // export istanbul_lite
         local.global.istanbul_lite = local.istanbul_lite;
         // init local properties
+        local.fs = {
+            writeFileSync: function (file, data) {
+                local.fsWriteFileDict[file] = data;
+            }
+        };
         local.module = { _extensions: {} };
         local.path = {
             dirname: function (file) {
@@ -11632,9 +11614,6 @@ local.summaryTableFooter = '\
                 ? local.istanbul_lite.instrumentSync(code, file)
                 : code;
         };
-        // init assets
-        local.istanbul_lite['/assets/istanbul-lite.js'] =
-            '//' + local.require('fs').readFileSync(__filename, 'utf8');
         break;
     }
     return local;
