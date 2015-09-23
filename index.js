@@ -11123,9 +11123,7 @@ local.summaryTableHeader = '\
                                     ? 'I'
                                     : 'E')  + '\u0001/span\u0002', true, false);
                             } else {
-                                local.textWrap(text, startCol, openSpan, startLine === endLine
-                                    ? endCol
-                                    : text.text.length, closeSpan);
+                                local.textWrap(text, startCol, openSpan, endCol, closeSpan);
                             }
                         }
                     }
@@ -11135,9 +11133,6 @@ local.summaryTableHeader = '\
             Object.keys(coverageFile.f).forEach(function (fName) {
                 var count = coverageFile.f[fName],
                     meta = coverageFile.fnMap[fName],
-                    type = count > 0
-                        ? 'yes'
-                        : 'no',
                     startCol = meta.loc.start.column,
                     endCol = meta.loc.end.column + 1,
                     startLine = meta.loc.start.line,
@@ -11147,24 +11142,19 @@ local.summaryTableHeader = '\
                         : 'fstat-no') + '" title="function not covered" \u0002',
                     closeSpan = '\u0001/span\u0002',
                     text;
-                if (type === 'no') {
+                if (count === 0) {
                     if (endLine !== startLine) {
                         endLine = startLine;
                         endCol = structuredText[startLine].text.text.length;
                     }
                     text = structuredText[startLine].text;
-                    local.textWrap(text, startCol, openSpan, startLine === endLine
-                        ? endCol
-                        : text.text.length, closeSpan);
+                    local.textWrap(text, startCol, openSpan, endCol, closeSpan);
                 }
             });
             // annotate statements
             Object.keys(coverageFile.s).forEach(function (stName) {
                 var count = coverageFile.s[stName],
                     meta = coverageFile.statementMap[stName],
-                    type = count > 0
-                        ? 'yes'
-                        : 'no',
                     startCol = meta.start.column,
                     endCol = meta.end.column + 1,
                     startLine = meta.start.line,
@@ -11174,15 +11164,13 @@ local.summaryTableHeader = '\
                         : 'cstat-no') + '" title="statement not covered" \u0002',
                     closeSpan = '\u0001/span\u0002',
                     text;
-                if (type === 'no') {
+                if (count === 0) {
                     if (endLine !== startLine) {
                         endLine = startLine;
                         endCol = structuredText[startLine].text.text.length;
                     }
                     text = structuredText[startLine].text;
-                    local.textWrap(text, startCol, openSpan, startLine === endLine
-                        ? endCol
-                        : text.text.length, closeSpan);
+                    local.textWrap(text, startCol, openSpan, endCol, closeSpan);
                 }
             });
         };

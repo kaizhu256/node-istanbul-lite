@@ -49,19 +49,21 @@
                 [
                     // test no-content handling-behavior
                     '',
-                    '(function () {\n' +
-                        'function fnc (\n' +
-                        // test function endLine !== startLine handling-behavior
+                    // test uncovered-code handling-behavior
+                    'function fnc (\n' +
+                        // test endLine !== startLine for function handling-behavior
                         ') {\n' +
-                            // test uncovered-code handling-behavior
-                            'null;\n' +
-                            // test skip === 1 handling-behavior
-                            '/* istanbul ignore next */\n' +
-                            'null;\n' +
-                        '};\n' +
+                        // test uncovered-code handling-behavior
+                        'null;\n' +
+                        // test skip === 1 handling-behavior
+                        '/* istanbul ignore next */\n' +
+                        'null;\n' +
+                        '};\n',
+                    'function fnc () {\n' +
                         // test insertion-text endPos handling-behavior
                         'null\u00a0\n' +
-                        '}());'
+                        '};\n' +
+                        'fnc();\n'
                 ].forEach(function (content) {
                     // cover path
                     eval(local.istanbul_lite.instrumentSync(content, 'aa.js'));
