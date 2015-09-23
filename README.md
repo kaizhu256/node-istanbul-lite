@@ -341,6 +341,7 @@ node_modules/.bin/utility2 test test.js"
 
 
 # change since a9c98366
+- auto-embed sourceCode in coverage
 - based on istanbul@0.3.15 - https://github.com/gotwarlost/istanbul/compare/v0.3.15...master
 - none
 

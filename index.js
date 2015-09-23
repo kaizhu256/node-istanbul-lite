@@ -10912,9 +10912,6 @@ local.summaryTableFooter = '\
 
         function annotateLines(coverageFile, structuredText) {
             var lineStats = coverageFile.l;
-            if (!lineStats) {
-                return;
-            }
             Object.keys(lineStats).forEach(function (lineNumber) {
                 var count = lineStats[lineNumber];
                 if (structuredText[lineNumber]) {
@@ -10965,9 +10962,6 @@ local.summaryTableFooter = '\
         function annotateFunctions(coverageFile, structuredText) {
             var fnStats = coverageFile.f,
                 fnMeta = coverageFile.fnMap;
-            if (!fnStats) {
-                return;
-            }
             Object.keys(fnStats).forEach(function (fName) {
                 var count = fnStats[fName],
                     meta = fnMeta[fName],
@@ -10998,9 +10992,6 @@ local.summaryTableFooter = '\
         function annotateBranches(coverageFile, structuredText) {
             var branchStats = coverageFile.b,
                 branchMeta = coverageFile.branchMap;
-            if (!branchStats) {
-                return;
-            }
             Object.keys(branchStats).forEach(function (branchName) {
                 var branchArray = branchStats[branchName],
                     sumCount = branchArray.reduce(function (p, n) {
@@ -11554,9 +11545,6 @@ local.summaryTableFooter = '\
             cwd: function () {
                 return '';
             }
-        };
-        local.require = function (key) {
-            return local[key] || {};
         };
         // init istanbul_lite properties
         local.istanbul_lite.__dirname = '/istanbul-lite';
