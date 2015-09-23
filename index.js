@@ -10582,14 +10582,10 @@ local.summaryTableHeader = '\
         local.instrumenter = new local.Instrumenter({ embedSource: true, noAutoWrap: true });
 
         function annotateLines(coverageFile, structuredText) {
-            var lineStats = coverageFile.l;
-            Object.keys(lineStats).forEach(function (lineNumber) {
-                var count = lineStats[lineNumber];
-                if (structuredText[lineNumber]) {
-                    structuredText[lineNumber].covered = count > 0
-                        ? 'yes'
-                        : 'no';
-                }
+            Object.keys(coverageFile.l).forEach(function (lineNumber) {
+                structuredText[lineNumber].covered = coverageFile.l[lineNumber] > 0
+                    ? 'yes'
+                    : 'no';
             });
             structuredText.forEach(function (item) {
                 if (item.covered === null) {

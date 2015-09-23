@@ -49,8 +49,10 @@
                 [
                     // test no-content handling-behavior
                     '',
-                    '(function () {\n' +
-                        // test uncovered-code and handling-behavior
+                    '(function (\n' +
+                    // test function endLine !== startLine handling-behavior
+                    ') {\n' +
+                        // test uncovered-code handling-behavior
                         'null && null\n' +
                         // test insertion-text endPos handling-behavior
                         'null\u00a0\n' +
