@@ -58,12 +58,9 @@
                         // test skip === 1 handling-behavior
                         '/* istanbul ignore next */\n' +
                         'null;\n' +
-                        '};\n',
-                    'function fnc () {\n' +
                         // test insertion-text endPos handling-behavior
                         'null\u00a0\n' +
-                        '};\n' +
-                        'fnc();\n'
+                        '};\n'
                 ].forEach(function (content) {
                     // cover path
                     eval(local.istanbul_lite.instrumentSync(content, 'aa.js'));
