@@ -340,9 +340,8 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since 30b7aa99
-- npm publish 2015.8.2
-- update README.md
+# change since a9c98366
+- based on istanbul@0.3.15 - https://github.com/gotwarlost/istanbul/compare/v0.3.15...master
 - none
 
 

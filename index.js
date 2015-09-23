@@ -10306,7 +10306,7 @@ pre {\n\
     font-family: Consolas, Menlo, Monaco, monospace;\n\
     margin: 0;\n\
     padding: 0;\n\
-    line-height: 14px;\n\
+    line-height: 1.3;\n\
     font-size: 14px;\n\
     -moz-tab-size: 2;\n\
     -o-tab-size:  2;\n\
