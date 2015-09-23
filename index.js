@@ -11065,6 +11065,7 @@ local.summaryTableHeader = '\
         local.textAnnotate = function (structuredText, coverageFile) {
             // note: order is important, since statements typically result
             // in spanning the whole line and doing branches late causes mismatched tags
+            var branchArray, ii, meta, startCol, endCol, startLine, endLine, openSpan, text;
             // annotate lines
             Object.keys(coverageFile.l).forEach(function (lineNumber) {
                 structuredText[lineNumber].covered = coverageFile.l[lineNumber] > 0
@@ -11078,25 +11079,12 @@ local.summaryTableHeader = '\
             });
             // annotate branches
             Object.keys(coverageFile.b).forEach(function (branchName) {
-                var branchArray = coverageFile.b[branchName],
-                    sumCount = branchArray.reduce(function (p, n) {
+                branchArray = coverageFile.b[branchName];
+                if (branchArray.reduce(function (p, n) {
                         return p + n;
-                    }, 0),
-                    metaArray = coverageFile.branchMap[branchName].locations,
-                    ii,
-                    count,
-                    meta,
-                    startCol,
-                    endCol,
-                    startLine,
-                    endLine,
-                    openSpan,
-                    closeSpan,
-                    text;
-                if (sumCount > 0) { //only highlight if partial branches are missing
+                    }, 0) > 0) { //only highlight if partial branches are missing
                     for (ii = 0; ii < branchArray.length; ii += 1) {
-                        count = branchArray[ii];
-                        meta = metaArray[ii];
+                        meta = coverageFile.branchMap[branchName].locations[ii];
                         startCol = meta.start.column;
                         endCol = meta.end.column + 1;
                         startLine = meta.start.line;
@@ -11104,8 +11092,7 @@ local.summaryTableHeader = '\
                         openSpan = '\u0001span class="branch-' + ii + ' ' + (meta.skip
                             ? 'cbranch-skip'
                             : 'cbranch-no') + '" title="branch not covered" \u0002';
-                        closeSpan = '\u0001/span\u0002';
-                        if (count === 0) { //skip branches taken
+                        if (branchArray[ii] === 0) { //skip branches taken
                             if (endLine !== startLine) {
                                 endLine = startLine;
                                 endCol = structuredText[startLine].text.text.length;
@@ -11123,7 +11110,13 @@ local.summaryTableHeader = '\
                                     ? 'I'
                                     : 'E')  + '\u0001/span\u0002', true, false);
                             } else {
-                                local.textWrap(text, startCol, openSpan, endCol, closeSpan);
+                                local.textWrap(
+                                    text,
+                                    startCol,
+                                    openSpan,
+                                    endCol,
+                                    '\u0001/span\u0002'
+                                );
                             }
                         }
                     }
@@ -11131,46 +11124,38 @@ local.summaryTableHeader = '\
             });
             // annotate functions
             Object.keys(coverageFile.f).forEach(function (fName) {
-                var count = coverageFile.f[fName],
-                    meta = coverageFile.fnMap[fName],
-                    startCol = meta.loc.start.column,
-                    endCol = meta.loc.end.column + 1,
-                    startLine = meta.loc.start.line,
-                    endLine = meta.loc.end.line,
-                    openSpan = '\u0001span class="' + (meta.skip
-                        ? 'fstat-skip'
-                        : 'fstat-no') + '" title="function not covered" \u0002',
-                    closeSpan = '\u0001/span\u0002',
-                    text;
-                if (count === 0) {
+                startCol = coverageFile.fnMap[fName].loc.start.column;
+                endCol = coverageFile.fnMap[fName].loc.end.column + 1;
+                startLine = coverageFile.fnMap[fName].loc.start.line;
+                endLine = coverageFile.fnMap[fName].loc.end.line;
+                openSpan = '\u0001span class="' + (coverageFile.fnMap[fName].skip
+                    ? 'fstat-skip'
+                    : 'fstat-no') + '" title="function not covered" \u0002';
+                if (coverageFile.f[fName] === 0) {
                     if (endLine !== startLine) {
                         endLine = startLine;
                         endCol = structuredText[startLine].text.text.length;
                     }
                     text = structuredText[startLine].text;
-                    local.textWrap(text, startCol, openSpan, endCol, closeSpan);
+                    local.textWrap(text, startCol, openSpan, endCol, '\u0001/span\u0002');
                 }
             });
             // annotate statements
             Object.keys(coverageFile.s).forEach(function (stName) {
-                var count = coverageFile.s[stName],
-                    meta = coverageFile.statementMap[stName],
-                    startCol = meta.start.column,
-                    endCol = meta.end.column + 1,
-                    startLine = meta.start.line,
-                    endLine = meta.end.line,
-                    openSpan = '\u0001span class="' + (meta.skip
-                        ? 'cstat-skip'
-                        : 'cstat-no') + '" title="statement not covered" \u0002',
-                    closeSpan = '\u0001/span\u0002',
-                    text;
-                if (count === 0) {
+                startCol = coverageFile.statementMap[stName].start.column;
+                endCol = coverageFile.statementMap[stName].end.column + 1;
+                startLine = coverageFile.statementMap[stName].start.line;
+                endLine = coverageFile.statementMap[stName].end.line;
+                openSpan = '\u0001span class="' + (coverageFile.statementMap[stName].skip
+                    ? 'cstat-skip'
+                    : 'cstat-no') + '" title="statement not covered" \u0002';
+                if (coverageFile.s[stName] === 0) {
                     if (endLine !== startLine) {
                         endLine = startLine;
                         endCol = structuredText[startLine].text.text.length;
                     }
                     text = structuredText[startLine].text;
-                    local.textWrap(text, startCol, openSpan, endCol, closeSpan);
+                    local.textWrap(text, startCol, openSpan, endCol, '\u0001/span\u0002');
                 }
             });
         };
