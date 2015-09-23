@@ -10493,28 +10493,6 @@ local.detailTemplate = '\
 
 
 
-local.summaryTableHeader = '\
-<div class="coverage-summary">\n\
-<table>\n\
-<thead>\n\
-<tr>\n\
-   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>\n\
-   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>\n\
-   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>\n\
-   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
-   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>\n\
-   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
-   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>\n\
-   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
-   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>\n\
-   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
-</tr>\n\
-</thead>\n\
-<tbody>\n\
-';
-
-
-
 local.summaryLineTemplate = '\
 <tr>\n\
 <td class="file {{metrics.statements.watermark}}" data-value="{{file}}"><a href="{{output}}">{{file}}</a></td>\n\
@@ -10536,6 +10514,28 @@ local.summaryTableFooter = '\
 </tbody>\n\
 </table>\n\
 </div>\n\
+';
+
+
+
+local.summaryTableHeader = '\
+<div class="coverage-summary">\n\
+<table>\n\
+<thead>\n\
+<tr>\n\
+   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>\n\
+   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>\n\
+   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>\n\
+   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>\n\
+   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>\n\
+   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>\n\
+   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>\n\
+</tr>\n\
+</thead>\n\
+<tbody>\n\
 ';
 /* jslint-ignore-end */
 
@@ -10581,52 +10581,19 @@ local.summaryTableFooter = '\
 
         local.instrumenter = new local.Instrumenter({ embedSource: true, noAutoWrap: true });
 
-        local.stringFormat = function (template, dict, valueDefault) {
+        local.stringFormat = function (template, dict) {
             /*
              * this function will replace the keys in the template with the dict's key / value
              */
-            var argList, match, replace, rgx, value;
-            dict = dict || {};
-            replace = function (match0, fragment) {
-                // jslint-hack
-                local.nop(match0);
-                return dict[match].map(function (dict) {
-                    // recursively format the array fragment
-                    return local.stringFormat(fragment, dict, valueDefault);
-                }).join('');
-            };
-            rgx = (/\{\{#[^}]+?\}\}/g);
-            while (true) {
-                // search for array fragments in the template
-                match = rgx.exec(template);
-                if (!match) {
-                    break;
-                }
-                match = match[0].slice(3, -2);
-                // if value is an array, then iteratively format the array fragment with it
-                if (Array.isArray(dict[match])) {
-                    template = template.replace(
-                        new RegExp('\\{\\{#' + match +
-                            '\\}\\}([\\S\\s]*?)\\{\\{\\/' + match +
-                            '\\}\\}'),
-                        replace
-                    );
-                }
-            }
+            var value;
             // search for keys in the template
             return template.replace((/\{\{[^}]+?\}\}/g), function (match0) {
-                argList = match0.slice(2, -2).split(' ');
                 value = dict;
                 // iteratively lookup nested values in the dict
-                argList[0].split('.').forEach(function (key) {
+                match0.slice(2, -2).split('.').forEach(function (key) {
                     value = value && value[key];
                 });
-                if (value === undefined) {
-                    return valueDefault === undefined
-                        ? match0
-                        : valueDefault;
-                }
-                return String(value);
+                return value;
             });
         };
 
