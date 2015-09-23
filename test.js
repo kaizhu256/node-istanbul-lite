@@ -49,16 +49,18 @@
                 [
                     // test no-content handling-behavior
                     '',
-                    '(function (\n' +
-                    // test function endLine !== startLine handling-behavior
-                    ') {\n' +
-                        // test uncovered-code handling-behavior
-                        'null && null\n' +
+                    '(function () {\n' +
+                        'function fnc (\n' +
+                        // test function endLine !== startLine handling-behavior
+                        ') {\n' +
+                            // test uncovered-code handling-behavior
+                            'null;\n' +
+                            // test skip === 1 handling-behavior
+                            '/* istanbul ignore next */\n' +
+                            'null;\n' +
+                        '};\n' +
                         // test insertion-text endPos handling-behavior
                         'null\u00a0\n' +
-                        // test skip === 1 handling-behavior
-                        '/* istanbul ignore next */\n' +
-                        'null && null;\n' +
                         '}());'
                 ].forEach(function (content) {
                     // cover path
