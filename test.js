@@ -34,11 +34,7 @@
                 ].forEach(function (pathList) {
                     pathList.forEach(function (path) {
                         // cover path
-                        eval(local.istanbul_lite.instrumentSync(
-                            // test skip handling-behavior
-                            'null',
-                            path
-                        ));
+                        eval(local.istanbul_lite.instrumentSync('null', path));
                     });
                     // create report with covered path
                     local.istanbul_lite.coverageReportCreate();
@@ -53,10 +49,15 @@
                 [
                     // test no-content handling-behavior
                     '',
-                    // test uncovereed-code handling-behavior
-                    'null && null',
-                    // test skip === 1 handling-behavior
-                    '(function () {\n/* istanbul ignore next */\nnull && null;\n}());'
+                    '(function () {\n' +
+                        // test uncovered-code and handling-behavior
+                        'null && null\n' +
+                        // test insertion-text endPos handling-behavior
+                        'null\u00a0\n' +
+                        // test skip === 1 handling-behavior
+                        '/* istanbul ignore next */\n' +
+                        'null && null;\n' +
+                        '}());'
                 ].forEach(function (content) {
                     // cover path
                     eval(local.istanbul_lite.instrumentSync(content, 'aa.js'));

@@ -10581,6 +10581,397 @@ local.summaryTableHeader = '\
 
         local.instrumenter = new local.Instrumenter({ embedSource: true, noAutoWrap: true });
 
+        function annotateLines(coverageFile, structuredText) {
+            var lineStats = coverageFile.l;
+            Object.keys(lineStats).forEach(function (lineNumber) {
+                var count = lineStats[lineNumber];
+                if (structuredText[lineNumber]) {
+                    structuredText[lineNumber].covered = count > 0
+                        ? 'yes'
+                        : 'no';
+                }
+            });
+            structuredText.forEach(function (item) {
+                if (item.covered === null) {
+                    item.covered = 'neutral';
+                }
+            });
+        }
+        function annotateStatements(coverageFile, structuredText) {
+            var statementStats = coverageFile.s,
+                statementMeta = coverageFile.statementMap;
+            Object.keys(statementStats).forEach(function (stName) {
+                var count = statementStats[stName],
+                    meta = statementMeta[stName],
+                    type = count > 0
+                        ? 'yes'
+                        : 'no',
+                    startCol = meta.start.column,
+                    endCol = meta.end.column + 1,
+                    startLine = meta.start.line,
+                    endLine = meta.end.line,
+                    openSpan = '\u0001span class="' + (meta.skip
+                        ? 'cstat-skip'
+                        : 'cstat-no') + '" title="statement not covered" \u0002',
+                    closeSpan = '\u0001/span\u0002',
+                    text;
+                if (type === 'no') {
+                    if (endLine !== startLine) {
+                        endLine = startLine;
+                        endCol = structuredText[startLine].text.text.length;
+                    }
+                    text = structuredText[startLine].text;
+                    local.textWrap(text, startCol, openSpan, startLine === endLine
+                        ? endCol
+                        : text.text.length, closeSpan);
+                }
+            });
+        }
+        function annotateFunctions(coverageFile, structuredText) {
+            var fnStats = coverageFile.f,
+                fnMeta = coverageFile.fnMap;
+            Object.keys(fnStats).forEach(function (fName) {
+                var count = fnStats[fName],
+                    meta = fnMeta[fName],
+                    type = count > 0
+                        ? 'yes'
+                        : 'no',
+                    startCol = meta.loc.start.column,
+                    endCol = meta.loc.end.column + 1,
+                    startLine = meta.loc.start.line,
+                    endLine = meta.loc.end.line,
+                    openSpan = '\u0001span class="' + (meta.skip
+                        ? 'fstat-skip'
+                        : 'fstat-no') + '" title="function not covered" \u0002',
+                    closeSpan = '\u0001/span\u0002',
+                    text;
+                if (type === 'no') {
+                    if (endLine !== startLine) {
+                        endLine = startLine;
+                        endCol = structuredText[startLine].text.text.length;
+                    }
+                    text = structuredText[startLine].text;
+                    local.textWrap(text, startCol, openSpan, startLine === endLine
+                        ? endCol
+                        : text.text.length, closeSpan);
+                }
+            });
+        }
+        function annotateBranches(coverageFile, structuredText) {
+            var branchStats = coverageFile.b,
+                branchMeta = coverageFile.branchMap;
+            Object.keys(branchStats).forEach(function (branchName) {
+                var branchArray = branchStats[branchName],
+                    sumCount = branchArray.reduce(function (p, n) {
+                        return p + n;
+                    }, 0),
+                    metaArray = branchMeta[branchName].locations,
+                    ii,
+                    count,
+                    meta,
+                    startCol,
+                    endCol,
+                    startLine,
+                    endLine,
+                    openSpan,
+                    closeSpan,
+                    text;
+                if (sumCount > 0) { //only highlight if partial branches are missing
+                    for (ii = 0; ii < branchArray.length; ii += 1) {
+                        count = branchArray[ii];
+                        meta = metaArray[ii];
+                        startCol = meta.start.column;
+                        endCol = meta.end.column + 1;
+                        startLine = meta.start.line;
+                        endLine = meta.end.line;
+                        openSpan = '\u0001span class="branch-' + ii + ' ' + (meta.skip
+                            ? 'cbranch-skip'
+                            : 'cbranch-no') + '" title="branch not covered" \u0002';
+                        closeSpan = '\u0001/span\u0002';
+                        if (count === 0) { //skip branches taken
+                            if (endLine !== startLine) {
+                                endLine = startLine;
+                                endCol = structuredText[startLine].text.text.length;
+                            }
+                            text = structuredText[startLine].text;
+                            // and 'if' is a special case
+                            // since the else branch might not be visible, being non-existent
+                            if (branchMeta[branchName].type === 'if') {
+                                local.textInsertAt(text, startCol, '\u0001span class="' +
+                                    (meta.skip
+                                    ? 'skip-if-branch'
+                                    : 'missing-if-branch') + '" title="' + (ii === 0
+                                    ? 'if'
+                                    : 'else') + ' path not taken" \u0002' + (ii === 0
+                                    ? 'I'
+                                    : 'E')  + '\u0001/span\u0002', true, false);
+                            } else {
+                                local.textWrap(text, startCol, openSpan, startLine === endLine
+                                    ? endCol
+                                    : text.text.length, closeSpan);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        local.reportHtmlCreate = function (options, node, dir) {
+            // write index-page
+            local.fsWriteData = '';
+            node.children.sort(function (a, b) {
+                return a.name < b.name
+                    ? -1
+                    : 1;
+            });
+            local.reportHtmlFillTemplate(node, options);
+            local.fsWriteData += local.summaryTableHeader;
+            node.children.forEach(function (child) {
+                local.fsWriteData += local.stringFormat(local.summaryLineTemplate, {
+                    file: child.relativeName,
+                    metrics: child.metrics,
+                    output: child.relativeName + (child.kind === 'dir'
+                        ? 'index.html'
+                        : '.html'),
+                    showPicture: ('<span class="cover-fill' +
+                        (child.metrics.statements.pct === 100
+                        ? ' cover-full'
+                        : '') + '" style="width: ' + child.metrics.statements.pct +
+                        'px;"></span><span class="cover-empty" style="width:' +
+                        (100 - child.metrics.statements.pct) + 'px;"></span>')
+                });
+            });
+            options.footerTemplate = local.stringFormat(local['/templates/foot.txt'], {
+                datetime: new Date().toString()
+            });
+            local.fsWriteData += local.summaryTableFooter + options.footerTemplate;
+            local.fsWriteFileSync(local.path.resolve(dir, 'index.html'), local.fsWriteData);
+            // write children
+            node.children.forEach(function (child) {
+                var coverageFile, covered, ii, structuredText, value;
+                if (child.kind === 'dir') {
+                    local.reportHtmlCreate(
+                        options,
+                        child,
+                        local.path.resolve(dir, child.relativeName)
+                    );
+                    return;
+                }
+                // write detail-page
+                local.fsWriteData = '';
+                coverageFile = options.coverage[child.fullName];
+                ii = 0;
+                structuredText = coverageFile.code.map(function (str) {
+                    ii += 1;
+                    return { line: ii, covered: null, text: local.textCreate(str, true) };
+                });
+                structuredText.unshift({ line: 0, covered: null, text: local.textCreate('') });
+                local.reportHtmlFillTemplate(child, options);
+                local.fsWriteData += '<pre><table class="coverage">\n';
+                annotateLines(coverageFile, structuredText);
+                // note: order is important, since statements typically result
+                // in spanning the whole line and doing branches late causes mismatched tags
+                annotateBranches(coverageFile, structuredText);
+                annotateFunctions(coverageFile, structuredText);
+                annotateStatements(coverageFile, structuredText);
+                structuredText.shift();
+
+                options.showLines = '';
+                for (ii = 1; ii <= structuredText.length; ii += 1) {
+                    options.showLines += ii + '\n';
+                }
+
+                options.showLineExecutionCounts = '';
+                for (ii = 1; ii <= structuredText.length; ii += 1) {
+                    value = '&nbsp;';
+                    covered = 'neutral';
+                    if (coverageFile.l.hasOwnProperty(ii)) {
+                        if (coverageFile.l[ii] > 0) {
+                            covered = 'yes';
+                            value = coverageFile.l[ii];
+                        } else {
+                            covered = 'no';
+                        }
+                    }
+                    options.showLineExecutionCounts += '<span class="cline-any cline-' +
+                        covered + '">' + value + '</span>\n';
+                }
+
+                options.showCode = structuredText.map(function (item) {
+                    return item.text.text
+                        .toString()
+                        .replace((/&/g), '&amp;')
+                        .replace((/</g), '&lt;')
+                        .replace((/>/g), '&gt;')
+                        .replace((/\u0001/g), '<')
+                        .replace((/\u0002/g), '>') || '&nbsp;';
+                }).join('\n');
+                local.fsWriteData += local.stringFormat(local.detailTemplate, options) +
+                    '</table></pre>\n' + options.footerTemplate;
+                local.fsWriteFileSync(
+                    local.path.resolve(dir, child.relativeName + '.html'),
+                    local.fsWriteData
+                );
+            });
+        };
+
+        local.reportHtmlFillTemplate = function (node, options) {
+            var ancestorHref, href, ii, jj, levels, notDot, parent, skipped;
+            ancestorHref = function (node, num) {
+                href = '';
+                notDot = function (part) {
+                    return part !== '.';
+                };
+                for (ii = 0; ii < num; ii += 1) {
+                    levels = node.relativeName.split('/').filter(notDot).length - 1;
+                    for (jj = 0; jj < levels; jj += 1) {
+                        href += '../';
+                    }
+                    node = node.parent;
+                }
+                return href;
+            };
+            options.baseCss = '';
+            if (local.modeJs === 'node') {
+                for (ii = 0, parent = node.parent;
+                        parent;
+                        ii += 1, parent = parent.parent) {
+                    local.nop();
+                }
+                options.baseCss = ancestorHref(node, ii) + 'base.css';
+            }
+            options.entity = node.name || 'All files';
+            options.metrics = node.metrics;
+            options.pathHtml = [];
+            parent = node.parent;
+            while (parent) {
+                options.pathHtml.push(parent);
+                parent = parent.parent;
+            }
+            options.pathHtml = options.pathHtml
+                .map(function (element, ii) {
+                    return '<a href="' + ancestorHref(node, ii + 1) + 'index.html">' +
+                        (element.relativeName || 'All files') + '</a>';
+                })
+                .reverse();
+            options.pathHtml = options.pathHtml.length > 0
+                ? options.pathHtml.join(' &#187; ') + ' &#187; ' + node.relativeName
+                : '';
+            options.showIgnores = '';
+            ['statements', 'branches', 'functions'].forEach(function (element) {
+                skipped = node.metrics[element].skipped;
+                if (skipped > 0) {
+                    options.showIgnores += skipped + ' ' + (skipped === 1
+                        ? element.replace((/e{0,1}s$/), '')
+                        : element) + ', ';
+                }
+            });
+            options.showIgnores =  options.showIgnores.length
+                ? options.showIgnores.slice(0, -2)
+                : '<span class="ignore-none">none</span>';
+            local.fsWriteData += local.stringFormat(local['/templates/head.txt'], options);
+        };
+
+        local.reportTextCreate = function (options) {
+            var line, nameWidth, tmp;
+            // init nameWidth
+            nameWidth = 0;
+            tmp = function (node, level) {
+                nameWidth = Math
+                    .max(level + (node.relativeName || 'All files').length, nameWidth);
+                node.children.forEach(function (child) {
+                    tmp(child, level + 1);
+                });
+            };
+            tmp(options.summary, 0);
+            // init line
+            line = new Array(nameWidth + 1).join('-') +
+                '-|----------|----------|----------|----------|----------------|\n';
+            // init coverageReportText
+            options.coverageReportText = line + local.reportTextFill(
+                'File',
+                nameWidth,
+                false,
+                0
+            ) + ' |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |\n' + line;
+            // walk tree
+            tmp = function (node, level) {
+                var tableRow, uncoveredLines;
+                // init tableRow
+                tableRow = local.reportTextFill(
+                    node.relativeName || 'All files',
+                    nameWidth,
+                    false,
+                    level,
+                    node.metrics.statements.watermark
+                ) + ' |';
+                ['statements', 'branches', 'functions', 'lines'].forEach(function (key) {
+                    tableRow += local.reportTextFill(
+                        node.metrics[key].pct,
+                        9,
+                        true,
+                        0,
+                        node.metrics[key].watermark
+                    ) + ' |';
+                });
+                uncoveredLines = '';
+                if (node.kind === 'file') {
+                    Object.keys(node.metrics.linesCovered).forEach(function (key) {
+                        if (!node.metrics.linesCovered[key]) {
+                            uncoveredLines += key + ',';
+                        }
+                    });
+                }
+                tableRow += local.reportTextFill(
+                    uncoveredLines.slice(0, -1),
+                    15,
+                    true,
+                    0,
+                    'low'
+                ) + ' |\n';
+                if (level === 0) {
+                    node.children.forEach(function (child) {
+                        tmp(child, level + 1);
+                    });
+                    options.coverageReportText += line + tableRow + line;
+                    return;
+                }
+                options.coverageReportText += tableRow;
+                node.children.forEach(function (child) {
+                    tmp(child, level + 1);
+                });
+            };
+            tmp(options.summary, 0);
+            // print options.coverageReportText to stdout
+            if (local.modeJs === 'node') {
+                console.log(options.coverageReportText);
+            }
+        };
+
+        local.reportTextFill = function (str, width, right, tabs, clazz) {
+            var strLen;
+            str = String(str);
+            strLen = str.length;
+            str = right
+                ? (new Array(width + 1).join(' ') + str).slice(-(width - tabs))
+                : (str + new Array(width + 1).join(' ')).slice(0, width - tabs);
+            if (str.length < strLen) {
+                str = '... ' + str.slice(4);
+            }
+            switch (clazz) {
+            case 'low':
+                str = '\u001b[91m' + str + '\u001b[0m';
+                break;
+            case 'medium':
+                str = '\u001b[93m' + str + '\u001b[0m';
+                break;
+            case 'high':
+                str = '\u001b[92m' + str + '\u001b[0m';
+                break;
+            }
+            return new Array(tabs + 1).join(' ') + str;
+        };
+
         local.stringFormat = function (template, dict) {
             /*
              * this function will replace the keys in the template with the dict's key / value
@@ -10813,470 +11204,70 @@ local.summaryTableHeader = '\
             });
         };
 
-
-
-        // node_modules/istanbul/lib/util/insertion-text.js
-        function InsertionText(text, consumeBlanks) {
-            var ii;
-            this.text = text;
-            this.offsets = [];
-            this.consumeBlanks = consumeBlanks;
-            this.startPos = (/[^ \f\n\r\t\v\u00A0\u2028\u2029]/).exec(text);
-            this.startPos = this.startPos
-                ? this.startPos.index
+        local.textCreate = function (text, consumeBlanks) {
+            var ii, options;
+            options = {};
+            options.text = text;
+            options.offsets = [];
+            options.consumeBlanks = consumeBlanks;
+            options.startPos = (/[^ \f\n\r\t\v\u00A0\u2028\u2029]/).exec(text);
+            options.startPos = options.startPos
+                ? options.startPos.index
                 : -1;
-            this.endPos = text.length + 1;
+            options.endPos = text.length + 1;
             for (ii = text.length - 1; ii >= 0; ii -= 1) {
                 if (text[ii].match((/[^ \f\n\r\t\v\u00A0\u2028\u2029]/))) {
-                    this.endPos = ii;
+                    options.endPos = ii;
                     break;
                 }
             }
-        }
-        InsertionText.prototype = {
-            insertAt: function (pos, str, insertBefore, consumeBlanks) {
-                consumeBlanks = consumeBlanks === undefined
-                    ? this.consumeBlanks
-                    : consumeBlanks;
-                pos = Math.max(pos > this.text.length
-                    ? this.text.length
-                    : pos, 0);
-                if (consumeBlanks) {
-                    pos = pos <= this.startPos
-                        ? 0
-                        : pos > this.endPos
-                        ? this.text.length
-                        : pos;
-                }
-                var offsetObj,
-                    ii,
-                    realPos = pos;
-                for (ii = 0; ii < this.offsets.length; ii += 1) {
-                    offsetObj = this.offsets[ii];
-                    if (offsetObj.pos < pos || (offsetObj.pos === pos && !insertBefore)) {
-                        realPos += offsetObj.len;
-                    }
-                    if (offsetObj.pos >= pos) {
-                        break;
-                    }
-                }
-                if (offsetObj && offsetObj.pos === pos) {
-                    offsetObj.len += str.length;
-                } else {
-                    this.offsets.splice(ii, 0, { pos: pos, len: str.length });
-                }
-                this.text = this.text.slice(0, realPos) + str + this.text.slice(realPos);
-                return this;
-            },
-            wrap: function (startPos, startText, endPos, endText, consumeBlanks) {
-                this.insertAt(startPos, startText, true, consumeBlanks);
-                this.insertAt(endPos, endText, false, consumeBlanks);
-                return this;
-            }
+            return options;
         };
 
-
-
-        function annotateLines(coverageFile, structuredText) {
-            var lineStats = coverageFile.l;
-            Object.keys(lineStats).forEach(function (lineNumber) {
-                var count = lineStats[lineNumber];
-                if (structuredText[lineNumber]) {
-                    structuredText[lineNumber].covered = count > 0
-                        ? 'yes'
-                        : 'no';
+        local.textInsertAt = function (text, pos, str, insertBefore, consumeBlanks) {
+            consumeBlanks = consumeBlanks === undefined
+                ? text.consumeBlanks
+                : consumeBlanks;
+            pos = Math.max(Math.min(pos, text.text.length), 0);
+            if (consumeBlanks) {
+                pos = pos <= text.startPos
+                    ? 0
+                    : pos > text.endPos
+                    ? text.text.length
+                    : pos;
+            }
+            var offsetObj,
+                ii,
+                realPos = pos;
+            for (ii = 0; ii < text.offsets.length; ii += 1) {
+                offsetObj = text.offsets[ii];
+                if (offsetObj.pos < pos || (offsetObj.pos === pos && !insertBefore)) {
+                    realPos += offsetObj.len;
                 }
-            });
-            structuredText.forEach(function (item) {
-                if (item.covered === null) {
-                    item.covered = 'neutral';
+                if (offsetObj.pos >= pos) {
+                    break;
                 }
-            });
-        }
-        function annotateStatements(coverageFile, structuredText) {
-            var statementStats = coverageFile.s,
-                statementMeta = coverageFile.statementMap;
-            Object.keys(statementStats).forEach(function (stName) {
-                var count = statementStats[stName],
-                    meta = statementMeta[stName],
-                    type = count > 0
-                        ? 'yes'
-                        : 'no',
-                    startCol = meta.start.column,
-                    endCol = meta.end.column + 1,
-                    startLine = meta.start.line,
-                    endLine = meta.end.line,
-                    openSpan = '\u0001span class="' + (meta.skip
-                        ? 'cstat-skip'
-                        : 'cstat-no') + '" title="statement not covered" \u0002',
-                    closeSpan = '\u0001/span\u0002',
-                    text;
-                if (type === 'no') {
-                    if (endLine !== startLine) {
-                        endLine = startLine;
-                        endCol = structuredText[startLine].text.text.length;
-                    }
-                    text = structuredText[startLine].text;
-                    text.wrap(startCol,
-                        openSpan,
-                        startLine === endLine
-                            ? endCol
-                            : text.text.length,
-                        closeSpan);
-                }
-            });
-        }
-        function annotateFunctions(coverageFile, structuredText) {
-            var fnStats = coverageFile.f,
-                fnMeta = coverageFile.fnMap;
-            Object.keys(fnStats).forEach(function (fName) {
-                var count = fnStats[fName],
-                    meta = fnMeta[fName],
-                    type = count > 0
-                        ? 'yes'
-                        : 'no',
-                    startCol = meta.loc.start.column,
-                    endCol = meta.loc.end.column + 1,
-                    startLine = meta.loc.start.line,
-                    endLine = meta.loc.end.line,
-                    openSpan = '\u0001span class="' + (meta.skip
-                        ? 'fstat-skip'
-                        : 'fstat-no') + '" title="function not covered" \u0002',
-                    closeSpan = '\u0001/span\u0002',
-                    text;
-                if (type === 'no') {
-                    if (endLine !== startLine) {
-                        endLine = startLine;
-                        endCol = structuredText[startLine].text.text.length;
-                    }
-                    text = structuredText[startLine].text;
-                    text.wrap(startCol, openSpan, startLine === endLine
-                        ? endCol
-                        : text.text.length, closeSpan);
-                }
-            });
-        }
-        function annotateBranches(coverageFile, structuredText) {
-            var branchStats = coverageFile.b,
-                branchMeta = coverageFile.branchMap;
-            Object.keys(branchStats).forEach(function (branchName) {
-                var branchArray = branchStats[branchName],
-                    sumCount = branchArray.reduce(function (p, n) {
-                        return p + n;
-                    }, 0),
-                    metaArray = branchMeta[branchName].locations,
-                    ii,
-                    count,
-                    meta,
-                    startCol,
-                    endCol,
-                    startLine,
-                    endLine,
-                    openSpan,
-                    closeSpan,
-                    text;
-                if (sumCount > 0) { //only highlight if partial branches are missing
-                    for (ii = 0; ii < branchArray.length; ii += 1) {
-                        count = branchArray[ii];
-                        meta = metaArray[ii];
-                        startCol = meta.start.column;
-                        endCol = meta.end.column + 1;
-                        startLine = meta.start.line;
-                        endLine = meta.end.line;
-                        openSpan = '\u0001span class="branch-' + ii + ' ' + (meta.skip
-                            ? 'cbranch-skip'
-                            : 'cbranch-no') + '" title="branch not covered" \u0002';
-                        closeSpan = '\u0001/span\u0002';
-                        if (count === 0) { //skip branches taken
-                            if (endLine !== startLine) {
-                                endLine = startLine;
-                                endCol = structuredText[startLine].text.text.length;
-                            }
-                            text = structuredText[startLine].text;
-                            // and 'if' is a special case
-                            // since the else branch might not be visible, being non-existent
-                            if (branchMeta[branchName].type === 'if') {
-                                text.insertAt(startCol, '\u0001span class="' + (meta.skip
-                                    ? 'skip-if-branch'
-                                    : 'missing-if-branch') + '" title="' + (ii === 0
-                                    ? 'if'
-                                    : 'else') + ' path not taken" \u0002' + (ii === 0
-                                    ? 'I'
-                                    : 'E')  + '\u0001/span\u0002', true, false);
-                            } else {
-                                text.wrap(startCol, openSpan, startLine === endLine
-                                    ? endCol
-                                    : text.text.length, closeSpan);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        local.reportHtmlCreate = function (options, node, dir) {
-            // write index-page
-            local.fsWriteData = '';
-            node.children.sort(function (a, b) {
-                return a.name < b.name
-                    ? -1
-                    : 1;
-            });
-            local.reportHtmlFillTemplate(node, options);
-            local.fsWriteData += local.summaryTableHeader;
-            node.children.forEach(function (child) {
-                local.fsWriteData += local.stringFormat(local.summaryLineTemplate, {
-                    file: child.relativeName,
-                    metrics: child.metrics,
-                    output: child.relativeName + (child.kind === 'dir'
-                        ? 'index.html'
-                        : '.html'),
-                    showPicture: ('<span class="cover-fill' +
-                        (child.metrics.statements.pct === 100
-                        ? ' cover-full'
-                        : '') + '" style="width: ' + child.metrics.statements.pct +
-                        'px;"></span><span class="cover-empty" style="width:' +
-                        (100 - child.metrics.statements.pct) + 'px;"></span>')
-                });
-            });
-            options.footerTemplate = local.stringFormat(local['/templates/foot.txt'], {
-                datetime: new Date().toString()
-            });
-            local.fsWriteData += local.summaryTableFooter + options.footerTemplate;
-            local.fsWriteFileSync(local.path.resolve(dir, 'index.html'), local.fsWriteData);
-            // write children
-            node.children.forEach(function (child) {
-                var coverageFile, covered, ii, structuredText, value;
-                if (child.kind === 'dir') {
-                    local.reportHtmlCreate(
-                        options,
-                        child,
-                        local.path.resolve(dir, child.relativeName)
-                    );
-                    return;
-                }
-                // write detail-page
-                local.fsWriteData = '';
-                coverageFile = options.coverage[child.fullName];
-                ii = 0;
-                structuredText = coverageFile.code
-                    .map(function (str) {
-                        ii += 1;
-                        return {
-                            line: ii,
-                            covered: null,
-                            text: new InsertionText(str, true)
-                        };
-                    });
-                structuredText.unshift({ line: 0, covered: null, text: new InsertionText("") });
-                local.reportHtmlFillTemplate(child, options);
-                local.fsWriteData += '<pre><table class="coverage">\n';
-                annotateLines(coverageFile, structuredText);
-                // note: order is important, since statements typically result
-                // in spanning the whole line and doing branches late causes mismatched tags
-                annotateBranches(coverageFile, structuredText);
-                annotateFunctions(coverageFile, structuredText);
-                annotateStatements(coverageFile, structuredText);
-                structuredText.shift();
-
-                options.showLines = '';
-                for (ii = 1; ii <= structuredText.length; ii += 1) {
-                    options.showLines += ii + '\n';
-                }
-
-                options.showLineExecutionCounts = '';
-                for (ii = 1; ii <= structuredText.length; ii += 1) {
-                    value = '&nbsp;';
-                    covered = 'neutral';
-                    if (coverageFile.l.hasOwnProperty(ii)) {
-                        if (coverageFile.l[ii] > 0) {
-                            covered = 'yes';
-                            value = coverageFile.l[ii];
-                        } else {
-                            covered = 'no';
-                        }
-                    }
-                    options.showLineExecutionCounts += '<span class="cline-any cline-' +
-                        covered + '">' + value + '</span>\n';
-                }
-
-                options.showCode = structuredText.map(function (item) {
-                    return item.text.text
-                        .toString()
-                        .replace((/&/g), '&amp;')
-                        .replace((/</g), '&lt;')
-                        .replace((/>/g), '&gt;')
-                        .replace((/\u0001/g), '<')
-                        .replace((/\u0002/g), '>') || '&nbsp;';
-                }).join('\n');
-                local.fsWriteData += local.stringFormat(local.detailTemplate, options) +
-                    '</table></pre>\n' + options.footerTemplate;
-                local.fsWriteFileSync(
-                    local.path.resolve(dir, child.relativeName + '.html'),
-                    local.fsWriteData
-                );
-            });
+            }
+            if (offsetObj && offsetObj.pos === pos) {
+                offsetObj.len += str.length;
+            } else {
+                text.offsets.splice(ii, 0, { pos: pos, len: str.length });
+            }
+            text.text = text.text.slice(0, realPos) + str + text.text.slice(realPos);
+            return text;
         };
 
-        local.reportHtmlFillTemplate = function (node, options) {
-            var ancestorHref, href, ii, jj, levels, notDot, parent, skipped;
-            ancestorHref = function (node, num) {
-                href = '';
-                notDot = function (part) {
-                    return part !== '.';
-                };
-                for (ii = 0; ii < num; ii += 1) {
-                    levels = node.relativeName.split('/').filter(notDot).length - 1;
-                    for (jj = 0; jj < levels; jj += 1) {
-                        href += '../';
-                    }
-                    node = node.parent;
-                }
-                return href;
-            };
-            options.baseCss = '';
-            if (local.modeJs === 'node') {
-                for (ii = 0, parent = node.parent;
-                        parent;
-                        ii += 1, parent = parent.parent) {
-                    local.nop();
-                }
-                options.baseCss = ancestorHref(node, ii) + 'base.css';
-            }
-            options.entity = node.name || 'All files';
-            options.metrics = node.metrics;
-            options.pathHtml = [];
-            parent = node.parent;
-            while (parent) {
-                options.pathHtml.push(parent);
-                parent = parent.parent;
-            }
-            options.pathHtml = options.pathHtml
-                .map(function (element, ii) {
-                    return '<a href="' + ancestorHref(node, ii + 1) + 'index.html">' +
-                        (element.relativeName || 'All files') + '</a>';
-                })
-                .reverse();
-            options.pathHtml = options.pathHtml.length > 0
-                ? options.pathHtml.join(' &#187; ') + ' &#187; ' + node.relativeName
-                : '';
-            options.showIgnores = '';
-            ['statements', 'branches', 'functions'].forEach(function (element) {
-                skipped = node.metrics[element].skipped;
-                if (skipped > 0) {
-                    options.showIgnores += skipped + ' ' + (skipped === 1
-                        ? element.replace((/e{0,1}s$/), '')
-                        : element) + ', ';
-                }
-            });
-            options.showIgnores =  options.showIgnores.length
-                ? options.showIgnores.slice(0, -2)
-                : '<span class="ignore-none">none</span>';
-            local.fsWriteData += local.stringFormat(local['/templates/head.txt'], options);
-        };
-
-        local.reportTextCreate = function (options) {
-            var line, nameWidth, tmp;
-            // init nameWidth
-            nameWidth = 0;
-            tmp = function (node, level) {
-                nameWidth = Math
-                    .max(level + (node.relativeName || 'All files').length, nameWidth);
-                node.children.forEach(function (child) {
-                    tmp(child, level + 1);
-                });
-            };
-            tmp(options.summary, 0);
-            // init line
-            line = new Array(nameWidth + 1).join('-') +
-                '-|----------|----------|----------|----------|----------------|\n';
-            // init coverageReportText
-            options.coverageReportText = line + local.reportTextFill(
-                'File',
-                nameWidth,
+        local.textWrap = function (text, startPos, startText, endPos, endText, consumeBlanks) {
+            return local.textInsertAt(
+                local.textInsertAt(text, startPos, startText, true, consumeBlanks),
+                endPos,
+                endText,
                 false,
-                0
-            ) + ' |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |\n' + line;
-            // walk tree
-            tmp = function (node, level) {
-                var tableRow, uncoveredLines;
-                // init tableRow
-                tableRow = local.reportTextFill(
-                    node.relativeName || 'All files',
-                    nameWidth,
-                    false,
-                    level,
-                    node.metrics.statements.watermark
-                ) + ' |';
-                ['statements', 'branches', 'functions', 'lines'].forEach(function (key) {
-                    tableRow += local.reportTextFill(
-                        node.metrics[key].pct,
-                        9,
-                        true,
-                        0,
-                        node.metrics[key].watermark
-                    ) + ' |';
-                });
-                uncoveredLines = '';
-                if (node.kind === 'file') {
-                    Object.keys(node.metrics.linesCovered).forEach(function (key) {
-                        if (!node.metrics.linesCovered[key]) {
-                            uncoveredLines += key + ',';
-                        }
-                    });
-                }
-                tableRow += local.reportTextFill(
-                    uncoveredLines.slice(0, -1),
-                    15,
-                    true,
-                    0,
-                    'low'
-                ) + ' |\n';
-                if (level === 0) {
-                    node.children.forEach(function (child) {
-                        tmp(child, level + 1);
-                    });
-                    options.coverageReportText += line + tableRow + line;
-                    return;
-                }
-                options.coverageReportText += tableRow;
-                node.children.forEach(function (child) {
-                    tmp(child, level + 1);
-                });
-            };
-            tmp(options.summary, 0);
-            // print options.coverageReportText to stdout
-            if (local.modeJs === 'node') {
-                console.log(options.coverageReportText);
-            }
+                consumeBlanks
+            );
         };
 
-        local.reportTextFill = function (str, width, right, tabs, clazz) {
-            var strLen;
-            str = String(str);
-            strLen = str.length;
-            str = right
-                ? (new Array(width + 1).join(' ') + str).slice(-(width - tabs))
-                : (str + new Array(width + 1).join(' ')).slice(0, width - tabs);
-            if (str.length < strLen) {
-                str = '... ' + str.slice(4);
-            }
-            switch (clazz) {
-            case 'low':
-                str = '\u001b[91m' + str + '\u001b[0m';
-                break;
-            case 'medium':
-                str = '\u001b[93m' + str + '\u001b[0m';
-                break;
-            case 'high':
-                str = '\u001b[92m' + str + '\u001b[0m';
-                break;
-            }
-            return new Array(tabs + 1).join(' ') + str;
-        };
-
-
-
-        // init functions
+        // init exports
         local.istanbul_lite.coverageReportCreate = function (options) {
             /*
              * this function will
