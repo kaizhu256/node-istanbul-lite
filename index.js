@@ -10306,7 +10306,7 @@ pre {\n\
     font-family: Consolas, Menlo, Monaco, monospace;\n\
     margin: 0;\n\
     padding: 0;\n\
-    line-height: 14px;\n\
+    line-height: 1.3;\n\
     font-size: 14px;\n\
     -moz-tab-size: 2;\n\
     -o-tab-size:  2;\n\
@@ -10592,7 +10592,7 @@ local.summaryTableFooter = '\
             }
         };
 
-        local.instrumenter = new local.Instrumenter();
+        local.instrumenter = new local.Instrumenter({ embedSource: true, noAutoWrap: true });
 
         local.stringFormat = function (template, dict, valueDefault) {
             /*
@@ -11113,9 +11113,7 @@ local.summaryTableFooter = '\
                 local.fsWriteData = '';
                 coverageFile = options.coverage[child.fullName];
                 ii = 0;
-                structuredText = ((coverageFile.code && Array.isArray(coverageFile.code)
-                    ? coverageFile.code.join('\n') + '\n'
-                    : local.fsReadFileSync(coverageFile.path)).split(/(?:\r?\n)|\r/))
+                structuredText = coverageFile.code
                     .map(function (str) {
                         ii += 1;
                         return {

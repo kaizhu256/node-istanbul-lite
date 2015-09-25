@@ -291,7 +291,7 @@ with zero npm-dependencies",
         "utility2": "^2015.8.5",
         "phantomjs-lite": "^2015.7.1"
     },
-    "engines": { "node": ">=0.10 <=0.12" },
+    "engines": { "node": ">=0.12" },
     "keywords": [
         "browser",
         "code", "cover", "coverage",
@@ -328,7 +328,7 @@ node -e \"require('fs').writeFileSync(\n\
 && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' \
 node_modules/.bin/utility2 test test.js"
     },
-    "version": "2015.8.2"
+    "version": "2015.9.1"
 }
 ```
 
@@ -340,9 +340,11 @@ node_modules/.bin/utility2 test test.js"
 
 
 
-# change since 30b7aa99
-- npm publish 2015.8.2
-- update README.md
+# change since a9c98366
+- npm publish 2015.9.1
+- auto-embed sourceCode in coverage
+- remove handlebars dependency
+- based on istanbul@0.3.15 - https://github.com/gotwarlost/istanbul/compare/v0.3.15...master
 - none
 
 
@@ -387,7 +389,7 @@ shBuild() {
     npm run-script build-doc || return $?
 
     # if running legacy-node, then do not continue
-    [ "$(node --version)" \< "v0.12" ] && return
+    [ "$(node --version)" \< "v4.0" ] && return
 
     # deploy app to heroku
     shRun shHerokuDeploy hrku01-istanbul-lite-$CI_BRANCH || return $?
@@ -411,7 +413,7 @@ MODE_BUILD=gitLsTree shRunScreenCapture shGitLsTree || exit $?
 # create recent changelog of last 50 commits
 MODE_BUILD=gitLog shRunScreenCapture git log -50 --pretty="%ai\u000a%B" || exit $?
 # if running legacy-node, then do not continue
-[ "$(node --version)" \< "v0.12" ] && exit $EXIT_CODE
+[ "$(node --version)" \< "v4.0" ] && exit $EXIT_CODE
 # upload build-artifacts to github, and if number of commits > 16, then squash older commits
 COMMIT_LIMIT=16 shBuildGithubUpload || exit $?
 exit $EXIT_CODE
