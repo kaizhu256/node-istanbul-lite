@@ -1,12 +1,14 @@
 {
+    "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "bin": { "istanbul-lite" : "index.js" },
-    "description": "minimal browser version of istanbul coverage-tool with zero npm-dependencies",
+    "bin": { "istanbul-lite": "index.js" },
+    "description": "this package will run a standalone, browser-compatible version of the istanbul coverage-tool with zero npm-dependencies",
     "devDependencies": {
-        "utility2": "^2015.8.5",
-        "phantomjs-lite": "^2015.7.1"
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "utility2": "kaizhu256/node-utility2#alpha"
     },
-    "engines": { "node": ">=0.12" },
+    "engines": { "node": ">=4.0" },
+    "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
         "browser",
         "code", "cover", "coverage",
@@ -22,10 +24,33 @@
         "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build-ci": "node_modules/.bin/utility2 shRun shReadmeBuild",
-        "build-doc": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && node_modules/.bin/utility2 shRun shDocApiCreate \"{ exampleFileList:['test.js','index.js'], moduleDict:{'istanbul-lite':{aliasList:['istanbul_lite'],exports:require('./index.js')}} }\"",
-        "start": "npm_config_mode_auto_restart=1 node_modules/.bin/utility2 shRun node test.js",
-        "test": "node_modules/.bin/utility2 shRun shReadmeExportPackageJson && mkdir -p tmp && node -e \"require('fs').writeFileSync(\n    'tmp/covered.istanbul-lite.js',\n    '#!/usr/bin/env node\\n' + require('./index.js')\n        .instrumentSync(\n            require('fs').readFileSync('./index.js', 'utf8'),\n            process.cwd() + '/index.js'\n        ),\n    { mode: 493 }\n);\" && npm_config_file_istanbul='tmp/covered.istanbul-lite.js' node_modules/.bin/utility2 test test.js"
+        "build-app": "npm test --mode-test-case=testCase_build_app",
+        "build-ci": "utility2 shRun shReadmeBuild",
+        "build-doc": "npm test --mode-test-case=testCase_build_doc",
+        "example.js": "utility2 shRunScreenCapture shReadmeTestJs example.js",
+        "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
+
+
+
+        "start-example": "utility2 shRun && cp tmp/README.example.js example.js && export PORT=8081 && node example.js ",
+
+
+
+
+
+        "start-heroku": "export npm_config_mode_backend=1 && node assets.app.js ",
+
+
+
+        "start-standalone": "npm run build-app && node tmp/build/app/assets.app.js ",
+
+
+
+        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js",
+
+
+        "test-published": ":",
+        "test-published2": "utility2 shRun shNpmTestPublished"
     },
-    "version": "2015.9.1"
+    "version": "2015.7.1"
 }

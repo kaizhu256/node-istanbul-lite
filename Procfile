@@ -1,1 +1,1 @@
-web: npm start --server-port=$PORT
+web: npm run start-heroku
