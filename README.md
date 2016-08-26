@@ -10,14 +10,20 @@ this package will run a standalone, browser-compatible version of the istanbul c
 
 
 
+# live demo
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
+
+[![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.githubDeploy.browser._2Fnode-istanbul-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
+
+
+
 # documentation
 #### todo
 - none
 
-#### change since 473267de
-- npm publish 2015.7.1
-- update build
-- display instrumented-code in web-ui
+#### change since 03cfd082
+- npm publish 2015.7.2
+- streamline build
 - none
 
 #### this package requires
@@ -30,13 +36,6 @@ this package will run a standalone, browser-compatible version of the istanbul c
 - [https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
 
 [![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
-
-
-
-# live test-server
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
-
-[![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.githubDeploy.browser._2Fnode-istanbul-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
 
 
 
@@ -177,13 +176,14 @@ instruction
             '#inputTextarea1',
             '#testRunButton1'
         ].forEach(function (element) {
-            try {
-                if (element.indexOf('#inputTextarea1') === 0) {
-                    document.querySelector(element).addEventListener('keyup', local.testRun);
-                    return;
-                }
-                document.querySelector(element).addEventListener('click', local.testRun);
-            } catch (ignore) {
+            element = document.querySelector(element);
+            switch (element && element.id) {
+            case 'inputTextarea1':
+                element.addEventListener('keyup', local.testRun);
+                break;
+            case 'testRunButton1':
+                element.addEventListener('click', local.testRun);
+                break;
             }
         });
         // run tests
@@ -230,8 +230,11 @@ body > * {\n\
 }\n\
 textarea {\n\
     font-family: monospace;\n\
-    height: 8rem;\n\
+    height: 16rem;\n\
     width: 100%;\n\
+}\n\
+textarea[readonly] {\n\
+    background-color: #ddd;\n\
 }\n\
 </style>\n\
 </head>\n\
@@ -262,7 +265,7 @@ utility2-comment -->\n\
 utility2-comment -->\n\
     <div class="testReportDiv" style="display: none;"></div>\n\
 \n\
-    <div>edit or paste script below to cover and eval</div>\n\
+    <label>edit or paste script below to cover and eval</label>\n\
 <textarea id="inputTextarea1">\n\
 if (true) {\n\
     console.log("hello");\n\
@@ -270,8 +273,9 @@ if (true) {\n\
     console.log("bye");\n\
 }\n\
 </textarea>\n\
-    <div>instrumented code</div>\n\
+    <label>instrumented code</label>\n\
     <textarea id="outputTextarea1" readonly></textarea>\n\
+    <h2>coverage-report</h2>\n\
     <div class="istanbulCoverageDiv"></div>\n\
 <!-- utility2-comment\n\
     {{#if isRollup}}\n\
@@ -378,35 +382,14 @@ utility2-comment -->\n\
         "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build-app": "npm test --mode-test-case=testCase_build_app",
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": "npm test --mode-test-case=testCase_build_doc",
-        "example.js": "utility2 shRunScreenCapture shReadmeTestJs example.js",
         "start": "\
 export PORT=${PORT:-8080} && \
 export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
-        "start-example": "\
-utility2 shRun && \
-cp tmp/README.example.js example.js && \
-export PORT=8081 && \
-node example.js \
-",
-        "start-heroku": "\
-export npm_config_mode_backend=1 && \
-node assets.app.js \
-",
-        "start-standalone": "\
-npm run build-app && \
-node tmp/build/app/assets.app.js \
-",
-        "test": "\
-export PORT=$(utility2 shServerPortRandom) && \
-utility2 test test.js",
-        "test-published": ":",
-        "test-published2": "utility2 shRun shNpmTestPublished"
+        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2015.7.1"
+    "version": "2015.7.2"
 }
 ```
 
@@ -426,11 +409,12 @@ utility2 test test.js",
 
 shBuildCiTestPre() {(set -e
 # this function will run the pre-test build
-    # test example js script
+    # test example.js
     (export MODE_BUILD=testExampleJs &&
-        export PORT=8081 &&
-        export npm_config_timeout_exit=15000 &&
-        npm run example.js) || return $?
+        shRunScreenCapture shReadmeTestJs example.js) || return $?
+    # test published-package
+    (export MODE_BUILD=npmTestPublished &&
+        shRunScreenCapture shNpmTestPublished) || return $?
 )}
 
 shBuildCiTestPost() {(set -e
@@ -446,7 +430,7 @@ shBuildCiTestPost() {(set -e
     # test deployed app to gh-pages
     (export MODE_BUILD=githubTest &&
         export modeBrowserTest=test &&
-        export url="$TEST_URL?modeTest=consoleLogResult&timeExit={{timeExit}}" &&
+        export url="$TEST_URL?modeTest=1&timeExit={{timeExit}}" &&
         shBrowserTest) || return $?
     # deploy app to heroku
     export HEROKU_REPO="hrku01-$npm_package_name-$CI_BRANCH"
@@ -454,13 +438,14 @@ shBuildCiTestPost() {(set -e
     shGitRepoBranchUpdateLocal() {(set -e
     # this function will local-update git-repo-branch
         cp "$npm_config_dir_build/app/assets.app.js" .
+        printf "web: npm_config_mode_backend=1 node assets.app.js" > Procfile
     )}
     (export MODE_BUILD=herokuDeploy &&
         shHerokuDeploy) || return $?
     # test deployed app to heroku
     (export MODE_BUILD=herokuTest &&
         export modeBrowserTest=test &&
-        export url="$TEST_URL?modeTest=consoleLogResult&timeExit={{timeExit}}" &&
+        export url="$TEST_URL?modeTest=1&timeExit={{timeExit}}" &&
         shBrowserTest) || return $?
 )}
 

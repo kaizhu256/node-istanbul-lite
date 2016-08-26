@@ -24,33 +24,12 @@
         "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build-app": "npm test --mode-test-case=testCase_build_app",
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": "npm test --mode-test-case=testCase_build_doc",
-        "example.js": "utility2 shRunScreenCapture shReadmeTestJs example.js",
         "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
 
 
 
-        "start-example": "utility2 shRun && cp tmp/README.example.js example.js && export PORT=8081 && node example.js ",
-
-
-
-
-
-        "start-heroku": "export npm_config_mode_backend=1 && node assets.app.js ",
-
-
-
-        "start-standalone": "npm run build-app && node tmp/build/app/assets.app.js ",
-
-
-
-        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js",
-
-
-        "test-published": ":",
-        "test-published2": "utility2 shRun shNpmTestPublished"
+        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2015.7.1"
+    "version": "2015.7.2"
 }
