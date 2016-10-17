@@ -21,9 +21,9 @@ this package will run a standalone, browser-compatible version of the istanbul c
 #### todo
 - none
 
-#### change since 03cfd082
-- npm publish 2015.7.2
-- streamline build
+#### change since 477b70bd
+- npm publish 2016.7.3
+- add 'hide internal test' button to demo
 - none
 
 #### this package requires
@@ -44,8 +44,8 @@ this package will run a standalone, browser-compatible version of the istanbul c
 
 | git-branch : | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
 |--:|:--|:--|:--|
-| test-server 1 : | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/app/index.html)|
-| test-server 2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com)|
+| test-server-1 : | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/app/index.html)|
+| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com)|
 | test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html)|
 | coverage : | [![istanbul coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
@@ -74,7 +74,7 @@ this package will run a standalone, browser-compatible version of the istanbul c
 /*
 example.js
 
-this script will will run a browser version of istanbul
+this script will will demo the browser-version of istanbul
 
 instruction
     1. save this script as example.js
@@ -126,10 +126,6 @@ instruction
             : module.isRollup
             ? module
             : require('istanbul-lite').local;
-        // init global
-        local.global = local.modeJs === 'browser'
-            ? window
-            : global;
         // export local
         local.global.local = local;
     }());
@@ -143,8 +139,15 @@ instruction
         local.testRun = function (event) {
             switch (event && event.currentTarget.id) {
             case 'testRunButton1':
-                local.modeTest = true;
-                local.utility2.testRun(local);
+                if (document.querySelector('.testReportDiv').style.display === 'none') {
+                    document.querySelector('.testReportDiv').style.display = 'block';
+                    document.querySelector('#testRunButton1').innerText = 'hide internal test';
+                    local.modeTest = true;
+                    local.utility2.testRun(local);
+                } else {
+                    document.querySelector('.testReportDiv').style.display = 'none';
+                    document.querySelector('#testRunButton1').innerText = 'run internal test';
+                }
                 break;
             default:
                 // try to cleanup __coverage__
@@ -172,19 +175,12 @@ instruction
             }
         };
         // init event-handling
-        [
-            '#inputTextarea1',
-            '#testRunButton1'
-        ].forEach(function (element) {
-            element = document.querySelector(element);
-            switch (element && element.id) {
-            case 'inputTextarea1':
-                element.addEventListener('keyup', local.testRun);
-                break;
-            case 'testRunButton1':
-                element.addEventListener('click', local.testRun);
-                break;
-            }
+        ['click', 'keyup'].forEach(function (event) {
+            Array.prototype.slice.call(
+                document.querySelectorAll('.on' + event)
+            ).forEach(function (element) {
+                element.addEventListener(event, local.testRun);
+            });
         });
         // run tests
         local.testRun();
@@ -209,6 +205,7 @@ instruction
 <html lang="en">\n\
 <head>\n\
 <meta charset="UTF-8">\n\
+<meta name="viewport" content="width=device-width, initial-scale=1">\n\
 <title>\n\
 {{envDict.npm_package_name}} v{{envDict.npm_package_version}}\n\
 </title>\n\
@@ -223,7 +220,7 @@ instruction
 }\n\
 body {\n\
     background-color: #fff;\n\
-    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;\n\
+    font-family: Arial, Helvetica, sans-serif;\n\
 }\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
@@ -252,21 +249,16 @@ utility2-comment -->\n\
 <!-- utility2-comment\n\
         </a>\n\
 utility2-comment -->\n\
-<!-- utility2-comment\n\
-        {{#if envDict.NODE_ENV}}\n\
-        (NODE_ENV={{envDict.NODE_ENV}})\n\
-        {{/if envDict.NODE_ENV}}\n\
-utility2-comment -->\n\
     </h1>\n\
     <h3>{{envDict.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
     <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
-    <button id="testRunButton1">run internal test</button><br>\n\
+    <button class="onclick" id="testRunButton1">run internal test</button><br>\n\
 utility2-comment -->\n\
     <div class="testReportDiv" style="display: none;"></div>\n\
 \n\
     <label>edit or paste script below to cover and eval</label>\n\
-<textarea id="inputTextarea1">\n\
+<textarea class="onkeyup" id="inputTextarea1">\n\
 if (true) {\n\
     console.log("hello");\n\
 } else {\n\
@@ -389,7 +381,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2015.7.2"
+    "version": "2016.7.3"
 }
 ```
 

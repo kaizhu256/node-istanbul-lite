@@ -18,7 +18,7 @@
     // run shared js-env code - pre-init
     (function () {
         // init Error.stackTraceLimit
-        Error.stackTraceLimit = Infinity;
+        Error.stackTraceLimit = 16;
         // init local
         local = {};
         // init modeJs
@@ -189,12 +189,10 @@
                             options.file
                         );
                         // validate no error occurred
-                        local.utility2.tryCatchOnError(function () {
-                            local.utility2.assert(
-                                !local.utility2.jslint.errorText,
-                                local.utility2.jslint.errorText
-                            );
-                        }, onError);
+                        local.utility2.assert(
+                            !local.utility2.jslint.errorText,
+                            local.utility2.jslint.errorText
+                        );
                         break;
                     }
                     local.utility2.fsWriteFileWithMkdirp(
@@ -211,56 +209,50 @@
         /*
          * this function will test build's doc handling-behavior
          */
-            var modeNext, onNext;
-            modeNext = 0;
-            onNext = function (error) {
-                local.utility2.tryCatchOnError(function () {
-                    // validate no error occurred
-                    local.utility2.assert(!error, error);
-                    modeNext += 1;
-                    switch (modeNext) {
-                    case 1:
-                        options = {};
-                        options.moduleDict = {
-                            'istanbul-lite': {
-                                exampleList: [],
-                                exports: local.istanbul
-                            }
-                        };
-                        Object.keys(options.moduleDict).forEach(function (key) {
-                            options.moduleDict[key].example =
-                                options.moduleDict[key].exampleList
-                                .concat([
-                                    'README.md',
-                                    'test.js',
-                                    'index.js'
-                                ])
-                                .map(function (file) {
-                                    return '\n\n\n\n\n\n\n\n' +
-                                        local.fs.readFileSync(file, 'utf8') +
-                                        '\n\n\n\n\n\n\n\n';
-                                }).join('');
-                        });
-                        // create doc.api.html
-                        local.utility2.fsWriteFileWithMkdirp(
-                            local.utility2.envDict.npm_config_dir_build + '/doc.api.html',
-                            local.utility2.docApiCreate(options),
-                            onNext
-                        );
-                        break;
-                    case 2:
-                        local.utility2.browserTest({
-                            modeBrowserTest: 'screenCapture',
-                            url: 'file://' + local.utility2.envDict.npm_config_dir_build +
-                                '/doc.api.html'
-                        }, onNext);
-                        break;
-                    default:
-                        onError(error);
-                    }
-                }, onError);
-            };
-            onNext();
+            options = {};
+            local.utility2.onNext(options, function (error) {
+                switch (options.modeNext) {
+                case 1:
+                    options.moduleDict = {
+                        'istanbul-lite': {
+                            exampleList: [],
+                            exports: local.istanbul
+                        }
+                    };
+                    Object.keys(options.moduleDict).forEach(function (key) {
+                        options.moduleDict[key].example =
+                            options.moduleDict[key].exampleList
+                            .concat([
+                                'README.md',
+                                'test.js',
+                                'index.js'
+                            ])
+                            .map(function (file) {
+                                return '\n\n\n\n\n\n\n\n' +
+                                    local.fs.readFileSync(file, 'utf8') +
+                                    '\n\n\n\n\n\n\n\n';
+                            }).join('');
+                    });
+                    // create doc.api.html
+                    local.utility2.fsWriteFileWithMkdirp(
+                        local.utility2.envDict.npm_config_dir_build + '/doc.api.html',
+                        local.utility2.docApiCreate(options),
+                        options.onNext
+                    );
+                    break;
+                case 2:
+                    local.utility2.browserTest({
+                        modeBrowserTest: 'screenCapture',
+                        url: 'file://' + local.utility2.envDict.npm_config_dir_build +
+                            '/doc.api.html'
+                    }, options.onNext);
+                    break;
+                default:
+                    onError(error);
+                }
+            });
+            options.modeNext = 0;
+            options.onNext();
         };
 
         local.testCase_webpage_default = function (options, onError) {
@@ -282,7 +274,9 @@
     // run browser js-env code - post-init
     case 'browser':
         // run tests
-        local.utility2.testRun(local);
+        local.utility2.nop(
+            local.utility2.modeTest && document.querySelector('#testRunButton1').click()
+        );
         break;
 
 
