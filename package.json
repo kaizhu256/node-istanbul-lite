@@ -2,7 +2,7 @@
     "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": { "istanbul-lite": "index.js" },
-    "description": "this package will run a standalone, browser-compatible version of the istanbul coverage-tool with zero npm-dependencies",
+    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul coverage-tool",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -31,5 +31,5 @@
 
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.7.3"
+    "version": "2016.10.1"
 }

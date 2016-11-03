@@ -1,12 +1,18 @@
 istanbul-lite
 =============
-this package will run a standalone, browser-compatible version of the istanbul coverage-tool with zero npm-dependencies
+this zero-dependency package will provide a browser-compatible version of the istanbul coverage-tool
 
 [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 [![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
 
 [![package-listing](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.gitLsTree.svg)](https://github.com/kaizhu256/node-istanbul-lite)
+
+
+
+# cdn download
+- [http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js](http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js)
+- [http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js](http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js)
 
 
 
@@ -18,24 +24,29 @@ this package will run a standalone, browser-compatible version of the istanbul c
 
 
 # documentation
+#### api-doc
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
+
+[![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
+
 #### todo
+- add es6-syntax support
+- reduce index.js file-size
 - none
 
-#### change since 477b70bd
-- npm publish 2016.7.3
-- add 'hide internal test' button to demo
+#### change since 3c3154d3
+- npm publish 2016.10.1
+- fix cli 'cover' command to auto-cover and create test-report, requiring only $npm_package_name env variable
+- README.md - add cdn-download links
+- README.md - replace alpha api-doc with beta api-doc
 - none
 
 #### this package requires
 - darwin or linux os
 
 #### additional info
-- istanbul derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16 (this version does not support es6 or higher)
-
-#### api-doc
-- [https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
-
-[![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/doc.api.html)
+- this version does not support es6-syntax or higher
+- this package was derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16
 
 
 
@@ -381,7 +392,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.7.3"
+    "version": "2016.10.1"
 }
 ```
 
