@@ -30,23 +30,22 @@ this zero-dependency package will provide a browser-compatible version of the is
 [![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
 
 #### todo
-- add es6-syntax support
 - reduce index.js file-size
 - none
 
-#### change since 3c3154d3
-- npm publish 2016.10.1
-- fix cli 'cover' command to auto-cover and create test-report, requiring only $npm_package_name env variable
-- README.md - add cdn-download links
-- README.md - replace alpha api-doc with beta api-doc
+#### change since 83638749
+- npm publish 2016.10.2
+- add es6-syntax support and test
 - none
 
 #### this package requires
 - darwin or linux os
 
 #### additional info
-- this version does not support es6-syntax or higher
-- this package was derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16
+- this version does not support es6-module-syntax
+- this version does not support es7-syntax or higher
+- this version does not support typescript-syntax
+- istanbul code derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16
 
 
 
@@ -150,13 +149,13 @@ instruction
         local.testRun = function (event) {
             switch (event && event.currentTarget.id) {
             case 'testRunButton1':
-                if (document.querySelector('.testReportDiv').style.display === 'none') {
-                    document.querySelector('.testReportDiv').style.display = 'block';
+                if (document.querySelector('#testReportDiv1').style.display === 'none') {
+                    document.querySelector('#testReportDiv1').style.display = 'block';
                     document.querySelector('#testRunButton1').innerText = 'hide internal test';
                     local.modeTest = true;
                     local.utility2.testRun(local);
                 } else {
-                    document.querySelector('.testReportDiv').style.display = 'none';
+                    document.querySelector('#testReportDiv1').style.display = 'none';
                     document.querySelector('#testRunButton1').innerText = 'run internal test';
                 }
                 break;
@@ -170,6 +169,8 @@ instruction
                 try {
                     /*jslint evil: true*/
                     document.querySelector('#outputTextarea1').value =
+                        document.querySelector('#outputTextarea2').value = '';
+                    document.querySelector('#outputTextarea1').value =
                         local.istanbul.instrumentSync(
                             document.querySelector('#inputTextarea1').value,
                             '/inputTextarea1.js'
@@ -180,11 +181,24 @@ instruction
                             coverage: window.__coverage__
                         });
                 } catch (errorCaught) {
-                    document.querySelector('.istanbulCoverageDiv').innerHTML =
-                        '<pre>' + errorCaught.stack.replace((/</g), '&lt') + '</pre>';
+                    document.querySelector('#outputTextarea2').value += '\n' +
+                        errorCaught.stack + '\n';
                 }
             }
         };
+        // log stderr and stdout to #outputTextarea2
+        ['error', 'log'].forEach(function (key) {
+            console['_' + key] = console[key];
+            console[key] = function () {
+                console['_' + key].apply(console, arguments);
+                document.querySelector('#outputTextarea2').value +=
+                    Array.prototype.slice.call(arguments).map(function (arg) {
+                        return typeof arg === 'string'
+                            ? arg
+                            : JSON.stringify(arg, null, 4);
+                    }).join(' ') + '\n';
+            };
+        });
         // init event-handling
         ['click', 'keyup'].forEach(function (event) {
             Array.prototype.slice.call(
@@ -209,6 +223,7 @@ instruction
         local.http = require('http');
         local.path = require('path');
         local.url = require('url');
+        local.vm = require('vm');
         // init assets
         /* jslint-ignore-begin */
         local.templateIndexHtml = '\
@@ -230,8 +245,9 @@ instruction
     box-sizing: border-box;\n\
 }\n\
 body {\n\
-    background-color: #fff;\n\
+    background: #fff;\n\
     font-family: Arial, Helvetica, sans-serif;\n\
+    margin: 1rem;\n\
 }\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
@@ -242,13 +258,14 @@ textarea {\n\
     width: 100%;\n\
 }\n\
 textarea[readonly] {\n\
-    background-color: #ddd;\n\
+    background: #ddd;\n\
 }\n\
 </style>\n\
 </head>\n\
 <body>\n\
     <h1>\n\
 <!-- utility2-comment\n\
+        <div id="ajaxProgressDiv1" style="background: #d00; border: 0; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
         <a\n\
             {{#if envDict.npm_package_homepage}}\n\
             href="{{envDict.npm_package_homepage}}"\n\
@@ -266,7 +283,7 @@ utility2-comment -->\n\
     <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
     <button class="onclick" id="testRunButton1">run internal test</button><br>\n\
 utility2-comment -->\n\
-    <div class="testReportDiv" style="display: none;"></div>\n\
+    <div id="testReportDiv1" style="display: none;"></div>\n\
 \n\
     <label>edit or paste script below to cover and eval</label>\n\
 <textarea class="onkeyup" id="inputTextarea1">\n\
@@ -275,9 +292,28 @@ if (true) {\n\
 } else {\n\
     console.log("bye");\n\
 }\n\
+let fibonacci = {\n\
+    [Symbol.iterator]() {\n\
+        let pre = 0, cur = 1;\n\
+        return {\n\
+            next() {\n\
+                [pre, cur] = [cur, pre + cur];\n\
+                return { done: false, value: cur }\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+for (var n of fibonacci) {\n\
+    // truncate the sequence at 1000\n\
+    if (n > 1000)\n\
+        break;\n\
+    console.log(n);\n\
+}\n\
 </textarea>\n\
     <label>instrumented code</label>\n\
     <textarea id="outputTextarea1" readonly></textarea>\n\
+    <label>stderr and stdout</label>\n\
+    <textarea id="outputTextarea2" readonly></textarea>\n\
     <h2>coverage-report</h2>\n\
     <div class="istanbulCoverageDiv"></div>\n\
 <!-- utility2-comment\n\
@@ -288,6 +324,7 @@ utility2-comment -->\n\
     <script src="assets.utility2.rollup.js"></script>\n\
     <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
     <script src="assets.istanbul-lite.js"></script>\n\
+    <script src="assets.lib.example.es6.js"></script>\n\
     <script src="assets.example.js"></script>\n\
     <script src="assets.test.js"></script>\n\
 <!-- utility2-comment\n\
@@ -321,6 +358,13 @@ utility2-comment -->\n\
             local.istanbul.__dirname + '/index.js',
             'utf8'
         );
+        local['/assets.lib.example.es6.js'] = local.istanbul.instrumentInPackage(
+            local.fs.readFileSync(
+                local.istanbul.__dirname + '/lib.example.es6.js',
+                'utf8'
+            ),
+            local.istanbul.__dirname + '/lib.example.es6.js'
+        );
         // run the cli
         if (module !== require.main) {
             break;
@@ -332,6 +376,7 @@ utility2-comment -->\n\
             case '/':
             case '/assets.example.js':
             case '/assets.istanbul-lite.js':
+            case '/assets.lib.example.es6.js':
             case '/assets.test.js':
                 response.end(local[local.url.parse(request.url).pathname]);
                 break;
@@ -392,7 +437,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.10.1"
+    "version": "2016.10.2"
 }
 ```
 

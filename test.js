@@ -47,6 +47,10 @@
                 __dirname: __dirname,
                 module: module
             });
+            local.utility2.assetsDict['/assets.lib.example.es6.js'] =
+                local['/assets.lib.example.es6.js'];
+            // test es6 handling-behavior
+            local.vm.runInThisContext(local.utility2.assetsDict['/assets.lib.example.es6.js']);
             break;
         }
     }());
@@ -120,7 +124,7 @@
             options = {};
             options.data = local.istanbul.instrumentSync('1', 'test.js');
             // validate data
-            local.utility2.assert(options.data.indexOf('.s[\'1\']++;1;\n') >= 0, options);
+            local.utility2.assert(options.data.indexOf(".s['1']++;1;\n") >= 0, options);
             onError();
         };
     }());
@@ -161,6 +165,9 @@
                     );
                 },
                 url: '/assets.' + local.utility2.envDict.npm_package_name + '.js'
+            }, {
+                file: '/assets.lib.example.es6.js',
+                url: '/assets.lib.example.es6.js'
             }, {
                 file: '/assets.test.js',
                 url: '/assets.test.js'
