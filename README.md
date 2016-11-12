@@ -33,18 +33,17 @@ this zero-dependency package will provide a browser-compatible version of the is
 - reduce index.js file-size
 - none
 
-#### change since 83638749
-- npm publish 2016.10.2
-- add es6-syntax support and test
+#### change since da229b32
+- npm publish 2016.10.3
+- add env-variable npm_config_mode_coverage_append to allow appending coverage to previous reports
+- change behavior of $npm_config_mode_coverage=all to cover all files
 - none
 
 #### this package requires
 - darwin or linux os
 
 #### additional info
-- this version does not support es6-module-syntax
-- this version does not support es7-syntax or higher
-- this version does not support typescript-syntax
+- this version supports most es6-syntax (except for es6-modules)
 - istanbul code derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16
 
 
@@ -265,7 +264,7 @@ textarea[readonly] {\n\
 <body>\n\
     <h1>\n\
 <!-- utility2-comment\n\
-        <div id="ajaxProgressDiv1" style="background: #d00; border: 0; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
+        <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
         <a\n\
             {{#if envDict.npm_package_homepage}}\n\
             href="{{envDict.npm_package_homepage}}"\n\
@@ -437,7 +436,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.10.2"
+    "version": "2016.10.3"
 }
 ```
 

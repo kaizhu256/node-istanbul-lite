@@ -1,4 +1,3 @@
-/* istanbul instrument in package all */
 /* istanbul instrument in package istanbul-lite */
 /* jslint-ignore-begin */
 // https://raw.githubusercontent.com/lukehoban/es6features/9354b8f68f26bf1931d05251c7d4411808669c97/README.md
