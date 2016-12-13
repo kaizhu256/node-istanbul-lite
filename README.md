@@ -11,8 +11,8 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 
 # cdn download
-- [http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js](http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js)
-- [http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js](http://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js)
 
 
 
@@ -30,20 +30,21 @@ this zero-dependency package will provide a browser-compatible version of the is
 [![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
 
 #### todo
-- reduce index.js file-size
+- reduce lib.istanbul.js file-size
 - none
 
-#### change since da229b32
-- npm publish 2016.10.3
-- add env-variable npm_config_mode_coverage_append to allow appending coverage to previous reports
-- change behavior of $npm_config_mode_coverage=all to cover all files
+#### change since 1f0af611
+- npm publish 2016.12.1
+- re-uglify lib.istanbul.js
+- globalize local.codeDict to global.__coverageCodeDict__
+- add in-file config-var /* istanbul ignore all */ to ignore the file
+- rename file index.js -> lib.istanbul.js
 - none
 
 #### this package requires
 - darwin or linux os
 
 #### additional info
-- this version supports most es6-syntax (except for es6-modules)
 - istanbul code derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16
 
 
@@ -88,9 +89,10 @@ this script will will demo the browser-version of istanbul
 instruction
     1. save this script as example.js
     2. run the shell command:
-        $ npm install istanbul-lite && export PORT=8081 && node example.js
-    3. open a browser to http://localhost:8081
-    4. edit or paste script in browser to cover and eval
+        $ npm install istanbul-lite && \
+            export PORT=8081 && \
+            node example.js
+    3. play with the browser-demo on http://localhost:8081
 */
 
 /* istanbul instrument in package istanbul-lite */
@@ -128,13 +130,14 @@ instruction
                     'node';
             }
         }());
-        /* istanbul ignore next */
-        // re-init local
-        local = local.modeJs === 'browser'
-            ? window.utility2_istanbul.local
-            : module.isRollup
-            ? module
-            : require('istanbul-lite').local;
+        // init global
+        local.global = local.modeJs === 'browser'
+            ? window
+            : global;
+        // init utility2_rollup
+        local = local.global.utility2_rollup || (local.modeJs === 'browser'
+            ? local.global.utility2_istanbul
+            : require('istanbul-lite'));
         // export local
         local.global.local = local;
     }());
@@ -148,17 +151,21 @@ instruction
         local.testRun = function (event) {
             switch (event && event.currentTarget.id) {
             case 'testRunButton1':
+                // show tests
                 if (document.querySelector('#testReportDiv1').style.display === 'none') {
                     document.querySelector('#testReportDiv1').style.display = 'block';
                     document.querySelector('#testRunButton1').innerText = 'hide internal test';
                     local.modeTest = true;
-                    local.utility2.testRun(local);
+                    local.testRunDefault(local);
+                // hide tests
                 } else {
                     document.querySelector('#testReportDiv1').style.display = 'none';
                     document.querySelector('#testRunButton1').innerText = 'run internal test';
                 }
                 break;
             default:
+                // reset stdout
+                document.querySelector('#outputTextarea2').value = '';
                 // try to cleanup __coverage__
                 try {
                     delete local.global.__coverage__['/inputTextarea1.js'];
@@ -167,8 +174,7 @@ instruction
                 // try to cover and eval input-code
                 try {
                     /*jslint evil: true*/
-                    document.querySelector('#outputTextarea1').value =
-                        document.querySelector('#outputTextarea2').value = '';
+                    document.querySelector('#outputTextarea1').value = '';
                     document.querySelector('#outputTextarea1').value =
                         local.istanbul.instrumentSync(
                             document.querySelector('#inputTextarea1').value,
@@ -180,9 +186,11 @@ instruction
                             coverage: window.__coverage__
                         });
                 } catch (errorCaught) {
-                    document.querySelector('#outputTextarea2').value += '\n' +
-                        errorCaught.stack + '\n';
+                    console.error(errorCaught.stack);
                 }
+                // scroll stdout to bottom
+                document.querySelector('#outputTextarea2').scrollTop =
+                    document.querySelector('#outputTextarea2').scrollHeight;
             }
         };
         // log stderr and stdout to #outputTextarea2
@@ -191,7 +199,7 @@ instruction
             console[key] = function () {
                 console['_' + key].apply(console, arguments);
                 document.querySelector('#outputTextarea2').value +=
-                    Array.prototype.slice.call(arguments).map(function (arg) {
+                    Array.from(arguments).map(function (arg) {
                         return typeof arg === 'string'
                             ? arg
                             : JSON.stringify(arg, null, 4);
@@ -200,9 +208,7 @@ instruction
         });
         // init event-handling
         ['click', 'keyup'].forEach(function (event) {
-            Array.prototype.slice.call(
-                document.querySelectorAll('.on' + event)
-            ).forEach(function (element) {
+            Array.from(document.querySelectorAll('.on' + event)).forEach(function (element) {
                 element.addEventListener(event, local.testRun);
             });
         });
@@ -231,9 +237,7 @@ instruction
 <head>\n\
 <meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
-<title>\n\
-{{envDict.npm_package_name}} v{{envDict.npm_package_version}}\n\
-</title>\n\
+<title>{{env.npm_package_name}} v{{env.npm_package_version}}</title>\n\
 <style>\n\
 /*csslint\n\
     box-sizing: false,\n\
@@ -262,22 +266,24 @@ textarea[readonly] {\n\
 </style>\n\
 </head>\n\
 <body>\n\
+<!-- utility2-comment\n\
+    <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
+utility2-comment -->\n\
     <h1>\n\
 <!-- utility2-comment\n\
-        <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
         <a\n\
-            {{#if envDict.npm_package_homepage}}\n\
-            href="{{envDict.npm_package_homepage}}"\n\
-            {{/if envDict.npm_package_homepage}}\n\
+            {{#if env.npm_package_homepage}}\n\
+            href="{{env.npm_package_homepage}}"\n\
+            {{/if env.npm_package_homepage}}\n\
             target="_blank"\n\
         >\n\
 utility2-comment -->\n\
-            {{envDict.npm_package_name}} v{{envDict.npm_package_version}}\n\
+            {{env.npm_package_name}} v{{env.npm_package_version}}\n\
 <!-- utility2-comment\n\
         </a>\n\
 utility2-comment -->\n\
     </h1>\n\
-    <h3>{{envDict.npm_package_description}}</h3>\n\
+    <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
     <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
     <button class="onclick" id="testRunButton1">run internal test</button><br>\n\
@@ -321,7 +327,7 @@ for (var n of fibonacci) {\n\
     {{#unless isRollup}}\n\
 utility2-comment -->\n\
     <script src="assets.utility2.rollup.js"></script>\n\
-    <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
+    <script src="jsonp.utility2._stateInit?callback=window.utility2._stateInit"></script>\n\
     <script src="assets.istanbul-lite.js"></script>\n\
     <script src="assets.lib.example.es6.js"></script>\n\
     <script src="assets.example.js"></script>\n\
@@ -334,7 +340,7 @@ utility2-comment -->\n\
 ';
         /* jslint-ignore-end */
         local['/'] = local.templateIndexHtml
-            .replace((/\{\{envDict\.(\w+?)\}\}/g), function (match0, match1) {
+            .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
                 // jslint-hack
                 String(match0);
                 switch (match1) {
@@ -346,7 +352,7 @@ utility2-comment -->\n\
                     return '0.0.1';
                 }
             });
-        if (module.isRollup) {
+        if (local.global.utility2_rollup) {
             break;
         }
         try {
@@ -354,7 +360,7 @@ utility2-comment -->\n\
         } catch (ignore) {
         }
         local['/assets.istanbul-lite.js'] = '//' + local.fs.readFileSync(
-            local.istanbul.__dirname + '/index.js',
+            local.istanbul.__dirname + '/lib.istanbul.js',
             'utf8'
         );
         local['/assets.lib.example.es6.js'] = local.istanbul.instrumentInPackage(
@@ -383,7 +389,7 @@ utility2-comment -->\n\
                 response.end();
             }
         }).listen(process.env.PORT);
-        // if $npm_config_timeout_exit is defined,
+        // if $npm_config_timeout_exit exists,
         // then exit this process after $npm_config_timeout_exit ms
         if (Number(process.env.npm_config_timeout_exit)) {
             setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));
@@ -406,7 +412,7 @@ utility2-comment -->\n\
 {
     "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "bin": { "istanbul-lite": "index.js" },
+    "bin": { "istanbul-lite": "lib.istanbul.js" },
     "description": "{{packageJson.description}}",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
@@ -422,6 +428,7 @@ utility2-comment -->\n\
         "web"
     ],
     "license": "MIT",
+    "main": "lib.istanbul",
     "name": "istanbul-lite",
     "os": ["darwin", "linux"],
     "repository" : {
@@ -436,7 +443,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.10.3"
+    "version": "2016.12.1"
 }
 ```
 
@@ -467,7 +474,7 @@ shBuildCiTestPre() {(set -e
 shBuildCiTestPost() {(set -e
 # this function will run the post-test build
     # if running legacy-node, then return
-    [ "$(node --version)" \< "v5.0" ] && return || true
+    [ "$(node --version)" \< "v7.0" ] && return || true
     export NODE_ENV=production
     # deploy app to gh-pages
     export TEST_URL="https://$(printf "$GITHUB_REPO" | \

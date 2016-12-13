@@ -18,7 +18,7 @@
     // run shared js-env code - pre-init
     (function () {
         // init Error.stackTraceLimit
-        Error.stackTraceLimit = 16;
+        Error.stackTraceLimit = 20;
         // init local
         local = {};
         // init modeJs
@@ -35,22 +35,24 @@
                     'node';
             }
         }());
+        // init global
+        local.global = local.modeJs === 'browser'
+            ? window
+            : global;
         switch (local.modeJs) {
         // re-init local from window.local
         case 'browser':
-            local = window.local;
-            local.utility2 = window.utility2;
+            local = local.global.utility2_rollup || local.global.local;
+            local.global.utility2.objectSetDefault(local, local.global.utility2);
             break;
         // re-init local from example.js
         case 'node':
-            local = (module.utility2 || require('utility2')).requireExampleJsFromReadme({
-                __dirname: __dirname,
-                module: module
-            });
-            local.utility2.assetsDict['/assets.lib.example.es6.js'] =
+            local = (local.global.utility2_rollup || require('utility2'))
+                .requireExampleJsFromReadme();
+            local.assetsDict['/assets.lib.example.es6.js'] =
                 local['/assets.lib.example.es6.js'];
             // test es6 handling-behavior
-            local.vm.runInThisContext(local.utility2.assetsDict['/assets.lib.example.es6.js']);
+            local.vm.runInThisContext(local.assetsDict['/assets.lib.example.es6.js']);
             break;
         }
     }());
@@ -59,61 +61,68 @@
 
     // run shared js-env code - function
     (function () {
-        // init tests
         local.testCase_istanbulCoverageReportCreate_default = function (options, onError) {
         /*
          * this function will test istanbulCoverageReportCreate's default handling-behavior
          */
-            local.utility2.testMock([
-                // suppress console.log
-                [console, { log: local.utility2.nop }],
-                // test $npm_config_mode_coverage_append handling-behavior
-                [local.utility2.envDict, { npm_config_mode_coverage_append: '1' }]
-            ], function (onError) {
+            options = [
+                [local.istanbul, { coverageMerge: local.echo }],
+                // test $npm_config_mode_coverage_merge handling-behavior
+                [local.env, { npm_config_mode_coverage_merge: '1' }]
+            ];
+            local.env.npm_config_mode_coverage_merge = '';
+            local.testMock(options, function (onError) {
                 /*jslint evil: true*/
-                // test no coverage handling-behavior
-                local.istanbul.coverageReportCreate({});
-                options = {};
-                options.coverage = local.global.__coverage__mock = {};
                 // cleanup old coverage
                 if (local.modeJs === 'node') {
-                    local.utility2.fsRmrSync('tmp/build/coverage.html/aa');
+                    local.fsRmrSync('tmp/build/coverage.html/aa');
                 }
                 // test path handling-behavior
-                ['/', local.utility2.__dirname].forEach(function (dir) {
-                    ['aa.js', 'aa/bb.js'].forEach(function (path) {
-                        // cover path
+                ['/', local.__dirname].forEach(function (dir) {
+                    [
+                        'zz.js',
+                        'aa/zz.js',
+                        'aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js'
+                    ].forEach(function (file) {
+                        // cover file
                         eval(local.istanbul.instrumentSync(
                             // test skip handling-behavior
                             'null',
-                            dir + '/' + path,
-                            '__coverage__mock'
+                            dir + '/' + file
                         ));
                     });
                 });
                 // create report with covered path
-                local.istanbul.coverageReportCreate(options);
+                local.istanbul.coverageReportCreate();
                 // test file-content handling-behavior
                 [
                     // test no content handling-behavior
                     '',
                     // test uncovereed-code handling-behavior
-                    'null && null',
+                    'null && null && null',
                     // test trailing-whitespace handling-behavior
                     'null ',
                     // test skip handling-behavior
                     '/* istanbul ignore next */\nnull && null'
                 ].forEach(function (content) {
-                    options = {};
-                    options.coverage = local.global.__coverage__mock = {};
+                    // cleanup
+                    local.tryCatchOnError(function () {
+                        Object.keys(local.global.__coverage__).forEach(function (file) {
+                            if (file.indexOf('zz.js') >= 0) {
+                                local.global.__coverage__[file] = null;
+                            }
+                        });
+                    }, local.nop);
                     // cover path
-                    eval(local.istanbul.instrumentSync(
-                        content,
-                        'aa.js',
-                        '__coverage__mock'
-                    ));
+                    eval(local.istanbul.instrumentSync(content, 'zz.js'));
                     // create report with covered content
-                    local.istanbul.coverageReportCreate(options);
+                    local.istanbul.coverageReportCreate();
+                });
+                // cleanup
+                Object.keys(local.global.__coverage__).forEach(function (file) {
+                    if (file.indexOf('zz.js') >= 0) {
+                        local.global.__coverage__[file] = null;
+                    }
                 });
                 onError();
             }, onError);
@@ -126,7 +135,7 @@
             options = {};
             options.data = local.istanbul.instrumentSync('1', 'test.js');
             // validate data
-            local.utility2.assert(options.data.indexOf(".s['1']++;1;\n") >= 0, options);
+            local.assert(options.data.indexOf(".s['1']++;1;\n") >= 0, options);
             onError();
         };
     }());
@@ -140,78 +149,8 @@
         /*
          * this function will test build's app handling-behavior
          */
-            var onParallel;
-            onParallel = local.utility2.onParallel(onError);
-            onParallel.counter += 1;
-            options = {};
-            options = [{
-                file: '/assets.app.js',
-                url: '/assets.app.js'
-            }, {
-                file: '/assets.app.min.js',
-                url: '/assets.app.min.js'
-            }, {
-                file: '/assets.example.js',
-                url: '/assets.example.js'
-            }, {
-                file: '/assets.' + local.utility2.envDict.npm_package_name + '.css',
-                url: '/assets.' + local.utility2.envDict.npm_package_name + '.css'
-            }, {
-                file: '/assets.' + local.utility2.envDict.npm_package_name + '.js',
-                url: '/assets.' + local.utility2.envDict.npm_package_name + '.js'
-            }, {
-                file: '/assets.' + local.utility2.envDict.npm_package_name + '.min.js',
-                transform: function (data) {
-                    return local.utility2.uglifyIfProduction(
-                        local.utility2.bufferToString(data)
-                    );
-                },
-                url: '/assets.' + local.utility2.envDict.npm_package_name + '.js'
-            }, {
-                file: '/assets.lib.example.es6.js',
-                url: '/assets.lib.example.es6.js'
-            }, {
-                file: '/assets.test.js',
-                url: '/assets.test.js'
-            }, {
-                file: '/assets.utility2.rollup.js',
-                url: '/assets.utility2.rollup.js'
-            }, {
-                file: '/index.html',
-                url: '/index.html'
-            }, {
-                file: '/jsonp.utility2.stateInit',
-                url: '/jsonp.utility2.stateInit?callback=window.utility2.stateInit'
-            }];
-            options.forEach(function (options) {
-                onParallel.counter += 1;
-                local.utility2.ajax(options, function (error, xhr) {
-                    onParallel.counter += 1;
-                    // validate no error occurred
-                    onParallel(error);
-                    switch (local.path.extname(options.file)) {
-                    case '.css':
-                    case '.js':
-                    case '.json':
-                        local.utility2.jslintAndPrintConditional(
-                            xhr.responseText,
-                            options.file
-                        );
-                        // validate no error occurred
-                        local.utility2.assert(
-                            !local.utility2.jslint.errorText,
-                            local.utility2.jslint.errorText
-                        );
-                        break;
-                    }
-                    local.utility2.fsWriteFileWithMkdirp(
-                        local.utility2.envDict.npm_config_dir_build + '/app' + options.file,
-                        (options.transform || local.utility2.echo)(xhr.response),
-                        onParallel
-                    );
-                });
-            });
-            onParallel();
+            options = [];
+            local.buildApp(options, onError);
         };
 
         local.testCase_build_doc = function (options, onError) {
@@ -219,92 +158,54 @@
          * this function will test build's doc handling-behavior
          */
             options = {};
-            local.utility2.onNext(options, function (error) {
-                switch (options.modeNext) {
-                case 1:
-                    options.moduleDict = {
-                        'istanbul-lite': {
-                            exampleList: [],
-                            exports: local.istanbul
-                        }
-                    };
-                    Object.keys(options.moduleDict).forEach(function (key) {
-                        options.moduleDict[key].example =
-                            options.moduleDict[key].exampleList
-                            .concat([
-                                'README.md',
-                                'test.js',
-                                'index.js'
-                            ])
-                            .map(function (file) {
-                                return '\n\n\n\n\n\n\n\n' +
-                                    local.fs.readFileSync(file, 'utf8') +
-                                    '\n\n\n\n\n\n\n\n';
-                            }).join('');
-                    });
-                    // create doc.api.html
-                    local.utility2.fsWriteFileWithMkdirp(
-                        local.utility2.envDict.npm_config_dir_build + '/doc.api.html',
-                        local.utility2.docApiCreate(options),
-                        options.onNext
-                    );
-                    break;
-                case 2:
-                    local.utility2.browserTest({
-                        modeBrowserTest: 'screenCapture',
-                        url: 'file://' + local.utility2.envDict.npm_config_dir_build +
-                            '/doc.api.html'
-                    }, options.onNext);
-                    break;
-                default:
-                    onError(error);
-                }
-            });
-            options.modeNext = 0;
-            options.onNext();
+            local.buildDoc(options, onError);
         };
 
-        local.testCase_coverageMerge_default = function (options, onError) {
+        local.testCase_istanbulCoverageMerge_default = function (options, onError) {
         /*
-         * this function will test coverageMerge's default handling-behavior
+         * this function will test istanbulCoverageMerge's default handling-behavior
          */
             options = {};
-            options.data = local.utility2.istanbulInstrumentSync(
+            options.data = local.istanbul.instrumentSync(
                 '(function () {\nreturn arg ' +
                     '? __coverage__ ' +
                     ': __coverage__;\n}());',
                 'test'
             );
-            local.utility2.arg = 0;
+            local.arg = 0;
             // test null-case handling-behavior
             options.coverage1 = null;
             options.coverage2 = null;
             local.istanbul.coverageMerge(options.coverage1, options.coverage2);
             // validate merged options.coverage1
-            local.utility2.assertJsonEqual(options.coverage1, null);
+            local.assertJsonEqual(options.coverage1, null);
+            options.coverage2 = { undefined: null };
+            local.istanbul.coverageMerge(options.coverage1, options.coverage2);
+            // validate merged options.coverage1
+            local.assertJsonEqual(options.coverage1, null);
             // init options.coverage1
             options.coverage1 = local.vm.runInNewContext(options.data, { arg: 0 });
 /* jslint-ignore-begin */
 // validate options.coverage1
-local.utility2.assertJsonEqual(options.coverage1,
+local.assertJsonEqual(options.coverage1,
 {"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 // test merge-create handling-behavior
 options.coverage1 = local.istanbul.coverageMerge({}, options.coverage1);
 // validate options.coverage1
-local.utility2.assertJsonEqual(options.coverage1,
+local.assertJsonEqual(options.coverage1,
 {"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 // init options.coverage2
 options.coverage2 = local.vm.runInNewContext(options.data, { arg: 1 });
 // validate options.coverage2
-local.utility2.assertJsonEqual(options.coverage2,
+local.assertJsonEqual(options.coverage2,
 {"/test":{"b":{"1":[1,0]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 // test merge-update handling-behavior
 local.istanbul.coverageMerge(options.coverage1, options.coverage2);
 // validate merged options.coverage1
-local.utility2.assertJsonEqual(options.coverage1,
+local.assertJsonEqual(options.coverage1,
 {"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 /* jslint-ignore-end */
@@ -315,11 +216,8 @@ local.utility2.assertJsonEqual(options.coverage1,
         /*
          * this function will test the webpage's default handling-behavior
          */
-            options = {
-                modeCoverageMerge: true,
-                url: local.utility2.serverLocalHost + '?modeTest=1'
-            };
-            local.utility2.browserTest(options, onError);
+            options = { modeCoverageMerge: true, url: local.serverLocalHost + '?modeTest=1' };
+            local.browserTest(options, onError);
         };
         break;
     }
@@ -330,65 +228,15 @@ local.utility2.assertJsonEqual(options.coverage1,
     // run browser js-env code - post-init
     case 'browser':
         // run tests
-        local.utility2.nop(
-            local.utility2.modeTest && document.querySelector('#testRunButton1').click()
-        );
+        local.nop(local.modeTest && document.querySelector('#testRunButton1').click());
         break;
 
 
 
-    /* istanbul ignore next */
     // run node js-env code - post-init
     case 'node':
         // run test-server
-        local.utility2.testRunServer(local);
-        // init repl debugger
-        local.utility2.replStart();
-        /* istanbul ignore next */
-        if (module !== require.main || module.isRollup) {
-            break;
-        }
-        // init assets
-        local.utility2.assetsDict['/assets.app.js'] = [
-            'header',
-            '/assets.utility2.rollup.js',
-            'local.utility2.stateInit',
-            '/assets.istanbul-lite.js',
-            '/assets.example.js',
-            '/assets.test.js'
-        ].map(function (key) {
-            switch (key) {
-/* jslint-ignore-begin */
-case 'header':
-return '\
-/*\n\
-assets.app.js\n\
-\n' + local.utility2.envDict.npm_package_description + '\n\
-\n\
-instruction\n\
-    1. save this script as assets.app.js\n\
-    2. run the shell command:\n\
-        $ PORT=8081 node assets.app.js\n\
-    3. open a browser to http://localhost:8081\n\
-    4. edit or paste script in browser to cover and eval\n\
-*/\n\
-';
-/* jslint-ignore-end */
-            case 'local.utility2.stateInit':
-                return '// ' + key + '\n' +
-                    local.utility2.assetsDict['/assets.utility2.rollup.content.js']
-                    .replace(
-                        '/* utility2.rollup.js content */',
-                        key + '(' + JSON.stringify(
-                            local.utility2.middlewareJsonpStateInit({ stateInit: true })
-                        ) + ');'
-                    );
-            default:
-                return '// ' + key + '\n' + local.utility2.assetsDict[key];
-            }
-        }).join('\n\n\n\n');
-        local.utility2.assetsDict['/assets.app.min.js'] =
-            local.utility2.uglifyIfProduction(local.utility2.assetsDict['/assets.app.js']);
+        local.testRunServer(local);
         break;
     }
 }());

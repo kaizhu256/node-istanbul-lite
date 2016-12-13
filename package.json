@@ -1,7 +1,7 @@
 {
     "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "bin": { "istanbul-lite": "index.js" },
+    "bin": { "istanbul-lite": "lib.istanbul.js" },
     "description": "this zero-dependency package will provide a browser-compatible version of the istanbul coverage-tool",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
@@ -17,6 +17,7 @@
         "web"
     ],
     "license": "MIT",
+    "main": "lib.istanbul",
     "name": "istanbul-lite",
     "os": ["darwin", "linux"],
     "repository" : {
@@ -31,5 +32,5 @@
 
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.10.3"
+    "version": "2016.12.1"
 }

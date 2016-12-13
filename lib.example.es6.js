@@ -9,7 +9,7 @@ var echo = function (arg) {
     try {
         fnc();
     } catch (errorCaught) {
-        console.error(errorCaught);
+        console.error(errorCaught.stack);
     }
 };
 // coverage-hack
