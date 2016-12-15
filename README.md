@@ -30,15 +30,11 @@ this zero-dependency package will provide a browser-compatible version of the is
 [![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
 
 #### todo
-- reduce lib.istanbul.js file-size
 - none
 
-#### change since 1f0af611
-- npm publish 2016.12.1
-- re-uglify lib.istanbul.js
-- globalize local.codeDict to global.__coverageCodeDict__
-- add in-file config-var /* istanbul ignore all */ to ignore the file
-- rename file index.js -> lib.istanbul.js
+#### change since 426aa89c
+- npm publish 2016.12.2
+- fix color regression bug in text-report
 - none
 
 #### this package requires
@@ -443,7 +439,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.12.1"
+    "version": "2016.12.2"
 }
 ```
 
