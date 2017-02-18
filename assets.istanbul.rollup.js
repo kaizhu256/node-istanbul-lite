@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+///usr/bin/env node
 /* istanbul instrument in package istanbul-lite */
 /*jslint
     bitwise: true,
@@ -18,12 +18,8 @@
 
     // run shared js-env code - pre-init
     (function () {
-        // jslint-hack
-        local.nop(__dirname);
+        // init var
         __dirname = '';
-        /* istanbul ignore next */
-        local.global.__coverageCodeDict__ = local.global.__coverageCodeDict__ || {};
-        local['./package.json'] = {};
         process = local.modeJs === 'browser'
             ? {
                 cwd: function () {
@@ -38,6 +34,12 @@
             } catch (ignore) {
             }
         };
+        // jslint-hack
+        local.nop(__dirname);
+        // init local properties
+        local['./package.json'] = {};
+        /* istanbul ignore next */
+        local.global.__coverageCodeDict__ = local.global.__coverageCodeDict__ || {};
     }());
 
 
@@ -193,9 +195,18 @@
             }
             if (local.modeJs === 'node' && process.env.npm_package_homepage) {
                 file = file
-                    .replace('{{env.npm_package_homepage}}', process.env.npm_package_homepage)
-                    .replace('{{env.npm_package_name}}', process.env.npm_package_name)
-                    .replace('{{env.npm_package_version}}', process.env.npm_package_version);
+                    .replace(
+                        '{{env.npm_package_homepage}}',
+                        process.env.npm_package_homepage
+                    )
+                    .replace(
+                        '{{env.npm_package_name}}',
+                        process.env.npm_package_name
+                    )
+                    .replace(
+                        '{{env.npm_package_version}}',
+                        process.env.npm_package_version
+                    );
             } else {
                 file = file.replace((/<h1 [\S\s]*<\/h1>/), '<h1>&nbsp;</h1>');
             }

@@ -2,7 +2,7 @@ istanbul-lite
 =============
 this zero-dependency package will provide a browser-compatible version of the istanbul coverage-tool
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![istanbul-coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/index.html)
 
 [![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
 
@@ -11,30 +11,33 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 
 # cdn download
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.js)
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul-lite.min.js)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul.rollup.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul.rollup.js)
 
 
 
 # live demo
 - [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
 
-[![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.githubDeploy.browser._2Fnode-istanbul-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
+[![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.deployGithub.browser._2Fnode-istanbul-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html)
 
 
 
 # documentation
 #### api-doc
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/api-doc.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/api-doc.html)
 
-[![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/doc.api.html)
+[![api-doc](https://kaizhu256.github.io/node-istanbul-lite/build/screen-capture.apiDoc.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-istanbul-lite_2Ftmp_2Fbuild_2Fapi-doc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/api-doc.html)
 
 #### todo
+- remove instrumentation from rollup
 - none
 
-#### change since 426aa89c
-- npm publish 2016.12.2
-- fix color regression bug in text-report
+#### change since 62f37bbe
+- npm publish 2017.2.18
+- add file assets.istanbul.rollup.js
+- add heroku-postbuild npm-script
+- do not auto-uglify js-assets in production
+- revamp README.md
 - none
 
 #### this package requires
@@ -45,15 +48,15 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 
 
-# build-status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+# build status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 [![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 | git-branch : | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
 |--:|:--|:--|:--|
 | test-server-1 : | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/app/index.html)|
-| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://hrku01-istanbul-lite-alpha.herokuapp.com)|
+| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-alpha.herokuapp.com)|
 | test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html)|
-| coverage : | [![istanbul coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
+| coverage : | [![istanbul-coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul-coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul-coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 #### master branch
@@ -80,18 +83,17 @@ this zero-dependency package will provide a browser-compatible version of the is
 /*
 example.js
 
-this script will will demo the browser-version of istanbul
+this script will demo the browser-version of istanbul
 
 instruction
     1. save this script as example.js
     2. run the shell command:
-        $ npm install istanbul-lite && \
-            export PORT=8081 && \
-            node example.js
-    3. play with the browser-demo on http://localhost:8081
+        $ npm install istanbul-lite && PORT=8081 node example.js
+    3. play with the browser-demo on http://127.0.0.1:8081
 */
 
-/* istanbul instrument in package istanbul-lite */
+
+
 /*jslint
     bitwise: true,
     browser: true,
@@ -143,7 +145,6 @@ instruction
 
     // run browser js-env code - post-init
     case 'browser':
-        /* istanbul ignore next */
         local.testRun = function (event) {
             switch (event && event.currentTarget.id) {
             case 'testRunButton1':
@@ -214,7 +215,6 @@ instruction
 
 
 
-    /* istanbul ignore next */
     // run node js-env code - post-init
     case 'node':
         // export local
@@ -222,38 +222,40 @@ instruction
         // require modules
         local.fs = require('fs');
         local.http = require('http');
-        local.path = require('path');
         local.url = require('url');
-        local.vm = require('vm');
         // init assets
+        local.assetsDict = local.assetsDict || {};
         /* jslint-ignore-begin */
-        local.templateIndexHtml = '\
+        local.assetsDict['/assets.index.template.html'] = '\
 <!doctype html>\n\
 <html lang="en">\n\
 <head>\n\
 <meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
-<title>{{env.npm_package_name}} v{{env.npm_package_version}}</title>\n\
+<title>{{env.npm_package_nameAlias}} v{{env.npm_package_version}}</title>\n\
 <style>\n\
 /*csslint\n\
     box-sizing: false,\n\
-    ids: false,\n\
     universal-selector: false\n\
 */\n\
 * {\n\
     box-sizing: border-box;\n\
 }\n\
 body {\n\
-    background: #fff;\n\
+    background: #dde;\n\
     font-family: Arial, Helvetica, sans-serif;\n\
-    margin: 1rem;\n\
+    margin: 2rem;\n\
 }\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
 }\n\
+</style>\n\
+<style>\n\
+/*csslint\n\
+*/\n\
 textarea {\n\
     font-family: monospace;\n\
-    height: 16rem;\n\
+    height: 15rem;\n\
     width: 100%;\n\
 }\n\
 textarea[readonly] {\n\
@@ -274,7 +276,7 @@ utility2-comment -->\n\
             target="_blank"\n\
         >\n\
 utility2-comment -->\n\
-            {{env.npm_package_name}} v{{env.npm_package_version}}\n\
+            {{env.npm_package_nameAlias}} v{{env.npm_package_version}}\n\
 <!-- utility2-comment\n\
         </a>\n\
 utility2-comment -->\n\
@@ -283,8 +285,8 @@ utility2-comment -->\n\
 <!-- utility2-comment\n\
     <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
     <button class="onclick" id="testRunButton1">run internal test</button><br>\n\
-utility2-comment -->\n\
     <div id="testReportDiv1" style="display: none;"></div>\n\
+utility2-comment -->\n\
 \n\
     <label>edit or paste script below to cover and eval</label>\n\
 <textarea class="onkeyup" id="inputTextarea1">\n\
@@ -311,7 +313,7 @@ for (var n of fibonacci) {\n\
     console.log(n);\n\
 }\n\
 </textarea>\n\
-    <label>instrumented code</label>\n\
+    <label>instrumented-code</label>\n\
     <textarea id="outputTextarea1" readonly></textarea>\n\
     <label>stderr and stdout</label>\n\
     <textarea id="outputTextarea2" readonly></textarea>\n\
@@ -319,12 +321,12 @@ for (var n of fibonacci) {\n\
     <div class="istanbulCoverageDiv"></div>\n\
 <!-- utility2-comment\n\
     {{#if isRollup}}\n\
-    <script src="assets.app.min.js"></script>\n\
+    <script src="assets.app.js"></script>\n\
     {{#unless isRollup}}\n\
 utility2-comment -->\n\
     <script src="assets.utility2.rollup.js"></script>\n\
     <script src="jsonp.utility2._stateInit?callback=window.utility2._stateInit"></script>\n\
-    <script src="assets.istanbul-lite.js"></script>\n\
+    <script src="assets.istanbul.rollup.js"></script>\n\
     <script src="assets.lib.example.es6.js"></script>\n\
     <script src="assets.example.js"></script>\n\
     <script src="assets.test.js"></script>\n\
@@ -335,61 +337,64 @@ utility2-comment -->\n\
 </html>\n\
 ';
         /* jslint-ignore-end */
-        local['/'] = local.templateIndexHtml
-            .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
-                // jslint-hack
-                String(match0);
-                switch (match1) {
-                case 'npm_package_description':
-                    return 'example module';
-                case 'npm_package_name':
-                    return 'example';
-                case 'npm_package_version':
-                    return '0.0.1';
+        if (local.templateRender) {
+            local.assetsDict['/'] = local.templateRender(
+                local.assetsDict['/assets.index.template.html'],
+                {
+                    env: local.objectSetDefault(local.env, {
+                        npm_package_description: 'example module',
+                        npm_package_nameAlias: 'example',
+                        npm_package_version: '0.0.1'
+                    })
                 }
-            });
-        if (local.global.utility2_rollup) {
-            break;
+            );
+        } else {
+            local.assetsDict['/'] = local.assetsDict['/assets.index.template.html']
+                .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
+                    // jslint-hack
+                    String(match0);
+                    switch (match1) {
+                    case 'npm_package_description':
+                        return 'example module';
+                    case 'npm_package_nameAlias':
+                        return 'example';
+                    case 'npm_package_version':
+                        return '0.0.1';
+                    }
+                });
         }
-        try {
-            local['/assets.example.js'] = local.fs.readFileSync(__filename, 'utf8');
-        } catch (ignore) {
-        }
-        local['/assets.istanbul-lite.js'] = '//' + local.fs.readFileSync(
-            local.istanbul.__dirname + '/lib.istanbul.js',
-            'utf8'
-        );
-        local['/assets.lib.example.es6.js'] = local.istanbul.instrumentInPackage(
-            local.fs.readFileSync(
-                local.istanbul.__dirname + '/lib.example.es6.js',
-                'utf8'
-            ),
-            local.istanbul.__dirname + '/lib.example.es6.js'
-        );
         // run the cli
-        if (module !== require.main) {
+        if (local.global.utility2_rollup || module !== require.main) {
             break;
         }
-        // start server
-        console.log('server starting on port ' + process.env.PORT);
-        local.http.createServer(function (request, response) {
-            switch (local.url.parse(request.url).pathname) {
-            case '/':
-            case '/assets.example.js':
-            case '/assets.istanbul-lite.js':
-            case '/assets.lib.example.es6.js':
-            case '/assets.test.js':
-                response.end(local[local.url.parse(request.url).pathname]);
-                break;
-            default:
-                response.end();
-            }
-        }).listen(process.env.PORT);
+        local.assetsDict['/assets.example.js'] = local.assetsDict['/assets.example.js'] ||
+            local.fs.readFileSync(__filename, 'utf8');
+        local.assetsDict['/assets.istanbul.rollup.js'] =
+            local.assetsDict['/assets.istanbul.rollup.js'] || local.fs.readFileSync(
+                local.istanbul.__dirname + '/lib.istanbul.js',
+                'utf8'
+            ).replace((/^#!/), '//');
+        local.assetsDict['/favicon.ico'] = local.assetsDict['/favicon.ico'] || '';
         // if $npm_config_timeout_exit exists,
         // then exit this process after $npm_config_timeout_exit ms
         if (Number(process.env.npm_config_timeout_exit)) {
             setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));
         }
+        // start server
+        if (local.global.utility2_serverHttp1) {
+            break;
+        }
+        process.env.PORT = process.env.PORT || '8081';
+        console.log('server starting on port ' + process.env.PORT);
+        local.http.createServer(function (request, response) {
+            request.urlParsed = local.url.parse(request.url);
+            if (local.assetsDict[request.urlParsed.pathname] !== undefined) {
+                response.end(local.assetsDict[request.urlParsed.pathname]);
+                return;
+            }
+            response.statusCode = 404;
+            response.end();
+        }).listen(process.env.PORT);
         break;
     }
 }());
@@ -406,40 +411,50 @@ utility2-comment -->\n\
 # package.json
 ```json
 {
-    "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "bin": { "istanbul-lite": "lib.istanbul.js" },
-    "description": "{{packageJson.description}}",
+    "bin": {
+        "istanbul-lite": "lib.istanbul.js"
+    },
+    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul coverage-tool",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
     },
-    "engines": { "node": ">=4.0" },
+    "engines": {
+        "node": ">=4.0"
+    },
     "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
         "browser",
-        "code", "cover", "coverage",
-        "instrument", "istanbul",
-        "jscover", "jscoverage",
+        "code",
+        "cover",
+        "coverage",
+        "instrument",
+        "istanbul",
+        "jscover",
+        "jscoverage",
         "web"
     ],
     "license": "MIT",
-    "main": "lib.istanbul",
+    "main": "lib.istanbul.js",
     "name": "istanbul-lite",
-    "os": ["darwin", "linux"],
-    "repository" : {
-        "type" : "git",
-        "url" : "https://github.com/kaizhu256/node-istanbul-lite.git"
+    "nameAlias": "istanbul",
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
-        "start": "\
-export PORT=${PORT:-8080} && \
-export npm_config_mode_auto_restart=1 && \
-utility2 shRun shIstanbulCover test.js",
+        "heroku-postbuild": "npm install 'kaizhu256/node-utility2#alpha' && utility2 shRun shDeployHeroku",
+        "postinstall": "if [ -f lib.istanbul-lite.npm-scripts.sh ]; then ./lib.istanbul-lite.npm-scripts.sh postinstall; fi",
+        "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.12.2"
+    "version": "2017.2.18"
 }
 ```
 
@@ -457,48 +472,6 @@ utility2 shRun shIstanbulCover test.js",
 
 # this shell script will run the build for this package
 
-shBuildCiTestPre() {(set -e
-# this function will run the pre-test build
-    # test example.js
-    (export MODE_BUILD=testExampleJs &&
-        shRunScreenCapture shReadmeTestJs example.js) || return $?
-    # test published-package
-    (export MODE_BUILD=npmTestPublished &&
-        shRunScreenCapture shNpmTestPublished) || return $?
-)}
-
-shBuildCiTestPost() {(set -e
-# this function will run the post-test build
-    # if running legacy-node, then return
-    [ "$(node --version)" \< "v7.0" ] && return || true
-    export NODE_ENV=production
-    # deploy app to gh-pages
-    export TEST_URL="https://$(printf "$GITHUB_REPO" | \
-        sed 's/\//.github.io\//')/build..$CI_BRANCH..travis-ci.org/app/index.html"
-    (export MODE_BUILD=githubDeploy &&
-        shGithubDeploy) || return $?
-    # test deployed app to gh-pages
-    (export MODE_BUILD=githubTest &&
-        export modeBrowserTest=test &&
-        export url="$TEST_URL?modeTest=1&timeExit={{timeExit}}" &&
-        shBrowserTest) || return $?
-    # deploy app to heroku
-    export HEROKU_REPO="hrku01-$npm_package_name-$CI_BRANCH"
-    export TEST_URL="https://$HEROKU_REPO.herokuapp.com"
-    shGitRepoBranchUpdateLocal() {(set -e
-    # this function will local-update git-repo-branch
-        cp "$npm_config_dir_build/app/assets.app.js" .
-        printf "web: npm_config_mode_backend=1 node assets.app.js" > Procfile
-    )}
-    (export MODE_BUILD=herokuDeploy &&
-        shHerokuDeploy) || return $?
-    # test deployed app to heroku
-    (export MODE_BUILD=herokuTest &&
-        export modeBrowserTest=test &&
-        export url="$TEST_URL?modeTest=1&timeExit={{timeExit}}" &&
-        shBrowserTest) || return $?
-)}
-
 shBuild() {(set -e
 # this function will run the main build
     # init env
@@ -515,5 +488,25 @@ shBuild() {(set -e
         shBuildCiDefault
     fi
 )}
+
+shBuildCiTestPost() {(set -e
+# this function will run the post-test build
+    # if running legacy-node, then return
+    [ "$(node --version)" \< "v7.0" ] && return || true
+    export NODE_ENV=production
+    # deploy app to gh-pages
+    (export MODE_BUILD=deployGithub && shDeployGithub) || return $?
+    # deploy app to heroku
+    (export MODE_BUILD=deployHeroku && shDeployHeroku) || return $?
+)}
+
+shBuildCiTestPre() {(set -e
+# this function will run the pre-test build
+    # test example.js
+    (export MODE_BUILD=testExampleJs && shRunScreenCapture shReadmeTestExampleJs) || return $?
+    # test published-package
+    (export MODE_BUILD=npmTestPublished && shRunScreenCapture shNpmTestPublished) || return $?
+)}
+
 shBuild
 ```
