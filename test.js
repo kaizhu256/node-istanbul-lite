@@ -1,4 +1,4 @@
-/* istanbul instrument in package istanbul-lite */
+/* istanbul instrument in package istanbul */
 /*jslint
     bitwise: true,
     browser: true,

@@ -1,5 +1,5 @@
 ///usr/bin/env node
-/* istanbul instrument in package istanbul-lite */
+/* istanbul instrument in package istanbul */
 /*jslint
     bitwise: true,
     browser: true,
@@ -18,8 +18,12 @@
 
     // run shared js-env code - pre-init
     (function () {
-        // init var
+        // jslint-hack
+        local.nop(__dirname);
         __dirname = '';
+        /* istanbul ignore next */
+        local.global.__coverageCodeDict__ = local.global.__coverageCodeDict__ || {};
+        local['./package.json'] = {};
         process = local.modeJs === 'browser'
             ? {
                 cwd: function () {
@@ -34,12 +38,6 @@
             } catch (ignore) {
             }
         };
-        // jslint-hack
-        local.nop(__dirname);
-        // init local properties
-        local['./package.json'] = {};
-        /* istanbul ignore next */
-        local.global.__coverageCodeDict__ = local.global.__coverageCodeDict__ || {};
     }());
 
 
@@ -129,15 +127,15 @@
             }
             // init writer
             local.coverageReportHtml = '';
-            local.coverageReportHtml +=
-                '<div style="background: #fff; border: 1px solid #000; margin 0; padding: 0;">';
+            local.coverageReportHtml += '<div class="coverageReportDiv">\n' +
+                '<h1>coverage report</h1>\n' +
+                '<div ' +
+                'style="background: #fff; border: 1px solid #000; margin 0; padding: 0;">\n';
             local.writerData = '';
             options.sourceStore = {};
             options.writer = local.writer;
             // 1. print coverage in text-format to stdout
-            if (local.modeJs === 'node') {
-                new local.TextReport(options).writeReport(local.collector);
-            }
+            new local.TextReport(options).writeReport(local.collector);
             // 2. write coverage in html-format to filesystem
             new local.HtmlReport(options).writeReport(local.collector);
             local.writer.writeFile('', local.nop);
@@ -167,11 +165,7 @@
             );
             console.log('created coverage file://' + options.dir + '/index.html');
             // 3. return coverage in html-format as a single document
-            if (local.modeJs === 'browser' && document.querySelector('.istanbulCoverageDiv')) {
-                document.querySelector('.istanbulCoverageDiv').innerHTML =
-                    local.coverageReportHtml;
-            }
-            local.coverageReportHtml += '</div>';
+            local.coverageReportHtml += '</div>\n</div>\n';
             return local.coverageReportHtml;
         };
 
@@ -195,18 +189,9 @@
             }
             if (local.modeJs === 'node' && process.env.npm_package_homepage) {
                 file = file
-                    .replace(
-                        '{{env.npm_package_homepage}}',
-                        process.env.npm_package_homepage
-                    )
-                    .replace(
-                        '{{env.npm_package_name}}',
-                        process.env.npm_package_name
-                    )
-                    .replace(
-                        '{{env.npm_package_version}}',
-                        process.env.npm_package_version
-                    );
+                    .replace('{{env.npm_package_homepage}}', process.env.npm_package_homepage)
+                    .replace('{{env.npm_package_nameAlias}}', process.env.npm_package_nameAlias)
+                    .replace('{{env.npm_package_version}}', process.env.npm_package_version);
             } else {
                 file = file.replace((/<h1 [\S\s]*<\/h1>/), '<h1>&nbsp;</h1>');
             }
@@ -221,14 +206,14 @@
         local.instrumentInPackage = function (code, file) {
         /*
          * this function will instrument the code
-         * only if the macro /\* istanbul instrument in package $npm_package_name *\/
+         * only if the macro /\* istanbul instrument in package $npm_package_nameAlias *\/
          * exists in the code
          */
             return process.env.npm_config_mode_coverage &&
                 code.indexOf('/* istanbul ignore all */\n') < 0 && (
                     process.env.npm_config_mode_coverage === 'all' ||
                     code.indexOf('/* istanbul instrument in package ' +
-                            process.env.npm_package_name + ' */\n') >= 0 ||
+                            process.env.npm_package_nameAlias + ' */\n') >= 0 ||
                     code.indexOf('/* istanbul instrument in package ' +
                             process.env.npm_config_mode_coverage + ' */\n') >= 0
                 )
@@ -251,7 +236,7 @@
             return new local.Instrumenter({
                 embedSource: true,
                 noAutoWrap: true
-            }).instrumentSync(code, file);
+            }).instrumentSync(code, file).trimLeft();
         };
         local.util = { inherits: local.nop };
     }());
@@ -1959,7 +1944,7 @@ local['./common/defaults'] = module.exports; }());
 local['foot.txt'] = '\
 </div>\n\
 <div class="footer">\n\
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at {{datetime}}</div>\n\
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at {{datetime}}</div>\n\
 </div>\n\
 </body>\n\
 </html>\n\
@@ -2164,7 +2149,7 @@ local['head.txt'] = '\
 <body>\n\
 <div class="header {{reportClass}}">\n\
     <h1 style="font-weight: bold;">\n\
-        <a href="{{env.npm_package_homepage}}">{{env.npm_package_name}} v{{env.npm_package_version}}</a>\n\
+        <a href="{{env.npm_package_homepage}}">{{env.npm_package_nameAlias}} v{{env.npm_package_version}}</a>\n\
     </h1>\n\
     <h1>Code coverage report for <span class="entity">{{entity}}</span></h1>\n\
     <h2>\n\
@@ -2467,13 +2452,14 @@ local.templateCoverageBadgeSvg =
             // transparently adds coverage information to a node command
             case 'cover':
                 try {
-                    process.env.npm_package_name = process.env.npm_package_name || JSON.parse(
-                        local._fs.readFileSync('package.json', 'utf8')
-                    ).name;
+                    process.env.npm_package_nameAlias = process.env.npm_package_nameAlias ||
+                        JSON.parse(local._fs.readFileSync('package.json', 'utf8')).nameAlias ||
+                        JSON.parse(local._fs.readFileSync('package.json', 'utf8')).name;
                 } catch (ignore) {
                 }
                 process.env.npm_config_mode_coverage = process.env.npm_config_mode_coverage ||
-                    process.env.npm_package_name || 'all';
+                    process.env.npm_package_nameAlias ||
+                    'all';
                 // add coverage hook to require
                 local._moduleExtensionsJs = local.module._extensions['.js'];
                 local.module._extensions['.js'] = function (module, file) {
