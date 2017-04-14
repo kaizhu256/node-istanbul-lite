@@ -21,13 +21,13 @@
         "istanbul",
         "jscover",
         "jscoverage",
-        "test-coverage",
-        "web"
+        "test-coverage"
     ],
     "license": "MIT",
     "main": "lib.istanbul.js",
     "name": "istanbul-lite",
     "nameAlias": "istanbul",
+    "nameAliasDeprecate": "istanbul_lite",
     "nameOriginal": "istanbul-lite",
     "os": [
         "darwin",
@@ -38,13 +38,12 @@
         "url": "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build-ci": "utility2 shRun shReadmeBuild",
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "npm install 'kaizhu256/node-utility2#alpha' && utility2 shRun shDeployHeroku",
-        "postinstall": "if [ -f lib.istanbul-lite.npm-scripts.sh ]; then ./lib.istanbul-lite.npm-scripts.sh postinstall; fi",
-        "publish-alias": "VERSION=$(npm info $npm_package_name version); for ALIAS in istanbul_lite; do utility2 shRun shNpmPublishAs . $ALIAS $VERSION; utility2 shRun shNpmTestPublished $ALIAS || exit $?; done",
-        "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
-        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
+        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
+        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
+        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
-    "version": "2017.2.28"
+    "version": "2017.4.14"
 }

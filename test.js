@@ -143,17 +143,17 @@
 
     // run node js-env code - function
     case 'node':
-        local.testCase_buildApiDoc_default = function (options, onError) {
+        local.testCase_buildApidoc_default = function (options, onError) {
         /*
-         * this function will test buildApiDoc's handling-behavior
+         * this function will test buildApidoc's default handling-behavior-behavior
          */
             options = {};
-            local.buildApiDoc(options, onError);
+            local.buildApidoc(options, onError);
         };
 
         local.testCase_buildApp_default = function (options, onError) {
         /*
-         * this function will test buildApp's handling-behavior
+         * this function will test buildApp's default handling-behavior-behavior
          */
             local.testCase_buildReadme_default(options, local.onErrorDefault);
             options = [];
@@ -162,17 +162,17 @@
 
         local.testCase_buildReadme_default = function (options, onError) {
         /*
-         * this function will test buildReadme's handling-behavior
+         * this function will test buildReadme's default handling-behavior-behavior
          */
             options = {};
             options.customize = function () {
-                // search-and-replace - customize readmeTo
+                // search-and-replace - customize dataTo
                 [
                     // customize quickstart-html-script
                     (/<script [^`]*?<\/body>/)
                 ].forEach(function (rgx) {
-                    options.readmeFrom.replace(rgx, function (match0) {
-                        options.readmeTo = options.readmeTo.replace(rgx, match0);
+                    options.dataFrom.replace(rgx, function (match0) {
+                        options.dataTo = options.dataTo.replace(rgx, match0);
                     });
                 });
             };
@@ -232,7 +232,7 @@ local.assertJsonEqual(options.coverage1,
 
         local.testCase_webpage_default = function (options, onError) {
         /*
-         * this function will test the webpage's default handling-behavior
+         * this function will test webpage's default handling-behavior
          */
             options = { modeCoverageMerge: true, url: local.serverLocalHost + '?modeTest=1' };
             local.browserTest(options, onError);
