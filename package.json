@@ -3,7 +3,7 @@
     "bin": {
         "istanbul-lite": "lib.istanbul.js"
     },
-    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul coverage-tool",
+    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul v0.4.5 coverage-tool",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -27,7 +27,6 @@
     "main": "lib.istanbul.js",
     "name": "istanbul-lite",
     "nameAlias": "istanbul",
-    "nameAliasDeprecate": "istanbul_lite",
     "nameOriginal": "istanbul-lite",
     "os": [
         "darwin",
@@ -40,10 +39,10 @@
     "scripts": {
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
-        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
-        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
-        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+        "heroku-postbuild": "npm install \"kaizhu256/node-utility2#alpha\" && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.4.14"
+    "version": "2017.5.27"
 }
