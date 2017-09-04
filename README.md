@@ -1,7 +1,9 @@
 # istanbul-lite
 this zero-dependency package will provide a browser-compatible version of the istanbul v0.4.5 coverage-tool
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-utility2/build/coverage.badge.svg)](https://kaizhu256.github.io/node-utility2/build/coverage.html/index.html)
+[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
+
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html) [![snyk.io vulnerabilities](https://snyk.io/test/github/kaizhu256/node-istanbul-lite/badge.svg)](https://snyk.io/test/github/kaizhu256/node-istanbul-lite)
 
 [![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
 
@@ -27,7 +29,7 @@ this zero-dependency package will provide a browser-compatible version of the is
 1. [documentation](#documentation)
 1. [quickstart standalone app](#quickstart-standalone-app)
 1. [quickstart example.js](#quickstart-examplejs)
-1. [all screenshots](#all-screenshots)
+1. [extra screenshots](#extra-screenshots)
 1. [package.json](#packagejson)
 1. [changelog of last 50 commits](#changelog-of-last-50-commits)
 1. [internal build script](#internal-build-script)
@@ -43,7 +45,7 @@ this zero-dependency package will provide a browser-compatible version of the is
 # live demo
 - [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
 
-[![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
+[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
 
 
 
@@ -56,16 +58,11 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog for v2017.5.27
-- npm publish 2017.5.27
-- deduplicate file assets.istanbul.rollup.js
-- merge file lib.example.es6.js into test.js
-- upgrade to esprima v2.7.3
-- upgrade to escodegen v1.8.1
-- upgrade to istanbul v0.4.5
-- add README section 'all screenshots'
-- add README section 'quickstart standalone app'
-- auto-create README section 'table of contents'
+#### changelog for v2017.9.1
+- npm publish 2017.9.1
+- add cli help command
+- normalize local.fs module hook
+- update README.md
 - none
 
 #### this package requires
@@ -109,13 +106,14 @@ node ./assets.app.js
 /*
 example.js
 
-this script will create a web demo of istanbul-lite
+this script will run a web demo of istanbul-lite
 
 instruction
     1. save this script as example.js
     2. run the shell command:
         $ npm install istanbul-lite && PORT=8081 node example.js
     3. open a browser to http://127.0.0.1:8081 and play with the web demo
+    4. edit this script to suit your needs
 */
 
 
@@ -197,15 +195,15 @@ instruction
             switch (event && event.currentTarget && event.currentTarget.id) {
             case 'testRunButton1':
                 // show tests
-                if (document.querySelector('#testReportDiv1').style.display === 'none') {
-                    document.querySelector('#testReportDiv1').style.display = 'block';
+                if (document.querySelector('#testReportDiv1').style.maxHeight === '0px') {
+                    local.uiAnimateSlideDown(document.querySelector('#testReportDiv1'));
                     document.querySelector('#testRunButton1').textContent =
                         'hide internal test';
                     local.modeTest = true;
                     local.testRunDefault(local);
                 // hide tests
                 } else {
-                    document.querySelector('#testReportDiv1').style.display = 'none';
+                    local.uiAnimateSlideUp(document.querySelector('#testReportDiv1'));
                     document.querySelector('#testRunButton1').textContent = 'run internal test';
                 }
                 break;
@@ -284,10 +282,12 @@ instruction
     case 'node':
         // init exports
         module.exports = local;
-        // require modules
-        local.fs = require('fs');
-        local.http = require('http');
-        local.url = require('url');
+        // require builtins
+        Object.keys(process.binding('natives')).forEach(function (key) {
+            if (!local[key] && !(/\/|^_|^sys$/).test(key)) {
+                local[key] = require(key);
+            }
+        });
         // init assets
         local.assetsDict = local.assetsDict || {};
         /* jslint-ignore-begin */
@@ -297,6 +297,7 @@ instruction
 <head>\n\
 <meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
+<!-- "assets.index.default.template.html" -->\n\
 <title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
 /*csslint\n\
@@ -314,9 +315,26 @@ body {\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
 }\n\
+body > button {\n\
+    width: 20rem;\n\
+}\n\
+button {\n\
+    cursor: pointer;\n\
+}\n\
+.uiAnimateSlide {\n\
+    overflow-y: hidden;\n\
+    transition: border-bottom 250ms, border-top 250ms, margin-bottom 250ms, margin-top 250ms, max-height 250ms, min-height 250ms, padding-bottom 250ms, padding-top 250ms;\n\
+}\n\
 .utility2FooterDiv {\n\
     margin-top: 20px;\n\
     text-align: center;\n\
+}\n\
+.zeroPixel {\n\
+    border: 0;\n\
+    height: 0;\n\
+    margin: 0;\n\
+    padding: 0;\n\
+    width: 0;\n\
 }\n\
 </style>\n\
 <style>\n\
@@ -334,7 +352,32 @@ textarea[readonly] {\n\
 </head>\n\
 <body>\n\
 <!-- utility2-comment\n\
-<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; width: 25%;"></div>\n\
+<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%;"></div>\n\
+<script>\n\
+/*jslint\n\
+    bitwise: true,\n\
+    browser: true,\n\
+    maxerr: 8,\n\
+    maxlen: 96,\n\
+    node: true,\n\
+    nomen: true,\n\
+    regexp: true,\n\
+    stupid: true\n\
+*/\n\
+(function () {\n\
+    "use strict";\n\
+    var ajaxProgressDiv1, ajaxProgressState;\n\
+    ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");\n\
+    ajaxProgressState = 0;\n\
+    window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
+        ajaxProgressState += 1;\n\
+        ajaxProgressDiv1.style.width = Math.max(\n\
+            100 - 100 * Math.exp(-0.0625 * ajaxProgressState),\n\
+            Number(ajaxProgressDiv1.style.width.slice(0, -1)) || 0\n\
+        ) + "%";\n\
+    }, 1000);\n\
+}());\n\
+</script>\n\
 utility2-comment -->\n\
 <h1>\n\
 <!-- utility2-comment\n\
@@ -354,7 +397,7 @@ utility2-comment -->\n\
 <!-- utility2-comment\n\
 <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
 <button class="onclick onreset" id="testRunButton1">run internal test</button><br>\n\
-<div id="testReportDiv1" style="display: none;"></div>\n\
+<div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
 \n\
 \n\
@@ -419,10 +462,11 @@ utility2-comment -->\n\
             'assets.swgg.swagger.json',
             'assets.swgg.swagger.server.json'
         ].forEach(function (file) {
-            local.assetsDict['/' + file] = local.assetsDict['/' + file] || '';
-            if (local.fs.existsSync(local.__dirname + '/' + file)) {
-                local.assetsDict['/' + file] = local.fs.readFileSync(
-                    local.__dirname + '/' + file,
+            file = '/' + file;
+            local.assetsDict[file] = local.assetsDict[file] || '';
+            if (local.fs.existsSync(local.__dirname + file)) {
+                local.assetsDict[file] = local.fs.readFileSync(
+                    local.__dirname + file,
                     'utf8'
                 );
             }
@@ -447,7 +491,7 @@ utility2-comment -->\n\
                 }
             });
         // run the cli
-        if (local.global.utility2_rollup || module !== require.main) {
+        if (module !== require.main || local.global.utility2_rollup) {
             break;
         }
         local.assetsDict['/assets.example.js'] =
@@ -496,7 +540,7 @@ utility2-comment -->\n\
 
 
 
-# all screenshots
+# extra screenshots
 1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
 
@@ -556,14 +600,8 @@ utility2-comment -->\n\
     "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
         "browser",
-        "code-coverage",
-        "cover",
         "coverage",
-        "instrument",
-        "istanbul",
-        "jscover",
-        "jscoverage",
-        "test-coverage"
+        "istanbul"
     ],
     "license": "MIT",
     "main": "lib.istanbul.js",
@@ -581,12 +619,12 @@ utility2-comment -->\n\
     "scripts": {
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "npm install \"kaizhu256/node-utility2#alpha\" && utility2 shDeployHeroku",
+        "heroku-postbuild": "npm uninstall utility2 2>/dev/null; npm install kaizhu256/node-utility2#alpha && utility2 shDeployHeroku",
         "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.5.27"
+    "version": "2017.9.1"
 }
 ```
 
