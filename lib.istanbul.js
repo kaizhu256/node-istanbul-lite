@@ -67,12 +67,18 @@
     // run shared js-env code - function-before
     /* istanbul ignore next */
     (function () {
-        local.cliInit = function () {
+        local.cliRun = function (fnc) {
         /*
-         * this function will init the cli
+         * this function will run the cli
          */
-            local.cliDict = local.cliDict || {};
-            local.cliDict['--eval'] = local.cliDict['-e'] = function () {
+            var nop;
+            nop = function () {
+            /*
+             * this function will do nothing
+             */
+                return;
+            };
+            local.cliDict._eval = local.cliDict._eval || function () {
             /*
              * code
              * eval code
@@ -80,51 +86,86 @@
                 local.global.local = local;
                 require('vm').runInThisContext(process.argv[3]);
             };
-            local.cliDict['--help'] = local.cliDict['-h'] = local.cliDict.help = function () {
+            local.cliDict['--eval'] = local.cliDict['--eval'] || local.cliDict._eval;
+            local.cliDict['-e'] = local.cliDict['-e'] || local.cliDict._eval;
+            local.cliDict._help = local.cliDict._help || function () {
             /*
              * [none]
-             * print this help-text
+             * print help
              */
-                var element, result, lengthList;
-                result = [['[command]', '[arguments]', '[description]']];
+                var element, result, lengthList, sortDict;
+                sortDict = {};
+                result = [['[command]', '[args]', '[description]', -1]];
                 lengthList = [result[0][0].length, result[0][1].length];
-                Object.keys(local.cliDict).sort().forEach(function (key) {
+                Object.keys(local.cliDict).sort().forEach(function (key, ii) {
+                    if (key[0] === '_' && key !== '_default') {
+                        return;
+                    }
+                    sortDict[local.cliDict[key].toString()] =
+                        sortDict[local.cliDict[key].toString()] || (ii + 1);
                     element = (/\n +\*(.*)\n +\*(.*)/).exec(local.cliDict[key].toString());
                     // coverage-hack - ignore else-statement
-                    local.nop(local.global.__coverage__ && (function () {
+                    nop(local.global.__coverage__ && (function () {
                         element = element || ['', '', ''];
                     }()));
-                    element = [key + ' ', element[1].trim() + ' ', element[2].trim() + ' '];
+                    element = [
+                        key.replace('_default', '[none]') + ' ',
+                        element[1].trim() + ' ',
+                        element[2].trim(),
+                        (sortDict[local.cliDict[key].toString()] << 8) + ii
+                    ];
                     result.push(element);
                     lengthList.forEach(function (length, jj) {
                         lengthList[jj] = Math.max(element[jj].length, length);
                     });
                 });
-                console.log('usage: ' + __filename + ' [command] [arguments]\n');
-                console.log(result.map(function (element, ii) {
+                result.sort(function (aa, bb) {
+                    return aa[3] < bb[3]
+                        ? -1
+                        : 1;
+                });
+                console.log('usage:   ' + __filename + ' [command] [args]');
+                console.log('example: ' + __filename + ' --eval    ' +
+                    '"console.log(\'hello world\')"\n');
+                result.forEach(function (element, ii) {
                     lengthList.forEach(function (length, jj) {
                         while (element[jj].length < length) {
                             element[jj] += '-';
                         }
                     });
-                    element = element.join('-- ');
+                    element = element.slice(0, 3).join('---- ');
                     if (ii === 0) {
                         element = element.replace((/-/g), ' ');
                     }
-                    return element;
-                }).join('\n'));
+                    console.log(element);
+                });
             };
-            // coverage-hack - ignore else-statement
-            local.nop(typeof local.replStart === 'function' && (function () {
-                local.cliDict['--interactive'] = local.cliDict['-i'] = function () {
-                /*
-                 * [none]
-                 * start interactive-mode
-                 */
-                    local.global.local = local;
-                    local.replStart();
-                };
-            }()));
+            local.cliDict['--help'] = local.cliDict['--help'] || local.cliDict._help;
+            local.cliDict['-h'] = local.cliDict['-h'] || local.cliDict._help;
+            local.cliDict._default = local.cliDict._default || local.cliDict._help;
+            local.cliDict.help = local.cliDict.help || local.cliDict._help;
+            local.cliDict._interactive = local.cliDict._interactive || function () {
+            /*
+             * [none]
+             * start interactive-mode
+             */
+                local.global.local = local;
+                local.replStart();
+            };
+            if (local.replStart) {
+                local.cliDict['--interactive'] = local.cliDict['--interactive'] ||
+                    local.cliDict._interactive;
+                local.cliDict['-i'] = local.cliDict['-i'] || local.cliDict._interactive;
+            }
+            // run fnc()
+            fnc = fnc || function () {
+                if (local.cliDict[process.argv[2]]) {
+                    local.cliDict[process.argv[2]]();
+                    return;
+                }
+                local.cliDict._default();
+            };
+            fnc();
         };
 
         local.fsWriteFileWithMkdirpSync = function (file, data) {
@@ -354,14 +395,14 @@
         local.instrumentInPackage = function (code, file) {
         /*
          * this function will instrument the code
-         * only if the macro /\* istanbul instrument in package $npm_package_nameAlias *\/
+         * only if the macro /\* istanbul instrument in package $npm_package_nameLib *\/
          * exists in the code
          */
             return process.env.npm_config_mode_coverage &&
                 code.indexOf('/* istanbul ignore all */\n') < 0 && (
                     process.env.npm_config_mode_coverage === 'all' ||
                     code.indexOf('/* istanbul instrument in package ' +
-                            process.env.npm_package_nameAlias + ' */\n') >= 0 ||
+                            process.env.npm_package_nameLib + ' */\n') >= 0 ||
                     code.indexOf('/* istanbul instrument in package ' +
                             process.env.npm_config_mode_coverage + ' */\n') >= 0
                 )
@@ -2597,11 +2638,11 @@ local.templateCoverageBadgeSvg =
     // run node js-env code - init-after
     /* istanbul ignore next */
     case 'node':
-        // run the cli
+        // init cli
         if (module !== local.require.main || local.global.utility2_rollup) {
             break;
         }
-        local.cliInit();
+        local.cliDict = {};
         local.cliDict.cover = function () {
         /*
          * script
@@ -2610,13 +2651,13 @@ local.templateCoverageBadgeSvg =
             var tmp;
             try {
                 tmp = JSON.parse(local.fs.readFileSync('package.json', 'utf8'));
-                process.env.npm_package_nameAlias = process.env.npm_package_nameAlias ||
-                    tmp.nameAlias ||
+                process.env.npm_package_nameLib = process.env.npm_package_nameLib ||
+                    tmp.nameLib ||
                     tmp.name.replace((/-/g), '_');
             } catch (ignore) {
             }
             process.env.npm_config_mode_coverage = process.env.npm_config_mode_coverage ||
-                process.env.npm_package_nameAlias ||
+                process.env.npm_package_nameLib ||
                 'all';
             // add coverage hook to require
             local._istanbul_moduleExtensionsJs = local._istanbul_module._extensions['.js'];
@@ -2642,7 +2683,7 @@ local.templateCoverageBadgeSvg =
             process.on('exit', function () {
                 local.coverageReportCreate({ coverage: local.global.__coverage__ });
             });
-            // re-run the cli
+            // re-init cli
             local._istanbul_module.runMain();
         };
         local.cliDict.instrument = function () {
@@ -2660,23 +2701,21 @@ local.templateCoverageBadgeSvg =
         local.cliDict.test = function () {
         /*
          * script
-         * run and cover the script if $npm_config_mode_coverage is set
+         * run and cover the script if env var $npm_config_mode_coverage is set
          */
             if (process.env.npm_config_mode_coverage) {
                 process.argv[2] = 'cover';
-                // re-run the cli
+                // re-init cli
                 local.cliDict[process.argv[2]]();
                 return;
             }
             // init process.argv
             process.argv.splice(1, 2);
             process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
-            // re-run the cli
+            // re-init cli
             local._istanbul_module.runMain();
         };
-        if (local.cliDict[process.argv[2]]) {
-            local.cliDict[process.argv[2]]();
-        }
+        local.cliRun();
         break;
     }
 }());

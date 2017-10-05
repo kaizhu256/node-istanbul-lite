@@ -1,7 +1,12 @@
 # istanbul-lite
-this zero-dependency package will provide a browser-compatible version of the istanbul v0.4.5 coverage-tool
+this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool
+
+# live demo
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
 
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
+
+
 
 [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html) [![snyk.io vulnerabilities](https://snyk.io/test/github/kaizhu256/node-istanbul-lite/badge.svg)](https://snyk.io/test/github/kaizhu256/node-istanbul-lite)
 
@@ -25,7 +30,6 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 # table of contents
 1. [cdn download](#cdn-download)
-1. [live demo](#live-demo)
 1. [documentation](#documentation)
 1. [quickstart standalone app](#quickstart-standalone-app)
 1. [quickstart example.js](#quickstart-examplejs)
@@ -42,15 +46,11 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 
 
-# live demo
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
-
-[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
-
-
-
 # documentation
-#### apidoc
+#### cli help
+![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageCliHelp.svg)
+
+#### api doc
 - [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/apidoc.html)
 
 [![apidoc](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/apidoc.html)
@@ -58,18 +58,16 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog for v2017.9.1
-- npm publish 2017.9.1
-- add cli help command
-- normalize local.fs module hook
-- update README.md
+#### changelog for v2017.10.4
+- npm publish 2017.10.4
+- add cli-help doc to README.md
 - none
 
 #### this package requires
 - darwin or linux os
 
 #### additional info
-- istanbul code derived from https://github.com/gotwarlost/istanbul/tree/v0.2.16
+- istanbul code derived from https://github.com/gotwarlost/istanbul/tree/v0.4.5
 
 
 
@@ -168,8 +166,7 @@ instruction
 
 
 
-    // init-after
-    // run browser js-env code - init-after
+    // run browser js-env code - init-test
     /* istanbul ignore next */
     case 'browser':
         local.testRunBrowser = function (event) {
@@ -277,7 +274,7 @@ instruction
 
 
 
-    // run node js-env code - init-after
+    // run node js-env code - init-test
     /* istanbul ignore next */
     case 'node':
         // init exports
@@ -351,7 +348,6 @@ textarea[readonly] {\n\
 </style>\n\
 </head>\n\
 <body>\n\
-<!-- utility2-comment\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%;"></div>\n\
 <script>\n\
 /*jslint\n\
@@ -366,19 +362,38 @@ textarea[readonly] {\n\
 */\n\
 (function () {\n\
     "use strict";\n\
-    var ajaxProgressDiv1, ajaxProgressState;\n\
+    var ajaxProgressDiv1,\n\
+        ajaxProgressState,\n\
+        ajaxProgressUpdate,\n\
+        timerIntervalAjaxProgressUpdate;\n\
     ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");\n\
+    setTimeout(function () {\n\
+        ajaxProgressDiv1.style.width = "25%";\n\
+    });\n\
     ajaxProgressState = 0;\n\
-    window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
+    ajaxProgressUpdate = (window.local &&\n\
+        window.local.ajaxProgressUpdate) || function () {\n\
+        ajaxProgressDiv1.style.width = "100%";\n\
+        setTimeout(function () {\n\
+            ajaxProgressDiv1.style.background = "transparent";\n\
+            setTimeout(function () {\n\
+                ajaxProgressDiv1.style.width = "0%";\n\
+            }, 500);\n\
+        }, 1500);\n\
+    };\n\
+    timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
         ajaxProgressState += 1;\n\
         ajaxProgressDiv1.style.width = Math.max(\n\
-            100 - 100 * Math.exp(-0.0625 * ajaxProgressState),\n\
+            100 - 75 * Math.exp(-0.125 * ajaxProgressState),\n\
             Number(ajaxProgressDiv1.style.width.slice(0, -1)) || 0\n\
         ) + "%";\n\
     }, 1000);\n\
+    window.addEventListener("load", function () {\n\
+        clearInterval(timerIntervalAjaxProgressUpdate);\n\
+        ajaxProgressUpdate();\n\
+    });\n\
 }());\n\
 </script>\n\
-utility2-comment -->\n\
 <h1>\n\
 <!-- utility2-comment\n\
     <a\n\
@@ -482,7 +497,7 @@ utility2-comment -->\n\
                     return 'the greatest app in the world!';
                 case 'npm_package_name':
                     return 'istanbul-lite';
-                case 'npm_package_nameAlias':
+                case 'npm_package_nameLib':
                     return 'istanbul';
                 case 'npm_package_version':
                     return '0.0.1';
@@ -490,7 +505,7 @@ utility2-comment -->\n\
                     return match0;
                 }
             });
-        // run the cli
+        // init cli
         if (module !== require.main || local.global.utility2_rollup) {
             break;
         }
@@ -571,9 +586,6 @@ utility2-comment -->\n\
 1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTest.browser.%252F.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTest.browser.%252F.png)
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTest.browser.%252F.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTest.browser.%252F.png)
 
-1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTestPublished.browser.%252F.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTestPublished.browser.%252F.png)
-[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTestPublished.browser.%252F.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmTestPublished.browser.%252F.png)
-
 1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.browser.%252F.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.browser.%252F.png)
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.browser.%252F.png)
 
@@ -589,7 +601,7 @@ utility2-comment -->\n\
     "bin": {
         "istanbul-lite": "lib.istanbul.js"
     },
-    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul v0.4.5 coverage-tool",
+    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -606,7 +618,7 @@ utility2-comment -->\n\
     "license": "MIT",
     "main": "lib.istanbul.js",
     "name": "istanbul-lite",
-    "nameAlias": "istanbul",
+    "nameLib": "istanbul",
     "nameOriginal": "istanbul-lite",
     "os": [
         "darwin",
@@ -624,7 +636,7 @@ utility2-comment -->\n\
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.9.1"
+    "version": "2017.10.4"
 }
 ```
 
