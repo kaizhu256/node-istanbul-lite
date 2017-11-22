@@ -3,7 +3,7 @@
     bitwise: true,
     browser: true,
     maxerr: 8,
-    maxlen: 96,
+    maxlen: 100,
     node: true,
     nomen: true,
     regexp: true,
@@ -510,13 +510,12 @@ factorial(100)
         /*
          * this function will test istanbulCoverageReportCreate's default handling-behavior
          */
-            options = [
+            local.env.npm_config_mode_coverage_merge = '';
+            local.testMock([
                 [local.istanbul, { coverageMerge: local.echo }],
                 // test $npm_config_mode_coverage_merge handling-behavior
                 [local.env, { npm_config_mode_coverage_merge: '1' }]
-            ];
-            local.env.npm_config_mode_coverage_merge = '';
-            local.testMock(options, function (onError) {
+            ], function (onError) {
                 /*jslint evil: true*/
                 // cleanup old coverage
                 if (local.modeJs === 'node') {
@@ -569,7 +568,7 @@ factorial(100)
                         local.global.__coverage__[file] = null;
                     }
                 });
-                onError();
+                onError(null, options);
             }, onError);
         };
 
@@ -581,7 +580,7 @@ factorial(100)
             options.data = local.istanbul.instrumentSync('1', 'test.js');
             // validate data
             local.assert(options.data.indexOf(".s['1']++;1;\n") >= 0, options);
-            onError();
+            onError(null, options);
         };
     }());
     switch (local.modeJs) {
@@ -638,7 +637,7 @@ local.assertJsonEqual(options.coverage1,
 {"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 /* jslint-ignore-end */
-            onError();
+            onError(null, options);
         };
         break;
     }

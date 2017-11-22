@@ -1,7 +1,7 @@
 # istanbul-lite
-this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool
+this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool, with a working web-demo
 
-# live demo
+# live web demo
 - [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
 
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
@@ -58,9 +58,9 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog for v2017.10.4
-- npm publish 2017.10.4
-- add cli-help doc to README.md
+#### changelog for v2017.11.21
+- npm publish 2017.11.21
+- update build
 - none
 
 #### this package requires
@@ -77,13 +77,13 @@ this zero-dependency package will provide a browser-compatible version of the is
 ```shell
 # example.sh
 
-# this shell script will download and run a web demo of istanbul-lite as a standalone app
+# this shell script will download and run a web-demo of istanbul-lite as a standalone app
 
 # 1. download standalone app
 curl -O https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.app.js
 # 2. run standalone app
-node ./assets.app.js
-# 3. open a browser to http://127.0.0.1:8081 and play with the web demo
+PORT=8081 node ./assets.app.js
+# 3. open a browser to http://127.0.0.1:8081 and play with the web-demo
 # 4. edit file assets.app.js to suit your needs
 ```
 
@@ -104,13 +104,13 @@ node ./assets.app.js
 /*
 example.js
 
-this script will run a web demo of istanbul-lite
+this script will run a web-demo of istanbul-lite
 
 instruction
     1. save this script as example.js
     2. run the shell command:
         $ npm install istanbul-lite && PORT=8081 node example.js
-    3. open a browser to http://127.0.0.1:8081 and play with the web demo
+    3. open a browser to http://127.0.0.1:8081 and play with the web-demo
     4. edit this script to suit your needs
 */
 
@@ -121,7 +121,7 @@ instruction
     bitwise: true,
     browser: true,
     maxerr: 8,
-    maxlen: 96,
+    maxlen: 100,
     node: true,
     nomen: true,
     regexp: true,
@@ -298,19 +298,29 @@ instruction
 <title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
 /*csslint\n\
+    box-model: false,\n\
     box-sizing: false,\n\
     universal-selector: false\n\
 */\n\
-* {\n\
+*,\n\
+*:after,\n\
+*:before {\n\
     box-sizing: border-box;\n\
 }\n\
 body {\n\
     background: #dde;\n\
     font-family: Arial, Helvetica, sans-serif;\n\
-    margin: 2rem;\n\
+    margin: 0 40px;\n\
 }\n\
-body > * {\n\
-    margin-bottom: 1rem;\n\
+body > a,\n\
+body > button,\n\
+body > div,\n\
+body > input,\n\
+body > pre,\n\
+body > select,\n\
+body > span,\n\
+body > textarea {\n\
+    margin-bottom: 20px;\n\
 }\n\
 body > button {\n\
     width: 20rem;\n\
@@ -318,12 +328,40 @@ body > button {\n\
 button {\n\
     cursor: pointer;\n\
 }\n\
+@keyframes uiAnimateShake {\n\
+    100% {\n\
+        transform: translateX(0);\n\
+    }\n\
+    0%, 20%, 60% {\n\
+        transform: translateX(10px);\n\
+    }\n\
+    40%, 80% {\n\
+        transform: translateX(-10px);\n\
+    }\n\
+}\n\
+.uiAnimateShake {\n\
+    animation-duration: 500ms;\n\
+    animation-name: uiAnimateShake;\n\
+}\n\
 .uiAnimateSlide {\n\
     overflow-y: hidden;\n\
-    transition: border-bottom 250ms, border-top 250ms, margin-bottom 250ms, margin-top 250ms, max-height 250ms, min-height 250ms, padding-bottom 250ms, padding-top 250ms;\n\
+    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n\
+}\n\
+@keyframes uiAnimateSpin {\n\
+    0% { transform: rotate(0deg); }\n\
+    100% { transform: rotate(360deg); }\n\
+}\n\
+.uiAnimateSpin {\n\
+    animation: uiAnimateSpin 2s linear infinite;\n\
+    border: 6px solid #999;\n\
+    border-radius: 50%;\n\
+    border-top: 8px solid #7d7;\n\
+    display: inline-block;\n\
+    height: 25px;\n\
+    vertical-align: middle;\n\
+    width: 25px;\n\
 }\n\
 .utility2FooterDiv {\n\
-    margin-top: 20px;\n\
     text-align: center;\n\
 }\n\
 .zeroPixel {\n\
@@ -348,13 +386,13 @@ textarea[readonly] {\n\
 </style>\n\
 </head>\n\
 <body>\n\
-<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%;"></div>\n\
+<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>\n\
 <script>\n\
 /*jslint\n\
     bitwise: true,\n\
     browser: true,\n\
     maxerr: 8,\n\
-    maxlen: 96,\n\
+    maxlen: 100,\n\
     node: true,\n\
     nomen: true,\n\
     regexp: true,\n\
@@ -517,7 +555,7 @@ utility2-comment -->\n\
         local.assetsDict['/assets.istanbul.js'] =
             local.assetsDict['/assets.istanbul.js'] ||
             local.fs.readFileSync(
-                local.istanbul.__dirname + '/lib.istanbul.js',
+                local.__dirname + '/lib.istanbul.js',
                 'utf8'
             ).replace((/^#!/), '//');
         /* jslint-ignore-end */
@@ -601,7 +639,7 @@ utility2-comment -->\n\
     "bin": {
         "istanbul-lite": "lib.istanbul.js"
     },
-    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool",
+    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool, with a working web-demo",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -618,6 +656,7 @@ utility2-comment -->\n\
     "license": "MIT",
     "main": "lib.istanbul.js",
     "name": "istanbul-lite",
+    "nameAliasPublish": "istanbul-classic",
     "nameLib": "istanbul",
     "nameOriginal": "istanbul-lite",
     "os": [
@@ -636,7 +675,7 @@ utility2-comment -->\n\
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.10.4"
+    "version": "2017.11.21"
 }
 ```
 

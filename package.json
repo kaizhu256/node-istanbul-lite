@@ -3,7 +3,7 @@
     "bin": {
         "istanbul-lite": "lib.istanbul.js"
     },
-    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool",
+    "description": "this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool, with a working web-demo",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -20,6 +20,7 @@
     "license": "MIT",
     "main": "lib.istanbul.js",
     "name": "istanbul-lite",
+    "nameAliasPublish": "istanbul-classic",
     "nameLib": "istanbul",
     "nameOriginal": "istanbul-lite",
     "os": [
@@ -38,5 +39,5 @@
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.10.4"
+    "version": "2017.11.21"
 }
