@@ -8,7 +8,7 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html) [![snyk.io vulnerabilities](https://snyk.io/test/github/kaizhu256/node-istanbul-lite/badge.svg)](https://snyk.io/test/github/kaizhu256/node-istanbul-lite)
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html)
 
 [![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
 
@@ -58,9 +58,9 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog for v2017.11.21
-- npm publish 2017.11.21
-- update build
+#### changelog for v2018.3.28
+- npm publish v2018.3.28
+- revamp css
 - none
 
 #### this package requires
@@ -117,10 +117,11 @@ instruction
 
 
 /* istanbul instrument in package istanbul */
+/* jslint-utility2 */
 /*jslint
     bitwise: true,
     browser: true,
-    maxerr: 8,
+    maxerr: 4,
     maxlen: 100,
     node: true,
     nomen: true,
@@ -194,8 +195,7 @@ instruction
                 // show tests
                 if (document.querySelector('#testReportDiv1').style.maxHeight === '0px') {
                     local.uiAnimateSlideDown(document.querySelector('#testReportDiv1'));
-                    document.querySelector('#testRunButton1').textContent =
-                        'hide internal test';
+                    document.querySelector('#testRunButton1').textContent = 'hide internal test';
                     local.modeTest = true;
                     local.testRunDefault(local);
                 // hide tests
@@ -281,7 +281,7 @@ instruction
         module.exports = local;
         // require builtins
         Object.keys(process.binding('natives')).forEach(function (key) {
-            if (!local[key] && !(/\/|^_|^sys$/).test(key)) {
+            if (!local[key] && !(/\/|^_|^assert|^sys$/).test(key)) {
                 local[key] = require(key);
             }
         });
@@ -297,47 +297,87 @@ instruction
 <!-- "assets.index.default.template.html" -->\n\
 <title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
+/* jslint-utility2 */\n\
 /*csslint\n\
-    box-model: false,\n\
-    box-sizing: false,\n\
-    universal-selector: false\n\
 */\n\
+/* jslint-ignore-begin */\n\
 *,\n\
 *:after,\n\
 *:before {\n\
     box-sizing: border-box;\n\
 }\n\
-body {\n\
-    background: #dde;\n\
-    font-family: Arial, Helvetica, sans-serif;\n\
-    margin: 0 40px;\n\
-}\n\
-body > a,\n\
-body > button,\n\
-body > div,\n\
-body > input,\n\
-body > pre,\n\
-body > select,\n\
-body > span,\n\
-body > textarea {\n\
-    margin-bottom: 20px;\n\
-}\n\
-body > button {\n\
-    width: 20rem;\n\
-}\n\
-button {\n\
-    cursor: pointer;\n\
-}\n\
+/* jslint-ignore-end */\n\
 @keyframes uiAnimateShake {\n\
+    0%, 50% {\n\
+        transform: translateX(10px);\n\
+    }\n\
+    25%, 75% {\n\
+        transform: translateX(-10px);\n\
+    }\n\
     100% {\n\
         transform: translateX(0);\n\
     }\n\
-    0%, 20%, 60% {\n\
-        transform: translateX(10px);\n\
+}\n\
+@keyframes uiAnimateSpin {\n\
+    0% {\n\
+        transform: rotate(0deg);\n\
     }\n\
-    40%, 80% {\n\
-        transform: translateX(-10px);\n\
+    100% {\n\
+        transform: rotate(360deg);\n\
     }\n\
+}\n\
+a {\n\
+    overflow-wrap: break-word;\n\
+}\n\
+body > div,\n\
+body > pre,\n\
+body > textarea,\n\
+body > .button {\n\
+    margin-bottom: 20px;\n\
+}\n\
+body > textarea {\n\
+    height: 10rem;\n\
+    width: 100%;\n\
+}\n\
+body > textarea[readonly] {\n\
+    background: #ddd;\n\
+}\n\
+body > .button {\n\
+    width: 20rem;\n\
+}\n\
+code,\n\
+pre,\n\
+textarea {\n\
+    font-family: Consolas, Menlo, monospace;\n\
+    font-size: small;\n\
+}\n\
+pre {\n\
+    overflow-wrap: break-word;\n\
+    white-space: pre-wrap;\n\
+}\n\
+textarea {\n\
+    overflow: auto;\n\
+    white-space: pre;\n\
+}\n\
+.button {\n\
+    background-color: #fff;\n\
+    border: 1px solid;\n\
+    border-bottom-color: rgb(186, 186, 186);\n\
+    border-left-color: rgb(209, 209, 209);\n\
+    border-radius: 4px;\n\
+    border-right-color: rgb(209, 209, 209);\n\
+    border-top-color: rgb(216, 216, 216);\n\
+    color: #00d;\n\
+    cursor: pointer;\n\
+    display: inline-block;\n\
+    font-family: Arial, Helvetica, sans-serif;\n\
+    font-size: 12px;\n\
+    font-style: normal;\n\
+    font-weight: normal;\n\
+    margin: 0;\n\
+    padding: 2px 7px 3px 7px;\n\
+    text-align: center;\n\
+    text-decoration: underline;\n\
 }\n\
 .uiAnimateShake {\n\
     animation-duration: 500ms;\n\
@@ -346,20 +386,6 @@ button {\n\
 .uiAnimateSlide {\n\
     overflow-y: hidden;\n\
     transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n\
-}\n\
-@keyframes uiAnimateSpin {\n\
-    0% { transform: rotate(0deg); }\n\
-    100% { transform: rotate(360deg); }\n\
-}\n\
-.uiAnimateSpin {\n\
-    animation: uiAnimateSpin 2s linear infinite;\n\
-    border: 6px solid #999;\n\
-    border-radius: 50%;\n\
-    border-top: 8px solid #7d7;\n\
-    display: inline-block;\n\
-    height: 25px;\n\
-    vertical-align: middle;\n\
-    width: 25px;\n\
 }\n\
 .utility2FooterDiv {\n\
     text-align: center;\n\
@@ -372,26 +398,17 @@ button {\n\
     width: 0;\n\
 }\n\
 </style>\n\
-<style>\n\
-/*csslint\n\
-*/\n\
-textarea {\n\
-    font-family: monospace;\n\
-    height: 10rem;\n\
-    width: 100%;\n\
-}\n\
-textarea[readonly] {\n\
-    background: #ddd;\n\
-}\n\
-</style>\n\
 </head>\n\
-<body>\n\
+<body style="background: #ddf; font-family: Arial, Helvetica, sans-serif; margin: 0 40px;">\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>\n\
+<div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
+<code style="display: none;"></code><div class="button uiAnimateShake uiAnimateSlide utility2FooterDiv zeroPixel" style="display: none;"></div><pre style="display: none;"></pre><textarea readonly style="display: none;"></textarea>\n\
 <script>\n\
+/* jslint-utility2 */\n\
 /*jslint\n\
     bitwise: true,\n\
     browser: true,\n\
-    maxerr: 8,\n\
+    maxerr: 4,\n\
     maxlen: 100,\n\
     node: true,\n\
     nomen: true,\n\
@@ -448,8 +465,8 @@ utility2-comment -->\n\
 </h1>\n\
 <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
-<h4><a download href="assets.app.js">download standalone app</a></h4>\n\
-<button class="onclick onreset" id="testRunButton1">run internal test</button><br>\n\
+<a class="button" download href="assets.app.js">download standalone app</a><br>\n\
+<button class="button onclick onreset" id="testRunButton1">run internal test</button><br>\n\
 <div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
 \n\
@@ -524,12 +541,11 @@ utility2-comment -->\n\
                 );
             }
         });
+/* validateLineSortedReset */
         local.assetsDict['/'] =
             local.assetsDict['/assets.example.html'] =
             local.assetsDict['/assets.index.template.html']
             .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
-                // jslint-hack
-                String(match0);
                 switch (match1) {
                 case 'npm_package_description':
                     return 'the greatest app in the world!';
@@ -649,7 +665,6 @@ utility2-comment -->\n\
     },
     "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
-        "browser",
         "coverage",
         "istanbul"
     ],
@@ -668,14 +683,16 @@ utility2-comment -->\n\
         "url": "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
+        "apidocRawCreate": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptApidocRawCreate",
+        "apidocRawFetch": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptApidocRawFetch",
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
         "heroku-postbuild": "npm uninstall utility2 2>/dev/null; npm install kaizhu256/node-utility2#alpha && utility2 shDeployHeroku",
-        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptPostinstall",
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.11.21"
+    "version": "2018.3.28"
 }
 ```
 
@@ -694,6 +711,7 @@ utility2-comment -->\n\
 # this shell script will run the build for this package
 
 shBuildCiAfter() {(set -e
+    # shDeployCustom
     shDeployGithub
     shDeployHeroku
     shReadmeTest example.sh
