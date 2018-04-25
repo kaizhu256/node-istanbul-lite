@@ -58,9 +58,9 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog for v2018.3.28
-- npm publish v2018.3.28
-- revamp css
+#### changelog for v2018.4.25
+- npm publish v2018.4.25
+- update build
 - none
 
 #### this package requires
@@ -280,11 +280,40 @@ instruction
         // init exports
         module.exports = local;
         // require builtins
-        Object.keys(process.binding('natives')).forEach(function (key) {
-            if (!local[key] && !(/\/|^_|^assert|^sys$/).test(key)) {
-                local[key] = require(key);
-            }
-        });
+        // local.assert = require('assert');
+        local.buffer = require('buffer');
+        local.child_process = require('child_process');
+        local.cluster = require('cluster');
+        local.console = require('console');
+        local.constants = require('constants');
+        local.crypto = require('crypto');
+        local.dgram = require('dgram');
+        local.dns = require('dns');
+        local.domain = require('domain');
+        local.events = require('events');
+        local.fs = require('fs');
+        local.http = require('http');
+        local.https = require('https');
+        local.module = require('module');
+        local.net = require('net');
+        local.os = require('os');
+        local.path = require('path');
+        local.process = require('process');
+        local.punycode = require('punycode');
+        local.querystring = require('querystring');
+        local.readline = require('readline');
+        local.repl = require('repl');
+        local.stream = require('stream');
+        local.string_decoder = require('string_decoder');
+        local.timers = require('timers');
+        local.tls = require('tls');
+        local.tty = require('tty');
+        local.url = require('url');
+        local.util = require('util');
+        local.v8 = require('v8');
+        local.vm = require('vm');
+        local.zlib = require('zlib');
+/* validateLineSortedReset */
         // init assets
         local.assetsDict = local.assetsDict || {};
         /* jslint-ignore-begin */
@@ -379,6 +408,9 @@ textarea {\n\
     text-align: center;\n\
     text-decoration: underline;\n\
 }\n\
+.colorError {\n\
+    color: #d00;\n\
+}\n\
 .uiAnimateShake {\n\
     animation-duration: 500ms;\n\
     animation-name: uiAnimateShake;\n\
@@ -399,7 +431,7 @@ textarea {\n\
 }\n\
 </style>\n\
 </head>\n\
-<body style="background: #ddf; font-family: Arial, Helvetica, sans-serif; margin: 0 40px;">\n\
+<body style="background: #eef; font-family: Arial, Helvetica, sans-serif; margin: 0 40px;">\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>\n\
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
 <code style="display: none;"></code><div class="button uiAnimateShake uiAnimateSlide utility2FooterDiv zeroPixel" style="display: none;"></div><pre style="display: none;"></pre><textarea readonly style="display: none;"></textarea>\n\
@@ -542,6 +574,12 @@ utility2-comment -->\n\
             }
         });
 /* validateLineSortedReset */
+        // bug-workaround - long $npm_package_buildCustomOrg
+        /* jslint-ignore-begin */
+        local.assetsDict['/assets.istanbul.js'] = local.assetsDict['/assets.istanbul.js'] ||
+            local.fs.readFileSync(local.__dirname + '/lib.istanbul.js', 'utf8'
+        ).replace((/^#!/), '//');
+/* validateLineSortedReset */
         local.assetsDict['/'] =
             local.assetsDict['/assets.example.html'] =
             local.assetsDict['/assets.index.template.html']
@@ -566,14 +604,6 @@ utility2-comment -->\n\
         local.assetsDict['/assets.example.js'] =
             local.assetsDict['/assets.example.js'] ||
             local.fs.readFileSync(__filename, 'utf8');
-        // bug-workaround - long $npm_package_buildCustomOrg
-        /* jslint-ignore-begin */
-        local.assetsDict['/assets.istanbul.js'] =
-            local.assetsDict['/assets.istanbul.js'] ||
-            local.fs.readFileSync(
-                local.__dirname + '/lib.istanbul.js',
-                'utf8'
-            ).replace((/^#!/), '//');
         /* jslint-ignore-end */
         local.assetsDict['/favicon.ico'] = local.assetsDict['/favicon.ico'] || '';
         // if $npm_config_timeout_exit exists,
@@ -687,12 +717,12 @@ utility2-comment -->\n\
         "apidocRawFetch": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptApidocRawFetch",
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "npm uninstall utility2 2>/dev/null; npm install kaizhu256/node-utility2#alpha && utility2 shDeployHeroku",
+        "heroku-postbuild": "npm install kaizhu256/node-utility2#alpha --prefix . && utility2 shDeployHeroku",
         "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptPostinstall",
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2018.3.28"
+    "version": "2018.4.25"
 }
 ```
 
@@ -710,14 +740,14 @@ utility2-comment -->\n\
 
 # this shell script will run the build for this package
 
-shBuildCiAfter() {(set -e
+shBuildCiAfter () {(set -e
     # shDeployCustom
     shDeployGithub
     shDeployHeroku
     shReadmeTest example.sh
 )}
 
-shBuildCiBefore() {(set -e
+shBuildCiBefore () {(set -e
     shNpmTestPublished
     shReadmeTest example.js
 )}
