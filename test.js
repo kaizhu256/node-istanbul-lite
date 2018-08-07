@@ -20,22 +20,13 @@
     (function () {
         // init local
         local = {};
-        // init modeJs
-        local.modeJs = (function () {
-            try {
-                return typeof navigator.userAgent === 'string' &&
-                    typeof document.querySelector('body') === 'object' &&
-                    typeof XMLHttpRequest.prototype.open === 'function' &&
-                    'browser';
-            } catch (errorCaughtBrowser) {
-                return module.exports &&
-                    typeof process.versions.node === 'string' &&
-                    typeof require('http').createServer === 'function' &&
-                    'node';
-            }
-        }());
+        // init isBrowser
+        local.isBrowser = typeof window === "object" &&
+            typeof window.XMLHttpRequest === "function" &&
+            window.document &&
+            typeof window.document.querySelectorAll === "function";
         // init global
-        local.global = local.modeJs === 'browser'
+        local.global = local.isBrowser
             ? window
             : global;
         // re-init local
@@ -511,7 +502,7 @@ factorial(100)
         /*
          * this function will test istanbulCoverageMerge's default handling-behavior
          */
-            if (local.modeJs !== 'node') {
+            if (local.isBrowser) {
                 onError(null, options);
                 return;
             }
@@ -574,7 +565,7 @@ local.assertJsonEqual(options.coverage1,
             ], function (onError) {
                 /*jslint evil: true*/
                 // cleanup old coverage
-                if (local.modeJs === 'node') {
+                if (!local.isBrowser) {
                     local.fsRmrSync('tmp/build/coverage.html/aa');
                 }
                 // test path handling-behavior
