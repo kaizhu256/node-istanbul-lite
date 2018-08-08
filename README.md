@@ -60,8 +60,7 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 #### changelog 2018.8.7
 - npm publish 2018.8.7
-- migrate from modeJs -> isBrowser
-- embed script in html to limit select-all insde <pre tabIndex=\"0\"> elements
+- add BigInt-support for istanbul
 - none
 
 #### this package requires
@@ -670,7 +669,7 @@ for (var n of fibonacci) {\n\
 <label>instrumented-code</label>\n\
 <textarea class="resettable" id="outputTextarea1" readonly></textarea>\n\
 <label>stderr and stdout</label>\n\
-<textarea class="resettable" id="outputTextareaStdout1" readonly></textarea>\n\
+<textarea class="resettable" id="outputStdoutTextarea1" readonly></textarea>\n\
 <div id="coverageReportDiv1" class="resettable"></div>\n\
 <!-- utility2-comment\n\
 {{#if isRollup}}\n\
