@@ -1,43 +1,50 @@
 #!/usr/bin/env node
+/*
+ * lib.istanbul.js (2018.9.10)
+ * https://github.com/kaizhu256/node-istanbul-lite
+ * this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool, with a working web-demo
+ *
+ */
+
+
+
 /* istanbul instrument in package istanbul */
 /* jslint-utility2 */
 /*jslint
     bitwise: true,
     browser: true,
+    for: true,
+    ignore_bad_property_a: true,
     maxerr: 4,
     maxlen: 100,
+    multivar: true,
     node: true,
-    nomen: true,
-    regexp: true,
-    stupid: true
+    this: true
 */
+/*global global*/
 (function () {
-    'use strict';
+    "use strict";
     var local;
 
 
 
-    // run shared js-env code - init-before
     /* istanbul ignore next */
+    // run shared js-env code - init-before
     (function () {
         // init debug_inline
         (function () {
-            var consoleError, context, key;
-            context = (typeof window === "object" && window) || global;
-            key = "debug_inline".replace("_i", "I");
-            if (context[key]) {
-                return;
-            }
+            var consoleError, context;
             consoleError = console.error;
-            context[key] = function (arg0) {
+            context = (typeof window === "object" && window) || global;
+            context["debug\u0049nline"] = context["debug\u0049nline"] || function (arg0) {
             /*
              * this function will both print arg0 to stderr and return it
              */
                 // debug arguments
-                context["_" + key + "Arguments"] = arguments;
-                consoleError("\n\n" + key);
+                context["debug\u0049nlineArguments"] = arguments;
+                consoleError("\n\ndebug\u0049nline");
                 consoleError.apply(console, arguments);
-                consoleError("\n");
+                consoleError(new Error().stack + "\n");
                 // return arg0 for inspection
                 return arg0;
             };
@@ -46,215 +53,242 @@
         local = {};
         // init isBrowser
         local.isBrowser = typeof window === "object" &&
-            typeof window.XMLHttpRequest === "function" &&
-            window.document &&
-            typeof window.document.querySelectorAll === "function";
+                typeof window.XMLHttpRequest === "function" &&
+                window.document &&
+                typeof window.document.querySelectorAll === "function";
         // init global
         local.global = local.isBrowser
             ? window
             : global;
         // re-init local
         local = local.global.utility2_rollup ||
-            // local.global.utility2_rollup_old || require('./assets.utility2.rollup.js') ||
-            local;
-        // init nop
-        local.nop = function () {
-        /*
-         * this function will do nothing
-         */
-            return;
-        };
+                // local.global.utility2_rollup_old || require("./assets.utility2.rollup.js") ||
+                local;
         // init exports
         if (local.isBrowser) {
             local.global.utility2_istanbul = local;
         } else {
             // require builtins
-            // local.assert = require('assert');
-            local.buffer = require('buffer');
-            local.child_process = require('child_process');
-            local.cluster = require('cluster');
-            local.console = require('console');
-            local.constants = require('constants');
-            local.crypto = require('crypto');
-            local.dgram = require('dgram');
-            local.dns = require('dns');
-            local.domain = require('domain');
-            local.events = require('events');
-            local.fs = require('fs');
-            local.http = require('http');
-            local.https = require('https');
-            local.module = require('module');
-            local.net = require('net');
-            local.os = require('os');
-            local.path = require('path');
-            local.process = require('process');
-            local.punycode = require('punycode');
-            local.querystring = require('querystring');
-            local.readline = require('readline');
-            local.repl = require('repl');
-            local.stream = require('stream');
-            local.string_decoder = require('string_decoder');
-            local.timers = require('timers');
-            local.tls = require('tls');
-            local.tty = require('tty');
-            local.url = require('url');
-            local.util = require('util');
-            local.v8 = require('v8');
-            local.vm = require('vm');
-            local.zlib = require('zlib');
+            // local.assert = require("assert");
+            local.buffer = require("buffer");
+            local.child_process = require("child_process");
+            local.cluster = require("cluster");
+            local.crypto = require("crypto");
+            local.dgram = require("dgram");
+            local.dns = require("dns");
+            local.domain = require("domain");
+            local.events = require("events");
+            local.fs = require("fs");
+            local.http = require("http");
+            local.https = require("https");
+            local.net = require("net");
+            local.os = require("os");
+            local.path = require("path");
+            local.querystring = require("querystring");
+            local.readline = require("readline");
+            local.repl = require("repl");
+            local.stream = require("stream");
+            local.string_decoder = require("string_decoder");
+            local.timers = require("timers");
+            local.tls = require("tls");
+            local.tty = require("tty");
+            local.url = require("url");
+            local.util = require("util");
+            local.vm = require("vm");
+            local.zlib = require("zlib");
             module.exports = local;
             module.exports.__dirname = __dirname;
         }
         // init lib main
-        local.local = local.istanbul = local;
+        local.local = local;
+        local.istanbul = local;
 
 
 
         /* validateLineSortedReset */
         // init custom
         if (!local.isBrowser) {
-            local._istanbul_module = require('module');
+            local._istanbul_module = require("module");
             local.process = process;
             local.require = require;
         }
 
-        local.cliRun = function (fnc) {
+        local.cliRun = function (options) {
         /*
          * this function will run the cli
          */
-            var nop;
-            nop = function () {
-            /*
-             * this function will do nothing
-             */
-                return;
-            };
             local.cliDict._eval = local.cliDict._eval || function () {
             /*
              * <code>
-             * # eval code
+             * will eval <code>
              */
-                local.global.local = local;
-                require('vm').runInThisContext(process.argv[3]);
+                global.local = local;
+                local.vm.runInThisContext(process.argv[3]);
             };
-            local.cliDict['--eval'] = local.cliDict['--eval'] || local.cliDict._eval;
-            local.cliDict['-e'] = local.cliDict['-e'] || local.cliDict._eval;
-            local.cliDict._help = local.cliDict._help || function (options) {
+            local.cliDict["--eval"] = local.cliDict["--eval"] || local.cliDict._eval;
+            local.cliDict["-e"] = local.cliDict["-e"] || local.cliDict._eval;
+            local.cliDict._help = local.cliDict._help || function () {
             /*
              *
-             * # print help
+             * will print help
              */
-                var commandList, file, packageJson, text, textDict;
+                var commandList;
+                var file;
+                var packageJson;
+                var text;
+                var textDict;
                 commandList = [{
-                    arg: '<arg2> ...',
-                    description: 'usage:',
-                    command: ['<arg1>']
+                    argList: "<arg2>  ...",
+                    description: "usage:",
+                    command: ["<arg1>"]
+                }, {
+                    argList: "'console.log(\"hello world\")'",
+                    description: "example:",
+                    command: ["--eval"]
                 }];
-                file = __filename.replace((/.*\//), '');
-                packageJson = require('./package.json');
+                file = __filename.replace((/.*\//), "");
+                options = Object.assign({}, options);
+                packageJson = require("./package.json");
+                // validate comment
+                options.rgxComment = options.rgxComment || new RegExp(
+                    "\\) \\{\\n" +
+                    "(?: {8}| {12})\\/\\*\\n" +
+                    "(?: {9}| {13})\\*((?: <[^>]*?>| \\.\\.\\.)*?)\\n" +
+                    "(?: {9}| {13})\\* (will .*?\\S)\\n" +
+                    "(?: {9}| {13})\\*\\/\\n" +
+                    "(?: {12}| {16})\\S"
+                );
                 textDict = {};
                 Object.keys(local.cliDict).sort().forEach(function (key, ii) {
-                    if (key[0] === '_' && key !== '_default') {
+                    if (key[0] === "_" && key !== "_default") {
                         return;
                     }
                     text = String(local.cliDict[key]);
-                    if (key === '_default') {
-                        key = '<>';
+                    if (key === "_default") {
+                        key = "";
                     }
-                    ii = textDict[text] = textDict[text] || (ii + 1);
+                    textDict[text] = textDict[text] || (ii + 2);
+                    ii = textDict[text];
                     if (commandList[ii]) {
                         commandList[ii].command.push(key);
-                    } else {
-                        commandList[ii] = (/\n +?\*(.*?)\n +?\*(.*?)\n/).exec(text);
-                        // coverage-hack - ignore else-statement
-                        nop(local.global.__coverage__ && (function () {
-                            commandList[ii] = commandList[ii] || ['', '', ''];
-                        }()));
+                        return;
+                    }
+                    try {
+                        commandList[ii] = options.rgxComment.exec(text);
                         commandList[ii] = {
-                            arg: commandList[ii][1].trim(),
+                            argList: (commandList[ii][1] || "").trim(),
                             command: [key],
-                            description: commandList[ii][2].trim()
+                            description: commandList[ii][2]
                         };
+                    } catch (ignore) {
+                        throw new Error(
+                            "cliRun - cannot parse comment in COMMAND " +
+                            key + ":\nnew RegExp(" + JSON.stringify(options.rgxComment.source) +
+                            ").exec(" + JSON.stringify(text)
+                                .replace((/\\\\/g), "\u0000")
+                                .replace((/\\n/g), "\\n\\\n")
+                                .replace((/\u0000/g), "\\\\") + ");"
+                        );
                     }
                 });
-                (options && options.modeError
+                ((options && options.modeError)
                     ? console.error
-                    : console.log)((options && options.modeError
-                    ? '\u001b[31merror: missing <arg1>\u001b[39m\n\n'
-                    : '') + packageJson.name + ' (' + packageJson.version + ')\n\n' + commandList
-                    .filter(function (element) {
-                        return element;
-                    }).map(function (element) {
-                        return (element.description + '\n' +
-                            file + '  ' +
-                            element.command.sort().join('|') + '  ' +
-                            element.arg.replace((/ +/g), '  '))
-                                .replace((/<>\||\|<>|<> {2}/), '')
-                                .trim();
-                    })
-                    .join('\n\n') + '\n\nexample:\n' + file +
-                    '  --eval  \'console.log("hello world")\'');
+                    : console.log)(
+                    ((options && options.modeError)
+                        ? "\u001b[31merror: missing <arg1>\u001b[39m\n\n"
+                        : "") +
+                            packageJson.name + " (" + packageJson.version + ")\n\n" +
+                            commandList
+                        .filter(function (element) {
+                            return element;
+                        })
+                        .map(function (element, ii) {
+                            element.command = element.command.filter(function (element) {
+                                return element;
+                            });
+                            switch (ii) {
+                            case 0:
+                            case 1:
+                                element.argList = [element.argList];
+                                break;
+                            default:
+                                element.argList = element.argList.split(" ");
+                                element.description = "# COMMAND " +
+                                        (element.command[0] || "<none>") + "\n# " +
+                                        element.description;
+                            }
+                            return element.description + "\n  " + file +
+                                    ("  " + element.command.sort().join("|") + "  ")
+                                .replace((/^ {4}$/), "  ") +
+                                        element.argList.join("  ");
+                        })
+                        .join("\n\n")
+                );
             };
-            local.cliDict['--help'] = local.cliDict['--help'] || local.cliDict._help;
-            local.cliDict['-h'] = local.cliDict['-h'] || local.cliDict._help;
+            local.cliDict["--help"] = local.cliDict["--help"] || local.cliDict._help;
+            local.cliDict["-h"] = local.cliDict["-h"] || local.cliDict._help;
             local.cliDict._default = local.cliDict._default || local.cliDict._help;
             local.cliDict.help = local.cliDict.help || local.cliDict._help;
             local.cliDict._interactive = local.cliDict._interactive || function () {
             /*
              *
-             * # start interactive-mode
+             * will start interactive-mode
              */
-                local.global.local = local;
-                local.replStart();
+                global.local = local;
+                (local.replStart || require("repl").start)({useGlobal: true});
             };
-            if (local.replStart) {
-                local.cliDict['--interactive'] = local.cliDict['--interactive'] ||
+            local.cliDict["--interactive"] = local.cliDict["--interactive"] ||
                     local.cliDict._interactive;
-                local.cliDict['-i'] = local.cliDict['-i'] || local.cliDict._interactive;
-            }
+            local.cliDict["-i"] = local.cliDict["-i"] || local.cliDict._interactive;
             local.cliDict._version = local.cliDict._version || function () {
             /*
              *
-             * # print version
+             * will print version
              */
-                console.log(require(__dirname + '/package.json').version);
+                console.log(require(__dirname + "/package.json").version);
             };
-            local.cliDict['--version'] = local.cliDict['--version'] || local.cliDict._version;
-            local.cliDict['-v'] = local.cliDict['-v'] || local.cliDict._version;
-            // run fnc()
-            fnc = fnc || function () {
-                // default to --help command if no arguments are given
-                if (process.argv.length <= 2 && !local.cliDict._default.modeNoCommand) {
-                    local.cliDict._help({ modeError: true });
-                    process.exit(1);
-                    return;
-                }
-                if (local.cliDict[process.argv[2]]) {
-                    local.cliDict[process.argv[2]]();
-                    return;
-                }
-                local.cliDict._default();
-            };
-            fnc();
+            local.cliDict["--version"] = local.cliDict["--version"] || local.cliDict._version;
+            local.cliDict["-v"] = local.cliDict["-v"] || local.cliDict._version;
+            // default to --help command if no arguments are given
+            if (process.argv.length <= 2) {
+                local.cliDict._help({modeError: true});
+                process.exit(1);
+                return;
+            }
+            if (local.cliDict[process.argv[2]]) {
+                local.cliDict[process.argv[2]]();
+                return;
+            }
+            local.cliDict._default();
         };
 
-        local.fsWriteFileWithMkdirpSync = function (file, data) {
+        local.fsWriteFileWithMkdirpSync = function (file, data, mode) {
         /*
          * this function will synchronously 'mkdir -p' and write the data to file
          */
+            if (mode === "noWrite") {
+                return;
+            }
             // try to write to file
             try {
-                require('fs').writeFileSync(file, data);
-            } catch (errorCaught) {
+                require("fs").writeFileSync(file, data);
+            } catch (ignore) {
                 // mkdir -p
-                require('child_process').spawnSync(
-                    'mkdir',
-                    ['-p', require('path').dirname(file)],
-                    { stdio: ['ignore', 1, 2] }
+                require("child_process").spawnSync(
+                    "mkdir",
+                    ["-p", require("path").dirname(file)],
+                    {stdio: ["ignore", 1, 2]}
                 );
                 // re-write to file
-                require('fs').writeFileSync(file, data);
+                require("fs").writeFileSync(file, data);
             }
+        };
+
+        local.nop = function () {
+        /*
+         * this function will do nothing
+         */
+            return;
         };
     }());
 
@@ -268,21 +302,21 @@
         /* istanbul ignore next */
         local.global.__coverageCodeDict__ = local.global.__coverageCodeDict__ || {};
         // mock builtins
-        __dirname = '';
+        __dirname = "";
         process = local.process || {
             cwd: function () {
-                return '';
+                return "";
             },
             env: {},
             stdout: {}
         };
         require = function (key) {
             try {
-                return local['_istanbul_' + key] || local[key] || local.require(key);
+                return local["_istanbul_" + key] || local[key] || local.require(key);
             } catch (ignore) {
             }
         };
-        local['./package.json'] = {};
+        local["./package.json"] = {};
         // mock module fs
         local._istanbul_fs = {};
         local._istanbul_fs.readFileSync = function (file) {
@@ -290,26 +324,28 @@
             file = local[file.slice(-8)];
             if (local.isBrowser) {
                 file = file
-                    .replace('<!doctype html>\n', '')
-                    .replace((/(<\/?)(?:body|html)/g), '$1div');
+                    .replace("<!doctype html>\n", "")
+                    .replace((/(<\/?)(?:body|html)/g), "$1div");
             }
             if (!local.isBrowser && process.env.npm_package_homepage) {
                 file = file
-                    .replace('{{env.npm_package_homepage}}', process.env.npm_package_homepage)
-                    .replace('{{env.npm_package_name}}', process.env.npm_package_name)
-                    .replace('{{env.npm_package_version}}', process.env.npm_package_version);
+                    .replace("{{env.npm_package_homepage}}", process.env.npm_package_homepage)
+                    .replace("{{env.npm_package_name}}", process.env.npm_package_name)
+                    .replace("{{env.npm_package_version}}", process.env.npm_package_version);
             } else {
-                file = file.replace((/<h1 [\S\s]*<\/h1>/), '');
+                file = file.replace((/<h1 [\S\s]*<\/h1>/), "");
             }
             return file;
         };
+
         local._istanbul_fs.readdirSync = function () {
             return [];
         };
+
         // mock module path
         local._istanbul_path = local.path || {
             dirname: function (file) {
-                return file.replace((/\/[\w\-\.]+?$/), '');
+                return file.replace((/\/[\w\-.]+?$/), "");
             },
             resolve: function () {
                 return arguments[arguments.length - 1];
@@ -333,12 +369,12 @@
                     return;
                 }
                 // merge file from coverage2 into coverage1
-                ['b', 'f', 's'].forEach(function (key) {
+                ["b", "f", "s"].forEach(function (key) {
                     dict1 = coverage1[file][key];
                     dict2 = coverage2[file][key];
                     switch (key) {
                     // increment coverage for branch lines
-                    case 'b':
+                    case "b":
                         Object.keys(dict2).forEach(function (key) {
                             dict2[key].forEach(function (count, ii) {
                                 dict1[key][ii] += count;
@@ -346,8 +382,8 @@
                         });
                         break;
                     // increment coverage for function and statement lines
-                    case 'f':
-                    case 's':
+                    case "f":
+                    case "s":
                         Object.keys(dict2).forEach(function (key) {
                             dict1[key] += dict2[key];
                         });
@@ -368,78 +404,80 @@
             var options;
             /* istanbul ignore next */
             if (!local.global.__coverage__) {
-                return '';
+                return "";
             }
             options = {};
-            options.dir = process.cwd() + '/tmp/build/coverage.html';
+            options.dir = process.cwd() + "/tmp/build/coverage.html";
             // merge previous coverage
             if (!local.isBrowser && process.env.npm_config_mode_coverage_merge) {
-                console.log('merging file ' + options.dir + '/coverage.json to coverage');
+                console.log("merging file " + options.dir + "/coverage.json to coverage");
                 try {
                     local.coverageMerge(local.global.__coverage__, JSON.parse(
-                        local.fs.readFileSync(options.dir + '/coverage.json', 'utf8')
+                        local.fs.readFileSync(options.dir + "/coverage.json", "utf8")
                     ));
                 } catch (ignore) {
                 }
                 try {
                     options.coverageCodeDict = JSON.parse(local.fs.readFileSync(
-                        options.dir + '/coverage.code-dict.json',
-                        'utf8'
+                        options.dir + "/coverage.code-dict.json",
+                        "utf8"
                     ));
                     Object.keys(options.coverageCodeDict).forEach(function (key) {
                         local.global.__coverageCodeDict__[key] =
-                            local.global.__coverageCodeDict__[key] ||
-                            options.coverageCodeDict[key];
+                                local.global.__coverageCodeDict__[key] ||
+                                options.coverageCodeDict[key];
                     });
                 } catch (ignore) {
                 }
             }
             // init writer
-            local.coverageReportHtml = '';
-            local.coverageReportHtml += '<div class="coverageReportDiv">\n' +
-                '<h1>coverage-report</h1>\n' +
-                '<div style="background: #fff; border: 1px solid #000; margin 0; padding: 0;">\n';
-            local.writerData = '';
+            local.coverageReportHtml = "";
+            local.coverageReportHtml += "<div class=\"coverageReportDiv\">\n" +
+                    "<h1>coverage-report</h1>\n" +
+                    "<div style=\"background: #fff; border: 1px solid #000; margin 0; padding: 0;" +
+                    "\">\n";
+            local.writerData = "";
             options.sourceStore = {};
             options.writer = local.writer;
             // 1. print coverage in text-format to stdout
             new local.TextReport(options).writeReport(local.collector);
             // 2. write coverage in html-format to filesystem
             new local.HtmlReport(options).writeReport(local.collector);
-            local.writer.writeFile('', local.nop);
+            local.writer.writeFile("", local.nop);
             if (!local.isBrowser) {
                 // write coverage.json
                 local.fsWriteFileWithMkdirpSync(
-                    options.dir + '/coverage.json',
+                    options.dir + "/coverage.json",
                     JSON.stringify(local.global.__coverage__)
                 );
                 // write coverage.code-dict.json
                 local.fsWriteFileWithMkdirpSync(
-                    options.dir + '/coverage.code-dict.json',
+                    options.dir + "/coverage.code-dict.json",
                     JSON.stringify(local.global.__coverageCodeDict__)
                 );
                 // write coverage.badge.svg
                 options.pct = local.coverageReportSummary.root.metrics.lines.pct;
                 local.fsWriteFileWithMkdirpSync(
-                    local._istanbul_path.dirname(options.dir) + '/coverage.badge.svg',
+                    local._istanbul_path.dirname(options.dir) + "/coverage.badge.svg",
                     local.templateCoverageBadgeSvg
                         // edit coverage badge percent
                         .replace((/100.0/g), options.pct)
                         // edit coverage badge color
                         .replace(
                             (/0d0/g),
-                            ('0' + Math.round((100 - options.pct) * 2.21).toString(16)).slice(-2) +
-                                ('0' + Math.round(options.pct * 2.21).toString(16)).slice(-2) + '00'
+                            ("0" + Math.round((100 - options.pct) * 2.21).toString(16)).slice(-2) +
+                                    ("0" + Math.round(options.pct * 2.21).toString(16)).slice(-2) +
+                                    "00"
                         )
                 );
             }
-            console.log('created coverage file ' + options.dir + '/index.html');
+            console.log("created coverage file " + options.dir + "/index.html");
             // 3. return coverage in html-format as a single document
-            local.coverageReportHtml += '</div>\n</div>\n';
+            local.coverageReportHtml += "</div>\n</div>\n";
             // write coverage.rollup.html
             if (!local.isBrowser) {
                 local.fsWriteFileWithMkdirpSync(
-                    options.dir + '/coverage.rollup.html',
+                    options.dir + "/coverage.rollup.html",
                     local.coverageReportHtml
                 );
             }
@@ -453,14 +491,20 @@
          * only if the macro /\* istanbul instrument in package $npm_package_nameLib *\/
          * exists in the code
          */
-            return process.env.npm_config_mode_coverage &&
-                code.indexOf('/* istanbul ignore all */\n') < 0 && (
-                    process.env.npm_config_mode_coverage === 'all' ||
-                    code.indexOf('/* istanbul instrument in package ' +
-                            process.env.npm_package_nameLib + ' */\n') >= 0 ||
-                    code.indexOf('/* istanbul instrument in package ' +
-                            process.env.npm_config_mode_coverage + ' */\n') >= 0
+            return (
+                process.env.npm_config_mode_coverage &&
+                code.indexOf("/* istanbul ignore all */\n") < 0 && (
+                    process.env.npm_config_mode_coverage === "all" ||
+                    code.indexOf(
+                        "/* istanbul instrument in package " +
+                            process.env.npm_package_nameLib + " */\n"
+                    ) >= 0 ||
+                    code.indexOf(
+                        "/* istanbul instrument in package " +
+                            process.env.npm_config_mode_coverage + " */\n"
+                    ) >= 0
                 )
+            )
                 ? local.instrumentSync(code, file)
                 : code;
         };
@@ -473,7 +517,7 @@
          * 3. return instrumented code
          */
             // 1. normalize the file
-            file = local._istanbul_path.resolve('/', file);
+            file = local._istanbul_path.resolve("/", file);
             // 2. save code to __coverageCodeDict__[file] for future html-report
             local.global.__coverageCodeDict__[file] = code;
             // 3. return instrumented code
@@ -482,16 +526,19 @@
                 noAutoWrap: true
             }).instrumentSync(code, file).trimLeft();
         };
-        local.util = { inherits: local.nop };
+
+        local.util = {inherits: local.nop};
 
 
 
-// init lib esprima
-// 2016-08-24T04:32:49Z
-// https://github.com/jquery/esprima/blob/2.7.3/esprima.js
-// utility2-uglifyjs https://raw.githubusercontent.com/jquery/esprima/2.7.3/esprima.js
+/*
+file esprima/esprima.js
+2016-08-22T15:14:14Z - shGithubDateCommitted https://github.com/jquery/esprima/commits/2.7.3
+https://github.com/jquery/esprima/blob/2.7.3/esprima.js
+utility2-uglifyjs https://raw.githubusercontent.com/jquery/esprima/2.7.3/esprima.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
-/* jslint-ignore-begin */
+/* jslint-ignore-block-beg */
 (function () { var exports; exports = local.esprima = {};
 (function(e,t){"use strict";typeof define=="function"&&define.amd?define(["exports"
 ],t):typeof exports!="undefined"?t(exports):t(e.esprima={})})(this,function(e){"use strict"
@@ -563,17 +610,17 @@ n==="++"||n==="--"||n==="<<"||n===">>"||n==="&="||n==="|="||n==="^="||n==="%="||
 n==="<="||n===">="||n==="=>"?l+=2:(n=a[l],"<>=!+-*%&|^/".indexOf(n)>=0&&++l)))}return l===
 e.start&&Lt(),e.end=l,e.value=n,e}function Z(e){var n="";while(l<E){if(!O(a[l]))
 break;n+=a[l++]}return n.length===0&&Lt(),
-a[l]==='n'&&(n+=a[l++]), // Bigint
+a[l]==='n'&&(n+=a[l++]), // BigInt
 B(a.charCodeAt(l))&&Lt(),{type:t.NumericLiteral
 ,value:parseInt("0x"+n,16),lineNumber:c,lineStart:h,start:e,end:l}}function et(e
 ){var n,r;r="";while(l<E){n=a[l];if(n!=="0"&&n!=="1")break;r+=a[l++]}return r.length===0&&
 Lt(),
-a[l]==='n'&&(r+=a[l++]), // Bigint
+a[l]==='n'&&(r+=a[l++]), // BigInt
 l<E&&(n=a.charCodeAt(l),(B(n)||A(n))&&Lt()),{type:t.NumericLiteral,value:parseInt
 (r,2),lineNumber:c,lineStart:h,start:e,end:l}}function tt(e,n){var r,i;M(e)?(i=!0
 ,r="0"+a[l++]):(i=!1,++l,r="");while(l<E){if(!M(a[l]))break;r+=a[l++]}return!i&&
 r.length===0&&Lt(),
-a[l]==='n'&&(r+=a[l++]), // Bigint
+a[l]==='n'&&(r+=a[l++]), // BigInt
 (B(a.charCodeAt(l))||A(a.charCodeAt(l)))&&Lt(),{type:t.NumericLiteral
 ,value:parseInt(r,8),octal:i,lineNumber:c,lineStart:h,start:n,end:l}}function nt
 (){var e,t;for(e=l+1;e<E;++e){t=a[e];if(t==="8"||t==="9")return!1;if(!M(t))return!0
@@ -584,15 +631,15 @@ M(r)&&nt())return tt(r,n)}while(A(a.charCodeAt(l)))e+=a[l++];r=a[l]}if(r==="."){
 e+=a[l++];while(A(a.charCodeAt(l)))e+=a[l++];r=a[l]}if(r==="e"||r==="E"){e+=a[l++
 ],r=a[l];if(r==="+"||r==="-")e+=a[l++];if(A(a.charCodeAt(l)))while(A(a.charCodeAt
 (l)))e+=a[l++];else Lt()}
-a[l]==='n'&&(e+=a[l++]) // Bigint
+a[l]==='n'&&(e+=a[l++]) // BigInt
 return B(a.charCodeAt(l))&&Lt(),{type:t.NumericLiteral,
 value:parseFloat(e),lineNumber:c,lineStart:h,start:n,end:l}}function it(){var e=""
 ,n,r,i,s,o,u=!1;n=a[l],L(n==="'"||n==='"',"String literal must starts with a quote"
 ),r=l,++l;while(l<E){i=a[l++];if(i===n){n="";break}if(i==="\\"){i=a[l++];if(!i||!
 P(i.charCodeAt(0)))switch(i){case"u":case"x":if(a[l]==="{")++l,e+=$();else{s=V(i
 );if(!s)throw Lt();e+=s}break;case"n":e+="\n";break;case"r":e+="\r";break;case"t"
-:e+="\t";break;case"b":e+="\b";break;case"f":e+="\f";break;case"v":e+="";break;case"8"
-:case"9":e+=i,At();break;default:M(i)?(o=_(i),u=o.octal||u,e+=String.fromCharCode
+:e+="\t";break;case"b":e+="\b";break;case"f":e+="\f";break;case"v":e+="\u000b";break;
+case"8":case"9":e+=i,At();break;default:M(i)?(o=_(i),u=o.octal||u,e+=String.fromCharCode
 (o.code)):e+=i}else++c,i==="\r"&&a[l]==="\n"&&++l,h=l}else{if(P(i.charCodeAt(0))
 )break;e+=i}}return n!==""&&(l=r,Lt()),{type:t.StringLiteral,value:e,octal:u,lineNumber
 :y,lineStart:b,start:r,end:l}}function st(){var e="",n,r,i,s,u,f,p,d;s=!1,f=!1,r=
@@ -600,17 +647,17 @@ l,u=a[l]==="`",i=2,++l;while(l<E){n=a[l++];if(n==="`"){i=1,f=!0,s=!0;break}if(n=
 ){if(a[l]==="{"){x.curlyStack.push("${"),++l,s=!0;break}e+=n}else if(n==="\\"){n=
 a[l++];if(!P(n.charCodeAt(0)))switch(n){case"n":e+="\n";break;case"r":e+="\r";break;
 case"t":e+="\t";break;case"u":case"x":a[l]==="{"?(++l,e+=$()):(p=l,d=V(n),d?e+=d:
-(l=p,e+=n));break;case"b":e+="\b";break;case"f":e+="\f";break;case"v":e+="";break;
-default:n==="0"?(A(a.charCodeAt(l))&&Nt(o.TemplateOctalLiteral),e+="\0"):M(n)?Nt
-(o.TemplateOctalLiteral):e+=n}else++c,n==="\r"&&a[l]==="\n"&&++l,h=l}else P(n.charCodeAt
-(0))?(++c,n==="\r"&&a[l]==="\n"&&++l,h=l,e+="\n"):e+=n}return s||Lt(),u||x.curlyStack
-.pop(),{type:t.Template,value:{cooked:e,raw:a.slice(r+1,l-i)},head:u,tail:f,lineNumber
-:c,lineStart:h,start:r,end:l}}function ot(e,t){var n="\uffff",r=e;t.indexOf("u")>=0&&
-(r=r.replace(/\\u\{([0-9a-fA-F]+)\}|\\u([a-fA-F0-9]{4})/g,function(e,t,r){var i=
-parseInt(t||r,16);return i>1114111&&Lt(null,o.InvalidRegExp),i<=65535?String.fromCharCode
-(i):n}).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,n));try{RegExp(r)}catch(i){Lt(
-null,o.InvalidRegExp)}try{return new RegExp(e,t)}catch(s){return null}}function ut
-(){var e,t,n,r,i;e=a[l],L(e==="/","Regular expression literal must start with a slash"
+(l=p,e+=n));break;case"b":e+="\b";break;case"f":e+="\f";break;case"v":e+="\u000b"
+;break;default:n==="0"?(A(a.charCodeAt(l))&&Nt(o.TemplateOctalLiteral),e+="\0"):
+M(n)?Nt(o.TemplateOctalLiteral):e+=n}else++c,n==="\r"&&a[l]==="\n"&&++l,h=l}else P
+(n.charCodeAt(0))?(++c,n==="\r"&&a[l]==="\n"&&++l,h=l,e+="\n"):e+=n}return s||Lt
+(),u||x.curlyStack.pop(),{type:t.Template,value:{cooked:e,raw:a.slice(r+1,l-i)},
+head:u,tail:f,lineNumber:c,lineStart:h,start:r,end:l}}function ot(e,t){var n="\uffff"
+,r=e;t.indexOf("u")>=0&&(r=r.replace(/\\u\{([0-9a-fA-F]+)\}|\\u([a-fA-F0-9]{4})/g
+,function(e,t,r){var i=parseInt(t||r,16);return i>1114111&&Lt(null,o.InvalidRegExp
+),i<=65535?String.fromCharCode(i):n}).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,
+n));try{RegExp(r)}catch(i){Lt(null,o.InvalidRegExp)}try{return new RegExp(e,t)}catch(
+s){return null}}function ut(){var e,t,n,r,i;e=a[l],L(e==="/","Regular expression literal must start with a slash"
 ),t=a[l++],n=!1,r=!1;while(l<E){e=a[l++],t+=e;if(e==="\\")e=a[l++],P(e.charCodeAt
 (0))&&Lt(null,o.UnterminatedRegExp),t+=e;else if(P(e.charCodeAt(0)))Lt(null,o.UnterminatedRegExp
 );else if(n)e==="]"&&(n=!1);else{if(e==="/"){r=!0;break}e==="["&&(n=!0)}}return r||
@@ -1203,10 +1250,12 @@ Object.freeze=="function"&&Object.freeze(t),t}()})
 
 
 
-// init lib estraverse
-// 2015-03-05T15:18:29Z
-// https://github.com/estools/estraverse/blob/1.9.3/estraverse.js
-// utility2-uglifyjs https://raw.githubusercontent.com/estools/estraverse/1.9.3/estraverse.js
+/*
+file estraverse/estraverse.js
+2015-03-05T15:18:29Z - shGithubDateCommitted https://github.com/estools/estraverse/commits/1.9.3
+https://github.com/estools/estraverse/blob/1.9.3/estraverse.js
+utility2-uglifyjs https://raw.githubusercontent.com/estools/estraverse/1.9.3/estraverse.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var exports; exports = local.estraverse = {};
 (function(e,t){"use strict";typeof define=="function"&&define.amd?define(["exports"
@@ -1341,10 +1390,12 @@ i,t.Controller=b,t.cloneEnvironment=function(){return e({})},t})
 
 
 
-// init lib esutils.code
-// 2015-03-14T16:42:41Z
-// https://github.com/estools/esutils/blob/2.0.2/lib/code.js
-// utility2-uglifyjs https://raw.githubusercontent.com/estools/esutils/2.0.2/lib/code.js
+/*
+file esutils/lib/code.js
+2015-03-14T17:10:47Z - shGithubDateCommitted https://github.com/estools/esutils/commits/2.0.2
+https://github.com/estools/esutils/blob/2.0.2/lib/code.js
+utility2-uglifyjs https://raw.githubusercontent.com/estools/esutils/2.0.2/lib/code.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var module; module = {};
 (function(){"use strict";function o(e){return 48<=e&&e<=57}function u(e){return 48<=
@@ -1370,10 +1421,12 @@ local.esutils = { code: module.exports }; }());
 
 
 
-// init lib escodegen
-// 2016-08-05T16:02:12Z
-// https://github.com/estools/escodegen/blob/1.8.1/escodegen.js
-// utility2-uglifyjs https://raw.githubusercontent.com/estools/escodegen/1.8.1/escodegen.js
+/*
+file escodegen/escodegen.js
+2016-08-06T18:04:07Z - shGithubDateCommitted https://github.com/estools/escodegen/commits/1.8.1
+https://github.com/estools/escodegen/blob/1.8.1/escodegen.js
+utility2-uglifyjs https://raw.githubusercontent.com/estools/escodegen/1.8.1/escodegen.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var exports; exports = local.escodegen = {};
 (function(){"use strict";function k(e){return bt.Expression.hasOwnProperty(e.type
@@ -1743,13 +1796,17 @@ r=dt(t,r)),i=ot(r).toString(),t.type===e.Program&&!y&&d===""&&i.charAt(i.length-
 ).version,exports.generate=Nt,exports.attachComments=i.attachComments,exports.Precedence=
 G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
 }());
-/* jslint-ignore-end */
+/* jslint-ignore-block-end */
 
 
 
-// init lib handlebars
-// 2013-12-26T22:37:39Z
-// https://github.com/components/handlebars.js/blob/v1.2.1/handlebars.js
+/*
+file handlebars.js/handlebars.js
+2013-12-26T22:37:39Z - shGithubDateCommitted https://github.com/components/handlebars.js/commits/v1.2.1
+https://github.com/components/handlebars.js/blob/v1.2.1/handlebars.js
+curl https://raw.githubusercontent.com/components/handlebars.js/v1.2.1/handlebars.js > /tmp/aa.js
+*/
+        /* validateLineSortedReset */
         local.handlebars = {};
         local.handlebars.compile = function (template) {
         /*
@@ -1759,52 +1816,55 @@ G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
                 var result;
                 result = template;
                 // render triple-curly-brace
-                result = result.replace((/\{\{\{/g), '{{').replace((/\}\}\}/g), '}}');
+                result = result.replace((/\{\{\{/g), "{{").replace((/\}\}\}/g), "}}");
                 // render with-statement
                 result = result.replace(
                     (/\{\{#with (.+?)\}\}([\S\s]+?)\{\{\/with\}\}/g),
                     function (match0, match1, match2) {
                         // jslint-hack
                         local.nop(match0);
-                        return local.handlebars.replace(match2, dict, match1 + '.');
+                        return local.handlebars.replace(match2, dict, match1 + ".");
                     }
                 );
                 // render helper
                 result = result.replace(
-                    '{{#show_ignores metrics}}{{/show_ignores}}',
+                    "{{#show_ignores metrics}}{{/show_ignores}}",
                     function () {
                         return local.handlebars.show_ignores(dict.metrics);
                     }
                 );
-                result = result.replace('{{#show_line_execution_counts fileCoverage}}' +
-                    '{{maxLines}}{{/show_line_execution_counts}}', function () {
+                result = result.replace(
+                    "{{#show_line_execution_counts fileCoverage}}" +
+                            "{{maxLines}}{{/show_line_execution_counts}}",
+                    function () {
                         return local.handlebars.show_line_execution_counts(
                             dict.fileCoverage,
-                            { fn: function () {
+                            {fn: function () {
                                 return dict.maxLines;
-                            } }
+                            }}
                         );
-                    });
+                    }
+                );
                 result = result.replace(
-                    '{{#show_lines}}{{maxLines}}{{/show_lines}}',
+                    "{{#show_lines}}{{maxLines}}{{/show_lines}}",
                     function () {
-                        return local.handlebars.show_lines({ fn: function () {
+                        return local.handlebars.show_lines({fn: function () {
                             return dict.maxLines;
-                        } });
+                        }});
                     }
                 );
                 result = result.replace(
-                    '{{#show_picture}}{{metrics.statements.pct}}{{/show_picture}}',
+                    "{{#show_picture}}{{metrics.statements.pct}}{{/show_picture}}",
                     function () {
-                        return local.handlebars.show_picture({ fn: function () {
+                        return local.handlebars.show_picture({fn: function () {
                             return dict.metrics.statements.pct;
-                        } });
+                        }});
                     }
                 );
-                result = local.handlebars.replace(result, dict, '');
+                result = local.handlebars.replace(result, dict, "");
                 // show code last
                 result = result.replace(
-                    '{{#show_code structured}}{{/show_code}}',
+                    "{{#show_code structured}}{{/show_code}}",
                     function () {
                         return local.handlebars.show_code(dict.structured);
                     }
@@ -1812,6 +1872,7 @@ G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
                 return result;
             };
         };
+
         local.handlebars.registerHelper = function (key, helper) {
         /*
          * this function will register the helper-function
@@ -1823,6 +1884,7 @@ G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
                 }
             };
         };
+
         local.handlebars.replace = function (template, dict, withPrefix) {
         /*
          * this function will replace the keys in the template with the dict's key / value
@@ -1832,7 +1894,7 @@ G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
             return template.replace((/\{\{.+?\}\}/g), function (match0) {
                 value = dict;
                 // iteratively lookup nested values in the dict
-                (withPrefix + match0.slice(2, -2)).split('.').forEach(function (key) {
+                (withPrefix + match0.slice(2, -2)).split(".").forEach(function (key) {
                     value = value && value[key];
                 });
                 return value === undefined
@@ -1841,19 +1903,23 @@ G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
             });
         };
 
-
-
-// init lib istanbul.collector
-// 2013-12-17T03:00:58Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/collector.js
+/*
+file istanbul/lib/collector.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/collector.js
+curl https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/collector.js > /tmp/aa.js
+*/
+        /* validateLineSortedReset */
         local.collector = {
             fileCoverageFor: function (file) {
                 return local.global.__coverage__[file];
             },
             files: function () {
                 return Object.keys(local.global.__coverage__).filter(function (key) {
-                    if (local.global.__coverage__[key] &&
-                            local.global.__coverageCodeDict__[key]) {
+                    if (
+                        local.global.__coverage__[key] &&
+                            local.global.__coverageCodeDict__[key]
+                    ) {
                         // reset derived info
                         local.global.__coverage__[key].l = null;
                         return true;
@@ -1864,12 +1930,14 @@ G({},t),exports.browser=!1,exports.FORMAT_MINIFY=N,exports.FORMAT_DEFAULTS=C})()
 
 
 
-// init lib istanbul.insertion-text
-// 2012-09-12T06:39:52Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/insertion-text.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/util/insertion-text.js
+/*
+file istanbul/lib/util/insertion-text.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/insertion-text.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/util/insertion-text.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
-/* jslint-ignore-begin */
+/* jslint-ignore-block-beg */
 (function () { var module; module = {};
 function InsertionText(e,t){this.text=e,this.origLength=e.length,this.offsets=[]
 ,this.consumeBlanks=t,this.startPos=this.findFirstNonBlank(),this.endPos=this.findLastNonBlank
@@ -1891,11 +1959,12 @@ local['../util/insertion-text'] = module.exports; }());
 
 
 
-// init lib istanbul.instrumenter
-// 2016-06-26T22:12:08Z
-// https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.4.5/lib/instrumenter.js
-// replace '(t?"":r)' with 'Math.random().toString(16).slice(2)'
+/*
+file istanbul/lib/instrumenter.js
+2016-08-21T19:53:22Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.4.5
+https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.4.5/lib/instrumenter.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var escodegen, esprima, module, window; escodegen = local.escodegen; esprima = local.esprima; module = undefined; window = local;
 (function(e){"use strict";function p(e,t){var n,r;return s!==null?(n=s.createHash
@@ -2110,10 +2179,12 @@ module.exports!="undefined"&&typeof exports!="undefined")
 
 
 
-// init lib istanbul.object-utils
-// 2013-12-19T03:39:58Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/object-utils.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/object-utils.js
+/*
+file istanbul/lib/object-utils.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/object-utils.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/object-utils.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var module, window; module = undefined; window = local;
 (function(e){function t(e){var t=e.statementMap,n=e.s,r;e.l||(e.l=r={},Object.keys
@@ -2154,26 +2225,31 @@ local['../object-utils'] = window.coverageUtils; }());
 
 
 
-// init lib istanbul.report.common.defaults
-// 2013-12-28T06:33:02Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/common/defaults.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/common/defaults.js
+/*
+file istanbul/lib/report/common/defaults.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/common/defaults.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/common/defaults.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var module; module = {};
 module.exports={watermarks:function(){return{statements:[50,80],lines:[50,80],functions
 :[50,80],branches:[50,80]}},classFor:function(e,t,n){var r=n[e],i=t[e].pct;return i>=
 r[1]?"high":i>=r[0]?"medium":"low"},colorize:function(e,t){if(process.stdout.isTTY
-)switch(t){case"low":e="\x1B[91m"+e+"\x1B[0m";break;case"medium":e="\x1B[93m"+e+"\x1B[0m";break;
-case"high":e="\x1B[92m"+e+"\x1B[0m"}return e}}
+)switch(t){case"low":e="\x1b[91m"+e+"\x1b[0m";break;case"medium":e="\x1b[93m"+e+"\x1b[0m";break;
+case"high":e="\x1b[92m"+e+"\x1b[0m"}return e}}
 local['./common/defaults'] = module.exports; }());
-/* jslint-ignore-end */
+/* jslint-ignore-block-end */
 
 
 
-// init lib istanbul.report.index
-// 2012-10-30T23:48:18Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/index.js
-        local['./index'] = {
+/*
+file istanbul/lib/report/index.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/index.js
+curl https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/index.js > /tmp/aa.js
+*/
+        local["./index"] = {
             call: local.nop,
             mix: function (klass, prototype) {
                 klass.prototype = prototype;
@@ -2182,10 +2258,13 @@ local['./common/defaults'] = module.exports; }());
 
 
 
-// init lib istanbul.report.templates.foot
-// 2014-07-04T07:47:53Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/foot.txt
-/* jslint-ignore-begin */
+/*
+file istanbul/lib/report/templates/foot.txt
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/foot.txt
+curl https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/templates/foot.txt > /tmp/aa.js
+*/
+/* jslint-ignore-block-beg */
 local['foot.txt'] = '\
 </div>\n\
 <div class="footer">\n\
@@ -2197,9 +2276,12 @@ local['foot.txt'] = '\
 
 
 
-// init lib istanbul.report.templates.head
-// 2014-07-04T07:47:53Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/head.txt
+/*
+file istanbul/lib/report/templates/head.txt
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/head.txt
+curl https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/templates/head.txt > /tmp/aa.js
+*/
 local['head.txt'] = '\
 <!doctype html>\n\
 <html lang="en" class="x-istanbul">\n\
@@ -2213,13 +2295,13 @@ local['head.txt'] = '\
     important: false,\n\
     qualified-headings: false,\n\
 */\n\
-/* jslint-ignore-begin */\n\
+/* csslint ignore:start */\n\
 *,\n\
 *:after,\n\
 *:before {\n\
     box-sizing: border-box;\n\
 }\n\
-/* jslint-ignore-end */\n\
+/* csslint ignore:end */\n\
 .x-istanbul {\n\
     font-family: Helvetica Neue, Helvetica,Arial;\n\
     font-size: 10pt;\n\
@@ -2452,7 +2534,7 @@ local['head.txt'] = '\
     window.domOnEventSelectAllWithinPre = function (event) {\n\
         var range, selection;\n\
         if (event &&\n\
-                event.code === "KeyA" &&\n\
+                event.key === "a" &&\n\
                 (event.ctrlKey || event.metaKey) &&\n\
                 event.target.closest("pre")) {\n\
             range = document.createRange();\n\
@@ -2493,23 +2575,26 @@ local['head.txt'] = '\
 </div>\n\
 <div class="body">\n\
 ';
-/* jslint-ignore-end */
+/* jslint-ignore-block-end */
 
 
 
-// init lib istanbul.util.file-writer
-// 2013-03-31T22:11:41Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/file-writer.js
+/*
+file istanbul/lib/util/file-writer.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/file-writer.js
+curl https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/util/file-writer.js > /tmp/aa.js
+*/
         local.writer = {
             write: function (data) {
                 local.writerData += data;
             },
             writeFile: function (file, onError) {
-                local.coverageReportHtml += local.writerData + '\n\n';
+                local.coverageReportHtml += local.writerData + "\n\n";
                 if (!local.isBrowser && local.writerFile) {
                     local.fsWriteFileWithMkdirpSync(local.writerFile, local.writerData);
                 }
-                local.writerData = '';
+                local.writerData = "";
                 local.writerFile = file;
                 onError(local.writer);
             }
@@ -2517,16 +2602,17 @@ local['head.txt'] = '\
 
 
 
-// init lib istanbul.util.tree-summarizer
-// 2014-03-05T18:58:42Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/tree-summarizer.js
+/*
+file istanbul/lib/util/tree-summarizer.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/tree-summarizer.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/util/tree-summarizer.js > /tmp/aa.js
+*/
         /* istanbul ignore next */
         (function () {
             var module;
             module = {};
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/util/tree-summarizer.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/util/tree-summarizer.js
-/* jslint-ignore-begin */
+/* jslint-ignore-block-beg */
 function commonArrayPrefix(e,t){var n=e.length<t.length?e.length:t.length,r,i=[]
 ;for(r=0;r<n;r+=1){if(e[r]!==t[r])break;i.push(e[r])}return i}function findCommonArrayPrefix
 (e){if(e.length===0)return[];var t=e.map(function(e){return e.split(SEP)}),n=t.pop
@@ -2563,8 +2649,8 @@ this;t[e.name]=e,e.children.sort(function(e,t){return e=e.relativeName,t=t.relat
 prototype={addFileCoverageSummary:function(e,t){this.summaryMap[e]=t},getTreeSummary
 :function(){var e=findCommonArrayPrefix(Object.keys(this.summaryMap));return new
 TreeSummary(this.summaryMap,e)}},module.exports=TreeSummarizer
-/* jslint-ignore-end */
-            local['../util/tree-summarizer'] = module.exports;
+/* jslint-ignore-block-end */
+            local["../util/tree-summarizer"] = module.exports;
             module.exports.prototype._getTreeSummary = module.exports.prototype.getTreeSummary;
             module.exports.prototype.getTreeSummary = function () {
                 local.coverageReportSummary = this._getTreeSummary();
@@ -2574,12 +2660,14 @@ TreeSummary(this.summaryMap,e)}},module.exports=TreeSummarizer
 
 
 
-// init lib istanbul.report.html
-// 2014-01-17T21:08:38Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/html.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/html.js
+/*
+file istanbul/lib/report/html.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/html.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/html.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
-/* jslint-ignore-begin */
+/* jslint-ignore-block-beg */
 (function () { var module; module = {};
 function customEscape(e){return e=e.toString(),e.replace(RE_AMP,"&amp;").replace
 (RE_LT,"&lt;").replace(RE_GT,"&gt;").replace(RE_lt,"<").replace(RE_gt,">")}function title
@@ -2609,8 +2697,8 @@ t){var n=e.pct,r=1;return n*r===n?n>=t[1]?"high":n>=t[0]?"medium":"low":""}funct
 (e){Report.call(this),this.opts=e||{},this.opts.dir=this.opts.dir||path.resolve(
 process.cwd(),"html-report"),this.opts.sourceStore=this.opts.sourceStore||Store.
 create("fslookup"),this.opts.linkMapper=this.opts.linkMapper||this.standardLinkMapper
-(),this.opts.writer=this.opts.writer||null,this.opts.templateData={datetime:Date
-()},this.opts.watermarks=this.opts.watermarks||defaults.watermarks()}var handlebars=
+(),this.opts.writer=this.opts.writer||null,this.opts.templateData={datetime:new Date
+().toGMTString()},this.opts.watermarks=this.opts.watermarks||defaults.watermarks()}var handlebars=
 require("handlebars"),defaults=require("./common/defaults"),path=require("path")
 ,SEP=path.sep||"/",fs=require("fs"),util=require("util"),FileWriter=require("../util/file-writer"
 ),Report=require("./index"),Store=require("../store"),InsertionText=require("../util/insertion-text"
@@ -2634,10 +2722,10 @@ templateFor("foot"),pathTemplate=handlebars.compile('<div class="path">{{{html}}
 ,'<td data-value="{{metrics.functions.pct}}" class="pct {{reportClasses.functions}}">{{metrics.functions.pct}}%<br>({{metrics.functions.covered}} / {{metrics.functions.total}})</td>'
 ,'<td data-value="{{metrics.lines.pct}}" class="pct {{reportClasses.lines}}">{{metrics.lines.pct}}%<br>({{metrics.lines.covered}} / {{metrics.lines.total}})</td>'
 ,"</tr>\n"].join("\n\t")),summaryTableFooter=["</tbody>","</table>","</div>"].join
-("\n"),lt="",gt="",RE_LT=/</g,RE_GT=/>/g,RE_AMP=/&/g,RE_lt=/\u0001/g,RE_gt=/\u0002/g
-;handlebars.registerHelper("show_picture",function(e){var t=Number(e.fn(this)),n
-,r="";return isFinite(t)?(t===100&&(r=" cover-full"),t=Math.floor(t),n=100-t,'<span class="cover-fill'+
-r+'" style="width: '+t+'px;"></span>'+'<span class="cover-empty" style="width:'+
+("\n"),lt="\u0001",gt="\u0002",RE_LT=/</g,RE_GT=/>/g,RE_AMP=/&/g,RE_lt=/\u0001/g
+,RE_gt=/\u0002/g;handlebars.registerHelper("show_picture",function(e){var t=Number
+(e.fn(this)),n,r="";return isFinite(t)?(t===100&&(r=" cover-full"),t=Math.floor(
+t),n=100-t,'<span class="cover-fill'+r+'" style="width: '+t+'px;"></span>'+'<span class="cover-empty" style="width:'+
 n+'px;"></span>'):""}),handlebars.registerHelper("show_ignores",function(e){var t=
 e.statements.skipped,n=e.functions.skipped,r=e.branches.skipped,i;return t===0&&
 n===0&&r===0?'<span class="ignore-none">none</span>':(i=[],r>0&&i.push("branches: "+r),t>0&&i.push(
@@ -2694,10 +2782,12 @@ local.HtmlReport = module.exports; }());
 
 
 
-// init lib istanbul.report.text
-// 2014-06-26T02:15:16Z
-// https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/text.js
-// utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/text.js
+/*
+file istanbul/lib/report/text.js
+2014-07-04T07:47:53Z - shGithubDateCommitted https://github.com/gotwarlost/istanbul/commits/v0.2.16
+https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/text.js
+utility2-uglifyjs https://raw.githubusercontent.com/gotwarlost/istanbul/v0.2.16/lib/report/text.js > /tmp/aa.js
+*/
 /* istanbul ignore next */
 (function () { var module; module = {};
 function TextReport(e){Report.call(this),e=e||{},this.dir=e.dir||process.cwd(),this
@@ -2737,10 +2827,15 @@ local.TextReport = module.exports; }());
 
 
 
-// https://img.shields.io/badge/coverage-100.0%-00dd00.svg?style=flat
+/*
+https://img.shields.io/badge/coverage-100.0%-00dd00.svg?style=flat
+*/
 local.templateCoverageBadgeSvg =
 '<svg xmlns="http://www.w3.org/2000/svg" width="117" height="20"><linearGradient id="a" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><rect rx="0" width="117" height="20" fill="#555"/><rect rx="0" x="63" width="54" height="20" fill="#0d0"/><path fill="#0d0" d="M63 0h4v20h-4z"/><rect rx="0" width="117" height="20" fill="url(#a)"/><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11"><text x="32.5" y="15" fill="#010101" fill-opacity=".3">coverage</text><text x="32.5" y="14">coverage</text><text x="89" y="15" fill="#010101" fill-opacity=".3">100.0%</text><text x="89" y="14">100.0%</text></g></svg>';
-/* jslint-ignore-end */
+/*
+file none
+*/
+/* jslint-ignore-block-end */
     }());
 
 
@@ -2759,29 +2854,31 @@ local.templateCoverageBadgeSvg =
         local.cliDict.cover = function () {
         /*
          * <script>
-         * # run and cover the <script>
+         * will run and cover <script>
          */
             var tmp;
             try {
-                tmp = JSON.parse(local.fs.readFileSync('package.json', 'utf8'));
+                tmp = JSON.parse(local.fs.readFileSync("package.json", "utf8"));
                 process.env.npm_package_nameLib = process.env.npm_package_nameLib ||
-                    tmp.nameLib ||
-                    tmp.name.replace((/-/g), '_');
+                        tmp.nameLib ||
+                        tmp.name.replace((/-/g), "_");
             } catch (ignore) {
             }
             process.env.npm_config_mode_coverage = process.env.npm_config_mode_coverage ||
-                process.env.npm_package_nameLib ||
-                'all';
+                    process.env.npm_package_nameLib ||
+                    "all";
             // add coverage hook to require
-            local._istanbul_moduleExtensionsJs = local._istanbul_module._extensions['.js'];
-            local._istanbul_module._extensions['.js'] = function (module, file) {
-                if (typeof file === 'string' && (
-                        file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 ||
-                        (file.indexOf(process.cwd()) === 0 &&
-                            file.indexOf(process.cwd() + '/node_modules/') !== 0)
-                    )) {
+            local._istanbul_moduleExtensionsJs = local._istanbul_module._extensions[".js"];
+            local._istanbul_module._extensions[".js"] = function (module, file) {
+                if (typeof file === "string" && (
+                    file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 ||
+                        (
+                        file.indexOf(process.cwd()) === 0 &&
+                            file.indexOf(process.cwd() + "/node_modules/") !== 0
+                    )
+                )) {
                     module._compile(local.instrumentInPackage(
-                        local.fs.readFileSync(file, 'utf8'),
+                        local.fs.readFileSync(file, "utf8"),
                         file
                     ), file);
                     return;
@@ -2791,43 +2888,46 @@ local.templateCoverageBadgeSvg =
             // init process.argv
             process.argv.splice(1, 2);
             process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
-            console.log('\ncovering $ ' + process.argv.join(' '));
+            console.log("\ncovering $ " + process.argv.join(" "));
             // create coverage on exit
-            process.on('exit', function () {
-                local.coverageReportCreate({ coverage: local.global.__coverage__ });
+            process.on("exit", function () {
+                local.coverageReportCreate({coverage: local.global.__coverage__});
             });
             // re-init cli
             local._istanbul_module.runMain();
         };
+
         local.cliDict.instrument = function () {
         /*
          * <script>
-         * # instrument the <script> and print result to stdout
+         * will instrument <script> and print result to stdout
          */
             process.argv[3] = local.path.resolve(process.cwd(), process.argv[3]);
             process.stdout.write(local.instrumentSync(
-                local.fs.readFileSync(process.argv[3], 'utf8'),
+                local.fs.readFileSync(process.argv[3], "utf8"),
                 process.argv[3]
             ));
         };
+
         //
         local.cliDict.test = function () {
         /*
          * <script>
-         * # run and cover the <script> if env var $npm_config_mode_coverage is set
+         * will run and cover <script> if env var $npm_config_mode_coverage is set
          */
             if (process.env.npm_config_mode_coverage) {
-                process.argv[2] = 'cover';
+                process.argv[2] = "cover";
                 // re-init cli
                 local.cliDict[process.argv[2]]();
                 return;
             }
-            // init process.argv
+            // restart node with __filename removed from process.argv
             process.argv.splice(1, 2);
             process.argv[1] = local.path.resolve(process.cwd(), process.argv[1]);
             // re-init cli
             local._istanbul_module.runMain();
         };
+
         local.cliRun();
     }());
 }());

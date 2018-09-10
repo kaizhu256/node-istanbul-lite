@@ -3,15 +3,17 @@
 /*jslint
     bitwise: true,
     browser: true,
+    for: true,
+    ignore_bad_property_a: true,
     maxerr: 4,
     maxlen: 100,
+    multivar: true,
     node: true,
-    nomen: true,
-    regexp: true,
-    stupid: true
+    this: true
 */
+/*global global*/
 (function () {
-    'use strict';
+    "use strict";
     var local;
 
 
@@ -22,18 +24,18 @@
         local = {};
         // init isBrowser
         local.isBrowser = typeof window === "object" &&
-            typeof window.XMLHttpRequest === "function" &&
-            window.document &&
-            typeof window.document.querySelectorAll === "function";
+                typeof window.XMLHttpRequest === "function" &&
+                window.document &&
+                typeof window.document.querySelectorAll === "function";
         // init global
         local.global = local.isBrowser
             ? window
             : global;
         // re-init local
-        local = local.global.local = (local.global.utility2 ||
-            require('utility2')).requireReadme();
+        local = (local.global.utility2 || require("utility2")).requireReadme();
+        local.global.local = local;
         // init test
-        local.testRunInit(local);
+        local.testRunDefault(local);
     }());
 
 
@@ -44,7 +46,7 @@
         /*
          * this function will test coverage's es6 handling-behavior
          */
-/* jslint-ignore-begin */
+/* jslint-ignore-block-beg */
 // https://github.com/lukehoban/es6features/blob/9354b8f68f26bf1931d05251c7d4411808669c97/README.md
 var echo = function (arg) {
     return arg;
@@ -494,7 +496,7 @@ function factorial(n, acc = 1) {
 // but safe on arbitrary inputs in ES6
 factorial(100)
 });
-/* jslint-ignore-end */
+/* jslint-ignore-block-end */
             onError(null, options);
         };
 
@@ -508,10 +510,10 @@ factorial(100)
             }
             options = {};
             options.data = local.istanbul.instrumentSync(
-                '(function () {\nreturn arg ' +
-                    '? __coverage__ ' +
-                    ': __coverage__;\n}());',
-                'test'
+                "(function () {\nreturn arg " +
+                        "? __coverage__ " +
+                        ": __coverage__;\n}());",
+                "test"
             );
             local.arg = 0;
             // test null-case handling-behavior
@@ -520,13 +522,13 @@ factorial(100)
             local.istanbul.coverageMerge(options.coverage1, options.coverage2);
             // validate merged options.coverage1
             local.assertJsonEqual(options.coverage1, null);
-            options.coverage2 = { undefined: null };
+            options.coverage2 = {undefined: null};
             local.istanbul.coverageMerge(options.coverage1, options.coverage2);
             // validate merged options.coverage1
             local.assertJsonEqual(options.coverage1, null);
             // init options.coverage1
-            options.coverage1 = local.vm.runInNewContext(options.data, { arg: 0 });
-/* jslint-ignore-begin */
+            options.coverage1 = local.vm.runInNewContext(options.data, {arg: 0});
+/* jslint-ignore-block-beg */
 // validate options.coverage1
 local.assertJsonEqual(options.coverage1,
 {"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
@@ -549,7 +551,7 @@ local.istanbul.coverageMerge(options.coverage1, options.coverage2);
 local.assertJsonEqual(options.coverage1,
 {"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
-/* jslint-ignore-end */
+/* jslint-ignore-block-end */
             onError(null, options);
         };
 
@@ -557,29 +559,28 @@ local.assertJsonEqual(options.coverage1,
         /*
          * this function will test istanbulCoverageReportCreate's default handling-behavior
          */
-            local.env.npm_config_mode_coverage_merge = '';
+            local.env.npm_config_mode_coverage_merge = "";
             local.testMock([
-                [local.istanbul, { coverageMerge: local.echo }],
+                [local.istanbul, {coverageMerge: local.echo}],
                 // test $npm_config_mode_coverage_merge handling-behavior
-                [local.env, { npm_config_mode_coverage_merge: '1' }]
+                [local.env, {npm_config_mode_coverage_merge: "1"}]
             ], function (onError) {
-                /*jslint evil: true*/
                 // cleanup old coverage
                 if (!local.isBrowser) {
-                    local.fsRmrSync('tmp/build/coverage.html/aa');
+                    local.fsRmrSync("tmp/build/coverage.html/aa");
                 }
                 // test path handling-behavior
-                ['/', local.__dirname].forEach(function (dir) {
+                ["/", local.__dirname].forEach(function (dir) {
                     [
-                        'zz.js',
-                        'aa/zz.js',
-                        'aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js'
+                        "zz.js",
+                        "aa/zz.js",
+                        "aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js"
                     ].forEach(function (file) {
                         // cover file
                         eval(local.istanbul.instrumentSync(
                             // test skip handling-behavior
-                            'null',
-                            dir + '/' + file
+                            "null",
+                            dir + "/" + file
                         ));
                     });
                 });
@@ -588,30 +589,30 @@ local.assertJsonEqual(options.coverage1,
                 // test file-content handling-behavior
                 [
                     // test no content handling-behavior
-                    '',
+                    "",
                     // test uncovereed-code handling-behavior
-                    'null && null && null',
+                    "null && null && null",
                     // test trailing-whitespace handling-behavior
-                    'null ',
+                    "null ",
                     // test skip handling-behavior
-                    '/* istanbul ignore next */\nnull && null'
+                    "/* istanbul ignore next */\nnull && null"
                 ].forEach(function (content) {
                     // cleanup
                     local.tryCatchOnError(function () {
                         Object.keys(local.global.__coverage__).forEach(function (file) {
-                            if (file.indexOf('zz.js') >= 0) {
+                            if (file.indexOf("zz.js") >= 0) {
                                 local.global.__coverage__[file] = null;
                             }
                         });
                     }, local.nop);
                     // cover path
-                    eval(local.istanbul.instrumentSync(content, 'zz.js'));
+                    eval(local.istanbul.instrumentSync(content, "zz.js"));
                     // create report with covered content
                     local.istanbul.coverageReportCreate();
                 });
                 // cleanup
                 Object.keys(local.global.__coverage__).forEach(function (file) {
-                    if (file.indexOf('zz.js') >= 0) {
+                    if (file.indexOf("zz.js") >= 0) {
                         local.global.__coverage__[file] = null;
                     }
                 });
@@ -624,7 +625,7 @@ local.assertJsonEqual(options.coverage1,
          * this function will test istanbulInstrumentSync's default handling-behavior
          */
             options = {};
-            options.data = local.istanbul.instrumentSync('1', 'test.js');
+            options.data = local.istanbul.instrumentSync("1", "test.js");
             // validate data
             local.assert(options.data.indexOf(".s['1']++;1;\n") >= 0, options);
             onError(null, options);

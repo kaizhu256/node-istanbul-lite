@@ -58,8 +58,10 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog 2018.8.7
-- npm publish 2018.8.7
+#### changelog 2018.9.10
+- npm publish 2018.9.10
+- revamp files with new jslint-lite
+- change footer-date to GMT
 - add BigInt-support for istanbul
 - none
 
@@ -121,15 +123,17 @@ instruction
 /*jslint
     bitwise: true,
     browser: true,
+    for: true,
+    ignore_bad_property_a: true,
     maxerr: 4,
     maxlen: 100,
+    multivar: true,
     node: true,
-    nomen: true,
-    regexp: true,
-    stupid: true
+    this: true
 */
+/*global global*/
 (function () {
-    'use strict';
+    "use strict";
     var local;
 
 
@@ -140,9 +144,9 @@ instruction
         local = {};
         // init isBrowser
         local.isBrowser = typeof window === "object" &&
-            typeof window.XMLHttpRequest === "function" &&
-            window.document &&
-            typeof window.document.querySelectorAll === "function";
+                typeof window.XMLHttpRequest === "function" &&
+                window.document &&
+                typeof window.document.querySelectorAll === "function";
         // init global
         local.global = local.isBrowser
             ? window
@@ -150,114 +154,117 @@ instruction
         // re-init local
         local = local.global.utility2_rollup || (local.isBrowser
             ? local.global.utility2_istanbul
-            : require('istanbul-lite'));
+            : require("istanbul-lite"));
         // init exports
         local.global.local = local;
     }());
 
 
 
-    // run browser js-env code - init-test
     /* istanbul ignore next */
+    // run browser js-env code - init-test
     (function () {
         if (!local.isBrowser) {
             return;
         }
         local.testRunBrowser = function (event) {
-            if (!event || (event &&
-                    event.currentTarget &&
-                    event.currentTarget.className &&
-                    event.currentTarget.className.includes &&
-                    event.currentTarget.className.includes('onreset'))) {
+            if (!event || (
+                event &&
+                event.currentTarget &&
+                event.currentTarget.className &&
+                event.currentTarget.className.includes &&
+                event.currentTarget.className.includes("onreset")
+            )) {
                 // reset output
-                Array.from(
-                    document.querySelectorAll('body > .resettable')
-                ).forEach(function (element) {
+                Array.from(document.querySelectorAll(
+                    "body > .resettable"
+                )).forEach(function (element) {
                     switch (element.tagName) {
-                    case 'INPUT':
-                    case 'TEXTAREA':
-                        element.value = '';
+                    case "INPUT":
+                    case "TEXTAREA":
+                        element.value = "";
                         break;
                     default:
-                        element.textContent = '';
+                        element.textContent = "";
                     }
                 });
             }
             switch (event && event.currentTarget && event.currentTarget.id) {
-            case 'testRunButton1':
+            case "testRunButton1":
                 // show tests
-                if (document.querySelector('#testReportDiv1').style.maxHeight === '0px') {
-                    local.uiAnimateSlideDown(document.querySelector('#testReportDiv1'));
-                    document.querySelector('#testRunButton1').textContent = 'hide internal test';
-                    local.modeTest = true;
+                if (document.querySelector("#testReportDiv1").style.maxHeight === "0px") {
+                    local.uiAnimateSlideDown(document.querySelector("#testReportDiv1"));
+                    document.querySelector("#testRunButton1").textContent = "hide internal test";
+                    local.modeTest = 1;
                     local.testRunDefault(local);
                 // hide tests
                 } else {
-                    local.uiAnimateSlideUp(document.querySelector('#testReportDiv1'));
-                    document.querySelector('#testRunButton1').textContent = 'run internal test';
+                    local.uiAnimateSlideUp(document.querySelector("#testReportDiv1"));
+                    document.querySelector("#testRunButton1").textContent = "run internal test";
                 }
                 break;
             // custom-case
             default:
                 // try to cleanup __coverage__
                 try {
-                    delete local.global.__coverage__['/inputTextarea1.js'];
+                    delete local.global.__coverage__["/inputTextarea1.js"];
                 } catch (ignore) {
                 }
                 // try to cover and eval input-code
                 try {
-                    /*jslint evil: true*/
-                    document.querySelector('#outputTextarea1').value =
-                        local.istanbul.instrumentSync(
-                            document.querySelector('#inputTextarea1').value,
-                            '/inputTextarea1.js'
-                        );
-                    eval(document.querySelector('#outputTextarea1').value);
-                    document.querySelector('#coverageReportDiv1').innerHTML =
-                        local.istanbul.coverageReportCreate({
-                            coverage: window.__coverage__
-                        });
-                } catch (errorCaught) {
-                    console.error(errorCaught.stack);
+                    document.querySelector("#outputTextarea1").value =
+                            local.istanbul.instrumentSync(
+                        document.querySelector("#inputTextarea1").value,
+                        "/inputTextarea1.js"
+                    );
+                    eval(document.querySelector("#outputTextarea1").value); // jslint-ignore-line
+                    document.querySelector("#coverageReportDiv1").innerHTML =
+                            local.istanbul.coverageReportCreate({coverage: window.__coverage__});
+                } catch (errorCaught2) {
+                    console.error(errorCaught2.stack);
                 }
             }
-            if (document.querySelector('#inputTextareaEval1') && (!event || (event &&
-                    event.currentTarget &&
-                    event.currentTarget.className &&
-                    event.currentTarget.className.includes &&
-                    event.currentTarget.className.includes('oneval')))) {
+            if (document.querySelector("#inputTextareaEval1") && (!event || (
+                event &&
+                event.currentTarget &&
+                event.currentTarget.className &&
+                event.currentTarget.className.includes &&
+                event.currentTarget.className.includes("oneval")
+            ))) {
                 // try to eval input-code
                 try {
-                    /*jslint evil: true*/
-                    eval(document.querySelector('#inputTextareaEval1').value);
+                    eval( // jslint-ignore-line
+                        document.querySelector("#inputTextareaEval1").value
+                    );
                 } catch (errorCaught) {
                     console.error(errorCaught);
                 }
             }
         };
-        // log stderr and stdout to #outputTextareaStdout1
-        ['error', 'log'].forEach(function (key) {
-            console[key + '_original'] = console[key];
+
+        // log stderr and stdout to #outputStdoutTextarea1
+        ["error", "log"].forEach(function (key) {
+            console[key + "_original"] = console[key + "_original"] || console[key];
             console[key] = function () {
                 var element;
-                console[key + '_original'].apply(console, arguments);
-                element = document.querySelector('#outputTextareaStdout1');
+                console[key + "_original"].apply(console, arguments);
+                element = document.querySelector("#outputStdoutTextarea1");
                 if (!element) {
                     return;
                 }
-                // append text to #outputTextareaStdout1
+                // append text to #outputStdoutTextarea1
                 element.value += Array.from(arguments).map(function (arg) {
-                    return typeof arg === 'string'
+                    return typeof arg === "string"
                         ? arg
                         : JSON.stringify(arg, null, 4);
-                }).join(' ') + '\n';
+                }).join(" ").replace((/\u001b\[\d*m/g), "") + "\n";
                 // scroll textarea to bottom
                 element.scrollTop = element.scrollHeight;
             };
         });
         // init event-handling
-        ['change', 'click', 'keyup'].forEach(function (event) {
-            Array.from(document.querySelectorAll('.on' + event)).forEach(function (element) {
+        ["change", "click", "keyup"].forEach(function (event) {
+            Array.from(document.querySelectorAll(".on" + event)).forEach(function (element) {
                 element.addEventListener(event, local.testRunBrowser);
             });
         });
@@ -267,8 +274,8 @@ instruction
 
 
 
-    // run node js-env code - init-test
     /* istanbul ignore next */
+    // run node js-env code - init-test
     (function () {
         if (local.isBrowser) {
             return;
@@ -276,62 +283,56 @@ instruction
         // init exports
         module.exports = local;
         // require builtins
-        // local.assert = require('assert');
-        local.buffer = require('buffer');
-        local.child_process = require('child_process');
-        local.cluster = require('cluster');
-        local.console = require('console');
-        local.constants = require('constants');
-        local.crypto = require('crypto');
-        local.dgram = require('dgram');
-        local.dns = require('dns');
-        local.domain = require('domain');
-        local.events = require('events');
-        local.fs = require('fs');
-        local.http = require('http');
-        local.https = require('https');
-        local.module = require('module');
-        local.net = require('net');
-        local.os = require('os');
-        local.path = require('path');
-        local.process = require('process');
-        local.punycode = require('punycode');
-        local.querystring = require('querystring');
-        local.readline = require('readline');
-        local.repl = require('repl');
-        local.stream = require('stream');
-        local.string_decoder = require('string_decoder');
-        local.timers = require('timers');
-        local.tls = require('tls');
-        local.tty = require('tty');
-        local.url = require('url');
-        local.util = require('util');
-        local.v8 = require('v8');
-        local.vm = require('vm');
-        local.zlib = require('zlib');
+        // local.assert = require("assert");
+        local.buffer = require("buffer");
+        local.child_process = require("child_process");
+        local.cluster = require("cluster");
+        local.crypto = require("crypto");
+        local.dgram = require("dgram");
+        local.dns = require("dns");
+        local.domain = require("domain");
+        local.events = require("events");
+        local.fs = require("fs");
+        local.http = require("http");
+        local.https = require("https");
+        local.net = require("net");
+        local.os = require("os");
+        local.path = require("path");
+        local.querystring = require("querystring");
+        local.readline = require("readline");
+        local.repl = require("repl");
+        local.stream = require("stream");
+        local.string_decoder = require("string_decoder");
+        local.timers = require("timers");
+        local.tls = require("tls");
+        local.tty = require("tty");
+        local.url = require("url");
+        local.util = require("util");
+        local.vm = require("vm");
+        local.zlib = require("zlib");
         /* validateLineSortedReset */
         // init assets
         local.assetsDict = local.assetsDict || {};
         [
-            'assets.index.template.html',
-            'assets.swgg.swagger.json',
-            'assets.swgg.swagger.server.json'
+            "assets.index.template.html",
+            "assets.swgg.swagger.json",
+            "assets.swgg.swagger.server.json"
         ].forEach(function (file) {
-            file = '/' + file;
-            local.assetsDict[file] = local.assetsDict[file] || '';
+            file = "/" + file;
+            local.assetsDict[file] = local.assetsDict[file] || "";
             if (local.fs.existsSync(local.__dirname + file)) {
                 local.assetsDict[file] = local.fs.readFileSync(
                     local.__dirname + file,
-                    'utf8'
+                    "utf8"
                 );
             }
         });
-        /* jslint-ignore-begin */
-        local.assetsDict['/assets.index.template.html'] = '\
+        /* jslint-ignore-block-beg */
+        local.assetsDict["/assets.index.template.html"] = '\
 <!doctype html>\n\
 <html lang="en">\n\
 <head>\n\
-<meta charset="UTF-8">\n\
+<meta charset="utf-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
 <!-- "assets.utility2.template.html" -->\n\
 <title>{{env.npm_package_name}} ({{env.npm_package_version}})</title>\n\
@@ -339,13 +340,13 @@ instruction
 /* jslint-utility2 */\n\
 /*csslint\n\
 */\n\
-/* jslint-ignore-begin */\n\
+/* csslint ignore:start */\n\
 *,\n\
 *:after,\n\
 *:before {\n\
     box-sizing: border-box;\n\
 }\n\
-/* jslint-ignore-end */\n\
+/* csslint ignore:end */\n\
 @keyframes uiAnimateShake {\n\
     0%, 50% {\n\
         transform: translateX(10px);\n\
@@ -459,18 +460,42 @@ textarea {\n\
 <body>\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>\n\
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
+<a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"></a>\n\
+<input class="zeroPixel" id="dbImportInput1" type="file">\n\
 <script>\n\
 /* jslint-utility2 */\n\
 /*jslint\n\
     bitwise: true,\n\
     browser: true,\n\
+    for: true,\n\
+    ignore_bad_property_a: true,\n\
     maxerr: 4,\n\
     maxlen: 100,\n\
+    multivar: true,\n\
     node: true,\n\
-    nomen: true,\n\
-    regexp: true,\n\
-    stupid: true\n\
+    this: true\n\
 */\n\
+/*global global*/\n\
+// init domOnEventWindowOnloadTimeElapsed\n\
+(function () {\n\
+/*\n\
+ * this function will measure and print the time-elapsed for window.onload\n\
+ */\n\
+    "use strict";\n\
+    if (window.domOnEventWindowOnloadTimeElapsed) {\n\
+        return;\n\
+    }\n\
+    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n\
+    window.addEventListener("load", function () {\n\
+        setTimeout(function () {\n\
+            window.domOnEventWindowOnloadTimeElapsed = Date.now() -\n\
+                    window.domOnEventWindowOnloadTimeElapsed;\n\
+            console.error(\n\
+                "domOnEventWindowOnloadTimeElapsed = " + window.domOnEventWindowOnloadTimeElapsed\n\
+            );\n\
+        }, 100);\n\
+    });\n\
+}());\n\
 // init timerIntervalAjaxProgressUpdate\n\
 (function () {\n\
 /*\n\
@@ -480,7 +505,7 @@ textarea {\n\
     var ajaxProgressDiv1,\n\
         ajaxProgressState,\n\
         ajaxProgressUpdate;\n\
-    if (window.timerIntervalAjaxProgressUpdate) {\n\
+    if (window.timerIntervalAjaxProgressUpdate || !document.querySelector("#ajaxProgressDiv1")) {\n\
         return;\n\
     }\n\
     ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");\n\
@@ -488,8 +513,10 @@ textarea {\n\
         ajaxProgressDiv1.style.width = "25%";\n\
     });\n\
     ajaxProgressState = 0;\n\
-    ajaxProgressUpdate = (window.local &&\n\
-        window.local.ajaxProgressUpdate) || function () {\n\
+    ajaxProgressUpdate = (\n\
+        window.local &&\n\
+        window.local.ajaxProgressUpdate\n\
+    ) || function () {\n\
         ajaxProgressDiv1.style.width = "100%";\n\
         setTimeout(function () {\n\
             ajaxProgressDiv1.style.background = "transparent";\n\
@@ -510,87 +537,6 @@ textarea {\n\
         ajaxProgressUpdate();\n\
     });\n\
 }());\n\
-// init domOnEventMediaHotkeys\n\
-(function () {\n\
-/*\n\
- * this function will add media-hotkeys to elements with class=".domOnEventMediaHotkeysInit"\n\
- */\n\
-    "use strict";\n\
-    var input, onEvent;\n\
-    if (window.domOnEventMediaHotkeys) {\n\
-        return;\n\
-    }\n\
-    onEvent = window.domOnEventMediaHotkeys = function (event) {\n\
-        var media;\n\
-        if (event === "init") {\n\
-            Array.from(\n\
-                document.querySelectorAll(".domOnEventMediaHotkeysInit")\n\
-            ).forEach(function (media) {\n\
-                media.classList.remove("domOnEventMediaHotkeysInit");\n\
-                media.classList.add("domOnEventMediaHotkeys");\n\
-                ["play", "pause", "seeking"].forEach(function (event) {\n\
-                    media.addEventListener(event, onEvent);\n\
-                });\n\
-            });\n\
-            return;\n\
-        }\n\
-        if (event.currentTarget.classList.contains("domOnEventMediaHotkeys")) {\n\
-            window.domOnEventMediaHotkeysMedia1 = event.currentTarget;\n\
-            window.domOnEventMediaHotkeysInput.focus();\n\
-            return;\n\
-        }\n\
-        media = window.domOnEventMediaHotkeysMedia1;\n\
-        try {\n\
-            switch (event.key || event.type) {\n\
-            case ",":\n\
-            case ".":\n\
-                media.currentTime += (event.key === "," && -0.03125) || 0.03125;\n\
-                break;\n\
-            case "<":\n\
-            case ">":\n\
-                media.playbackRate *= (event.key === "<" && 0.5) || 2;\n\
-                break;\n\
-            case "ArrowDown":\n\
-            case "ArrowUp":\n\
-                media.volume += (event.key === "ArrowDown" && -0.05) || 0.05;\n\
-                break;\n\
-            case "ArrowLeft":\n\
-            case "ArrowRight":\n\
-                media.currentTime += (event.key === "ArrowLeft" && -5) || 5;\n\
-                break;\n\
-            case "j":\n\
-            case "l":\n\
-                media.currentTime += (event.key === "j" && -10) || 10;\n\
-                break;\n\
-            case "k":\n\
-            case " ":\n\
-                if (media.paused) {\n\
-                    media.play();\n\
-                } else {\n\
-                    media.pause();\n\
-                }\n\
-                break;\n\
-            case "m":\n\
-                media.muted = !media.muted;\n\
-                break;\n\
-            default:\n\
-                if (event.key >= 0) {\n\
-                    media.currentTime = 0.1 * event.key * media.duration;\n\
-                    break;\n\
-                }\n\
-                return;\n\
-            }\n\
-        } catch (ignore) {\n\
-        }\n\
-        event.preventDefault();\n\
-    };\n\
-    input = window.domOnEventMediaHotkeysInput = document.createElement("button");\n\
-    input.style = "border:0;height:0;margin:0;padding:0;position:fixed;width:0;z-index:-1;";\n\
-    input.addEventListener("click", onEvent);\n\
-    input.addEventListener("keydown", onEvent);\n\
-    document.body.appendChild(input);\n\
-    onEvent("init");\n\
-}());\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
 /*\n\
@@ -603,10 +549,12 @@ textarea {\n\
     }\n\
     window.domOnEventSelectAllWithinPre = function (event) {\n\
         var range, selection;\n\
-        if (event &&\n\
-                event.key === "a" &&\n\
-                (event.ctrlKey || event.metaKey) &&\n\
-                event.target.closest("pre")) {\n\
+        if (\n\
+            event &&\n\
+            event.key === "a" &&\n\
+            (event.ctrlKey || event.metaKey) &&\n\
+            event.target.closest("pre")\n\
+        ) {\n\
             range = document.createRange();\n\
             range.selectNodeContents(event.target.closest("pre"));\n\
             selection = window.getSelection();\n\
@@ -677,12 +625,12 @@ for (var n of fibonacci) {\n\
 {{#unless isRollup}}\n\
 utility2-comment -->\n\
 <script src="assets.utility2.rollup.js"></script>\n\
-<script>window.utility2.onResetBefore.counter += 1;</script>\n\
+<script>window.utility2_onReadyBefore.counter += 1;</script>\n\
 <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
 <script src="assets.istanbul.js"></script>\n\
 <script src="assets.example.js"></script>\n\
 <script src="assets.test.js"></script>\n\
-<script>window.utility2.onResetBefore();</script>\n\
+<script>window.utility2_onReadyBefore();</script>\n\
 <!-- utility2-comment\n\
 {{/if isRollup}}\n\
 utility2-comment -->\n\
@@ -694,41 +642,41 @@ utility2-comment -->\n\
 </body>\n\
 </html>\n\
 ';
-        /* jslint-ignore-end */
+        /* jslint-ignore-block-end */
         /* validateLineSortedReset */
-        /* jslint-ignore-begin */
+        /* jslint-ignore-block-beg */
         // bug-workaround - long $npm_package_buildCustomOrg
-        local.assetsDict['/assets.istanbul.js'] =
-            local.assetsDict['/assets.istanbul.js'] ||
-            local.fs.readFileSync(local.__dirname + '/lib.istanbul.js', 'utf8'
-        ).replace((/^#!\//), '// ');
-        /* jslint-ignore-end */
+        local.assetsDict["/assets.istanbul.js"] =
+            local.assetsDict["/assets.istanbul.js"] ||
+            local.fs.readFileSync(local.__dirname + "/lib.istanbul.js", "utf8"
+        ).replace((/^#!\//), "// ");
+        /* jslint-ignore-block-end */
         /* validateLineSortedReset */
-        local.assetsDict['/'] =
-            local.assetsDict['/assets.example.html'] =
-            local.assetsDict['/assets.index.template.html']
+        local.assetsDict["/"] = local.assetsDict["/assets.index.template.html"]
             .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
                 switch (match1) {
-                case 'npm_package_description':
-                    return 'the greatest app in the world!';
-                case 'npm_package_name':
-                    return 'istanbul-lite';
-                case 'npm_package_nameLib':
-                    return 'istanbul';
-                case 'npm_package_version':
-                    return '0.0.1';
+                case "npm_package_description":
+                    return "the greatest app in the world!";
+                case "npm_package_name":
+                    return "istanbul-lite";
+                case "npm_package_nameLib":
+                    return "istanbul";
+                case "npm_package_version":
+                    return "0.0.1";
                 default:
                     return match0;
                 }
             });
+        local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
+        local.assetsDict["/index.html"] = local.assetsDict["/"];
         // init cli
         if (module !== require.main || local.global.utility2_rollup) {
             return;
         }
-        local.assetsDict['/assets.example.js'] =
-            local.assetsDict['/assets.example.js'] ||
-            local.fs.readFileSync(__filename, 'utf8');
-        local.assetsDict['/favicon.ico'] = local.assetsDict['/favicon.ico'] || '';
+        /* validateLineSortedReset */
+        local.assetsDict["/assets.example.js"] = local.assetsDict["/assets.example.js"] ||
+                local.fs.readFileSync(__filename, "utf8");
+        local.assetsDict["/favicon.ico"] = local.assetsDict["/favicon.ico"] || "";
         // if $npm_config_timeout_exit exists,
         // then exit this process after $npm_config_timeout_exit ms
         if (Number(process.env.npm_config_timeout_exit)) {
@@ -738,8 +686,8 @@ utility2-comment -->\n\
         if (local.global.utility2_serverHttp1) {
             return;
         }
-        process.env.PORT = process.env.PORT || '8081';
-        console.error('server starting on port ' + process.env.PORT);
+        process.env.PORT = process.env.PORT || "8081";
+        console.error("server starting on port " + process.env.PORT);
         local.http.createServer(function (request, response) {
             request.urlParsed = local.url.parse(request.url);
             if (local.assetsDict[request.urlParsed.pathname] !== undefined) {
@@ -844,7 +792,7 @@ utility2-comment -->\n\
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2018.8.7"
+    "version": "2018.9.10"
 }
 ```
 
