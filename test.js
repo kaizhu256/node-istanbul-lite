@@ -1,62 +1,184 @@
 /* istanbul instrument in package istanbul */
-/* jslint-utility2 */
-/*jslint
-    bitwise: true,
-    browser: true,
-    for: true,
-    ignore_bad_property_a: true,
-    maxerr: 4,
-    maxlen: 100,
-    multivar: true,
-    node: true,
-    this: true
-*/
-/*global global*/
-(function () {
+/* istanbul ignore next */
+/* jslint utility2:true */
+(function (globalThis) {
     "use strict";
+    var consoleError;
     var local;
-
-
-
-    // run shared js-env code - init-before
+    // init globalThis
     (function () {
-        // init local
-        local = {};
-        // init isBrowser
-        local.isBrowser = typeof window === "object" &&
-                typeof window.XMLHttpRequest === "function" &&
-                window.document &&
-                typeof window.document.querySelectorAll === "function";
-        // init global
-        local.global = local.isBrowser
-            ? window
-            : global;
-        // re-init local
-        local = (local.global.utility2 || require("utility2")).requireReadme();
-        local.global.local = local;
-        // init test
-        local.testRunDefault(local);
+        try {
+            globalThis = Function("return this")(); // jslint ignore:line
+        } catch (ignore) {}
     }());
-
-
-
-    // run shared js-env code - function
-    (function () {
-        local.testCase_coverage_es6 = function (options, onError) {
+    globalThis.globalThis = globalThis;
+    // init debug_inline
+    if (!globalThis["debug\u0049nline"]) {
+        consoleError = console.error;
+        globalThis["debug\u0049nline"] = function () {
         /*
-         * this function will test coverage's es6 handling-behavior
+         * this function will both print <arguments> to stderr
+         * and return <arguments>[0]
          */
-/* jslint-ignore-block-beg */
+            var argList;
+            argList = Array.from(arguments); // jslint ignore:line
+            // debug arguments
+            globalThis["debug\u0049nlineArguments"] = argList;
+            consoleError("\n\ndebug\u0049nline");
+            consoleError.apply(console, argList);
+            consoleError("\n");
+            // return arg0 for inspection
+            return argList[0];
+        };
+    }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    // init isBrowser
+    local.isBrowser = (
+        typeof window === "object"
+        && window === globalThis
+        && typeof window.XMLHttpRequest === "function"
+        && window.document
+        && typeof window.document.querySelector === "function"
+    );
+    // init function
+    local.assertThrow = function (passed, message) {
+    /*
+     * this function will throw err.<message> if <passed> is falsy
+     */
+        var err;
+        if (passed) {
+            return;
+        }
+        err = (
+            // ternary-operator
+            (
+                message
+                && typeof message.message === "string"
+                && typeof message.stack === "string"
+            )
+            // if message is errObj, then leave as is
+            ? message
+            : new Error(
+                typeof message === "string"
+                // if message is a string, then leave as is
+                ? message
+                // else JSON.stringify message
+                : JSON.stringify(message, null, 4)
+            )
+        );
+        throw err;
+    };
+    local.functionOrNop = function (fnc) {
+    /*
+     * this function will if <fnc> exists,
+     * them return <fnc>,
+     * else return <nop>
+     */
+        return fnc || local.nop;
+    };
+    local.identity = function (value) {
+    /*
+     * this function will return <value>
+     */
+        return value;
+    };
+    local.nop = function () {
+    /*
+     * this function will do nothing
+     */
+        return;
+    };
+    local.objectAssignDefault = function (target, source) {
+    /*
+     * this function will if items from <target> are
+     * null, undefined, or empty-string,
+     * then overwrite them with items from <source>
+     */
+        target = target || {};
+        Object.keys(source || {}).forEach(function (key) {
+            if (
+                target[key] === null
+                || target[key] === undefined
+                || target[key] === ""
+            ) {
+                target[key] = target[key] || source[key];
+            }
+        });
+        return target;
+    };
+    // require builtin
+    if (!local.isBrowser) {
+        local.assert = require("assert");
+        local.buffer = require("buffer");
+        local.child_process = require("child_process");
+        local.cluster = require("cluster");
+        local.crypto = require("crypto");
+        local.dgram = require("dgram");
+        local.dns = require("dns");
+        local.domain = require("domain");
+        local.events = require("events");
+        local.fs = require("fs");
+        local.http = require("http");
+        local.https = require("https");
+        local.net = require("net");
+        local.os = require("os");
+        local.path = require("path");
+        local.querystring = require("querystring");
+        local.readline = require("readline");
+        local.repl = require("repl");
+        local.stream = require("stream");
+        local.string_decoder = require("string_decoder");
+        local.timers = require("timers");
+        local.tls = require("tls");
+        local.tty = require("tty");
+        local.url = require("url");
+        local.util = require("util");
+        local.vm = require("vm");
+        local.zlib = require("zlib");
+    }
+}(this));
+
+
+
+(function (local) {
+"use strict";
+
+
+
+// run shared js-env code - init-before
+(function () {
+// init local
+local = (
+    globalThis.utility2 || require("utility2")
+).requireReadme();
+globalThis.local = local;
+// init test
+local.testRunDefault(local);
+}());
+
+
+
+// run shared js-env code - function
+(function () {
+local.testCase_coverage_es6 = function (opt, onError) {
+/*
+ * this function will test coverage's es6 handling-behavior
+ */
+/* jslint ignore:start */
 // https://github.com/lukehoban/es6features/blob/9354b8f68f26bf1931d05251c7d4411808669c97/README.md
 var echo = function (arg) {
     return arg;
 }, tryCatch = function (fnc) {
     try {
         fnc();
-    } catch (errorCaught) {
-        console.error(errorCaught.stack);
+    } catch (errCaught) {
+        console.error(errCaught);
     }
 };
+
 // coverage-hack
 tryCatch(function () {
     throw '';
@@ -241,8 +363,8 @@ for (var n of fibonacci) {
 //// interface Iterable {
     //// [Symbol.iterator](): Iterator
 //// }
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 tryCatch(function () {
 var fibonacci = {
@@ -268,8 +390,8 @@ for (var n of fibonacci) {
     //// next(value?: any): IteratorResult;
     //// throw(exception: any);
 //// }
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 tryCatch(function () {
 // same as ES5.1
@@ -291,22 +413,22 @@ for(var c of '\ud842\udfb7') {
     //// return x + y;
 //// }
 //// export var pi = 3.141593;
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 //// try {(function () {
 //// // app.js
 //// import * as math from 'lib/math';
 //// alert('2π = ' + math.sum(math.pi, math.pi));
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 //// try {(function () {
 //// // otherApp.js
 //// import {sum, pi} from 'lib/math';
 //// alert('2π = ' + sum(pi, pi));
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 //// try {(function () {
 //// // lib/mathplusplus.js
@@ -315,15 +437,15 @@ for(var c of '\ud842\udfb7') {
 //// export default function(x) {
     //// return Math.log(x);
 //// }
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 //// try {(function () {
 //// // app.js
 //// import ln, {pi, e} from 'lib/mathplusplus';
 //// alert('2π = ' + ln(e)*pi*2);
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 //// try {(function () {
 //// // Dynamic loading – ‘System’ is default loader
@@ -338,8 +460,8 @@ for(var c of '\ud842\udfb7') {
 //// // Directly manipulate module cache
 //// System.get('jquery');
 //// System.set('jquery', Module({$: $})); // WARNING: not yet finalized
-//// }())} catch (errorCaught) {
-    //// console.log(errorCaught.stack);
+//// }())} catch (errCaught) {
+    //// console.log(errCaught);
 //// }
 tryCatch(function () {
 // Sets
@@ -496,139 +618,155 @@ function factorial(n, acc = 1) {
 // but safe on arbitrary inputs in ES6
 factorial(100)
 });
-/* jslint-ignore-block-end */
-            onError(null, options);
-        };
+/* jslint ignore:end */
+    onError(null, opt);
+};
 
-        local.testCase_istanbulCoverageMerge_default = function (options, onError) {
-        /*
-         * this function will test istanbulCoverageMerge's default handling-behavior
-         */
-            if (local.isBrowser) {
-                onError(null, options);
-                return;
-            }
-            options = {};
-            options.data = local.istanbul.instrumentSync(
-                "(function () {\nreturn arg " +
-                        "? __coverage__ " +
-                        ": __coverage__;\n}());",
-                "test"
-            );
-            local.arg = 0;
-            // test null-case handling-behavior
-            options.coverage1 = null;
-            options.coverage2 = null;
-            local.istanbul.coverageMerge(options.coverage1, options.coverage2);
-            // validate merged options.coverage1
-            local.assertJsonEqual(options.coverage1, null);
-            options.coverage2 = {undefined: null};
-            local.istanbul.coverageMerge(options.coverage1, options.coverage2);
-            // validate merged options.coverage1
-            local.assertJsonEqual(options.coverage1, null);
-            // init options.coverage1
-            options.coverage1 = local.vm.runInNewContext(options.data, {arg: 0});
-/* jslint-ignore-block-beg */
-// validate options.coverage1
-local.assertJsonEqual(options.coverage1,
+local.testCase_istanbulCoverageMerge_default = function (opt, onError) {
+/*
+ * this function will test istanbulCoverageMerge's default handling-behavior
+ */
+    if (local.isBrowser) {
+        onError(null, opt);
+        return;
+    }
+    opt = {};
+    opt.data = local.istanbul.instrumentSync(
+        "(function () {\nreturn arg "
+        + "? __coverage__ "
+        + ": __coverage__;\n}());",
+        "test"
+    );
+    local.arg = 0;
+    // test null-case handling-behavior
+    opt.coverage1 = null;
+    opt.coverage2 = null;
+    local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
+    // validate merged opt.coverage1
+    local.assertJsonEqual(opt.coverage1, null);
+    opt.coverage2 = {
+        undefined: null
+    };
+    local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
+    // validate merged opt.coverage1
+    local.assertJsonEqual(opt.coverage1, null);
+    // init opt.coverage1
+    opt.coverage1 = local.vm.runInNewContext(opt.data, {
+        arg: 0
+    });
+/* jslint ignore:start */
+// validate opt.coverage1
+local.assertJsonEqual(opt.coverage1,
 {"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 // test merge-create handling-behavior
-options.coverage1 = local.istanbul.coverageMerge({}, options.coverage1);
-// validate options.coverage1
-local.assertJsonEqual(options.coverage1,
+opt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);
+// validate opt.coverage1
+local.assertJsonEqual(opt.coverage1,
 {"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
-// init options.coverage2
-options.coverage2 = local.vm.runInNewContext(options.data, { arg: 1 });
-// validate options.coverage2
-local.assertJsonEqual(options.coverage2,
+// init opt.coverage2
+opt.coverage2 = local.vm.runInNewContext(opt.data, { arg: 1 });
+// validate opt.coverage2
+local.assertJsonEqual(opt.coverage2,
 {"/test":{"b":{"1":[1,0]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
 // test merge-update handling-behavior
-local.istanbul.coverageMerge(options.coverage1, options.coverage2);
-// validate merged options.coverage1
-local.assertJsonEqual(options.coverage1,
+local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
+// validate merged opt.coverage1
+local.assertJsonEqual(opt.coverage1,
 {"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
 );
-/* jslint-ignore-block-end */
-            onError(null, options);
-        };
+/* jslint ignore:end */
+    onError(null, opt);
+};
 
-        local.testCase_istanbulCoverageReportCreate_default = function (options, onError) {
-        /*
-         * this function will test istanbulCoverageReportCreate's default handling-behavior
-         */
-            local.env.npm_config_mode_coverage_merge = "";
-            local.testMock([
-                [local.istanbul, {coverageMerge: local.echo}],
-                // test $npm_config_mode_coverage_merge handling-behavior
-                [local.env, {npm_config_mode_coverage_merge: "1"}]
-            ], function (onError) {
-                // cleanup old coverage
-                if (!local.isBrowser) {
-                    local.fsRmrSync("tmp/build/coverage.html/aa");
-                }
-                // test path handling-behavior
-                ["/", local.__dirname].forEach(function (dir) {
-                    [
-                        "zz.js",
-                        "aa/zz.js",
-                        "aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js"
-                    ].forEach(function (file) {
-                        // cover file
-                        eval(local.istanbul.instrumentSync(
-                            // test skip handling-behavior
-                            "null",
-                            dir + "/" + file
-                        ));
-                    });
-                });
-                // create report with covered path
-                local.istanbul.coverageReportCreate();
-                // test file-content handling-behavior
-                [
-                    // test no content handling-behavior
-                    "",
-                    // test uncovereed-code handling-behavior
-                    "null && null && null",
-                    // test trailing-whitespace handling-behavior
-                    "null ",
+local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
+/*
+ * this function will test
+ * istanbulCoverageReportCreate's default handling-behavior
+ */
+    local.env.npm_config_mode_coverage_merge = "";
+    local.testMock([
+        [
+            local.istanbul, {
+                coverageMerge: local.echo
+            }
+        ],
+        // test $npm_config_mode_coverage_merge handling-behavior
+        [
+            local.env, {
+                npm_config_mode_coverage_merge: "1"
+            }
+        ]
+    ], function (onError) {
+        // cleanup old coverage
+        if (!local.isBrowser) {
+            local.fsRmrSync("tmp/build/coverage.html/aa");
+        }
+        // test path handling-behavior
+        ["/", local.__dirname].forEach(function (dir) {
+            [
+                "zz.js",
+                "aa/zz.js",
+                "aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js"
+            ].forEach(function (file) {
+                // cover file
+                eval(local.istanbul.instrumentSync( // jslint ignore:line
                     // test skip handling-behavior
-                    "/* istanbul ignore next */\nnull && null"
-                ].forEach(function (content) {
-                    // cleanup
-                    local.tryCatchOnError(function () {
-                        Object.keys(local.global.__coverage__).forEach(function (file) {
-                            if (file.indexOf("zz.js") >= 0) {
-                                local.global.__coverage__[file] = null;
-                            }
-                        });
-                    }, local.nop);
-                    // cover path
-                    eval(local.istanbul.instrumentSync(content, "zz.js"));
-                    // create report with covered content
-                    local.istanbul.coverageReportCreate();
-                });
-                // cleanup
-                Object.keys(local.global.__coverage__).forEach(function (file) {
+                    "null",
+                    dir + "/" + file
+                ));
+            });
+        });
+        // create report with covered path
+        local.istanbul.coverageReportCreate();
+        // test file-content handling-behavior
+        [
+            // test no content handling-behavior
+            "",
+            // test uncovereed-code handling-behavior
+            "null && null && null",
+            // test trailing-whitespace handling-behavior
+            "null ",
+            // test skip handling-behavior
+            "/* istanbul ignore next */\nnull && null"
+        ].forEach(function (content) {
+            // cleanup
+            local.tryCatchOnError(function () {
+                Object.keys(globalThis.__coverage__).forEach(function (file) {
                     if (file.indexOf("zz.js") >= 0) {
-                        local.global.__coverage__[file] = null;
+                        globalThis.__coverage__[file] = null;
                     }
                 });
-                onError(null, options);
-            }, onError);
-        };
+            }, local.nop);
+            // cover path
+            eval(local.istanbul.instrumentSync(content, "zz.js")); // jslint ignore:line
+            // create report with covered content
+            local.istanbul.coverageReportCreate();
+        });
+        // cleanup
+        Object.keys(globalThis.__coverage__).forEach(function (file) {
+            if (file.indexOf("zz.js") >= 0) {
+                globalThis.__coverage__[file] = null;
+            }
+        });
+        onError(null, opt);
+    }, onError);
+};
 
-        local.testCase_istanbulInstrumentSync_default = function (options, onError) {
-        /*
-         * this function will test istanbulInstrumentSync's default handling-behavior
-         */
-            options = {};
-            options.data = local.istanbul.instrumentSync("1", "test.js");
-            // validate data
-            local.assert(options.data.indexOf(".s['1']++;1;\n") >= 0, options);
-            onError(null, options);
-        };
-    }());
+local.testCase_istanbulInstrumentSync_default = function (opt, onError) {
+/*
+ * this function will test istanbulInstrumentSync's default handling-behavior
+ */
+    opt = {};
+    opt.data = local.istanbul.instrumentSync("1", "test.js");
+    // validate data
+    local.assertThrow(opt.data.indexOf(".s['1']++;1;\n") >= 0, opt);
+    onError(null, opt);
+};
+}());
+
+
+
 }());
