@@ -58,11 +58,9 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### todo
 - none
 
-#### changelog 2019.8.9
-- npm publish 2019.8.9
-- istanbul - add clickable id-fragment to lines in html-coverage
-- istanbul - enable es-module support
-- upgrade to estravers.js v4.2.0
+#### changelog 2019.8.12
+- istanbul - upgrade to esprima v4.0.1
+- npm publish 2019.8.12
 - none
 
 #### this package requires
@@ -1029,16 +1027,16 @@ local.http.createServer(function (req, res) {
         "url": "https://github.com/kaizhu256/node-istanbul-lite.git"
     },
     "scripts": {
-        "build-ci": "sh ./npm_scripts.sh",
+        "build-ci": "./npm_scripts.sh",
         "env": "env",
-        "eval": "sh ./npm_scripts.sh",
-        "heroku-postbuild": "sh ./npm_scripts.sh",
-        "postinstall": "sh ./npm_scripts.sh",
-        "start": "sh ./npm_scripts.sh",
-        "test": "sh ./npm_scripts.sh",
-        "utility2": "sh ./npm_scripts.sh"
+        "eval": "./npm_scripts.sh",
+        "heroku-postbuild": "./npm_scripts.sh",
+        "postinstall": "./npm_scripts.sh",
+        "start": "./npm_scripts.sh",
+        "test": "./npm_scripts.sh",
+        "utility2": "./npm_scripts.sh"
     },
-    "version": "2019.8.9"
+    "version": "2019.8.12"
 }
 ```
 
