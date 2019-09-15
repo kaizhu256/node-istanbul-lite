@@ -1,59 +1,201 @@
 /* istanbul instrument in package istanbul */
+// assets.utility2.header.js - start
 /* istanbul ignore next */
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    var consoleError;
-    var local;
+    let ArrayPrototypeFlat;
+    let TextXxcoder;
+    let consoleError;
+    let debugName;
+    let local;
+    debugName = "debug" + String("Inline");
     // init globalThis
-    (function () {
-        try {
-            globalThis = Function("return this")(); // jslint ignore:line
-        } catch (ignore) {}
-    }());
-    globalThis.globalThis = globalThis;
+    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debug_inline
-    if (!globalThis["debug\u0049nline"]) {
+    if (!globalThis[debugName]) {
         consoleError = console.error;
-        globalThis["debug\u0049nline"] = function () {
+        globalThis[debugName] = function (...argList) {
         /*
-         * this function will both print <arguments> to stderr
-         * and return <arguments>[0]
+         * this function will both print <argList> to stderr
+         * and return <argList>[0]
          */
-            var argList;
-            argList = Array.from(arguments); // jslint ignore:line
-            // debug arguments
-            globalThis["debug\u0049nlineArguments"] = argList;
-            consoleError("\n\ndebug\u0049nline");
+            consoleError("\n\n" + debugName);
             consoleError.apply(console, argList);
             consoleError("\n");
             // return arg0 for inspection
             return argList[0];
         };
     }
+    // polyfill
+    ArrayPrototypeFlat = function (depth) {
+    /*
+     * this function will polyfill Array.prototype.flat
+     * https://github.com/jonathantneal/array-flat-polyfill
+     */
+        depth = (
+            globalThis.isNaN(depth)
+            ? 1
+            : Number(depth)
+        );
+        if (!depth) {
+            return Array.prototype.slice.call(this);
+        }
+        return Array.prototype.reduce.call(this, function (acc, cur) {
+            if (Array.isArray(cur)) {
+                // recurse
+                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
+            } else {
+                acc.push(cur);
+            }
+            return acc;
+        }, []);
+    };
+    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
+    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
+        ...argList
+    ) {
+    /*
+     * this function will polyfill Array.prototype.flatMap
+     * https://github.com/jonathantneal/array-flat-polyfill
+     */
+        return this.map(...argList).flat();
+    };
+    (function () {
+        try {
+            globalThis.TextDecoder = (
+                globalThis.TextDecoder || require("util").TextDecoder
+            );
+            globalThis.TextEncoder = (
+                globalThis.TextEncoder || require("util").TextEncoder
+            );
+        } catch (ignore) {}
+    }());
+    TextXxcoder = function () {
+    /*
+     * this function will polyfill TextDecoder/TextEncoder
+     * https://gist.github.com/Yaffle/5458286
+     */
+        return;
+    };
+    TextXxcoder.prototype.decode = function (octets) {
+    /*
+     * this function will polyfill TextDecoder.prototype.decode
+     * https://gist.github.com/Yaffle/5458286
+     */
+        let bytesNeeded;
+        let codePoint;
+        let ii;
+        let kk;
+        let octet;
+        let string;
+        string = "";
+        ii = 0;
+        while (ii < octets.length) {
+            octet = octets[ii];
+            bytesNeeded = 0;
+            codePoint = 0;
+            if (octet <= 0x7F) {
+                bytesNeeded = 0;
+                codePoint = octet & 0xFF;
+            } else if (octet <= 0xDF) {
+                bytesNeeded = 1;
+                codePoint = octet & 0x1F;
+            } else if (octet <= 0xEF) {
+                bytesNeeded = 2;
+                codePoint = octet & 0x0F;
+            } else if (octet <= 0xF4) {
+                bytesNeeded = 3;
+                codePoint = octet & 0x07;
+            }
+            if (octets.length - ii - bytesNeeded > 0) {
+                kk = 0;
+                while (kk < bytesNeeded) {
+                    octet = octets[ii + kk + 1];
+                    codePoint = (codePoint << 6) | (octet & 0x3F);
+                    kk += 1;
+                }
+            } else {
+                codePoint = 0xFFFD;
+                bytesNeeded = octets.length - ii;
+            }
+            string += String.fromCodePoint(codePoint);
+            ii += bytesNeeded + 1;
+        }
+        return string;
+    };
+    TextXxcoder.prototype.encode = function (string) {
+    /*
+     * this function will polyfill TextEncoder.prototype.encode
+     * https://gist.github.com/Yaffle/5458286
+     */
+        let bits;
+        let cc;
+        let codePoint;
+        let ii;
+        let length;
+        let octets;
+        octets = [];
+        length = string.length;
+        ii = 0;
+        while (ii < length) {
+            codePoint = string.codePointAt(ii);
+            cc = 0;
+            bits = 0;
+            if (codePoint <= 0x0000007F) {
+                cc = 0;
+                bits = 0x00;
+            } else if (codePoint <= 0x000007FF) {
+                cc = 6;
+                bits = 0xC0;
+            } else if (codePoint <= 0x0000FFFF) {
+                cc = 12;
+                bits = 0xE0;
+            } else if (codePoint <= 0x001FFFFF) {
+                cc = 18;
+                bits = 0xF0;
+            }
+            octets.push(bits | (codePoint >> cc));
+            cc -= 6;
+            while (cc >= 0) {
+                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
+                cc -= 6;
+            }
+            ii += (
+                codePoint >= 0x10000
+                ? 2
+                : 1
+            );
+        }
+        return octets;
+    };
+    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
+    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
     globalThis.globalLocal = local;
     // init isBrowser
     local.isBrowser = (
-        typeof window === "object"
-        && window === globalThis
-        && typeof window.XMLHttpRequest === "function"
-        && window.document
-        && typeof window.document.querySelector === "function"
+        typeof globalThis.XMLHttpRequest === "function"
+        && globalThis.navigator
+        && typeof globalThis.navigator.userAgent === "string"
+    );
+    // init isWebWorker
+    local.isWebWorker = (
+        local.isBrowser
+        && typeof globalThis.importScript === "function"
     );
     // init function
-    local.assertThrow = function (passed, message) {
+    local.assertOrThrow = function (passed, message) {
     /*
      * this function will throw err.<message> if <passed> is falsy
      */
-        var err;
+        let err;
         if (passed) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -71,19 +213,61 @@
         );
         throw err;
     };
+    local.fsRmrfSync = function (dir) {
+    /*
+     * this function will sync "rm -rf" <dir>
+     */
+        let child_process;
+        try {
+            child_process = require("child_process");
+        } catch (ignore) {
+            return;
+        }
+        child_process.spawnSync("rm", [
+            "-rf", dir
+        ], {
+            stdio: [
+                "ignore", 1, 2
+            ]
+        });
+    };
+    local.fsWriteFileWithMkdirpSync = function (file, data) {
+    /*
+     * this function will sync write <data> to <file> with "mkdir -p"
+     */
+        let fs;
+        try {
+            fs = require("fs");
+        } catch (ignore) {
+            return;
+        }
+        // try to write file
+        try {
+            fs.writeFileSync(file, data);
+        } catch (ignore) {
+            // mkdir -p
+            require("child_process").spawnSync(
+                "mkdir",
+                [
+                    "-p", require("path").dirname(file)
+                ],
+                {
+                    stdio: [
+                        "ignore", 1, 2
+                    ]
+                }
+            );
+            // rewrite file
+            fs.writeFileSync(file, data);
+        }
+    };
     local.functionOrNop = function (fnc) {
     /*
      * this function will if <fnc> exists,
-     * them return <fnc>,
+     * return <fnc>,
      * else return <nop>
      */
         return fnc || local.nop;
-    };
-    local.identity = function (value) {
-    /*
-     * this function will return <value>
-     */
-        return value;
     };
     local.nop = function () {
     /*
@@ -108,6 +292,30 @@
             }
         });
         return target;
+    };
+    local.value = function (val) {
+    /*
+     * this function will return <val>
+     */
+        return val;
+    };
+    local.valueOrEmptyList = function (val) {
+    /*
+     * this function will return <val> or []
+     */
+        return val || [];
+    };
+    local.valueOrEmptyObject = function (val) {
+    /*
+     * this function will return <val> or {}
+     */
+        return val || {};
+    };
+    local.valueOrEmptyString = function (val) {
+    /*
+     * this function will return <val> or ""
+     */
+        return val || "";
     };
     // require builtin
     if (!local.isBrowser) {
@@ -139,10 +347,15 @@
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}(this));
+}((typeof globalThis === "object" && globalThis) || (function () {
+    return Function("return this")(); // jslint ignore:line
+}())));
+// assets.utility2.header.js - end
 
 
 
+/* istanbul ignore next */
+/* jslint utility2:true */
 (function (local) {
 "use strict";
 
@@ -151,7 +364,7 @@
 // run shared js-env code - init-before
 (function () {
 // init local
-local = (
+local = globalThis.globalLocal.value(
     globalThis.utility2 || require("utility2")
 ).requireReadme();
 globalThis.local = local;
@@ -179,7 +392,7 @@ var echo = function (arg) {
     }
 };
 
-// coverage-hack
+// hack-istanbul
 tryCatch(function () {
     throw '';
 });
@@ -702,10 +915,12 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
     ], function (onError) {
         // cleanup old coverage
         if (!local.isBrowser) {
-            local.fsRmrSync("tmp/build/coverage.html/aa");
+            local.fsRmrfSync("tmp/build/coverage.html/aa");
         }
         // test path handling-behavior
-        ["/", local.__dirname].forEach(function (dir) {
+        [
+            "/", local.__dirname
+        ].forEach(function (dir) {
             [
                 "zz.js",
                 "aa/zz.js",
@@ -762,11 +977,8 @@ local.testCase_istanbulInstrumentSync_default = function (opt, onError) {
     opt = {};
     opt.data = local.istanbul.instrumentSync("1", "test.js");
     // validate data
-    local.assertThrow(opt.data.indexOf(".s['1']++;1;\n") >= 0, opt);
+    local.assertOrThrow(opt.data.indexOf(".s['1']++;1;\n") >= 0, opt);
     onError(null, opt);
 };
 }());
-
-
-
 }());
