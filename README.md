@@ -10,6 +10,8 @@ this zero-dependency package will provide a browser-compatible version of the is
 
 [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html)
 
+[![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
+
 [![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
 
 | git-branch : | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
@@ -21,6 +23,8 @@ this zero-dependency package will provide a browser-compatible version of the is
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 [![npmPackageListing](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageListing.svg)](https://github.com/kaizhu256/node-istanbul-lite)
+
+![npmPackageDependencyTree](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageDependencyTree.svg)
 
 
 
@@ -52,10 +56,11 @@ this zero-dependency package will provide a browser-compatible version of the is
 ![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageCliHelp.svg)
 
 #### todo
+- streamline raw-code
 - none
 
-#### changelog 2019.9.14
-- npm publish 2019.9.14
+#### changelog 2019.9.15
+- npm publish 2019.9.15
 - streamline evt-handling in example.js
 - migrate browser-testing from electron to headless-chromium
 - rename rm -fr to rm -rf
@@ -109,7 +114,7 @@ this script will run a web-demo of istanbul-lite
 instruction
     1. save this script as example.js
     2. run shell-command:
-        $ npm install kaizhu256/node-istanbul-lite#alpha && \
+        $ npm install istanbul-lite && \
             PORT=8081 node example.js
     3. open a browser to http://127.0.0.1:8081 and play with web-demo
     4. edit this script to suit your needs
@@ -963,7 +968,7 @@ utility2-comment -->\n\
 \n\
 \n\
 <!-- custom-html-start -->\n\
-<label>edit or paste script below to cover and test</label>\n\
+<label>edit or paste script below to instrument and cover</label>\n\
 <textarea class="textarea" data-onevent="domOnEventInputChange" id="inputTextarea1">\n\
 if (true) {\n\
     console.log("hello");\n\
@@ -989,7 +994,7 @@ for (var n of fibonacci) {\n\
 }\n\
 </textarea>\n\
 <label>instrumented-code</label>\n\
-<textarea class="readonly textarea" id="outputTextarea1" readonly></textarea>\n\
+<textarea class="onevent-reset-output readonly textarea" id="outputTextarea1" readonly></textarea>\n\
 <label>stderr and stdout</label>\n\
 <textarea class="onevent-reset-output readonly textarea" id="outputStdout1" readonly></textarea>\n\
 <div id="htmlCoverageReport1"></div>\n\
@@ -1015,7 +1020,7 @@ local.domOnEventInputChange = function (evt) {\n\
                 "/inputTextarea1.js"\n\
             );\n\
             eval( // jslint ignore:line\n\
-                document.querySelector("#outputTextarea1").textContent\n\
+                document.querySelector("#outputTextarea1").value\n\
             );\n\
             document.querySelector(\n\
                 "#htmlCoverageReport1"\n\
@@ -1239,7 +1244,7 @@ local.http.createServer(function (req, res) {
     "license": "MIT",
     "main": "lib.istanbul.js",
     "name": "istanbul-lite",
-    "nameAliasPublish": "istanbul-classic",
+    "nameAliasPublish": "",
     "nameLib": "istanbul",
     "nameOriginal": "istanbul-lite",
     "os": [
@@ -1260,7 +1265,7 @@ local.http.createServer(function (req, res) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2019.9.14"
+    "version": "2019.9.15"
 }
 ```
 
@@ -1286,7 +1291,7 @@ shBuildCiAfter () {(set -e
 )}
 
 shBuildCiBefore () {(set -e
-    #!! shNpmTestPublished
+    shNpmTestPublished
     shReadmeTest example.js
 )}
 

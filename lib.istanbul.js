@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * lib.istanbul.js (2019.9.14)
+ * lib.istanbul.js (2019.9.15)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide a browser-compatible version of the istanbul (v0.4.5) coverage-tool, with a working web-demo
  *
@@ -681,15 +681,14 @@ local.coverageMerge = function (coverage1, coverage2) {
     return coverage1;
 };
 
-local.coverageReportCreate = function (__coverage__) {
+local.coverageReportCreate = function (opt) {
 /*
  * this function will
  * 1. print coverage in text-format to stdout
  * 2. write coverage in html-format to filesystem
  * 3. return coverage in html-format as single document
  */
-    let opt;
-    if (!__coverage__) {
+    if (!(opt && opt.coverage)) {
         return "";
     }
     opt = {};
@@ -698,7 +697,7 @@ local.coverageReportCreate = function (__coverage__) {
     if (!local.isBrowser && process.env.npm_config_mode_coverage_merge) {
         console.log("merging file " + opt.dir + "/coverage.json to coverage");
         try {
-            local.coverageMerge(__coverage__, JSON.parse(
+            local.coverageMerge(opt.coverage, JSON.parse(
                 local.fs.readFileSync(opt.dir + "/coverage.json", "utf8")
             ));
         } catch (ignore) {}
@@ -735,7 +734,7 @@ local.coverageReportCreate = function (__coverage__) {
         // write coverage.json
         local.fsWriteFileWithMkdirpSync(
             opt.dir + "/coverage.json",
-            JSON.stringify(__coverage__)
+            JSON.stringify(opt.coverage)
         );
         // write coverage.code-dict.json
         local.fsWriteFileWithMkdirpSync(
@@ -12627,7 +12626,9 @@ local.cliDict.cover = function () {
     console.log("\ncovering $ " + process.argv.join(" "));
     // create coverage on exit
     process.on("exit", function () {
-        local.coverageReportCreate(globalThis.__coverage__);
+        local.coverageReportCreate({
+            coverage: globalThis.__coverage__
+        });
     });
     // re-init cli
     local._istanbul_module.runMain();
@@ -12659,7 +12660,9 @@ local.cliDict.report = function () {
         globalThis.__coverageCodeDict__[entry[0]] = true;
         entry[1].code = entry[1].code || entry[1].text.split("\n");
     });
-    local.coverageReportCreate(globalThis.__coverage__);
+    local.coverageReportCreate({
+        coverage: globalThis.__coverage__
+    });
 };
 
 local.cliDict.test = function () {

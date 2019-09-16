@@ -899,11 +899,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
  * this function will test
  * istanbulCoverageReportCreate's default handling-behavior
  */
+    // test null handling-behavior
+    local.istanbul.coverageReportCreate();
     local.env.npm_config_mode_coverage_merge = "";
     local.testMock([
         [
             local.istanbul, {
-                coverageMerge: local.echo
+                coverageMerge: local.value
             }
         ],
         // test $npm_config_mode_coverage_merge handling-behavior
@@ -935,7 +937,9 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             });
         });
         // create report with covered path
-        local.istanbul.coverageReportCreate();
+        local.istanbul.coverageReportCreate({
+            coverage: globalThis.__coverage__
+        });
         // test file-content handling-behavior
         [
             // test no content handling-behavior
@@ -956,9 +960,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
                 });
             }, local.nop);
             // cover path
-            eval(local.istanbul.instrumentSync(content, "zz.js")); // jslint ignore:line
+            eval( // jslint ignore:line
+                local.istanbul.instrumentSync(content, "zz.js")
+            );
             // create report with covered content
-            local.istanbul.coverageReportCreate();
+            local.istanbul.coverageReportCreate({
+                coverage: globalThis.__coverage__
+            });
         });
         // cleanup
         Object.keys(globalThis.__coverage__).forEach(function (file) {
