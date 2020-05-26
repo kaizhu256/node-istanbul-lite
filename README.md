@@ -55,17 +55,16 @@ this zero-dependency package will provide a browser-compatible version of the is
 #### cli help
 ![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageCliHelp.svg)
 
-#### todo
-- streamline raw-code
+#### changelog 2020.5.25
+- npm publish 2020.5.25
+- istanbul - rename __coverageCodeDict__ to __coverageInclude__
+- istanbul - inline function coverageReportCreate
+- remove excessive "the" from comments
+- update build
 - none
 
-#### changelog 2019.9.15
-- npm publish 2019.9.15
-- streamline evt-handling in example.js
-- migrate browser-testing from electron to headless-chromium
-- rename rm -fr to rm -rf
-- revamp function local.ajaxProgressUpdate with window.domOnEventAjaxProgressUpdate
-- istanbul - switch parser from esprima to acorn v6.3.0
+#### todo
+- istanbul - remove filesUnderRoot subroutine
 - none
 
 #### this package requires
@@ -122,14 +121,11 @@ instruction
 
 
 
-/* istanbul instrument in package istanbul */
 // assets.utility2.header.js - start
 /* istanbul ignore next */
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -145,156 +141,17 @@ instruction
          * and return <argList>[0]
          */
             consoleError("\n\n" + debugName);
-            consoleError.apply(console, argList);
+            consoleError(...argList);
             consoleError("\n");
-            // return arg0 for inspection
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
+    String.prototype.trimEnd = (
+        String.prototype.trimEnd || String.prototype.trimRight
+    );
+    String.prototype.trimStart = (
+        String.prototype.trimStart || String.prototype.trimLeft
+    );
     // init local
     local = {};
     local.local = local;
@@ -307,41 +164,55 @@ instruction
     );
     // init isWebWorker
     local.isWebWorker = (
-        local.isBrowser
-        && typeof globalThis.importScript === "function"
+        local.isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertOrThrow = function (passed, message) {
+    local.assertOrThrow = function (passed, msg) {
     /*
-     * this function will throw err.<message> if <passed> is falsy
+     * this function will throw err.<msg> if <passed> is falsy
      */
-        let err;
         if (passed) {
             return;
         }
-        err = (
+        throw (
             (
-                message
-                && typeof message.message === "string"
-                && typeof message.stack === "string"
+                msg
+                && typeof msg.message === "string"
+                && typeof msg.stack === "string"
             )
-            // if message is errObj, then leave as is
-            ? message
+            // if msg is err, then leave as is
+            ? msg
             : new Error(
-                typeof message === "string"
-                // if message is a string, then leave as is
-                ? message
-                // else JSON.stringify message
-                : JSON.stringify(message, null, 4)
+                typeof msg === "string"
+                // if msg is a string, then leave as is
+                ? msg
+                // else JSON.stringify msg
+                : JSON.stringify(msg, undefined, 4)
             )
         );
-        throw err;
+    };
+    local.coalesce = function (...argList) {
+    /*
+     * this function will coalesce null, undefined, or "" in <argList>
+     */
+        let arg;
+        let ii;
+        ii = 0;
+        while (ii < argList.length) {
+            arg = argList[ii];
+            if (arg !== null && arg !== undefined && arg !== "") {
+                break;
+            }
+            ii += 1;
+        }
+        return arg;
     };
     local.fsRmrfSync = function (dir) {
     /*
      * this function will sync "rm -rf" <dir>
      */
         let child_process;
+        // do nothing if module does not exist
         try {
             child_process = require("child_process");
         } catch (ignore) {
@@ -360,6 +231,7 @@ instruction
      * this function will sync write <data> to <file> with "mkdir -p"
      */
         let fs;
+        // do nothing if module does not exist
         try {
             fs = require("fs");
         } catch (ignore) {
@@ -368,21 +240,15 @@ instruction
         // try to write file
         try {
             fs.writeFileSync(file, data);
+            return true;
         } catch (ignore) {
             // mkdir -p
-            require("child_process").spawnSync(
-                "mkdir",
-                [
-                    "-p", require("path").dirname(file)
-                ],
-                {
-                    stdio: [
-                        "ignore", 1, 2
-                    ]
-                }
-            );
+            fs.mkdirSync(require("path").dirname(file), {
+                recursive: true
+            });
             // rewrite file
             fs.writeFileSync(file, data);
+            return true;
         }
     };
     local.functionOrNop = function (fnc) {
@@ -393,6 +259,12 @@ instruction
      */
         return fnc || local.nop;
     };
+    local.identity = function (val) {
+    /*
+     * this function will return <val>
+     */
+        return val;
+    };
     local.nop = function () {
     /*
      * this function will do nothing
@@ -401,8 +273,7 @@ instruction
     };
     local.objectAssignDefault = function (target, source) {
     /*
-     * this function will if items from <target> are
-     * null, undefined, or empty-string,
+     * this function will if items from <target> are null, undefined, or "",
      * then overwrite them with items from <source>
      */
         target = target || {};
@@ -417,29 +288,25 @@ instruction
         });
         return target;
     };
-    local.value = function (val) {
+    local.querySelector = function (selectors) {
     /*
-     * this function will return <val>
+     * this function will return first dom-elem that match <selectors>
      */
-        return val;
+        return (
+            typeof document === "object" && document
+            && typeof document.querySelector === "function"
+            && document.querySelector(selectors)
+        ) || {};
     };
-    local.valueOrEmptyList = function (val) {
+    local.querySelectorAll = function (selectors) {
     /*
-     * this function will return <val> or []
+     * this function will return dom-elem-list that match <selectors>
      */
-        return val || [];
-    };
-    local.valueOrEmptyObject = function (val) {
-    /*
-     * this function will return <val> or {}
-     */
-        return val || {};
-    };
-    local.valueOrEmptyString = function (val) {
-    /*
-     * this function will return <val> or ""
-     */
-        return val || "";
+        return (
+            typeof document === "object" && document
+            && typeof document.querySelectorAll === "function"
+            && Array.from(document.querySelectorAll(selectors))
+        ) || [];
     };
     // require builtin
     if (!local.isBrowser) {
@@ -471,14 +338,11 @@ instruction
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
 
-/* istanbul ignore next */
 /* jslint utility2:true */
 (function (local) {
 "use strict";
@@ -509,21 +373,19 @@ if (!local.isBrowser) {
 ["error", "log"].forEach(function (key) {
     let elem;
     let fnc;
-    elem = document.querySelector(
-        "#outputStdout1"
-    );
+    elem = local.querySelector("#outputStdout1");
     if (!elem) {
         return;
     }
     fnc = console[key];
     console[key] = function (...argList) {
-        fnc.apply(console, argList);
+        fnc(...argList);
         // append text to #outputStdout1
         elem.textContent += argList.map(function (arg) {
             return (
                 typeof arg === "string"
                 ? arg
-                : JSON.stringify(arg, null, 4)
+                : JSON.stringify(arg, undefined, 4)
             );
         }).join(" ").replace((
             /\u001b\[\d*m/g
@@ -534,17 +396,10 @@ if (!local.isBrowser) {
 });
 local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
 globalThis.domOnEventDelegateDict = local;
-local.onEventDomDb = local.db && local.db.onEventDomDb;
-if ((
-    /\bmodeTest=1\b/
-).test(location.search)) {
-    local.testRunBrowser();
-}
 }());
 
 
 
-/* istanbul ignore next */
 // run node js-env code - init-test
 (function () {
 if (local.isBrowser) {
@@ -552,10 +407,9 @@ if (local.isBrowser) {
 }
 // init exports
 module.exports = local;
-// init assets
+// init assetsDict
 local.assetsDict = local.assetsDict || {};
 [
-    "assets.index.template.html",
     "assets.swgg.swagger.json",
     "assets.swgg.swagger.server.json"
 ].forEach(function (file) {
@@ -587,20 +441,11 @@ local.assetsDict["/assets.index.template.html"] = '\
 *:before {\n\
     box-sizing: border-box;\n\
 }\n\
+.uiAnimateSlide {\n\
+    overflow-y: hidden;\n\
+    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n\
+}\n\
 /* csslint ignore:end */\n\
-@keyframes uiAnimateShake {\n\
-0%,\n\
-50% {\n\
-    transform: translateX(10px);\n\
-}\n\
-100% {\n\
-    transform: translateX(0);\n\
-}\n\
-25%,\n\
-75% {\n\
-    transform: translateX(-10px);\n\
-}\n\
-}\n\
 @keyframes uiAnimateSpin {\n\
 0% {\n\
     transform: rotate(0deg);\n\
@@ -672,14 +517,6 @@ pre {\n\
     overflow: auto;\n\
     padding: 2px;\n\
 }\n\
-.uiAnimateShake {\n\
-    animation-duration: 500ms;\n\
-    animation-name: uiAnimateShake;\n\
-}\n\
-.uiAnimateSlide {\n\
-    overflow-y: hidden;\n\
-    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n\
-}\n\
 .zeroPixel {\n\
     border: 0;\n\
     height: 0;\n\
@@ -691,8 +528,6 @@ pre {\n\
 </head>\n\
 <body>\n\
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
-<a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"></a>\n\
-<input class="zeroPixel" data-onevent="onEventDomDb" data-onevent-db="dbImportInput" type="file">\n\
 <script>\n\
 /* jslint utility2:true */\n\
 // init domOnEventWindowOnloadTimeElapsed\n\
@@ -731,10 +566,23 @@ pre {\n\
  */\n\
     "use strict";\n\
     let opt;\n\
-    if (!(\n\
-        typeof window === "object" && window && window.document\n\
-        && typeof document.addEventListener === "function"\n\
-    ) || window.domOnEventAjaxProgressUpdate) {\n\
+    let styleBar0;\n\
+    let styleBar;\n\
+    let styleModal0;\n\
+    let styleModal;\n\
+    let timeStart;\n\
+    let timerInterval;\n\
+    let timerTimeout;\n\
+    let tmp;\n\
+    let width;\n\
+    try {\n\
+        if (\n\
+            window.domOnEventAjaxProgressUpdate\n\
+            || !document.getElementById("domElementAjaxProgressBar1").style\n\
+        ) {\n\
+            return;\n\
+        }\n\
+    } catch (ignore) {\n\
         return;\n\
     }\n\
     window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n\
@@ -742,56 +590,68 @@ pre {\n\
         switch (gotoState) {\n\
         // ajaxProgress - show\n\
         case 1:\n\
-            // init timerInterval and timerTimeout\n\
-            opt.timerInterval = (\n\
-                opt.timerInterval || setInterval(opt, 2000, 1, onError)\n\
-            );\n\
-            opt.timerTimeout = (\n\
-                opt.timerTimeout || setTimeout(opt, 30000, 2, onError)\n\
-            );\n\
-            // show ajaxProgress\n\
-            if (opt.width !== -1) {\n\
-                opt.style.background = opt.background;\n\
+            // init <timerInterval> and <timerTimeout>\n\
+            if (!timerTimeout) {\n\
+                timeStart = Date.now();\n\
+                timerInterval = setInterval(opt, 2000, 1, onError);\n\
+                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\n\
+            }\n\
+            // show ajaxProgressBar\n\
+            if (width !== -1) {\n\
+                styleBar.background = styleBar0.background;\n\
             }\n\
             setTimeout(opt, 50, gotoState, onError);\n\
             break;\n\
         // ajaxProgress - increment\n\
         case 2:\n\
-            // show ajaxProgress\n\
-            if (opt.width === -1) {\n\
-                return;\n\
+            // show ajaxProgressBar\n\
+            if (width === -1) {\n\
+                break;\n\
             }\n\
-            opt.style.background = opt.background;\n\
-            // reset ajaxProgress if it goes too high\n\
-            if ((opt.style.width.slice(0, -1) | 0) > 95) {\n\
-                opt.width = 0;\n\
+            styleBar.background = styleBar0.background;\n\
+            // reset ajaxProgress if it reaches end\n\
+            if ((styleBar.width.slice(0, -1) | 0) > 95) {\n\
+                width = 0;\n\
             }\n\
             // this algorithm will indefinitely increment ajaxProgress\n\
             // with successively smaller increments without reaching 100%\n\
-            opt.width += 1;\n\
-            opt.style.width = Math.max(\n\
-                100 - 75 * Math.exp(-0.125 * opt.width),\n\
-                opt.style.width.slice(0, -1) | 0\n\
+            width += 1;\n\
+            styleBar.width = Math.max(\n\
+                100 - 75 * Math.exp(-0.125 * width),\n\
+                styleBar.width.slice(0, -1) | 0\n\
             ) + "%";\n\
-            if (!opt.counter) {\n\
+            // show ajaxProgressModal\n\
+            styleModal.height = "100%";\n\
+            styleModal.opacity = styleModal0.opacity;\n\
+            if (!opt.cnt) {\n\
                 setTimeout(opt, 0, gotoState, onError);\n\
             }\n\
             break;\n\
         // ajaxProgress - 100%\n\
         case 3:\n\
-            opt.width = -1;\n\
-            opt.style.width = "100%";\n\
+            width = -1;\n\
+            styleBar.width = "100%";\n\
             setTimeout(opt, 1000, gotoState, onError);\n\
             break;\n\
         // ajaxProgress - hide\n\
         case 4:\n\
-            // cleanup timerInterval and timerTimeout\n\
-            clearInterval(opt.timerInterval);\n\
-            opt.timerInterval = null;\n\
-            clearTimeout(opt.timerTimeout);\n\
-            opt.timerTimeout = null;\n\
-            // hide ajaxProgress\n\
-            opt.style.background = "transparent";\n\
+            // debug timeElapsed\n\
+            tmp = Date.now();\n\
+            console.error(\n\
+                "domOnEventAjaxProgressUpdate - timeElapsed - "\n\
+                + (tmp - timeStart)\n\
+                + " ms"\n\
+            );\n\
+            // cleanup <timerInterval> and <timerTimeout>\n\
+            timeStart = tmp;\n\
+            clearInterval(timerInterval);\n\
+            timerInterval = null;\n\
+            clearTimeout(timerTimeout);\n\
+            timerTimeout = null;\n\
+            // hide ajaxProgressBar\n\
+            styleBar.background = "transparent";\n\
+            // hide ajaxProgressModal\n\
+            styleModal.opacity = "0";\n\
             if (onError) {\n\
                 onError();\n\
             }\n\
@@ -799,27 +659,20 @@ pre {\n\
             break;\n\
         // ajaxProgress - reset\n\
         default:\n\
-            // reset ajaxProgress\n\
-            opt.counter = 0;\n\
-            opt.width = 0;\n\
-            opt.style.width = "0%";\n\
+            opt.cnt = 0;\n\
+            width = 0;\n\
+            styleBar.width = "0%";\n\
+            styleModal.height = "0";\n\
         }\n\
     };\n\
     opt = window.domOnEventAjaxProgressUpdate;\n\
     opt.end = function (onError) {\n\
-        opt.counter = 0;\n\
+        opt.cnt = 0;\n\
         window.domOnEventAjaxProgressUpdate(2, onError);\n\
     };\n\
-    opt.elem = document.getElementById("domElementAjaxProgress1");\n\
-    if (!opt.elem) {\n\
-        opt.elem = document.createElement("div");\n\
-        setTimeout(function () {\n\
-            document.body.insertBefore(opt.elem, document.body.firstChild);\n\
-        });\n\
-    }\n\
-    opt.elem.id = "domElementAjaxProgress1";\n\
-    opt.style = opt.elem.style;\n\
-    // init style\n\
+    // init <styleBar>\n\
+    styleBar = document.getElementById("domElementAjaxProgressBar1").style;\n\
+    styleBar0 = Object.assign({}, styleBar);\n\
     Object.entries({\n\
         background: "#d00",\n\
         height: "2px",\n\
@@ -832,12 +685,31 @@ pre {\n\
         width: "0%",\n\
         "z-index": "1"\n\
     }).forEach(function (entry) {\n\
-        opt.style[entry[0]] = opt.style[entry[0]] || entry[1];\n\
+        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\n\
+    });\n\
+    // init <styleModal>\n\
+    styleModal = document.getElementById("domElementAjaxProgressModal1") || {};\n\
+    styleModal = styleModal.style || {};\n\
+    styleModal0 = Object.assign({}, styleModal);\n\
+    Object.entries({\n\
+        height: "0",\n\
+        left: "0",\n\
+        margin: "0",\n\
+        padding: "0",\n\
+        position: "fixed",\n\
+        top: "0",\n\
+        transition: "opacity 125ms",\n\
+        width: "100%",\n\
+        "z-index": "1"\n\
+    }).forEach(function (entry) {\n\
+        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\n\
     });\n\
     // init state\n\
-    opt.background = opt.style.background;\n\
-    opt.counter = 0;\n\
-    opt.width = 0;\n\
+    width = 0;\n\
+    opt.cnt = 0;\n\
+    opt.timeout = 30000;\n\
+    // init ajaxProgress\n\
+    window.domOnEventAjaxProgressUpdate();\n\
 }());\n\
 \n\
 \n\
@@ -848,6 +720,13 @@ pre {\n\
  * this function will handle delegated dom-evt\n\
  */\n\
     "use strict";\n\
+    let debounce;\n\
+    let timerTimeout;\n\
+    debounce = function () {\n\
+        return setTimeout(function () {\n\
+            timerTimeout = undefined;\n\
+        }, 30);\n\
+    };\n\
     if (!(\n\
         typeof window === "object" && window && window.document\n\
         && typeof document.addEventListener === "function"\n\
@@ -860,9 +739,7 @@ pre {\n\
         if (\n\
             !evt.targetOnEvent\n\
             || evt.targetOnEvent.dataset.onevent === "domOnEventNop"\n\
-            || evt.target.closest(\n\
-                ".disabled, .readonly, [disabled], [readonly]"\n\
-            )\n\
+            || evt.target.closest(".disabled,.readonly")\n\
         ) {\n\
             return;\n\
         }\n\
@@ -875,18 +752,18 @@ pre {\n\
             return;\n\
         }\n\
         // filter evt-keyup\n\
-        if (evt.type === "keyup" && !(\n\
-            (\n\
+        switch (evt.type) {\n\
+        case "keyup":\n\
+            if (!timerTimeout && (\n\
                 evt.target.tagName === "INPUT"\n\
                 || evt.target.tagName === "TEXTAREA"\n\
-            )\n\
-            && !(evt.ctrlKey || evt.metaKey)\n\
-            && (evt.key.length === 1 || (\n\
-                evt.key === "Backspace"\n\
-                || evt.key === "Delete"\n\
-                || evt.key === "Enter"\n\
-            ))\n\
-        )) {\n\
+            )) {\n\
+                timerTimeout = debounce();\n\
+                if (evt.target.dataset.valueOld !== evt.target.value) {\n\
+                    evt.target.dataset.valueOld = evt.target.value;\n\
+                    break;\n\
+                }\n\
+            }\n\
             return;\n\
         }\n\
         switch (evt.targetOnEvent.tagName) {\n\
@@ -905,6 +782,18 @@ pre {\n\
         }\n\
         window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n\
     };\n\
+    // handle evt\n\
+    [\n\
+        "change",\n\
+        "click",\n\
+        "keyup",\n\
+        "submit"\n\
+    ].forEach(function (eventType) {\n\
+        document.addEventListener(\n\
+            eventType,\n\
+            window.domOnEventDelegateDict.domOnEventDelegate\n\
+        );\n\
+    });\n\
 }());\n\
 \n\
 \n\
@@ -996,7 +885,7 @@ for (var n of fibonacci) {\n\
 <label>instrumented-code</label>\n\
 <textarea class="onevent-reset-output readonly textarea" id="outputTextarea1" readonly></textarea>\n\
 <label>stderr and stdout</label>\n\
-<textarea class="onevent-reset-output readonly textarea" id="outputStdout1" readonly></textarea>\n\
+<textarea class="readonly textarea" id="outputStdout1" readonly></textarea>\n\
 <div id="htmlCoverageReport1"></div>\n\
 <script>\n\
 /* jslint utility2:true */\n\
@@ -1034,13 +923,6 @@ local.domOnEventInputChange = function (evt) {\n\
     }\n\
 };\n\
 // handle evt\n\
-local.on("utility2.testRunEnd", function () {\n\
-    document.querySelectorAll(\n\
-        "#htmlCoverageReport1"\n\
-    ).forEach(function (elem) {\n\
-        elem.innerHTML = local.istanbulCoverageReportCreate();\n\
-    });\n\
-});\n\
 local.domOnEventInputChange({\n\
     target: {\n\
         id: "inputTextarea1"\n\
@@ -1058,7 +940,7 @@ local.domOnEventInputChange({\n\
 <script src="assets.app.js"></script>\n\
 {{#unless isRollup}}\n\
 <script src="assets.utility2.rollup.js"></script>\n\
-<script>window.utility2_onReadyBefore.counter += 1;</script>\n\
+<script>window.utility2_onReadyBefore.cnt += 1;</script>\n\
 <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
 utility2-comment -->\n\
 <script src="assets.istanbul.js"></script>\n\
@@ -1072,38 +954,6 @@ if (window.utility2_onReadyBefore) {\n\
 <!-- utility2-comment\n\
 {{/if isRollup}}\n\
 utility2-comment -->\n\
-<script>\n\
-/* jslint utility2:true */\n\
-(function () {\n\
-"use strict";\n\
-let htmlTestReport1;\n\
-let local;\n\
-// handle evt\n\
-[\n\
-    "change",\n\
-    "click",\n\
-    "keyup",\n\
-    "submit"\n\
-].forEach(function (eventType) {\n\
-    document.addEventListener(\n\
-        eventType,\n\
-        window.domOnEventDelegateDict.domOnEventDelegate\n\
-    );\n\
-});\n\
-htmlTestReport1 = document.querySelector("#htmlTestReport1");\n\
-local = window.utility2;\n\
-if (!(htmlTestReport1 && local)) {\n\
-    return;\n\
-}\n\
-local.on("utility2.testRunProgressUpdate", function (testReport) {\n\
-    htmlTestReport1.innerHTML = local.testReportMerge(testReport, {});\n\
-});\n\
-local.on("utility2.testRunStart", function (testReport) {\n\
-    local.uiAnimateSlideDown(htmlTestReport1);\n\
-    htmlTestReport1.innerHTML = local.testReportMerge(testReport, {});\n\
-});\n\
-}());\n\
-</script>\n\
 <div style="text-align: center;">\n\
     [\n\
     this app was created with\n\
@@ -1115,11 +965,16 @@ local.on("utility2.testRunStart", function (testReport) {\n\
 </body>\n\
 </html>\n\
 ';
-local.assetsDict["/assets.istanbul.js"] =
-    local.assetsDict["/assets.istanbul.js"] ||
-    local.fs.readFileSync(local.__dirname + "/lib.istanbul.js", "utf8"
-).replace((/^#!\//), "// ");
 /* jslint ignore:end */
+local.assetsDict["/assets.istanbul.js"] = (
+    local.assetsDict["/assets.istanbul.js"]
+    || local.fs.readFileSync(
+        local.__dirname + "/lib.istanbul.js",
+        "utf8"
+    ).replace((
+        /^#!\//
+    ), "// ")
+);
 /* validateLineSortedReset */
 local.assetsDict["/"] = local.assetsDict[
     "/assets.index.template.html"
@@ -1234,8 +1089,9 @@ local.http.createServer(function (req, res) {
         "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": {
-        "node": ">=10.0"
+        "node": ">=12.0"
     },
+    "fileCount": 8,
     "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
         "coverage",
@@ -1265,7 +1121,7 @@ local.http.createServer(function (req, res) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2019.9.15"
+    "version": "2020.5.25"
 }
 ```
 
@@ -1281,7 +1137,7 @@ local.http.createServer(function (req, res) {
 ```shell
 # build_ci.sh
 
-# this shell script will run the build for this package
+# this shell script will run build-ci for this package
 
 shBuildCiAfter () {(set -e
     # shDeployCustom

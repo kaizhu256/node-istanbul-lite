@@ -4,8 +4,6 @@
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -21,156 +19,17 @@
          * and return <argList>[0]
          */
             consoleError("\n\n" + debugName);
-            consoleError.apply(console, argList);
+            consoleError(...argList);
             consoleError("\n");
-            // return arg0 for inspection
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
+    String.prototype.trimEnd = (
+        String.prototype.trimEnd || String.prototype.trimRight
+    );
+    String.prototype.trimStart = (
+        String.prototype.trimStart || String.prototype.trimLeft
+    );
     // init local
     local = {};
     local.local = local;
@@ -183,41 +42,55 @@
     );
     // init isWebWorker
     local.isWebWorker = (
-        local.isBrowser
-        && typeof globalThis.importScript === "function"
+        local.isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertOrThrow = function (passed, message) {
+    local.assertOrThrow = function (passed, msg) {
     /*
-     * this function will throw err.<message> if <passed> is falsy
+     * this function will throw err.<msg> if <passed> is falsy
      */
-        let err;
         if (passed) {
             return;
         }
-        err = (
+        throw (
             (
-                message
-                && typeof message.message === "string"
-                && typeof message.stack === "string"
+                msg
+                && typeof msg.message === "string"
+                && typeof msg.stack === "string"
             )
-            // if message is errObj, then leave as is
-            ? message
+            // if msg is err, then leave as is
+            ? msg
             : new Error(
-                typeof message === "string"
-                // if message is a string, then leave as is
-                ? message
-                // else JSON.stringify message
-                : JSON.stringify(message, null, 4)
+                typeof msg === "string"
+                // if msg is a string, then leave as is
+                ? msg
+                // else JSON.stringify msg
+                : JSON.stringify(msg, undefined, 4)
             )
         );
-        throw err;
+    };
+    local.coalesce = function (...argList) {
+    /*
+     * this function will coalesce null, undefined, or "" in <argList>
+     */
+        let arg;
+        let ii;
+        ii = 0;
+        while (ii < argList.length) {
+            arg = argList[ii];
+            if (arg !== null && arg !== undefined && arg !== "") {
+                break;
+            }
+            ii += 1;
+        }
+        return arg;
     };
     local.fsRmrfSync = function (dir) {
     /*
      * this function will sync "rm -rf" <dir>
      */
         let child_process;
+        // do nothing if module does not exist
         try {
             child_process = require("child_process");
         } catch (ignore) {
@@ -236,6 +109,7 @@
      * this function will sync write <data> to <file> with "mkdir -p"
      */
         let fs;
+        // do nothing if module does not exist
         try {
             fs = require("fs");
         } catch (ignore) {
@@ -244,21 +118,15 @@
         // try to write file
         try {
             fs.writeFileSync(file, data);
+            return true;
         } catch (ignore) {
             // mkdir -p
-            require("child_process").spawnSync(
-                "mkdir",
-                [
-                    "-p", require("path").dirname(file)
-                ],
-                {
-                    stdio: [
-                        "ignore", 1, 2
-                    ]
-                }
-            );
+            fs.mkdirSync(require("path").dirname(file), {
+                recursive: true
+            });
             // rewrite file
             fs.writeFileSync(file, data);
+            return true;
         }
     };
     local.functionOrNop = function (fnc) {
@@ -269,6 +137,12 @@
      */
         return fnc || local.nop;
     };
+    local.identity = function (val) {
+    /*
+     * this function will return <val>
+     */
+        return val;
+    };
     local.nop = function () {
     /*
      * this function will do nothing
@@ -277,8 +151,7 @@
     };
     local.objectAssignDefault = function (target, source) {
     /*
-     * this function will if items from <target> are
-     * null, undefined, or empty-string,
+     * this function will if items from <target> are null, undefined, or "",
      * then overwrite them with items from <source>
      */
         target = target || {};
@@ -293,29 +166,25 @@
         });
         return target;
     };
-    local.value = function (val) {
+    local.querySelector = function (selectors) {
     /*
-     * this function will return <val>
+     * this function will return first dom-elem that match <selectors>
      */
-        return val;
+        return (
+            typeof document === "object" && document
+            && typeof document.querySelector === "function"
+            && document.querySelector(selectors)
+        ) || {};
     };
-    local.valueOrEmptyList = function (val) {
+    local.querySelectorAll = function (selectors) {
     /*
-     * this function will return <val> or []
+     * this function will return dom-elem-list that match <selectors>
      */
-        return val || [];
-    };
-    local.valueOrEmptyObject = function (val) {
-    /*
-     * this function will return <val> or {}
-     */
-        return val || {};
-    };
-    local.valueOrEmptyString = function (val) {
-    /*
-     * this function will return <val> or ""
-     */
-        return val || "";
+        return (
+            typeof document === "object" && document
+            && typeof document.querySelectorAll === "function"
+            && Array.from(document.querySelectorAll(selectors))
+        ) || [];
     };
     // require builtin
     if (!local.isBrowser) {
@@ -347,9 +216,7 @@
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -364,9 +231,8 @@
 // run shared js-env code - init-before
 (function () {
 // init local
-local = globalThis.globalLocal.value(
-    globalThis.utility2 || require("utility2")
-).requireReadme();
+local = globalThis.utility2 || require("utility2");
+local = local.requireReadme();
 globalThis.local = local;
 // init test
 local.testRunDefault(local);
@@ -851,18 +717,6 @@ local.testCase_istanbulCoverageMerge_default = function (opt, onError) {
         "test"
     );
     local.arg = 0;
-    // test null-case handling-behavior
-    opt.coverage1 = null;
-    opt.coverage2 = null;
-    local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
-    // validate merged opt.coverage1
-    local.assertJsonEqual(opt.coverage1, null);
-    opt.coverage2 = {
-        undefined: null
-    };
-    local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
-    // validate merged opt.coverage1
-    local.assertJsonEqual(opt.coverage1, null);
     // init opt.coverage1
     opt.coverage1 = local.vm.runInNewContext(opt.data, {
         arg: 0
@@ -905,7 +759,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
     local.testMock([
         [
             local.istanbul, {
-                coverageMerge: local.value
+                coverageMerge: local.nop
             }
         ],
         // test $npm_config_mode_coverage_merge handling-behavior

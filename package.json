@@ -9,8 +9,9 @@
         "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": {
-        "node": ">=10.0"
+        "node": ">=12.0"
     },
+    "fileCount": 8,
     "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
         "coverage",
@@ -40,5 +41,5 @@
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2019.9.15"
+    "version": "2020.5.25"
 }
