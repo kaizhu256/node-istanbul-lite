@@ -12318,7 +12318,7 @@ let fileWrite;
 let path;
 let reportHtmlWrite;
 let reportTextWrite;
-// mock module path
+// mock path
 path = {
     dirname: function (file) {
         return file.replace((
@@ -12330,6 +12330,7 @@ path = {
     },
     sep: "/"
 };
+// require path
 try {
     path = require("path");
 } catch (ignore) {}
@@ -45650,8 +45651,8 @@ local.cliDict["utility2.start"] = function () {
     globalThis.local = local;
     local.replStart();
     local.testRunServer({});
-    if (local.env.npm_config_runme) {
-        require(require("path").resolve(local.env.npm_config_runme));
+    if (process.env.npm_config_runme) {
+        require(require("path").resolve(process.env.npm_config_runme));
     }
 };
 
@@ -45665,7 +45666,7 @@ local.cliDict["utility2.testReportCreate"] = function () {
             JSON.parse(
                 require("fs").readFileSync(
                     require("path").resolve(
-                        local.env.npm_config_dir_build + "/test-report.json"
+                        process.env.npm_config_dir_build + "/test-report.json"
                     ),
                     "utf8"
                 )
@@ -45816,11 +45817,48 @@ local._http.request = function (xhr, onResponse) {
     return xhr;
 };
 
+local._testCase_assetsAppJs_standalone = function (opt, onError) {
+/*
+ * this function will test assets.app.js's standalone handling-behavior
+ */
+    if (local.isBrowser) {
+        onError(undefined, opt);
+        return;
+    }
+    // test standalone assets.app.js
+    local.fsWriteFileWithMkdirp(
+        "tmp/buildApp/assets.app.js",
+        local.assetsDict["/assets.app.js"],
+        "wrote file - assets.app.js - {{pathname}}"
+    ).then(function () {
+        require("child_process").spawn("node", [
+            "assets.app.js"
+        ], {
+            cwd: "tmp/buildApp",
+            env: {
+                PATH: process.env.PATH,
+                PORT: (Math.random() * 0x10000) | 0x8000,
+                npm_config_timeout_exit: 5000
+            },
+            stdio: [
+                "ignore", 1, 2
+            ]
+        }).on("error", onError).on("exit", function (exitCode) {
+            local.assertOrThrow(!exitCode, exitCode);
+            onError();
+        });
+    });
+};
+
 local._testCase_buildApidoc_default = function (opt, onError) {
 /*
  * this function will test buildApidoc's default handling-behavior
  */
     let require2;
+    if (local.isBrowser) {
+        onError(undefined, opt);
+        return;
+    }
     require2 = function (file) {
     /*
      * this function will require <file> in sandbox-env
@@ -45891,9 +45929,8 @@ local._testCase_buildApidoc_default = function (opt, onError) {
         return exports;
     };
     if (
-        local.isBrowser
-        || local.env.npm_config_mode_coverage
-        || local.env.npm_config_mode_test_case
+        process.env.npm_config_mode_coverage
+        || process.env.npm_config_mode_test_case
         !== "testCase_buildApidoc_default"
     ) {
         onError(undefined, opt);
@@ -45969,8 +46006,8 @@ local._testCase_webpage_default = function (opt, onError) {
     local.domStyleValidate();
     local.browserTest({
         fileScreenshot: (
-            local.env.npm_config_dir_build
-            + "/screenshot." + local.env.MODE_BUILD + ".browser.%2F.png"
+            process.env.npm_config_dir_build
+            + "/screenshot." + process.env.MODE_BUILD + ".browser.%2F.png"
         ),
         url: (
             local.serverLocalHost
@@ -46732,113 +46769,93 @@ local.bufferValidateAndCoerce = function (buf, mode) {
     return buf;
 };
 
-local.buildApp = async function (opt, onError) {
+local.buildApp = function (opt, onError) {
 /*
  * this function will build app with given <opt>
  */
-    let exitCode;
     // cleanup app
-    exitCode = await new Promise(function (resolve, reject) {
-        require("child_process").spawn((
-            "rm -rf tmp/build/app; mkdir -p tmp/build/app"
-        ), {
-            shell: true,
-            stdio: [
-                "ignore", 1, 2
-            ]
-        }).on("error", reject).on("exit", resolve);
-    });
-    local.assertOrThrow(!exitCode, exitCode);
-    // build app
-    await Promise.all([
-        {
-            file: "/LICENSE",
-            url: "/LICENSE"
-        }, {
-            file: "/assets." + process.env.npm_package_nameLib + ".html",
-            url: "/index.html"
-        }, {
-            file: "/assets." + process.env.npm_package_nameLib + ".js",
-            url: "/assets." + process.env.npm_package_nameLib + ".js"
-        }, {
-            file: "/assets.app.js",
-            url: "/assets.app.js"
-        }, {
-            file: "/assets.example.html",
-            url: "/assets.example.html"
-        }, {
-            file: "/assets.example.js",
-            url: "/assets.example.js"
-        }, {
-            file: "/assets.test.js",
-            url: "/assets.test.js"
-        }, {
-            file: "/assets.utility2.html",
-            url: "/assets.utility2.html"
-        }, {
-            file: "/assets.utility2.rollup.js",
-            url: "/assets.utility2.rollup.js"
-        }, {
-            file: "/index.html",
-            url: "/index.html"
-        }, {
-            file: "/index.rollup.html",
-            url: "/index.rollup.html"
-        }, {
-            file: "/jsonp.utility2.stateInit",
-            url: (
-                "/jsonp.utility2.stateInit"
-                + "?callback=window.utility2.stateInit"
-            )
-        }
-    ].concat(opt.assetsList).map(async function (elem) {
-        let xhr;
-        if (!elem) {
-            return;
-        }
-        xhr = await local.httpFetch(
-            "http://127.0.0.1:" + process.env.PORT + elem.url,
-            {
-                responseType: "raw"
-            }
-        );
-        await local.fsWriteFileWithMkdirp(
-            "tmp/build/app/" + elem.file,
-            xhr.data,
-            "wrote file - app - {{pathname}}"
-        );
-    }));
-    // jslint app
-    await local.childProcessEval((
-        local.assetsDict["/assets.utility2.lib.jslint.js"]
-        + ";module.exports.jslintAndPrintDir(\".\","
-        + "{conditional:true});"
+    require("child_process").spawn((
+        "rm -rf tmp/build/app; mkdir -p tmp/build/app"
     ), {
-        cwd: "tmp/build/app"
+        shell: true,
+        stdio: [
+            "ignore", 1, 2
+        ]
+    }).on("error", onError).on("exit", function (exitCode) {
+        // validate exitCode
+        local.assertOrThrow(!exitCode, exitCode);
+        // build app
+        Promise.all([
+            {
+                file: "/LICENSE",
+                url: "/LICENSE"
+            }, {
+                file: "/assets." + process.env.npm_package_nameLib + ".html",
+                url: "/index.html"
+            }, {
+                file: "/assets." + process.env.npm_package_nameLib + ".js",
+                url: "/assets." + process.env.npm_package_nameLib + ".js"
+            }, {
+                file: "/assets.app.js",
+                url: "/assets.app.js"
+            }, {
+                file: "/assets.example.html",
+                url: "/assets.example.html"
+            }, {
+                file: "/assets.example.js",
+                url: "/assets.example.js"
+            }, {
+                file: "/assets.test.js",
+                url: "/assets.test.js"
+            }, {
+                file: "/assets.utility2.html",
+                url: "/assets.utility2.html"
+            }, {
+                file: "/assets.utility2.rollup.js",
+                url: "/assets.utility2.rollup.js"
+            }, {
+                file: "/index.html",
+                url: "/index.html"
+            }, {
+                file: "/index.rollup.html",
+                url: "/index.rollup.html"
+            }, {
+                file: "/jsonp.utility2.stateInit",
+                url: (
+                    "/jsonp.utility2.stateInit"
+                    + "?callback=window.utility2.stateInit"
+                )
+            }
+        ].concat(opt.assetsList).map(function (elem) {
+            return new Promise(function (resolve) {
+                if (!elem) {
+                    resolve();
+                    return;
+                }
+                local.httpFetch(
+                    "http://127.0.0.1:" + process.env.PORT + elem.url,
+                    {
+                        responseType: "raw"
+                    }
+                ).then(function (xhr) {
+                    return local.fsWriteFileWithMkdirp(
+                        "tmp/build/app/" + elem.file,
+                        xhr.data,
+                        "wrote file - app - {{pathname}}"
+                    );
+                }).then(resolve);
+            });
+        })).then(function () {
+            // jslint app
+            local.local.childProcessEval((
+                local.assetsDict["/assets.utility2.lib.jslint.js"]
+                + ";module.exports.jslintAndPrintDir(\".\","
+                + "{conditional:true});"
+            ), {
+                cwd: "tmp/build/app"
+            }).then(onError);
+        });
     });
-    // test standalone assets.app.js
-    await local.fsWriteFileWithMkdirp(
-        "tmp/buildApp/assets.app.js",
-        local.assetsDict["/assets.app.js"],
-        "wrote file - assets.app.js - {{pathname}}"
-    );
-    exitCode = await new Promise(function (resolve, reject) {
-        require("child_process").spawn("node", [
-            "assets.app.js"
-        ], {
-            cwd: "tmp/buildApp",
-            env: {
-                PATH: process.env.PATH,
-                PORT: (Math.random() * 0x10000) | 0x8000,
-                npm_config_timeout_exit: 5000
-            },
-            stdio: [
-                "ignore", 1, 2
-            ]
-        }).on("error", reject).on("exit", resolve);
-    });
-    local.assertOrThrow(!exitCode, exitCode);
-    onError();
 };
 
 local.buildLib = function (opt, onError) {
@@ -46849,7 +46866,7 @@ local.buildLib = function (opt, onError) {
     local.objectAssignDefault(opt, {
         customize: local.nop,
         dataFrom: require("fs").readFileSync(
-            "lib." + local.env.npm_package_nameLib + ".js",
+            "lib." + process.env.npm_package_nameLib + ".js",
             "utf8"
         ),
         dataTo: local.templateRenderMyApp(
@@ -46883,9 +46900,9 @@ local.buildLib = function (opt, onError) {
     }
     // save lib
     result = opt.dataTo;
-    if (!local.env.npm_config_mode_coverage) {
+    if (!process.env.npm_config_mode_coverage) {
         local.fsWriteFileWithMkdirpSync(
-            "lib." + local.env.npm_package_nameLib + ".js",
+            "lib." + process.env.npm_package_nameLib + ".js",
             result,
             "wrote file - lib - {{pathname}}"
         );
@@ -47016,13 +47033,13 @@ local.buildReadme = function (opt, onError) {
         opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
     });
     // customize private-repository
-    if (local.env.npm_package_private) {
+    if (process.env.npm_package_private) {
         opt.dataTo = opt.dataTo.replace((
             /\n\[!\[NPM\]\(https:\/\/nodei.co\/npm\/.*?\n/
         ), "");
         opt.dataTo = opt.dataTo.replace("$ npm install ", (
             "$ git clone \\\n"
-            + local.env.npm_package_repository_url.replace(
+            + process.env.npm_package_repository_url.replace(
                 "git+https://github.com/",
                 "git@github.com:"
             ) + " \\\n--single-branch -b beta node_modules/"
@@ -47087,13 +47104,13 @@ local.buildReadme = function (opt, onError) {
     }
     // customize shNpmTestPublished
     opt.dataTo = opt.dataTo.replace(
-        "$ npm install " + local.env.GITHUB_REPO + "#alpha",
-        "$ npm install " + local.env.npm_package_name
+        "$ npm install " + process.env.GITHUB_REPO + "#alpha",
+        "$ npm install " + process.env.npm_package_name
     );
     if (opt.dataFrom.indexOf("    shNpmTestPublished\n") < 0) {
         opt.dataTo = opt.dataTo.replace(
-            "$ npm install " + local.env.npm_package_name,
-            "$ npm install " + local.env.GITHUB_REPO + "#alpha"
+            "$ npm install " + process.env.npm_package_name,
+            "$ npm install " + process.env.GITHUB_REPO + "#alpha"
         );
         [
             (
@@ -48963,7 +48980,7 @@ local.requireReadme = function () {
     let module;
     let tmp;
     // init env
-    env = (typeof process === "object" && process && process.env) || local.env;
+    env = (typeof process === "object" && process && process.env) || {};
     // init module.exports
     module = {};
     // if file is modified, then restart process
@@ -49238,6 +49255,7 @@ instruction\n\
     Object.keys(local).forEach(function (key) {
         if (
             key.indexOf("_testCase_build") === 0
+            || key === "_testCase_assetsAppJs_standalone"
             || key === "_testCase_webpage_default"
         ) {
             module.exports[key.slice(1)] = (
@@ -50894,24 +50912,24 @@ local.http = require("http");
 /* validateLineSortedReset */
 local.Module = require("module");
 // init env
-local.objectAssignDefault(local.env, {
+local.objectAssignDefault(process.env, {
     npm_config_dir_build: require("path").resolve("tmp/build"),
     npm_config_dir_tmp: require("path").resolve("tmp")
 });
 // merge previous test-report
-if (local.env.npm_config_file_test_report_merge) {
+if (process.env.npm_config_file_test_report_merge) {
     local.testReportMerge(
         globalThis.utility2_testReport,
         local.fsReadFileOrDefaultSync(
-            local.env.npm_config_file_test_report_merge,
+            process.env.npm_config_file_test_report_merge,
             "json",
             {}
         )
     );
     if (process.argv[2] !== "--help") {
         console.error(
-            "\n" + local.env.MODE_BUILD + " - merged test-report from file "
-            + local.env.npm_config_file_test_report_merge
+            "\n" + process.env.MODE_BUILD + " - merged test-report from file "
+            + process.env.npm_config_file_test_report_merge
         );
     }
 }
@@ -70796,6 +70814,10 @@ local.testCase_buildApp_default = function (opt, onError) {\n\
 /*\n\
  * this function will test buildApp's default handling-behavior\n\
  */\n\
+    if (local.isBrowser) {\n\
+        onError(undefined, opt);\n\
+        return;\n\
+    }\n\
     local.testCase_buildReadme_default(opt, local.onErrorThrow);\n\
     local.testCase_buildLib_default(opt, local.onErrorThrow);\n\
     local.testCase_buildTest_default(opt, local.onErrorThrow);\n\
@@ -70828,6 +70850,10 @@ local.testCase_buildReadme_default = function (opt, onError) {\n\
 /*\n\
  * this function will test buildReadme's default handling-behavior\n\
  */\n\
+    if (local.isBrowser) {\n\
+        onError(undefined, opt);\n\
+        return;\n\
+    }\n\
     opt = {};\n\
     opt.customize = function () {\n\
         // search-and-replace - customize dataTo\n\

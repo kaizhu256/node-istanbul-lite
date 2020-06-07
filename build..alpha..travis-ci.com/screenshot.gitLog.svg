@@ -1,474 +1,474 @@
 <svg height="3790" width="720" xmlns="http://www.w3.org/2000/svg">
 <rect height="3790" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
-<tspan x="10" y="26">2020-06-07 03:48:32 -0500</tspan>
+<tspan x="10" y="26">2020-06-07 08:17:04 -0500</tspan>
 
-<tspan x="10" y="42">try.catch.path</tspan>
+<tspan x="10" y="42">process.env</tspan>
 
 <tspan x="10" y="58"></tspan>
 
-<tspan x="10" y="74">2020-06-07 03:15:29 -0500</tspan>
+<tspan x="10" y="74">2020-06-07 03:48:32 -0500</tspan>
 
-<tspan x="10" y="90">cull.fs</tspan>
+<tspan x="10" y="90">try.catch.path</tspan>
 
 <tspan x="10" y="106"></tspan>
 
-<tspan x="10" y="122">2020-06-07 03:03:56 -0500</tspan>
+<tspan x="10" y="122">2020-06-07 03:15:29 -0500</tspan>
 
 <tspan x="10" y="138">cull.fs</tspan>
 
 <tspan x="10" y="154"></tspan>
 
-<tspan x="10" y="170">2020-06-07 01:06:46 -0500</tspan>
+<tspan x="10" y="170">2020-06-07 03:03:56 -0500</tspan>
 
-<tspan x="10" y="186">unhandledRejections</tspan>
+<tspan x="10" y="186">cull.fs</tspan>
 
 <tspan x="10" y="202"></tspan>
 
-<tspan x="10" y="218">2020-06-07 05:24:46 +0000</tspan>
+<tspan x="10" y="218">2020-06-07 01:06:46 -0500</tspan>
 
-<tspan x="10" y="234">update</tspan>
+<tspan x="10" y="234">unhandledRejections</tspan>
 
 <tspan x="10" y="250"></tspan>
 
-<tspan x="10" y="266">2020-06-06 22:46:11 -0500</tspan>
+<tspan x="10" y="266">2020-06-07 05:24:46 +0000</tspan>
 
-<tspan x="10" y="282">process.env</tspan>
+<tspan x="10" y="282">update</tspan>
 
 <tspan x="10" y="298"></tspan>
 
-<tspan x="10" y="314">2020-06-06 22:17:43 -0500</tspan>
+<tspan x="10" y="314">2020-06-06 22:46:11 -0500</tspan>
 
-<tspan x="10" y="330">- minimize dependency to local</tspan>
+<tspan x="10" y="330">process.env</tspan>
 
-<tspan x="10" y="346">- remove eagerly requiring nodejs-builtins except fs</tspan>
+<tspan x="10" y="346"></tspan>
 
-<tspan x="10" y="362"></tspan>
+<tspan x="10" y="362">2020-06-06 22:17:43 -0500</tspan>
 
-<tspan x="10" y="378">2020-06-07 02:22:27 +0000</tspan>
+<tspan x="10" y="378">- minimize dependency to local</tspan>
 
-<tspan x="10" y="394">cull.local.url</tspan>
+<tspan x="10" y="394">- remove eagerly requiring nodejs-builtins except fs</tspan>
 
 <tspan x="10" y="410"></tspan>
 
-<tspan x="10" y="426">2020-06-06 20:58:09 -0500</tspan>
+<tspan x="10" y="426">2020-06-07 02:22:27 +0000</tspan>
 
-<tspan x="10" y="442">- remove eagerly requiring builtins:</tspan>
+<tspan x="10" y="442">cull.local.url</tspan>
 
-<tspan x="10" y="458">    path</tspan>
+<tspan x="10" y="458"></tspan>
 
-<tspan x="10" y="474"></tspan>
+<tspan x="10" y="474">2020-06-06 20:58:09 -0500</tspan>
 
-<tspan x="10" y="490">2020-06-06 20:46:32 -0500</tspan>
+<tspan x="10" y="490">- remove eagerly requiring builtins:</tspan>
 
-<tspan x="10" y="506">- remove eagerly requiring builtins:</tspan>
+<tspan x="10" y="506">    path</tspan>
 
 <tspan x="10" y="522"></tspan>
 
-<tspan x="10" y="538">2020-06-06 20:35:26 -0500</tspan>
+<tspan x="10" y="538">2020-06-06 20:46:32 -0500</tspan>
 
 <tspan x="10" y="554">- remove eagerly requiring builtins:</tspan>
 
 <tspan x="10" y="570"></tspan>
 
-<tspan x="10" y="586">2020-06-06 20:32:02 -0500</tspan>
+<tspan x="10" y="586">2020-06-06 20:35:26 -0500</tspan>
 
 <tspan x="10" y="602">- remove eagerly requiring builtins:</tspan>
 
 <tspan x="10" y="618"></tspan>
 
-<tspan x="10" y="634">2020-06-06 20:24:00 -0500</tspan>
+<tspan x="10" y="634">2020-06-06 20:32:02 -0500</tspan>
 
 <tspan x="10" y="650">- remove eagerly requiring builtins:</tspan>
 
-<tspan x="10" y="666">    buffer,</tspan>
+<tspan x="10" y="666"></tspan>
 
-<tspan x="10" y="682">    dgam,</tspan>
+<tspan x="10" y="682">2020-06-06 20:24:00 -0500</tspan>
 
-<tspan x="10" y="698">    dns,</tspan>
+<tspan x="10" y="698">- remove eagerly requiring builtins:</tspan>
 
-<tspan x="10" y="714">    vm,</tspan>
+<tspan x="10" y="714">    buffer,</tspan>
 
-<tspan x="10" y="730">    tls,</tspan>
+<tspan x="10" y="730">    dgam,</tspan>
 
-<tspan x="10" y="746">    tty,</tspan>
+<tspan x="10" y="746">    dns,</tspan>
 
-<tspan x="10" y="762">    zlib</tspan>
+<tspan x="10" y="762">    vm,</tspan>
 
-<tspan x="10" y="778"></tspan>
+<tspan x="10" y="778">    tls,</tspan>
 
-<tspan x="10" y="794">2020-06-06 20:17:45 -0500</tspan>
+<tspan x="10" y="794">    tty,</tspan>
 
-<tspan x="10" y="810">- remove eagerly requiring builtins:</tspan>
+<tspan x="10" y="810">    zlib</tspan>
 
-<tspan x="10" y="826">    buffer,</tspan>
+<tspan x="10" y="826"></tspan>
 
-<tspan x="10" y="842">    dgam,</tspan>
+<tspan x="10" y="842">2020-06-06 20:17:45 -0500</tspan>
 
-<tspan x="10" y="858">    dns,</tspan>
+<tspan x="10" y="858">- remove eagerly requiring builtins:</tspan>
 
-<tspan x="10" y="874">    vm,</tspan>
+<tspan x="10" y="874">    buffer,</tspan>
 
-<tspan x="10" y="890">    tls,</tspan>
+<tspan x="10" y="890">    dgam,</tspan>
 
-<tspan x="10" y="906">    tty,</tspan>
+<tspan x="10" y="906">    dns,</tspan>
 
-<tspan x="10" y="922">    zlib</tspan>
+<tspan x="10" y="922">    vm,</tspan>
 
-<tspan x="10" y="938"></tspan>
+<tspan x="10" y="938">    tls,</tspan>
 
-<tspan x="10" y="954">2020-06-06 20:11:14 -0500</tspan>
+<tspan x="10" y="954">    tty,</tspan>
 
-<tspan x="10" y="970">- remove eagerly requiring builtins:</tspan>
+<tspan x="10" y="970">    zlib</tspan>
 
-<tspan x="10" y="986">    buffer,</tspan>
+<tspan x="10" y="986"></tspan>
 
-<tspan x="10" y="1002">    dgam,</tspan>
+<tspan x="10" y="1002">2020-06-06 20:11:14 -0500</tspan>
 
-<tspan x="10" y="1018">    dns,</tspan>
+<tspan x="10" y="1018">- remove eagerly requiring builtins:</tspan>
 
-<tspan x="10" y="1034">    vm,</tspan>
+<tspan x="10" y="1034">    buffer,</tspan>
 
-<tspan x="10" y="1050">    tls,</tspan>
+<tspan x="10" y="1050">    dgam,</tspan>
 
-<tspan x="10" y="1066">    tty,</tspan>
+<tspan x="10" y="1066">    dns,</tspan>
 
-<tspan x="10" y="1082">    zlib</tspan>
+<tspan x="10" y="1082">    vm,</tspan>
 
-<tspan x="10" y="1098"></tspan>
+<tspan x="10" y="1098">    tls,</tspan>
 
-<tspan x="10" y="1114">2020-06-06 18:35:31 -0500</tspan>
+<tspan x="10" y="1114">    tty,</tspan>
 
-<tspan x="10" y="1130">shUtility2GitCommitAndPush</tspan>
+<tspan x="10" y="1130">    zlib</tspan>
 
 <tspan x="10" y="1146"></tspan>
 
-<tspan x="10" y="1162">2020-06-06 21:09:10 +0000</tspan>
+<tspan x="10" y="1162">2020-06-06 18:35:31 -0500</tspan>
 
-<tspan x="10" y="1178">istanbul.ignore.next</tspan>
+<tspan x="10" y="1178">shUtility2GitCommitAndPush</tspan>
 
 <tspan x="10" y="1194"></tspan>
 
-<tspan x="10" y="1210">2020-06-06 21:06:54 +0000</tspan>
+<tspan x="10" y="1210">2020-06-06 21:09:10 +0000</tspan>
 
 <tspan x="10" y="1226">istanbul.ignore.next</tspan>
 
 <tspan x="10" y="1242"></tspan>
 
-<tspan x="10" y="1258">2020-06-06 15:44:15 -0500</tspan>
+<tspan x="10" y="1258">2020-06-06 21:06:54 +0000</tspan>
 
-<tspan x="10" y="1274">init-local</tspan>
+<tspan x="10" y="1274">istanbul.ignore.next</tspan>
 
 <tspan x="10" y="1290"></tspan>
 
-<tspan x="10" y="1306">2020-06-06 15:36:48 -0500</tspan>
+<tspan x="10" y="1306">2020-06-06 15:44:15 -0500</tspan>
 
-<tspan x="10" y="1322">- migrate ci from travis-ci.org to travis-ci.com</tspan>
+<tspan x="10" y="1322">init-local</tspan>
 
-<tspan x="10" y="1338">- istanbul - fix html-coverage-report bug showing branch-metrics instead of line-metrics</tspan>
+<tspan x="10" y="1338"></tspan>
 
-<tspan x="10" y="1354"></tspan>
+<tspan x="10" y="1354">2020-06-06 15:36:48 -0500</tspan>
 
-<tspan x="10" y="1370">2020-06-02 11:44:29 -0500</tspan>
+<tspan x="10" y="1370">- migrate ci from travis-ci.org to travis-ci.com</tspan>
 
-<tspan x="10" y="1386">[npm publish] - npm publish 2020.5.31</tspan>
+<tspan x="10" y="1386">- istanbul - fix html-coverage-report bug showing branch-metrics instead of line-metrics</tspan>
 
-<tspan x="10" y="1402">- replace process.cwd() with path.resolve()</tspan>
+<tspan x="10" y="1402"></tspan>
 
-<tspan x="10" y="1418">- replace function fsReadFileOrEmptyStringSync with fsReadFileOrDefaultSync</tspan>
+<tspan x="10" y="1418">2020-06-02 11:44:29 -0500</tspan>
 
-<tspan x="10" y="1434">- remove dependency to file lib.swgg.js</tspan>
+<tspan x="10" y="1434">[npm publish] - npm publish 2020.5.31</tspan>
 
-<tspan x="10" y="1450">- istanbul - inline function templateRender</tspan>
+<tspan x="10" y="1450">- replace process.cwd() with path.resolve()</tspan>
 
-<tspan x="10" y="1466"></tspan>
+<tspan x="10" y="1466">- replace function fsReadFileOrEmptyStringSync with fsReadFileOrDefaultSync</tspan>
 
-<tspan x="10" y="1482">2020-05-25 22:42:56 -0500</tspan>
+<tspan x="10" y="1482">- remove dependency to file lib.swgg.js</tspan>
 
-<tspan x="10" y="1498">[npm publish] - npm publish 2020.5.25</tspan>
+<tspan x="10" y="1498">- istanbul - inline function templateRender</tspan>
 
-<tspan x="10" y="1514">- istanbul - rename __coverageCodeDict__ to __coverageInclude__</tspan>
+<tspan x="10" y="1514"></tspan>
 
-<tspan x="10" y="1530">- istanbul - inline function coverageReportCreate</tspan>
+<tspan x="10" y="1530">2020-05-25 22:42:56 -0500</tspan>
 
-<tspan x="10" y="1546">- remove excessive "the" from comments</tspan>
+<tspan x="10" y="1546">[npm publish] - npm publish 2020.5.25</tspan>
 
-<tspan x="10" y="1562">- update build</tspan>
+<tspan x="10" y="1562">- istanbul - rename __coverageCodeDict__ to __coverageInclude__</tspan>
 
-<tspan x="10" y="1578"></tspan>
+<tspan x="10" y="1578">- istanbul - inline function coverageReportCreate</tspan>
 
-<tspan x="10" y="1594">2019-09-15 21:49:38 -0500</tspan>
+<tspan x="10" y="1594">- remove excessive "the" from comments</tspan>
 
-<tspan x="10" y="1610">[npm publish] - npm publish 2019.9.8</tspan>
+<tspan x="10" y="1610">- update build</tspan>
 
 <tspan x="10" y="1626"></tspan>
 
-<tspan x="10" y="1642">2019-09-15 18:49:45 -0500</tspan>
+<tspan x="10" y="1642">2019-09-15 21:49:38 -0500</tspan>
 
-<tspan x="10" y="1658">- streamline evt-handling in example.js</tspan>
+<tspan x="10" y="1658">[npm publish] - npm publish 2019.9.8</tspan>
 
-<tspan x="10" y="1674">- migrate browser-testing from electron to headless-chromium</tspan>
+<tspan x="10" y="1674"></tspan>
 
-<tspan x="10" y="1690">- rename rm -fr to rm -rf</tspan>
+<tspan x="10" y="1690">2019-09-15 18:49:45 -0500</tspan>
 
-<tspan x="10" y="1706">- revamp function local.ajaxProgressUpdate with window.domOnEventAjaxProgressUpdate</tspan>
+<tspan x="10" y="1706">- streamline evt-handling in example.js</tspan>
 
-<tspan x="10" y="1722">- istanbul - switch parser from esprima to acorn v6.3.0</tspan>
+<tspan x="10" y="1722">- migrate browser-testing from electron to headless-chromium</tspan>
 
-<tspan x="10" y="1738"></tspan>
+<tspan x="10" y="1738">- rename rm -fr to rm -rf</tspan>
 
-<tspan x="10" y="1754">2019-08-13 01:32:42 -0500</tspan>
+<tspan x="10" y="1754">- revamp function local.ajaxProgressUpdate with window.domOnEventAjaxProgressUpdate</tspan>
 
-<tspan x="10" y="1770">- istanbul - upgrade to escodegen v1.12.0</tspan>
+<tspan x="10" y="1770">- istanbul - switch parser from esprima to acorn v6.3.0</tspan>
 
 <tspan x="10" y="1786"></tspan>
 
-<tspan x="10" y="1802">2019-08-13 00:30:29 -0500</tspan>
+<tspan x="10" y="1802">2019-08-13 01:32:42 -0500</tspan>
 
-<tspan x="10" y="1818">- istanbul - upgrade to estools/lib/code.js v2.0.1</tspan>
+<tspan x="10" y="1818">- istanbul - upgrade to escodegen v1.12.0</tspan>
 
 <tspan x="10" y="1834"></tspan>
 
-<tspan x="10" y="1850">2019-08-13 04:18:54 +0000</tspan>
+<tspan x="10" y="1850">2019-08-13 00:30:29 -0500</tspan>
 
-<tspan x="10" y="1866">- istanbul - upgrade to esprima v4.0.1</tspan>
+<tspan x="10" y="1866">- istanbul - upgrade to estools/lib/code.js v2.0.1</tspan>
 
 <tspan x="10" y="1882"></tspan>
 
-<tspan x="10" y="1898">2019-08-10 21:30:07 +0000</tspan>
+<tspan x="10" y="1898">2019-08-13 04:18:54 +0000</tspan>
 
-<tspan x="10" y="1914">[npm publish] - npm publish 2019.8.9</tspan>
+<tspan x="10" y="1914">- istanbul - upgrade to esprima v4.0.1</tspan>
 
-<tspan x="10" y="1930">- istanbul - add clickable id-fragment to lines in html-coverage</tspan>
+<tspan x="10" y="1930"></tspan>
 
-<tspan x="10" y="1946">- istanbul - enable es-module support</tspan>
+<tspan x="10" y="1946">2019-08-10 21:30:07 +0000</tspan>
 
-<tspan x="10" y="1962">- upgrade to estravers.js v4.2.0</tspan>
+<tspan x="10" y="1962">[npm publish] - npm publish 2019.8.9</tspan>
 
-<tspan x="10" y="1978"></tspan>
+<tspan x="10" y="1978">- istanbul - add clickable id-fragment to lines in html-coverage</tspan>
 
-<tspan x="10" y="1994">2018-09-10 19:20:08 +0700</tspan>
+<tspan x="10" y="1994">- istanbul - enable es-module support</tspan>
 
-<tspan x="10" y="2010">[npm publish] - npm publish 2018.9.10</tspan>
+<tspan x="10" y="2010">- upgrade to estravers.js v4.2.0</tspan>
 
-<tspan x="10" y="2026">- revamp files with new jslint-lite</tspan>
+<tspan x="10" y="2026"></tspan>
 
-<tspan x="10" y="2042">- change footer-date to GMT</tspan>
+<tspan x="10" y="2042">2018-09-10 19:20:08 +0700</tspan>
 
-<tspan x="10" y="2058">- add BigInt-support for istanbul</tspan>
+<tspan x="10" y="2058">[npm publish] - npm publish 2018.9.10</tspan>
 
-<tspan x="10" y="2074"></tspan>
+<tspan x="10" y="2074">- revamp files with new jslint-lite</tspan>
 
-<tspan x="10" y="2090">2018-08-08 22:24:03 +0700</tspan>
+<tspan x="10" y="2090">- change footer-date to GMT</tspan>
 
 <tspan x="10" y="2106">- add BigInt-support for istanbul</tspan>
 
 <tspan x="10" y="2122"></tspan>
 
-<tspan x="10" y="2138">2018-08-07 13:56:24 +0700</tspan>
+<tspan x="10" y="2138">2018-08-08 22:24:03 +0700</tspan>
 
-<tspan x="10" y="2154">[npm publish] - npm publish 2018.8.7</tspan>
+<tspan x="10" y="2154">- add BigInt-support for istanbul</tspan>
 
-<tspan x="10" y="2170">- migrate from modeJs -&gt; isBrowser</tspan>
+<tspan x="10" y="2170"></tspan>
 
-<tspan x="10" y="2186">- embed script in html to limit select-all insde &lt;pre tabIndex="0"&gt; elements</tspan>
+<tspan x="10" y="2186">2018-08-07 13:56:24 +0700</tspan>
 
-<tspan x="10" y="2202"></tspan>
+<tspan x="10" y="2202">[npm publish] - npm publish 2018.8.7</tspan>
 
-<tspan x="10" y="2218">2018-04-25 23:49:51 +0800</tspan>
+<tspan x="10" y="2218">- migrate from modeJs -&gt; isBrowser</tspan>
 
-<tspan x="10" y="2234">[npm publish] - npm publish v2018.4.25</tspan>
+<tspan x="10" y="2234">- embed script in html to limit select-all insde &lt;pre tabIndex="0"&gt; elements</tspan>
 
-<tspan x="10" y="2250">- update build</tspan>
+<tspan x="10" y="2250"></tspan>
 
-<tspan x="10" y="2266"></tspan>
+<tspan x="10" y="2266">2018-04-25 23:49:51 +0800</tspan>
 
-<tspan x="10" y="2282">2018-03-29 15:09:03 +0900</tspan>
+<tspan x="10" y="2282">[npm publish] - npm publish v2018.4.25</tspan>
 
-<tspan x="10" y="2298">[npm publish] - npm publish v2018.3.28</tspan>
+<tspan x="10" y="2298">- update build</tspan>
 
-<tspan x="10" y="2314">- revamp css</tspan>
+<tspan x="10" y="2314"></tspan>
 
-<tspan x="10" y="2330"></tspan>
+<tspan x="10" y="2330">2018-03-29 15:09:03 +0900</tspan>
 
-<tspan x="10" y="2346">2017-11-22 16:43:33 +0800</tspan>
+<tspan x="10" y="2346">[npm publish] - npm publish v2018.3.28</tspan>
 
-<tspan x="10" y="2362">[npm publish] - npm publish 2017.11.21</tspan>
+<tspan x="10" y="2362">- revamp css</tspan>
 
-<tspan x="10" y="2378">- update build</tspan>
+<tspan x="10" y="2378"></tspan>
 
-<tspan x="10" y="2394"></tspan>
+<tspan x="10" y="2394">2017-11-22 16:43:33 +0800</tspan>
 
-<tspan x="10" y="2410">2017-10-05 15:59:13 +0800</tspan>
+<tspan x="10" y="2410">[npm publish] - npm publish 2017.11.21</tspan>
 
-<tspan x="10" y="2426">[npm publish] - npm publish 2017.10.4</tspan>
+<tspan x="10" y="2426">- update build</tspan>
 
-<tspan x="10" y="2442">- add cli-help doc to README.md</tspan>
+<tspan x="10" y="2442"></tspan>
 
-<tspan x="10" y="2458"></tspan>
+<tspan x="10" y="2458">2017-10-05 15:59:13 +0800</tspan>
 
-<tspan x="10" y="2474">2017-09-04 17:56:03 +0800</tspan>
+<tspan x="10" y="2474">[npm publish] - npm publish 2017.10.4</tspan>
 
-<tspan x="10" y="2490">[npm publish] - npm publish 2017.9.1</tspan>
+<tspan x="10" y="2490">- add cli-help doc to README.md</tspan>
 
-<tspan x="10" y="2506">- add cli help command</tspan>
+<tspan x="10" y="2506"></tspan>
 
-<tspan x="10" y="2522">- normalize local.fs module hook</tspan>
+<tspan x="10" y="2522">2017-09-04 17:56:03 +0800</tspan>
 
-<tspan x="10" y="2538">- update README.md</tspan>
+<tspan x="10" y="2538">[npm publish] - npm publish 2017.9.1</tspan>
 
-<tspan x="10" y="2554"></tspan>
+<tspan x="10" y="2554">- add cli help command</tspan>
 
-<tspan x="10" y="2570">2017-05-28 17:54:04 +0800</tspan>
+<tspan x="10" y="2570">- normalize local.fs module hook</tspan>
 
-<tspan x="10" y="2586">[npm publish] - npm publish 2017.5.27</tspan>
+<tspan x="10" y="2586">- update README.md</tspan>
 
-<tspan x="10" y="2602">- deduplicate file assets.istanbul.rollup.js</tspan>
+<tspan x="10" y="2602"></tspan>
 
-<tspan x="10" y="2618">- merge file lib.example.es6.js into test.js</tspan>
+<tspan x="10" y="2618">2017-05-28 17:54:04 +0800</tspan>
 
-<tspan x="10" y="2634">- upgrade to esprima v2.7.3</tspan>
+<tspan x="10" y="2634">[npm publish] - npm publish 2017.5.27</tspan>
 
-<tspan x="10" y="2650">- upgrade to escodegen v1.8.1</tspan>
+<tspan x="10" y="2650">- deduplicate file assets.istanbul.rollup.js</tspan>
 
-<tspan x="10" y="2666">- upgrade to istanbul v0.4.5</tspan>
+<tspan x="10" y="2666">- merge file lib.example.es6.js into test.js</tspan>
 
-<tspan x="10" y="2682">- add README section 'all screenshots'</tspan>
+<tspan x="10" y="2682">- upgrade to esprima v2.7.3</tspan>
 
-<tspan x="10" y="2698">- add README section 'quickstart standalone app'</tspan>
+<tspan x="10" y="2698">- upgrade to escodegen v1.8.1</tspan>
 
-<tspan x="10" y="2714">- auto-create README section 'table of contents'</tspan>
+<tspan x="10" y="2714">- upgrade to istanbul v0.4.5</tspan>
 
-<tspan x="10" y="2730"></tspan>
+<tspan x="10" y="2730">- add README section 'all screenshots'</tspan>
 
-<tspan x="10" y="2746">2017-04-14 14:13:59 +0800</tspan>
+<tspan x="10" y="2746">- add README section 'quickstart standalone app'</tspan>
 
-<tspan x="10" y="2762">[npm publish] - npm publish 2017.4.14</tspan>
+<tspan x="10" y="2762">- auto-create README section 'table of contents'</tspan>
 
-<tspan x="10" y="2778">- remove build-function shBuildCiTestPre</tspan>
+<tspan x="10" y="2778"></tspan>
 
-<tspan x="10" y="2794">- rename name api-doc -&gt; apidoc</tspan>
+<tspan x="10" y="2794">2017-04-14 14:13:59 +0800</tspan>
 
-<tspan x="10" y="2810"></tspan>
+<tspan x="10" y="2810">[npm publish] - npm publish 2017.4.14</tspan>
 
-<tspan x="10" y="2826">2017-03-01 17:41:54 +0800</tspan>
+<tspan x="10" y="2826">- remove build-function shBuildCiTestPre</tspan>
 
-<tspan x="10" y="2842">- npm publish 2017.2.28</tspan>
+<tspan x="10" y="2842">- rename name api-doc -&gt; apidoc</tspan>
 
-<tspan x="10" y="2858">- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage</tspan>
+<tspan x="10" y="2858"></tspan>
 
-<tspan x="10" y="2874"></tspan>
+<tspan x="10" y="2874">2017-03-01 17:41:54 +0800</tspan>
 
-<tspan x="10" y="2890">2017-02-19 01:52:31 +0800</tspan>
+<tspan x="10" y="2890">- npm publish 2017.2.28</tspan>
 
-<tspan x="10" y="2906">- npm publish 2017.2.18</tspan>
+<tspan x="10" y="2906">- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage</tspan>
 
-<tspan x="10" y="2922">- add file assets.istanbul.rollup.js</tspan>
+<tspan x="10" y="2922"></tspan>
 
-<tspan x="10" y="2938">- add heroku-postbuild npm-script</tspan>
+<tspan x="10" y="2938">2017-02-19 01:52:31 +0800</tspan>
 
-<tspan x="10" y="2954">- do not auto-uglify js-assets in production</tspan>
+<tspan x="10" y="2954">- npm publish 2017.2.18</tspan>
 
-<tspan x="10" y="2970">- revamp README.md</tspan>
+<tspan x="10" y="2970">- add file assets.istanbul.rollup.js</tspan>
 
-<tspan x="10" y="2986"></tspan>
+<tspan x="10" y="2986">- add heroku-postbuild npm-script</tspan>
 
-<tspan x="10" y="3002">2016-12-15 21:57:13 +0800</tspan>
+<tspan x="10" y="3002">- do not auto-uglify js-assets in production</tspan>
 
-<tspan x="10" y="3018">- npm publish 2016.12.2</tspan>
+<tspan x="10" y="3018">- revamp README.md</tspan>
 
-<tspan x="10" y="3034">- fix color regression bug in text-report</tspan>
+<tspan x="10" y="3034"></tspan>
 
-<tspan x="10" y="3050"></tspan>
+<tspan x="10" y="3050">2016-12-15 21:57:13 +0800</tspan>
 
-<tspan x="10" y="3066">2016-12-13 12:56:29 +0800</tspan>
+<tspan x="10" y="3066">- npm publish 2016.12.2</tspan>
 
-<tspan x="10" y="3082">- npm publish 2016.12.1</tspan>
+<tspan x="10" y="3082">- fix color regression bug in text-report</tspan>
 
-<tspan x="10" y="3098">- re-uglify lib.istanbul.js</tspan>
+<tspan x="10" y="3098"></tspan>
 
-<tspan x="10" y="3114">- globalize local.codeDict to global.__coverageCodeDict__</tspan>
+<tspan x="10" y="3114">2016-12-13 12:56:29 +0800</tspan>
 
-<tspan x="10" y="3130">- add in-file config-var /* istanbul ignore all */ to ignore the file</tspan>
+<tspan x="10" y="3130">- npm publish 2016.12.1</tspan>
 
-<tspan x="10" y="3146">- rename file index.js -&gt; lib.istanbul.js</tspan>
+<tspan x="10" y="3146">- re-uglify lib.istanbul.js</tspan>
 
-<tspan x="10" y="3162"></tspan>
+<tspan x="10" y="3162">- globalize local.codeDict to global.__coverageCodeDict__</tspan>
 
-<tspan x="10" y="3178">2016-11-12 19:23:42 +0800</tspan>
+<tspan x="10" y="3178">- add in-file config-var /* istanbul ignore all */ to ignore the file</tspan>
 
-<tspan x="10" y="3194">- npm publish 2016.10.3</tspan>
+<tspan x="10" y="3194">- rename file index.js -&gt; lib.istanbul.js</tspan>
 
-<tspan x="10" y="3210">- add env-variable npm_config_mode_coverage_append to allow appending coverage to previous repor\</tspan>
-<tspan x="10" y="3226">ts</tspan>
+<tspan x="10" y="3210"></tspan>
 
-<tspan x="10" y="3242">- change behavior of =all to cover all files</tspan>
+<tspan x="10" y="3226">2016-11-12 19:23:42 +0800</tspan>
 
-<tspan x="10" y="3258">- none</tspan>
+<tspan x="10" y="3242">- npm publish 2016.10.3</tspan>
 
-<tspan x="10" y="3274"></tspan>
+<tspan x="10" y="3258">- add env-variable npm_config_mode_coverage_append to allow appending coverage to previous repor\</tspan>
+<tspan x="10" y="3274">ts</tspan>
 
-<tspan x="10" y="3290">2016-11-07 23:54:22 +0800</tspan>
+<tspan x="10" y="3290">- change behavior of =all to cover all files</tspan>
 
-<tspan x="10" y="3306">- npm publish 2016.10.2</tspan>
+<tspan x="10" y="3306">- none</tspan>
 
-<tspan x="10" y="3322">- add es6-syntax support and test</tspan>
+<tspan x="10" y="3322"></tspan>
 
-<tspan x="10" y="3338"></tspan>
+<tspan x="10" y="3338">2016-11-07 23:54:22 +0800</tspan>
 
-<tspan x="10" y="3354">2016-11-04 00:26:52 +0800</tspan>
+<tspan x="10" y="3354">- npm publish 2016.10.2</tspan>
 
-<tspan x="10" y="3370">- npm publish 2016.10.1</tspan>
+<tspan x="10" y="3370">- add es6-syntax support and test</tspan>
 
-<tspan x="10" y="3386">- fix cli 'cover' command to auto-cover and create test-report, requiring only  env variable</tspan>
+<tspan x="10" y="3386"></tspan>
 
-<tspan x="10" y="3402">- README.md - add cdn-download links</tspan>
+<tspan x="10" y="3402">2016-11-04 00:26:52 +0800</tspan>
 
-<tspan x="10" y="3418">- README.md - replace alpha api-doc with beta api-doc</tspan>
+<tspan x="10" y="3418">- npm publish 2016.10.1</tspan>
 
-<tspan x="10" y="3434"></tspan>
+<tspan x="10" y="3434">- fix cli 'cover' command to auto-cover and create test-report, requiring only  env variable</tspan>
 
-<tspan x="10" y="3450">2016-10-17 21:15:37 +0800</tspan>
+<tspan x="10" y="3450">- README.md - add cdn-download links</tspan>
 
-<tspan x="10" y="3466">- npm publish 2016.7.3</tspan>
+<tspan x="10" y="3466">- README.md - replace alpha api-doc with beta api-doc</tspan>
 
-<tspan x="10" y="3482">- add 'hide internal test' button to demo</tspan>
+<tspan x="10" y="3482"></tspan>
 
-<tspan x="10" y="3498"></tspan>
+<tspan x="10" y="3498">2016-10-17 21:15:37 +0800</tspan>
 
-<tspan x="10" y="3514">2016-08-27 06:13:49 +0800</tspan>
+<tspan x="10" y="3514">- npm publish 2016.7.3</tspan>
 
-<tspan x="10" y="3530">- npm publish 2015.7.2</tspan>
+<tspan x="10" y="3530">- add 'hide internal test' button to demo</tspan>
 
-<tspan x="10" y="3546">- streamline build</tspan>
+<tspan x="10" y="3546"></tspan>
 
-<tspan x="10" y="3562"></tspan>
+<tspan x="10" y="3562">2016-08-27 06:13:49 +0800</tspan>
 
-<tspan x="10" y="3578">2016-08-10 01:46:47 +0200</tspan>
+<tspan x="10" y="3578">- npm publish 2015.7.2</tspan>
 
-<tspan x="10" y="3594">- npm publish 2015.7.1</tspan>
+<tspan x="10" y="3594">- streamline build</tspan>
 
-<tspan x="10" y="3610">- update build</tspan>
+<tspan x="10" y="3610"></tspan>
 
-<tspan x="10" y="3626">- display instrumented-code in web-ui</tspan>
+<tspan x="10" y="3626">2016-08-10 01:46:47 +0200</tspan>
 
-<tspan x="10" y="3642"></tspan>
+<tspan x="10" y="3642">- npm publish 2015.7.1</tspan>
 
-<tspan x="10" y="3658">2015-09-25 22:34:19 +0800</tspan>
+<tspan x="10" y="3658">- update build</tspan>
 
-<tspan x="10" y="3674">- npm publish 2015.9.1</tspan>
+<tspan x="10" y="3674">- display instrumented-code in web-ui</tspan>
 
-<tspan x="10" y="3690">- auto-embed sourceCode in coverage</tspan>
+<tspan x="10" y="3690"></tspan>
 
-<tspan x="10" y="3706">- remove handlebars dependency</tspan>
+<tspan x="10" y="3706">2015-09-25 22:34:19 +0800</tspan>
 
-<tspan x="10" y="3722">- based on istanbul@0.3.15 - https://github.com/gotwarlost/istanbul/compare/v0.3.15...master</tspan>
+<tspan x="10" y="3722">- npm publish 2015.9.1</tspan>
 
-<tspan x="10" y="3738"></tspan>
+<tspan x="10" y="3738">- auto-embed sourceCode in coverage</tspan>
 
-<tspan x="10" y="3754">2015-09-16 21:47:12 +0800</tspan>
+<tspan x="10" y="3754">- remove handlebars dependency</tspan>
 
-<tspan x="10" y="3770">fix pathHtml</tspan>
+<tspan x="10" y="3770">- based on istanbul@0.3.15 - https://github.com/gotwarlost/istanbul/compare/v0.3.15...master</tspan>
 
 </text>
 </svg>

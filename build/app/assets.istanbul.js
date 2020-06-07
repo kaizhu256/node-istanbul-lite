@@ -10820,7 +10820,7 @@ let fileWrite;
 let path;
 let reportHtmlWrite;
 let reportTextWrite;
-// mock module path
+// mock path
 path = {
     dirname: function (file) {
         return file.replace((
@@ -10832,6 +10832,7 @@ path = {
     },
     sep: "/"
 };
+// require path
 try {
     path = require("path");
 } catch (ignore) {}
