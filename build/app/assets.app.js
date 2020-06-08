@@ -1701,7 +1701,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.istanbul.js */
 // usr/bin/env node
 /*
- * lib.istanbul.js (2020.5.32)
+ * lib.istanbul.js (2020.6.8)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -46020,40 +46020,6 @@ local._http.request = function (xhr, onResponse) {
     return xhr;
 };
 
-local._testCase_assetsAppJs_standalone = function (opt, onError) {
-/*
- * this function will test assets.app.js's standalone handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    // test standalone assets.app.js
-    local.fsWriteFileWithMkdirp({
-        data: local.assetsDict["/assets.app.js"],
-        modeDebug: true,
-        modeUncaughtException: true,
-        pathname: "tmp/buildAssetsAppJs/assets.app.js"
-    }, function () {
-        require("child_process").spawn("node", [
-            "assets.app.js"
-        ], {
-            cwd: "tmp/buildAssetsAppJs",
-            env: {
-                PATH: process.env.PATH,
-                PORT: (Math.random() * 0x10000) | 0x8000,
-                npm_config_timeout_exit: 5000
-            },
-            stdio: [
-                "ignore", 1, 2
-            ]
-        }).on("error", onError).on("exit", function (exitCode) {
-            local.assertOrThrow(!exitCode, exitCode);
-            onError();
-        });
-    });
-};
-
 local._testCase_buildApidoc_default = function (opt, onError) {
 /*
  * this function will test buildApidoc's default handling-behavior
@@ -46987,17 +46953,46 @@ local.buildApp = function (opt, onError) {
  */
     // cleanup app
     require("child_process").spawn((
-        "rm -rf tmp/build/app; mkdir -p tmp/build/app"
+        "rm -rf tmp/build/app tmp/buildAssetsAppJs;"
     ), {
         shell: true,
         stdio: [
             "ignore", 1, 2
         ]
     }).on("error", onError).on("exit", function (exitCode) {
+        let promiseList;
         // validate exitCode
         local.assertOrThrow(!exitCode, exitCode);
+        promiseList = [];
+        // test standalone assets.app.js
+        promiseList.push(new Promise(function (resolve) {
+            local.fsWriteFileWithMkdirp({
+                data: local.assetsDict["/assets.app.js"],
+                modeDebug: true,
+                modeUncaughtException: true,
+                pathname: "tmp/buildAssetsAppJs/assets.app.js"
+            }, function () {
+                require("child_process").spawn("node", [
+                    "assets.app.js"
+                ], {
+                    cwd: "tmp/buildAssetsAppJs",
+                    env: {
+                        PATH: process.env.PATH,
+                        PORT: (Math.random() * 0x10000) | 0x8000,
+                        npm_config_timeout_exit: 5000
+                    },
+                    stdio: [
+                        "ignore", 1, 2
+                    ]
+                }).on("exit", function (exitCode) {
+                    // handle exitCode
+                    local.assertOrThrow(!exitCode, exitCode);
+                    resolve();
+                });
+            });
+        }));
         // build app
-        Promise.all([
+        [
             {
                 file: "/LICENSE",
                 url: "/LICENSE"
@@ -47038,8 +47033,8 @@ local.buildApp = function (opt, onError) {
                     + "?callback=window.utility2.stateInit"
                 )
             }
-        ].concat(opt.assetsList).map(function (elem) {
-            return new Promise(function (resolve) {
+        ].concat(opt.assetsList).forEach(function (elem) {
+            promiseList.push(new Promise(function (resolve) {
                 if (!elem) {
                     resolve();
                     return;
@@ -47057,9 +47052,10 @@ local.buildApp = function (opt, onError) {
                         pathname: "tmp/build/app/" + elem.file
                     }, resolve);
                 });
-            });
-        })).then(function () {
-            // jslint app
+            }));
+        });
+        // jslint app
+        Promise.all(promiseList).then(function () {
             local.local.childProcessEval((
                 local.assetsDict["/assets.utility2.lib.jslint.js"]
                 + ";module.exports.jslintAndPrintDir(\".\","
@@ -48808,34 +48804,6 @@ local.middlewareJsonpStateInit = function (req, res, next) {
     );
 };
 
-local.moduleDirname = function (module, pathList) {
-/*
- * this function will search <pathList> for <module>'s __dirname
- */
-    let result;
-    // search "."
-    if (!module || module === "." || module.indexOf("/") >= 0) {
-        return require("path").resolve(module || "");
-    }
-    // search pathList
-    [].concat(
-        pathList,
-        require("module").globalPaths,
-        [
-            process.env.HOME + "/node_modules", "/usr/local/lib/node_modules"
-        ]
-    ).some(function (path) {
-        try {
-            result = require("path").resolve(path + "/" + module);
-            result = require("fs").statSync(result).isDirectory() && result;
-            return result;
-        } catch (ignore) {
-            result = "";
-        }
-    });
-    return result;
-};
-
 local.objectAssignRecurse = function (dict, overrides, depth, env) {
 /*
  * this function will recursively set overrides for items in dict
@@ -49398,32 +49366,26 @@ instruction\n\
 ), "utility2_app");
 /* jslint ignore:end */
         case "/assets.my_app.js":
-            // handle large string-replace
             tmp = "/assets." + env.npm_package_nameLib + ".js";
-            code = local.assetsDict["/assets.utility2.rollup.content.js"].split(
-                "/* utility2.rollup.js content */"
-            );
-            code.splice(
-                1,
-                0,
-                "local.assetsDict[\"" + tmp + "\"] = "
-                + JSON.stringify(local.assetsDict[tmp]).replace((
-                    /\\\\/g
-                ), "\u0000").replace((
-                    /\\n/g
-                ), "\\n\\\n").replace((
-                    /\u0000/g
-                ), "\\\\")
-            );
-            code = code.join("");
-            code += "\n";
-            code += local.assetsDict[tmp];
+            // handle large string-replace
+            code = local.assetsDict[
+                "/assets.utility2.rollup.content.js"
+            ].replace("/* utility2.rollup.js content */", function () {
+                return (
+                    "local.assetsDict[\"" + tmp + "\"] = (\n"
+                    + JSON.stringify(local.assetsDict[tmp]).replace((
+                        /\\\\/g
+                    ), "\u0000").replace((
+                        /\\n/g
+                    ), "\\n\\\n").replace((
+                        /\u0000/g
+                    ), "\\\\")
+                    + ");\n"
+                    + local.assetsDict[tmp]
+                );
+            });
             break;
         case "local.stateInit":
-            // handle large string-replace
-            code = local.assetsDict["/assets.utility2.rollup.content.js"].split(
-                "/* utility2.rollup.js content */"
-            );
             tmp = local.middlewareJsonpStateInit({
                 stateInit: true
             });
@@ -49439,12 +49401,16 @@ instruction\n\
                     tmp.utility2.assetsDict[file] = local.assetsDict[file];
                 }
             });
-            code.splice(
-                1,
-                0,
-                key + "(" + JSON.stringify(tmp, undefined, 4) + ");"
-            );
-            code = code.join("");
+            // handle large string-replace
+            code = local.assetsDict[
+                "/assets.utility2.rollup.content.js"
+            ].replace("/* utility2.rollup.js content */", function () {
+                return (
+                    "local.stateInit("
+                    + JSON.stringify(tmp, undefined, 4)
+                    + ");"
+                );
+            });
             break;
         default:
             code = local.assetsDict[key];
@@ -49460,7 +49426,6 @@ instruction\n\
     Object.keys(local).forEach(function (key) {
         if (
             key.indexOf("_testCase_build") === 0
-            || key === "_testCase_assetsAppJs_standalone"
             || key === "_testCase_webpage_default"
         ) {
             module.exports[key.slice(1)] = (
@@ -49716,7 +49681,7 @@ local.stringHtmlSafe = function (str) {
 local.stringMerge = function (str1, str2, rgx) {
 /*
  * this function will merge <str2> into <str1>,
- * for sections where both match <rgx>
+ * for sections where both match <rgx> with no magic
  */
     str2.replace(rgx, function (match2) {
         str1.replace(rgx, function (match1) {
@@ -50669,7 +50634,11 @@ local.testRunServer = function (opt) {
         local.middlewareJsonpStateInit,
         local.middlewareFileServer
     ];
-    if (globalThis.utility2_serverHttp1) {
+    if (globalThis.utility2_serverHttp1 || (
+        typeof process === "object"
+        && process
+        && process.env.npm_config_mode_lib
+    )) {
         return;
     }
     globalThis.utility2_onReadyBefore.cnt += 1;
@@ -51286,32 +51255,32 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
     "/assets.utility2.test.js",
     "/assets.utility2.rollup.end.js"
 ].map(function (key) {
-    let script;
+    let code;
     switch (key) {
     case "/assets.utility2.example.js":
     case "/assets.utility2.html":
     case "/assets.utility2.lib.jslint.js":
     case "/assets.utility2.test.js":
         // handle large string-replace
-        script = local.assetsDict["/assets.utility2.rollup.content.js"].split(
-            "/* utility2.rollup.js content */"
-        );
-        script.splice(1, 0, local.identity(
-            "local.assetsDict[\"" + key + "\"] = "
-            + JSON.stringify(local.assetsDict[key])
-        ).replace((
-            /\\\\/g
-        ), "\u0000").replace((
-            /\\n/g
-        ), "\\n\\\n").replace((
-            /\u0000/g
-        ), "\\\\"));
-        script = script.join("");
-        script += "\n";
+        code = local.assetsDict[
+            "/assets.utility2.rollup.content.js"
+        ].replace("/* utility2.rollup.js content */", function () {
+            return (
+                "local.assetsDict[\"" + key + "\"] = (\n"
+                + JSON.stringify(local.assetsDict[key]).replace((
+                    /\\\\/g
+                ), "\u0000").replace((
+                    /\\n/g
+                ), "\\n\\\n").replace((
+                    /\u0000/g
+                ), "\\\\")
+                + ");\n"
+            );
+        });
         break;
     case "/assets.utility2.rollup.start.js":
     case "/assets.utility2.rollup.end.js":
-        script = local.assetsDict[key];
+        code = local.assetsDict[key];
         break;
     case "header":
         return (
@@ -51321,15 +51290,15 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
         );
     case "lib.utility2.js":
         key = "/assets." + key.replace("lib.", "");
-        script = local.assetsDict[key];
+        code = local.assetsDict[key];
         break;
     default:
         key = "/assets.utility2." + key;
-        script = local.assetsDict[key];
+        code = local.assetsDict[key];
     }
     return (
         "/* script-begin " + key + " */\n"
-        + script.trim()
+        + code.trim()
         + "\n/* script-end " + key + " */\n"
     );
 }).join("\n\n\n");
@@ -51343,7 +51312,8 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
 (function (local) {
     "use strict";
 /* jslint ignore:start */
-local.assetsDict["/assets.utility2.example.js"] = "/*\n\
+local.assetsDict["/assets.utility2.example.js"] = (
+"/*\n\
 example.js\n\
 \n\
 this script will demo automated browser-tests with coverage\n\
@@ -52332,7 +52302,8 @@ require(\"http\").createServer(function (req, res) {\n\
 }).listen(process.env.PORT);\n\
 }());\n\
 }());\n\
-"
+");
+
 /* jslint ignore:end */
     return local;
 }(globalThis.utility2_rollup));
@@ -52344,7 +52315,8 @@ require(\"http\").createServer(function (req, res) {\n\
 (function (local) {
     "use strict";
 /* jslint ignore:start */
-local.assetsDict["/assets.utility2.html"] = "<!doctype html>\n\
+local.assetsDict["/assets.utility2.html"] = (
+"<!doctype html>\n\
 <html lang=\"en\">\n\
 <head>\n\
 <meta charset=\"utf-8\">\n\
@@ -52926,7 +52898,8 @@ local.domOnEventInputChange({\n\
 </div>\n\
 </body>\n\
 </html>\n\
-"
+");
+
 /* jslint ignore:end */
     return local;
 }(globalThis.utility2_rollup));
@@ -52938,7 +52911,8 @@ local.domOnEventInputChange({\n\
 (function (local) {
     "use strict";
 /* jslint ignore:start */
-local.assetsDict["/assets.utility2.lib.jslint.js"] = "// usr/bin/env node\n\
+local.assetsDict["/assets.utility2.lib.jslint.js"] = (
+"// usr/bin/env node\n\
 /*\n\
  * lib.jslint.js (2020.6.8)\n\
  * https://github.com/kaizhu256/node-jslint-lite\n\
@@ -70388,7 +70362,8 @@ if (module === require.main && !globalThis.utility2_rollup) {\n\
 }\n\
 }());\n\
 }());\n\
-"
+");
+
 /* jslint ignore:end */
     return local;
 }(globalThis.utility2_rollup));
@@ -70400,7 +70375,8 @@ if (module === require.main && !globalThis.utility2_rollup) {\n\
 (function (local) {
     "use strict";
 /* jslint ignore:start */
-local.assetsDict["/assets.utility2.test.js"] = "/* istanbul instrument in package utility2 */\n\
+local.assetsDict["/assets.utility2.test.js"] = (
+"/* istanbul instrument in package utility2 */\n\
 // assets.utility2.header.js - start\n\
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
@@ -71108,7 +71084,6 @@ local.testCase_buildXxx_default = function (opt, onError) {\n\
             }\n\
         ]\n\
     ], function (onError) {\n\
-        local._testCase_assetsAppJs_standalone({}, local.nop);\n\
         local._testCase_buildApidoc_default({}, local.nop);\n\
         local._testCase_buildApp_default({}, local.nop);\n\
         local._testCase_buildLib_default({}, local.nop);\n\
@@ -71364,45 +71339,6 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
         onParallel(undefined, opt);\n\
     });\n\
     onParallel(undefined, opt);\n\
-};\n\
-\n\
-local.testCase_moduleDirname_default = function (opt, onError) {\n\
-/*\n\
- * this function will test moduleDirname's default handling-behavior\n\
- */\n\
-    if (local.isBrowser) {\n\
-        onError(undefined, opt);\n\
-        return;\n\
-    }\n\
-    // test null-case handling-behavior\n\
-    assertJsonEqual(\n\
-        local.moduleDirname(undefined, module.paths),\n\
-        process.cwd()\n\
-    );\n\
-    // test path handling-behavior\n\
-    assertJsonEqual(\n\
-        local.moduleDirname(\".\", module.paths),\n\
-        process.cwd()\n\
-    );\n\
-    assertJsonEqual(\n\
-        local.moduleDirname(\"./\", module.paths),\n\
-        process.cwd()\n\
-    );\n\
-    assertJsonEqual(\n\
-        local.moduleDirname(\n\
-            require(\"path\").basename(process.cwd()),\n\
-            [\n\
-                require(\"path\").dirname(process.cwd())\n\
-            ]\n\
-        ),\n\
-        process.cwd()\n\
-    );\n\
-    // test module-does-not-exist handling-behavior\n\
-    assertJsonEqual(\n\
-        local.moduleDirname(\"syntax-err\", module.paths),\n\
-        \"\"\n\
-    );\n\
-    onError(undefined, opt);\n\
 };\n\
 \n\
 local.testCase_onErrorThrow_err = function (opt, onError) {\n\
@@ -72290,7 +72226,8 @@ if (process.env.npm_config_runme) {\n\
 }\n\
 }());\n\
 }());\n\
-"
+");
+
 /* jslint ignore:end */
     return local;
 }(globalThis.utility2_rollup));
@@ -72526,9 +72463,10 @@ local.stateInit({
 (function (local) {
     "use strict";
 /* jslint ignore:start */
-local.assetsDict["/assets.istanbul.js"] = "// usr/bin/env node\n\
+local.assetsDict["/assets.istanbul.js"] = (
+"// usr/bin/env node\n\
 /*\n\
- * lib.istanbul.js (2020.5.32)\n\
+ * lib.istanbul.js (2020.6.8)\n\
  * https://github.com/kaizhu256/node-istanbul-lite\n\
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo\n\
  *\n\
@@ -84422,14 +84360,10 @@ if (module === require.main && !globalThis.utility2_rollup) {\n\
 }\n\
 }());\n\
 }());\n\
-"
-/* jslint ignore:end */
-    return local;
-}(globalThis.utility2_rollup));
-
+");
 // usr/bin/env node
 /*
- * lib.istanbul.js (2020.5.32)
+ * lib.istanbul.js (2020.6.8)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -96323,6 +96257,10 @@ if (module === require.main && !globalThis.utility2_rollup) {
 }
 }());
 }());
+
+/* jslint ignore:end */
+    return local;
+}(globalThis.utility2_rollup));
 /* script-end /assets.my_app.js */
 
 

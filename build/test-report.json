@@ -1,1 +1,234 @@
-{"testPlatformList":[{"name":"buildApidoc - node - linux v14.4.0 - 2020-06-08T14:07:03.730Z","testCaseList":[{"isBrowser":false,"name":"testCase_buildApp_default","status":"passed","errStack":"","timeElapsed":565,"timeStart":1591625326499,"isDone":true}],"timeElapsed":103201,"testsFailed":0,"testsPassed":1,"testsPending":0,"status":"passed","timeStart":1591625223863},{"name":"buildApidoc - node - linux v14.4.0 - 2020-06-08T14:08:42.719Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"name":"buildApp - node - linux v14.4.0 - 2020-06-08T14:06:51.573Z","testCaseList":[{"isBrowser":false,"name":"testCase_assetsAppJs_standalone","status":"passed","errStack":"","timeElapsed":6877,"timeStart":1591625215418,"isDone":true},{"isBrowser":false,"name":"testCase_buildApidoc_default","status":"passed","errStack":"","timeElapsed":1275,"timeStart":1591625215435,"isDone":true},{"isBrowser":false,"name":"testCase_buildApp_default","status":"passed","errStack":"","timeElapsed":1702,"timeStart":1591625215439,"isDone":true},{"isBrowser":false,"name":"testCase_buildLib_default","status":"passed","errStack":"","timeElapsed":3,"timeStart":1591625215454,"isDone":true},{"isBrowser":false,"name":"testCase_buildReadme_default","status":"passed","errStack":"","timeElapsed":3,"timeStart":1591625215458,"isDone":true},{"isBrowser":false,"name":"testCase_buildTest_default","status":"passed","errStack":"","timeElapsed":2,"timeStart":1591625215462,"isDone":true},{"isBrowser":false,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":8,"timeStart":1591625215464,"isDone":true},{"isBrowser":false,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":18,"timeStart":1591625215472,"isDone":true},{"isBrowser":false,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":1160,"timeStart":1591625215490,"isDone":true},{"isBrowser":false,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":4,"timeStart":1591625216650,"isDone":true},{"isBrowser":false,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":3,"timeStart":1591625216654,"isDone":true},{"isBrowser":false,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625216658,"isDone":true},{"isBrowser":false,"name":"testCase_webpage_default","status":"passed","errStack":"","timeElapsed":1912,"timeStart":1591625216658,"isDone":true}],"timeStart":1591625211704,"timeElapsed":10592,"testsFailed":0,"testsPassed":13,"testsPending":0,"status":"passed"},{"name":"buildApp - node - linux v14.4.0 - 2020-06-08T14:07:07.316Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"name":"buildApp - node - linux v14.4.0 - 2020-06-08T14:08:46.365Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"name":"deployGithubTest - browser - /node-istanbul-lite/build..alpha..travis-ci.com/app/ - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:09:35.698Z","testCaseList":[{"isBrowser":true,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":146,"timeStart":1591625376064,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376218,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":62,"timeStart":1591625376233,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":1,"timeStart":1591625376298,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376302,"isDone":true},{"isBrowser":true,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376318,"isDone":true}],"timeStart":1591625376035,"timeElapsed":287,"testsFailed":0,"testsPassed":6,"testsPending":0,"status":"passed","screenshot":"screenshot.deployGithubTest.browser.%2Fnode-istanbul-lite%2Fbuild%2Fapp.png"},{"name":"deployGithubTest - browser - /node-istanbul-lite/build..alpha..travis-ci.com/app/ - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:09:35.724Z","testCaseList":[{"isBrowser":true,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":183,"timeStart":1591625375935,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376123,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":55,"timeStart":1591625376129,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376194,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376199,"isDone":true},{"isBrowser":true,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625376215,"isDone":true}],"timeStart":1591625375919,"timeElapsed":302,"testsFailed":0,"testsPassed":6,"testsPending":0,"status":"passed","screenshot":"screenshot.deployGithubTest.browser.%2Fnode-istanbul-lite%2Fbuild%2Fapp.png"},{"name":"deployGithubTest - node - linux v14.4.0 - 2020-06-08T14:09:34.869Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"name":"deployHerokuTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:09:53.522Z","testCaseList":[{"isBrowser":true,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":182,"timeStart":1591625393707,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625393894,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":101,"timeStart":1591625393907,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625394016,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":2,"timeStart":1591625394023,"isDone":true},{"isBrowser":true,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625394031,"isDone":true}],"timeStart":1591625393700,"timeElapsed":339,"testsFailed":0,"testsPassed":6,"testsPending":0,"status":"passed","screenshot":"screenshot.deployHerokuTest.browser.%2F.png"},{"name":"deployHerokuTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:09:53.607Z","testCaseList":[{"isBrowser":true,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":83,"timeStart":1591625393888,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":1,"timeStart":1591625393974,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":24,"timeStart":1591625393977,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":1,"timeStart":1591625394006,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":1,"timeStart":1591625394015,"isDone":true},{"isBrowser":true,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625394023,"isDone":true}],"timeStart":1591625393879,"timeElapsed":150,"testsFailed":0,"testsPassed":6,"testsPending":0,"status":"passed","screenshot":"screenshot.deployHerokuTest.browser.%2F.png"},{"name":"deployHerokuTest - node - linux v14.4.0 - 2020-06-08T14:09:52.505Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"name":"npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:06:57.539Z","testCaseList":[{"isBrowser":true,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":71,"timeStart":1591625218088,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":1,"timeStart":1591625218164,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":129,"timeStart":1591625218171,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625218307,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":2,"timeStart":1591625218310,"isDone":true},{"isBrowser":true,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625218314,"isDone":true}],"timeStart":1591625218082,"timeElapsed":235,"testsFailed":0,"testsPassed":6,"testsPending":0,"status":"passed","screenshot":"screenshot.npmTest.browser.%2F.png"},{"name":"npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:08:36.335Z","testCaseList":[{"isBrowser":true,"name":"testCase_coverage_es6","status":"passed","errStack":"","timeElapsed":100,"timeStart":1591625316806,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageMerge_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625316910,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulCoverageReportCreate_default","status":"passed","errStack":"","timeElapsed":217,"timeStart":1591625316914,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentInPackage_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625317137,"isDone":true},{"isBrowser":true,"name":"testCase_istanbulInstrumentSync_default","status":"passed","errStack":"","timeElapsed":1,"timeStart":1591625317142,"isDone":true},{"isBrowser":true,"name":"testCase_nop_default","status":"passed","errStack":"","timeElapsed":0,"timeStart":1591625317151,"isDone":true}],"timeStart":1591625316799,"timeElapsed":357,"testsFailed":0,"testsPassed":6,"testsPending":0,"status":"passed","screenshot":"screenshot.npmTest.browser.%2F.png"},{"name":"npmTest - node - linux v14.4.0 - 2020-06-08T14:06:53.454Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"name":"npmTest - node - linux v14.4.0 - 2020-06-08T14:08:32.487Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"}],"date":"2020-06-08T14:09:52.511Z","errStackList":[],"timeElapsed":1557,"testsFailed":0,"testsPassed":50,"testsPending":0,"timeStart":1591625392512}
+{
+    "testPlatformList": [
+        {
+            "name": "buildApidoc - node - linux v14.4.0 - 2020-06-08T20:28:28.606Z",
+            "testCaseList": [
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildApp_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 5672,
+                    "timeStart": 1591648113170,
+                    "isDone": true
+                }
+            ],
+            "timeElapsed": 10063,
+            "testsFailed": 0,
+            "testsPassed": 1,
+            "testsPending": 0,
+            "status": "passed",
+            "timeStart": 1591648108779
+        },
+        {
+            "name": "buildApp - node - linux v14.4.0 - 2020-06-08T20:28:10.195Z",
+            "testCaseList": [
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildApidoc_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 1398,
+                    "timeStart": 1591648099998,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildApp_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 7300,
+                    "timeStart": 1591648100006,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildLib_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 4,
+                    "timeStart": 1591648100025,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildReadme_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 5,
+                    "timeStart": 1591648100030,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildTest_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 3,
+                    "timeStart": 1591648100036,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_coverage_es6",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 9,
+                    "timeStart": 1591648100041,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_istanbulCoverageMerge_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 21,
+                    "timeStart": 1591648100051,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_istanbulCoverageReportCreate_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 1264,
+                    "timeStart": 1591648100072,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_istanbulInstrumentInPackage_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 2,
+                    "timeStart": 1591648101336,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_istanbulInstrumentSync_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 2,
+                    "timeStart": 1591648101338,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_nop_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 1,
+                    "timeStart": 1591648101340,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_webpage_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 2221,
+                    "timeStart": 1591648101341,
+                    "isDone": true
+                }
+            ],
+            "timeStart": 1591648090374,
+            "timeElapsed": 16932,
+            "testsFailed": 0,
+            "testsPassed": 12,
+            "testsPending": 0,
+            "status": "passed"
+        },
+        {
+            "name": "buildApp - node - linux v14.4.0 - 2020-06-08T20:28:33.021Z",
+            "testCaseList": [],
+            "timeElapsed": 0,
+            "testsFailed": 0,
+            "testsPassed": 0,
+            "testsPending": 0,
+            "status": "passed"
+        },
+        {
+            "name": "npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T20:28:22.321Z",
+            "testCaseList": [
+                {
+                    "isBrowser": true,
+                    "name": "testCase_coverage_es6",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 121,
+                    "timeStart": 1591648103006,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": true,
+                    "name": "testCase_istanbulCoverageMerge_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 0,
+                    "timeStart": 1591648103133,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": true,
+                    "name": "testCase_istanbulCoverageReportCreate_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 140,
+                    "timeStart": 1591648103137,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": true,
+                    "name": "testCase_istanbulInstrumentInPackage_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 1,
+                    "timeStart": 1591648103281,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": true,
+                    "name": "testCase_istanbulInstrumentSync_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 1,
+                    "timeStart": 1591648103286,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": true,
+                    "name": "testCase_nop_default",
+                    "status": "passed",
+                    "errStack": "",
+                    "timeElapsed": 0,
+                    "timeStart": 1591648103294,
+                    "isDone": true
+                }
+            ],
+            "timeStart": 1591648103000,
+            "timeElapsed": 300,
+            "testsFailed": 0,
+            "testsPassed": 6,
+            "testsPending": 0,
+            "status": "passed",
+            "screenshot": "screenshot.npmTest.browser.%2F.png"
+        },
+        {
+            "name": "npmTest - node - linux v14.4.0 - 2020-06-08T20:28:17.637Z",
+            "testCaseList": [],
+            "timeElapsed": 0,
+            "testsFailed": 0,
+            "testsPassed": 0,
+            "testsPending": 0,
+            "status": "passed"
+        }
+    ],
+    "date": "2020-06-08T20:28:33.026Z",
+    "errStackList": [],
+    "timeElapsed": 5816,
+    "testsFailed": 0,
+    "testsPassed": 19,
+    "testsPending": 0,
+    "timeStart": 1591648113027
+}
