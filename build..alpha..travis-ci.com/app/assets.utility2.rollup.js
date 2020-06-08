@@ -190,7 +190,7 @@
 /* script-begin /assets.utility2.lib.apidoc.js */
 // usr/bin/env node
 /*
- * lib.apidoc.js (2020.3.17)
+ * lib.apidoc.js (2020.6.8)
  * https://github.com/kaizhu256/node-apidoc-lite
  * this zero-dependency package will auto-generate documentation for your npm-package with zero-config
  *
@@ -560,13 +560,13 @@ local.moduleDirname = function (module, pathList) {
         return require("path").resolve(module || "");
     }
     // search pathList
-    Array.from([
+    [].concat(
         pathList,
         require("module").globalPaths,
         [
             process.env.HOME + "/node_modules", "/usr/local/lib/node_modules"
         ]
-    ]).flat().some(function (path) {
+    ).some(function (path) {
         try {
             result = require("path").resolve(path + "/" + module);
             result = require("fs").statSync(result).isDirectory() && result;
@@ -953,6 +953,9 @@ local.apidocCreate = function (opt) {
     let tmp;
     let toString;
     let trimStart;
+    if (opt.modeNop) {
+        return "";
+    }
     elemCreate = function (module, prefix, key) {
     /*
      * this function will create the apidoc-elem in given <module>
@@ -13399,7 +13402,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.jslint.js */
 // usr/bin/env node
 /*
- * lib.jslint.js (2020.5.32)
+ * lib.jslint.js (2020.6.8)
  * https://github.com/kaizhu256/node-jslint-lite
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo
  *
@@ -45826,15 +45829,16 @@ local._testCase_assetsAppJs_standalone = function (opt, onError) {
         return;
     }
     // test standalone assets.app.js
-    local.fsWriteFileWithMkdirp(
-        "tmp/buildApp/assets.app.js",
-        local.assetsDict["/assets.app.js"],
-        "wrote file - assets.app.js - {{pathname}}"
-    ).then(function () {
+    local.fsWriteFileWithMkdirp({
+        data: local.assetsDict["/assets.app.js"],
+        modeDebug: true,
+        modeUncaughtException: true,
+        pathname: "tmp/buildAssetsAppJs/assets.app.js"
+    }, function () {
         require("child_process").spawn("node", [
             "assets.app.js"
         ], {
-            cwd: "tmp/buildApp",
+            cwd: "tmp/buildAssetsAppJs",
             env: {
                 PATH: process.env.PATH,
                 PORT: (Math.random() * 0x10000) | 0x8000,
@@ -45866,52 +45870,62 @@ local._testCase_buildApidoc_default = function (opt, onError) {
         let exports;
         let mockDict;
         let mockList;
+        let nop;
+        nop = function () {
+        /*
+         * this function will do nothing
+         */
+            return;
+        };
+        // coverage-hack
+        nop();
         mockList = [
             [
                 globalThis, {
-                    setImmediate: local.nop,
-                    setInterval: local.nop,
-                    setTimeout: local.nop
+                    setImmediate: nop,
+                    setInterval: nop,
+                    setTimeout: nop
                 }
             ]
         ];
+        // disable io and side-effect
         [
-            [
-                process, "process"
-            ], [
-                process.stdin, "stdin"
-            ], [
-                require("child_process"), "child_process"
-            ], [
-                require("cluster"), "cluster"
-            ], [
-                require("fs"), "cluster"
-            ], [
-                require("http"), "http"
-            ], [
-                require("https"), "https"
-            ], [
-                require("net"), "net"
-            ], [
-                require("repl"), "repl"
-            ], [
-                require("events").prototype, "prototype"
-            ], [
-                require("stream").prototype, "prototype"
-            ]
-        ].forEach(function ([
-            dict, name
-        ]) {
+            process,
+            process.stdin,
+            process.stdout,
+            require("child_process"),
+            require("cluster"),
+            require("crypto"),
+            require("dgram"),
+            require("dns"),
+            require("domain"),
+            require("events").prototype,
+            require("http"),
+            require("https"),
+            require("net"),
+            require("os"),
+            require("readline"),
+            require("repl"),
+            require("stream").prototype,
+            require("timers"),
+            require("tls"),
+            require("tty"),
+            require("util"),
+            require("v8"),
+            require("vm"),
+            {
+                "__zjqx1234__": nop
+            }
+        ].forEach(function (dict) {
             mockDict = {};
-            Object.entries(dict).forEach(function ([
-                key, val
-            ]) {
-                if (typeof val === "function" && !(
-                    /^(?:fs\.Read|fs\.read|process\.binding|process\.dlopen)/
-                ).test(name + "." + key)) {
-                    mockDict[key] = function () {
-                        return;
-                    };
+            Object.keys(dict).forEach(function (key) {
+                if (typeof dict[key] === "function" && (
+                    process.env.npm_config_mode_test_case
+                    === "testCase_buildApidoc_default"
+                    // coverage-hack
+                    || key === "__zjqx1234__"
+                )) {
+                    mockDict[key] = nop;
                 }
             });
             mockList.push([
@@ -45928,24 +45942,22 @@ local._testCase_buildApidoc_default = function (opt, onError) {
         }, local.onErrorThrow);
         return exports;
     };
-    if (
-        process.env.npm_config_mode_coverage
-        || process.env.npm_config_mode_test_case
-        !== "testCase_buildApidoc_default"
-    ) {
-        onError(undefined, opt);
-        return;
-    }
+    // coverage-hack
+    require2();
     // save apidoc.html
-    local.fsWriteFileWithMkdirpSync(
-        "tmp/build/apidoc.html",
-        local.apidocCreate(local.objectAssignDefault(opt, {
+    local.fsWriteFileWithMkdirp({
+        data: local.apidocCreate(local.objectAssignDefault(opt, {
             blacklistDict: local,
+            modeNop: (
+                process.env.npm_config_mode_test_case
+                !== "testCase_buildApidoc_default"
+            ),
             require: require2
         })),
-        "wrote file apidoc - {{pathname}}"
-    );
-    onError();
+        modeDebug: true,
+        modeUncaughtException: true,
+        pathname: "tmp/build/apidoc.html"
+    }, onError);
 };
 
 local._testCase_buildApp_default = function (opt, onError) {
@@ -46838,12 +46850,13 @@ local.buildApp = function (opt, onError) {
                         responseType: "raw"
                     }
                 ).then(function (xhr) {
-                    return local.fsWriteFileWithMkdirp(
-                        "tmp/build/app/" + elem.file,
-                        xhr.data,
-                        "wrote file - app - {{pathname}}"
-                    );
-                }).then(resolve);
+                    local.fsWriteFileWithMkdirp({
+                        data: xhr.data,
+                        modeDebug: true,
+                        modeUncaughtException: true,
+                        pathname: "tmp/build/app/" + elem.file
+                    }, resolve);
+                });
             });
         })).then(function () {
             // jslint app
@@ -47435,31 +47448,6 @@ local.cliRun = function (opt) {
     cliDict._default();
 };
 
-local.corsBackendHostInject = function (url, backendHost, rgx, location) {
-/*
- * this function will if <location>.host is github-site,
- * inject <backendHost> into <url> with given <rgx>
- */
-    location = (
-        location
-        || (typeof window === "object" && window && window.location)
-    );
-    if (!(backendHost && location && (
-        /\bgithub.io$/
-    ).test(location.host))) {
-        return url;
-    }
-    // init github-branch
-    location.pathname.replace((
-        /\/build\.\.(alpha|beta|master)\.\.travis-ci\.org\//
-    ), function (ignore, match1) {
-        backendHost = backendHost.replace("-alpha.", "-" + match1 + ".");
-    });
-    return url.replace(rgx || (
-        /.*?($)/m
-    ), backendHost + "$1");
-};
-
 local.corsForwardProxyHostIfNeeded = function (xhr) {
 /*
  * this function will return xhr.corsForwardProxyHost, if needed
@@ -47809,36 +47797,52 @@ local.fsRmrfSync = function (pathname) {
     } catch (ignore) {}
 };
 
-local.fsWriteFileWithMkdirp = async function (pathname, data, msg) {
+local.fsWriteFileWithMkdirp = function ({
+    data,
+    modeDebug,
+    modeUncaughtException,
+    pathname
+}, onError) {
 /*
  * this function will async write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    let success;
     // do nothing if module does not exist
     try {
-        fs = require("fs").promises;
+        fs = require("fs");
     } catch (ignore) {
-        return;
+        onError();
     }
     pathname = require("path").resolve(pathname);
-    // try to write pathname
-    try {
-        await fs.writeFile(pathname, data);
-        success = true;
-    } catch (ignore) {
+    // write pathname
+    fs.writeFile(pathname, data, function (err) {
+        if (!err) {
+            if (modeDebug) {
+                console.error("fsWriteFileWithMkdirp - " + pathname);
+            }
+            onError(undefined, true);
+            return;
+        }
         // mkdir -p
-        await fs.mkdir(require("path").dirname(pathname), {
+        fs.mkdir(require("path").dirname(pathname), {
             recursive: true
+        }, function (ignore) {
+            // re-write pathname
+            fs.writeFile(pathname, data, function (err) {
+                if (!err) {
+                    if (modeDebug) {
+                        console.error("fsWriteFileWithMkdirp - " + pathname);
+                    }
+                    onError(undefined, true);
+                    return;
+                }
+                if (modeUncaughtException) {
+                    throw err;
+                }
+                onError(err);
+            });
         });
-        // re-write pathname
-        await fs.writeFile(pathname, data);
-        success = true;
-    }
-    if (success && msg) {
-        console.error(msg.replace("{{pathname}}", pathname));
-    }
-    return success;
+    });
 };
 
 local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
@@ -48614,13 +48618,13 @@ local.moduleDirname = function (module, pathList) {
         return require("path").resolve(module || "");
     }
     // search pathList
-    Array.from([
+    [].concat(
         pathList,
         require("module").globalPaths,
         [
             process.env.HOME + "/node_modules", "/usr/local/lib/node_modules"
         ]
-    ]).flat().some(function (path) {
+    ).some(function (path) {
         try {
             result = require("path").resolve(path + "/" + module);
             result = require("fs").statSync(result).isDirectory() && result;
@@ -48855,11 +48859,11 @@ local.replStart = function () {
                 ), "git --no-pager");
                 switch (match2) {
                 // syntax-sugar - run git diff
-                case "git diff":
+                case "git --no-pager diff":
                     match2 = "git diff --color";
                     break;
                 // syntax-sugar - run git log
-                case "git log":
+                case "git --no-pager log":
                     match2 = "git log -n 4";
                     break;
                 // syntax-sugar - run ll
@@ -48981,6 +48985,11 @@ local.requireReadme = function () {
     let tmp;
     // init env
     env = (typeof process === "object" && process && process.env) || {};
+    // library-mode
+    if (env.npm_config_mode_lib) {
+        local.testRunDefault = local.nop;
+        return local;
+    }
     // init module.exports
     module = {};
     // if file is modified, then restart process
@@ -48994,13 +49003,11 @@ local.requireReadme = function () {
                     require("fs").watchFile(file, {
                         interval: 1000,
                         persistent: false
-                    }, function (stat2, stat1) {
-                        if (stat2.mtime > stat1.mtime) {
-                            console.error("file modified - " + file);
-                            setTimeout(function () {
-                                process.exit(77);
-                            }, 1000);
-                        }
+                    }, function () {
+                        console.error("file modified - " + file);
+                        setTimeout(function () {
+                            process.exit(77);
+                        }, 1000);
                     });
                 });
             });
@@ -49016,24 +49023,22 @@ local.requireReadme = function () {
     // start repl-debugger
     local.replStart();
     // jslint process.cwd()
-    if (!env.npm_config_mode_lib) {
-        require("child_process").spawn("node", [
-            "-e", (
-                "require("
-                + JSON.stringify(__filename)
-                + ").jslint.jslintAndPrintDir("
-                + JSON.stringify(process.cwd())
-                + ", {autofix:true,conditional:true}, process.exit);"
-            )
-        ], {
-            env: Object.assign({}, env, {
-                npm_config_mode_lib: "1"
-            }),
-            stdio: [
-                "ignore", "ignore", 2
-            ]
-        });
-    }
+    require("child_process").spawn("node", [
+        "-e", (
+            "require("
+            + JSON.stringify(__filename)
+            + ").jslint.jslintAndPrintDir("
+            + JSON.stringify(process.cwd())
+            + ", {autofix:true,conditional:true}, process.exit);"
+        )
+    ], {
+        env: Object.assign({}, env, {
+            npm_config_mode_lib: "1"
+        }),
+        stdio: [
+            "ignore", "ignore", 2
+        ]
+    });
     if (globalThis.utility2_rollup || env.npm_config_mode_start) {
         // init assets index.html
         local.assetsDict["/index.html"] = (
@@ -49904,7 +49909,7 @@ local.testReportCreate = function (testReport) {
             /0000-00-00\u002000:00:00\u0020UTC\u0020-\u0020master\u0020-\u0020aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/g
         ), (
             new Date().toISOString().slice(0, 19).replace("T", " ")
-            + " - " + local.env.CI_BRANCH + " - " + local.env.CI_COMMIT_ID
+            + " - " + process.env.CI_BRANCH + " - " + process.env.CI_COMMIT_ID
         )),
         "wrote file - test-report - {{pathname}}"
     );
@@ -49926,7 +49931,7 @@ local.testReportCreate = function (testReport) {
     );
     // if any test failed, then exit with non-zero exitCode
     console.error(
-        "\n" + local.env.MODE_BUILD
+        "\n" + process.env.MODE_BUILD
         + " - " + testReport.testsFailed + " failed tests\n"
     );
     // print failed testCase
@@ -50242,7 +50247,7 @@ local.testRunDefault = function (opt) {
     );
     console.error = function (...argList) {
     /*
-     * this function will ignore serverLog-messages during test-run
+     * this function will ignore serverLog-msg during test-run
      */
         if (!isCoverage && !(
             /^serverLog\u0020-\u0020\{/
@@ -50464,7 +50469,7 @@ local.testRunServer = function (opt) {
         local.middlewareJsonpStateInit,
         local.middlewareFileServer
     ];
-    if (local.env.npm_config_mode_lib || globalThis.utility2_serverHttp1) {
+    if (globalThis.utility2_serverHttp1) {
         return;
     }
     globalThis.utility2_onReadyBefore.cnt += 1;
@@ -50659,10 +50664,10 @@ local.urlParse = function (url) {
                 "/" + urlParsed.href.split("/").slice(3).join("/").split("#")[0]
             );
         } else {
-            local.env.PORT = local.env.PORT || "8081";
+            process.env.PORT = process.env.PORT || "8081";
             local.serverLocalHost = (
                 local.serverLocalHost
-                || ("http://127.0.0.1:" + local.env.PORT)
+                || ("http://127.0.0.1:" + process.env.PORT)
             );
             // resolve absolute path
             if (url[0] === "/") {
@@ -52735,7 +52740,7 @@ local.domOnEventInputChange({\n\
 /* jslint ignore:start */
 local.assetsDict["/assets.utility2.lib.jslint.js"] = "// usr/bin/env node\n\
 /*\n\
- * lib.jslint.js (2020.5.32)\n\
+ * lib.jslint.js (2020.6.8)\n\
  * https://github.com/kaizhu256/node-jslint-lite\n\
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo\n\
  *\n\
@@ -70495,7 +70500,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
             default:\n\
                 assertJsonEqual(xhr.responseText, local.stringHelloEmoji);\n\
             }\n\
-            onParallel(null, opt);\n\
+            onParallel(undefined, opt);\n\
         });\n\
     }, onParallel);\n\
 \n\
@@ -70508,7 +70513,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
         assertOrThrow(err, err);\n\
         // validate statusCode\n\
         assertJsonEqual(xhr.statusCode, 500);\n\
-        onParallel(null, opt);\n\
+        onParallel(undefined, opt);\n\
     });\n\
     // test multiple-callback handling-behavior\n\
     opt.onEvent({\n\
@@ -70548,7 +70553,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
         // validate properties\n\
         assertJsonEqual(xhr._aa, undefined);\n\
         assertJsonEqual(xhr.aa, \"aa\");\n\
-        onParallel(null, opt);\n\
+        onParallel(undefined, opt);\n\
     });\n\
 \n\
     // test ajax's err handling-behavior\n\
@@ -70571,7 +70576,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
         local.ajax(opt2.elem, function (err) {\n\
             // handle err\n\
             assertOrThrow(err, err);\n\
-            onParallel(null, opt);\n\
+            onParallel(undefined, opt);\n\
         });\n\
     }, onParallel);\n\
 \n\
@@ -70588,7 +70593,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
         assertOrThrow(xhr.responseText.indexOf(\n\
             \"MIT License (https://opensource.org/licenses/MIT)\\n\\n\"\n\
         ) === 0, xhr.data);\n\
-        onParallel(null, opt);\n\
+        onParallel(undefined, opt);\n\
     });\n\
 \n\
     // test ajax's standalone handling-behavior\n\
@@ -70654,7 +70659,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
             assertOrThrow(err, err);\n\
             // validate statusCode\n\
             assertJsonEqual(xhr.statusCode, 500);\n\
-            onParallel(null, opt);\n\
+            onParallel(undefined, opt);\n\
         });\n\
     }, 1000);\n\
 };\n\
@@ -70667,7 +70672,7 @@ local.testCase_assertXxx_default = function (opt, onError) {\n\
     assertOrThrow(true, true);\n\
     // test assertion failed with undefined message\n\
     local.tryCatchOnError(function () {\n\
-        assertOrThrow(null);\n\
+        assertOrThrow(undefined);\n\
     }, function (err) {\n\
         // handle err\n\
         assertOrThrow(err, err);\n\
@@ -70676,7 +70681,7 @@ local.testCase_assertXxx_default = function (opt, onError) {\n\
     });\n\
     // test assertion failed with string message\n\
     local.tryCatchOnError(function () {\n\
-        assertOrThrow(null, \"aa\");\n\
+        assertOrThrow(undefined, \"aa\");\n\
     }, function (err) {\n\
         // handle err\n\
         assertOrThrow(err, err);\n\
@@ -70685,14 +70690,14 @@ local.testCase_assertXxx_default = function (opt, onError) {\n\
     });\n\
     // test assertion failed with errObj\n\
     local.tryCatchOnError(function () {\n\
-        assertOrThrow(null, new Error());\n\
+        assertOrThrow(undefined, new Error());\n\
     }, function (err) {\n\
         // handle err\n\
         assertOrThrow(err, err);\n\
     });\n\
     // test assertion failed with json object\n\
     local.tryCatchOnError(function () {\n\
-        assertOrThrow(null, {\n\
+        assertOrThrow(undefined, {\n\
             aa: 1\n\
         });\n\
     }, function (err) {\n\
@@ -70753,10 +70758,10 @@ local.testCase_blobRead_default = function (opt, onError) {\n\
             local.bufferToUtf8(data),\n\
             \"aabbhello \\ud83d\\ude01\\n\"\n\
         );\n\
-        onParallel(null, opt);\n\
+        onParallel(undefined, opt);\n\
     });\n\
     if (!local.isBrowser) {\n\
-        onParallel(null, opt);\n\
+        onParallel(undefined, opt);\n\
         return;\n\
     }\n\
     // test err handling-behavior\n\
@@ -70775,7 +70780,7 @@ local.testCase_blobRead_default = function (opt, onError) {\n\
             }\n\
         ]\n\
     ], function (onError) {\n\
-        local.blobRead(null, function (err) {\n\
+        local.blobRead(undefined, function (err) {\n\
             // handle err\n\
             assertOrThrow(err, err);\n\
         });\n\
@@ -70896,12 +70901,14 @@ local.testCase_buildXxx_default = function (opt, onError) {\n\
                 buildLib: local.nop,\n\
                 buildReadme: local.nop,\n\
                 buildTest: local.nop,\n\
+                fsWriteFileWithMkdirp: local.nop,\n\
                 testCase_buildReadme_default: local.nop,\n\
                 testCase_buildLib_default: local.nop,\n\
                 testCase_buildTest_default: local.nop\n\
             }\n\
         ]\n\
     ], function (onError) {\n\
+        local._testCase_assetsAppJs_standalone({}, local.nop);\n\
         local._testCase_buildApidoc_default({}, local.nop);\n\
         local._testCase_buildApp_default({}, local.nop);\n\
         local._testCase_buildLib_default({}, local.nop);\n\
@@ -70971,37 +70978,6 @@ local.testCase_cliRun_default = function (opt, onError) {\n\
     }, onError);\n\
 };\n\
 \n\
-//!! local.testCase_corsBackendHostInject_default = function (opt, onError) {\n\
-//!! /*\n\
- //!! * this function will corsBackendHostInject's default handling-behavior\n\
- //!! */\n\
-    //!! // test null-case handling-behavior\n\
-    //!! assertJsonEqual(local.corsBackendHostInject(), undefined);\n\
-    //!! // test override-all handling-behavior\n\
-    //!! assertJsonEqual(local.corsBackendHostInject(\n\
-        //!! \"cc.com\",\n\
-        //!! \"aa-alpha.bb.com\",\n\
-        //!! null,\n\
-        //!! {\n\
-            //!! host: \"github.io\",\n\
-            //!! pathname: \"/build..beta..travis-ci.com/\"\n\
-        //!! }\n\
-    //!! ), \"aa-beta.bb.com\");\n\
-    //!! // test override-rgx handling-behavior\n\
-    //!! assertJsonEqual(local.corsBackendHostInject(\n\
-        //!! \"cc/dd\",\n\
-        //!! \"aa-alpha.bb.com/\",\n\
-        //!! (\n\
-            //!! /(^cc\\/)/m\n\
-        //!! ),\n\
-        //!! {\n\
-            //!! host: \"github.io\",\n\
-            //!! pathname: \"/build..beta..travis-ci.com/\"\n\
-        //!! }\n\
-    //!! ), \"aa-beta.bb.com/cc/dd\");\n\
-    //!! onError(undefined, opt);\n\
-//!! };\n\
-\n\
 local.testCase_corsForwardProxyHostIfNeeded_default = function (\n\
     opt,\n\
     onError\n\
@@ -71028,7 +71004,7 @@ local.testCase_cryptoAesXxxCbcRawXxx_default = function (opt, onError) {\n\
  * this function will cryptoAesXxxCbcRawXxx's default handling-behavior\n\
  */\n\
     if (!local.nop()) {\n\
-        onError();\n\
+        onError(undefined, opt);\n\
         return;\n\
     }\n\
     opt = {};\n\
@@ -71173,7 +71149,7 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
         assertOrThrow(!err, err);\n\
         // validate responseText\n\
         assertJsonEqual(xhr.responseText, local.stringHelloEmoji);\n\
-        onParallel(null, opt, xhr);\n\
+        onParallel(undefined, opt, xhr);\n\
     });\n\
     // test err handling-behavior\n\
     onParallel.cnt += 1;\n\
@@ -71185,9 +71161,9 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
     }, function (err) {\n\
         // handle err\n\
         assertOrThrow(err, err);\n\
-        onParallel(null, opt);\n\
+        onParallel(undefined, opt);\n\
     });\n\
-    onParallel(null, opt);\n\
+    onParallel(undefined, opt);\n\
 };\n\
 \n\
 local.testCase_moduleDirname_default = function (opt, onError) {\n\
@@ -71200,7 +71176,7 @@ local.testCase_moduleDirname_default = function (opt, onError) {\n\
     }\n\
     // test null-case handling-behavior\n\
     assertJsonEqual(\n\
-        local.moduleDirname(null, module.paths),\n\
+        local.moduleDirname(undefined, module.paths),\n\
         process.cwd()\n\
     );\n\
     // test path handling-behavior\n\
@@ -71210,6 +71186,15 @@ local.testCase_moduleDirname_default = function (opt, onError) {\n\
     );\n\
     assertJsonEqual(\n\
         local.moduleDirname(\"./\", module.paths),\n\
+        process.cwd()\n\
+    );\n\
+    assertJsonEqual(\n\
+        local.moduleDirname(\n\
+            require(\"path\").basename(process.cwd()),\n\
+            [\n\
+                require(\"path\").dirname(process.cwd())\n\
+            ]\n\
+        ),\n\
         process.cwd()\n\
     );\n\
     // test module-does-not-exist handling-behavior\n\
@@ -71320,7 +71305,7 @@ local.testCase_onParallelList_default = function (opt, onError) {\n\
                     opt.data[opt2.ii] = opt2.elem;\n\
                     // test retry handling-behavior\n\
                     assertOrThrow(opt2.retry < 1);\n\
-                    onParallel(null, opt2);\n\
+                    onParallel(undefined, opt2);\n\
                 });\n\
             }, opt.gotoNext, opt.rateLimit);\n\
             break;\n\
@@ -71343,7 +71328,7 @@ local.testCase_onParallelList_default = function (opt, onError) {\n\
                 onParallel.cnt += 1;\n\
                 opt.rateMax = Math.max(onParallel.cnt, opt.rateMax);\n\
                 opt.data[opt2.ii] = opt2.elem;\n\
-                onParallel(null, opt);\n\
+                onParallel(undefined, opt);\n\
             }, opt.gotoNext);\n\
             break;\n\
         case 5:\n\
@@ -71392,7 +71377,7 @@ local.testCase_onParallel_default = function (opt, onError) {\n\
         onParallelError();\n\
     });\n\
     // test default handling-behavior\n\
-    onParallel(null, opt);\n\
+    onParallel(undefined, opt);\n\
 };\n\
 \n\
 local.testCase_replStart_default = function (opt, onError) {\n\
@@ -71412,7 +71397,7 @@ local.testCase_replStart_default = function (opt, onError) {\n\
                 spawn: function () {\n\
                     return {\n\
                         on: function (evt, callback) {\n\
-                            callback(null, evt);\n\
+                            callback(undefined, evt);\n\
                         }\n\
                     };\n\
                 }\n\
@@ -71434,6 +71419,8 @@ local.testCase_replStart_default = function (opt, onError) {\n\
             \"$ git diff\\n\",\n\
             // test git log handling-behavior\n\
             \"$ git log\\n\",\n\
+            // test ll handling-behavior\n\
+            \"$ ll\\n\",\n\
             // test charCode handling-behavior\n\
             \"charCode abcd\\n\",\n\
             // test charSort handling-behavior\n\
@@ -71451,6 +71438,38 @@ local.testCase_replStart_default = function (opt, onError) {\n\
         });\n\
         onError(undefined, opt);\n\
     }, onError);\n\
+};\n\
+\n\
+local.testCase_requireReadme_misc = function (opt, onError) {\n\
+/*\n\
+ * this function will test requireReadme's misc handling-behavior\n\
+ */\n\
+    if (local.isBrowser) {\n\
+        onError(undefined, opt);\n\
+        return;\n\
+    }\n\
+    // test npm_config_mode_lib handling-behavior\n\
+    local.testMock([\n\
+        [\n\
+            local, {\n\
+                testRunDefault: undefined\n\
+            }\n\
+        ],\n\
+        [\n\
+            process.env, {\n\
+                npm_config_mode_lib: \"1\"\n\
+            }\n\
+        ]\n\
+    ], function (onError) {\n\
+        local.requireReadme();\n\
+        onError(undefined, opt);\n\
+    }, local.onErrorThrow);\n\
+    // test file-modified handling-behavior\n\
+    require(\"fs\").utimes(__filename, new Date(), new Date(), function (err) {\n\
+        // handle err\n\
+        local.assertOrThrow(!err, err);\n\
+        onError(undefined, opt);\n\
+    });\n\
 };\n\
 \n\
 local.testCase_serverRespondTimeoutDefault_timeout = function (opt, onError) {\n\
@@ -71680,6 +71699,21 @@ local.testCase_templateRender_default = function (opt, onError) {\n\
     onError(undefined, opt);\n\
 };\n\
 \n\
+local.testCase_testMock_err = function (opt, onError) {\n\
+/*\n\
+ * this function will test testMock's err handling-behavior\n\
+ */\n\
+    try {\n\
+        local.testMock([], function () {\n\
+            throw new Error();\n\
+        });\n\
+    } catch (errCaught) {\n\
+        // handle err\n\
+        assertOrThrow(errCaught, errCaught);\n\
+        onError(undefined, opt);\n\
+    }\n\
+};\n\
+\n\
 local.testCase_testReportCreate_default = function (opt, onError) {\n\
 /*\n\
  * this function will test testReport's default handling-behavior\n\
@@ -71813,7 +71847,7 @@ local.testCase_urlParse_default = function (opt, onError) {\n\
             search: \"?aa=1&bb%20cc=dd%20=ee&aa=2&aa\"\n\
         });\n\
         // test err handling-behavior\n\
-        assertJsonEqual(local.urlParse(null), {\n\
+        assertJsonEqual(local.urlParse(undefined), {\n\
             basename: \"\",\n\
             hash: \"\",\n\
             host: \"\",\n\
@@ -71859,7 +71893,7 @@ local.testCase_webpage_err = function (opt, onError) {\n\
         return;\n\
     }\n\
     if (local.modeTestCase !== \"testCase_webpage_err\") {\n\
-        onError();\n\
+        onError(undefined, opt);\n\
         return;\n\
     }\n\
     // ignore err in coverage-case\n\

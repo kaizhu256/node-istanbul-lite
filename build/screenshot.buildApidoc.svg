@@ -3,7 +3,7 @@
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-06-07T13:18:49.536Z - npm-testing /home/travis/bu\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-06-08T14:07:03.635Z - npm-testing /home/travis/bu\</tspan>
 <tspan x="10" y="58">ild/kaizhu256/node-istanbul-lite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -13,7 +13,7 @@
 <tspan x="10" y="106">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/tmp/b\</tspan>
 <tspan x="10" y="122">uild/test-report.json</tspan>
 
-<tspan x="10" y="138">&gt; http-server listening on port 61764</tspan>
+<tspan x="10" y="138">&gt; http-server listening on port 64872</tspan>
 
 <tspan x="10" y="154">apidocCreate - readExample /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
 
@@ -44,22 +44,22 @@
 
 <tspan x="10" y="378">apidocCreate - ... required /home/travis/build/kaizhu256/node-istanbul-lite</tspan>
 
-<tspan x="10" y="394">jslint - 5ms - /home/travis/build/kaizhu256/node-istanbul-lite/npm_scripts.sh</tspan>
+<tspan x="10" y="394">jslint - 6ms - /home/travis/build/kaizhu256/node-istanbul-lite/npm_scripts.sh</tspan>
 
 <tspan x="10" y="410">jslint - 15ms - /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
 
-<tspan x="10" y="426">jslint - 75ms - /home/travis/build/kaizhu256/node-istanbul-lite/test.js</tspan>
+<tspan x="10" y="426">jslint - 78ms - /home/travis/build/kaizhu256/node-istanbul-lite/test.js</tspan>
 
-<tspan x="10" y="442">jslint - 378ms - /home/travis/build/kaizhu256/node-istanbul-lite/README.md</tspan>
+<tspan x="10" y="442">jslint - 328ms - /home/travis/build/kaizhu256/node-istanbul-lite/README.md</tspan>
 
-<tspan x="10" y="458">wrote file apidoc - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/apidoc.html</tspan>
+<tspan x="10" y="458">fsWriteFileWithMkdirp - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/apidoc.html</tspan>
 
-<tspan x="10" y="474">testRunDefault - 820 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
+<tspan x="10" y="474">testRunDefault - 832 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
 
 <tspan x="10" y="490">wrote file - test-report - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/test-report\</tspan>
 <tspan x="10" y="506">.json</tspan>
 
-<tspan x="10" y="522">jslint - 736ms - /home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</tspan>
+<tspan x="10" y="522">jslint - 763ms - /home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</tspan>
 
 <tspan x="10" y="538"></tspan>
 
@@ -70,22 +70,22 @@
 
 <tspan x="10" y="602">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="618">| test-report - buildApidoc - node - linux v14.4.0 - 2020-06-07T13:18:49.628Z</tspan>
+<tspan x="10" y="618">| test-report - buildApidoc - node - linux v14.4.0 - 2020-06-08T14:07:03.730Z</tspan>
 
-<tspan x="10" y="634">|     821 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="634">|     832 ms            0 failed        1 passed      |</tspan>
 
 <tspan x="10" y="650">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="666">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="682">L, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-07T13:18:42.885Z</tspan>
+<tspan x="10" y="666">| test-report - buildApp - node - linux v14.4.0 - 2020-06-08T14:06:51.573Z</tspan>
 
-<tspan x="10" y="698">|     468 ms            0 failed        6 passed      |</tspan>
+<tspan x="10" y="682">|   10592 ms            0 failed       13 passed      |</tspan>
 
-<tspan x="10" y="714">-------------------------------------------------------</tspan>
+<tspan x="10" y="698">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="730">| test-report - npmTest - node - linux v14.4.0 - 2020-06-07T13:18:39.021Z</tspan>
+<tspan x="10" y="714">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="730">L, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-08T14:06:57.539Z</tspan>
 
-<tspan x="10" y="746">|    7342 ms            0 failed       13 passed      |</tspan>
+<tspan x="10" y="746">|     235 ms            0 failed        6 passed      |</tspan>
 
 <tspan x="10" y="762">-------------------------------------------------------</tspan>
 
@@ -108,7 +108,7 @@
 
 <tspan x="10" y="938"></tspan>
 
-<tspan x="10" y="954">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-06-07T13:18:50.744Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="954">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-06-08T14:07:04.848Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>
