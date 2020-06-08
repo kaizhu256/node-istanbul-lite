@@ -100,6 +100,11 @@
 
 
 
+
+
+
+
+
 /*
 example.js
 
@@ -108,7 +113,7 @@ this script will run web-demo of istanbul-lite
 instruction
     1. save this script as example.js
     2. run shell-command:
-        $ npm install kaizhu256/node-istanbul-lite#alpha && \
+        $ npm install istanbul-lite && \
             PORT=8081 node example.js
     3. open browser to http://127.0.0.1:8081 and play with web-demo
     4. edit this script to suit your needs
