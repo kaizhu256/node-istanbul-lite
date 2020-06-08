@@ -296,13 +296,13 @@
     </thead>
     <tbody>
         <td>
-            Statements: 68<br>
+            Statements: 69<br>
             Branches: 56<br>
             Functions: 13
         </td>
         <td>
             100%<br>
-            (121 / 121)
+            (122 / 122)
         </td>
         <td>
             100%<br>
@@ -314,7 +314,7 @@
         </td>
         <td>
             100%<br>
-            (121 / 121)
+            (122 / 122)
         </td>
     </tbody>
     </table>
@@ -1279,6 +1279,7 @@
 <a href="#l954" id="l954">954</a>
 <a href="#l955" id="l955">955</a>
 <a href="#l956" id="l956">956</a>
+<a href="#l957" id="l957">957</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2223,6 +2224,7 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -3184,9 +3186,10 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cstat-skip" title="statement not covered">process.env.PORT = process.env.PORT || "8081";</span>
 <span class="cstat-skip" title="statement not covered">console.error("http-server listening on port " + process.env.PORT);</span>
 <span class="cstat-skip" title="statement not covered">require("http").createServer(<span class="fstat-skip" title="function not covered">function (req, res) {</span></span>
-<span class="cstat-skip" title="statement not covered">    req.urlParsed = require("url").parse(req.url);</span>
-<span class="cstat-skip" title="statement not covered">    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {</span>
-<span class="cstat-skip" title="statement not covered">        res.end(local.assetsDict[req.urlParsed.pathname]);</span>
+<span class="cstat-skip" title="statement not covered">    let data;</span>
+<span class="cstat-skip" title="statement not covered">    data = local.assetsDict[require("url").parse(req.url).pathname];</span>
+<span class="cstat-skip" title="statement not covered">    if (data !== undefined) {</span>
+<span class="cstat-skip" title="statement not covered">        res.end(data);</span>
 <span class="cstat-skip" title="statement not covered">        return;</span>
     }
 <span class="cstat-skip" title="statement not covered">    res.statusCode = 404;</span>

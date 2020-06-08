@@ -44081,7 +44081,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.5.32)
+ * lib.utility2.js (2020.6.8)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -45110,9 +45110,10 @@ if (globalThis.utility2_serverHttp1) {\n\
 process.env.PORT = process.env.PORT || "8081";\n\
 console.error("http-server listening on port " + process.env.PORT);\n\
 require("http").createServer(function (req, res) {\n\
-    req.urlParsed = require("url").parse(req.url);\n\
-    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {\n\
-        res.end(local.assetsDict[req.urlParsed.pathname]);\n\
+    let data;\n\
+    data = local.assetsDict[require("url").parse(req.url).pathname];\n\
+    if (data !== undefined) {\n\
+        res.end(data);\n\
         return;\n\
     }\n\
     res.statusCode = 404;\n\
@@ -46839,19 +46840,26 @@ local.buildApp = function (opt, onError) {
                     resolve();
                     return;
                 }
-                local.httpFetch(
-                    "http://127.0.0.1:" + process.env.PORT + elem.url,
-                    {
-                        responseType: "raw"
+                require("http").request((
+                    "http://127.0.0.1:" + process.env.PORT + elem.url
+                ), function (res) {
+                    let data;
+                    data = [];
+                    if (!(res.statusCode < 400)) {
+                        resolve();
+                        return;
                     }
-                ).then(function (xhr) {
-                    local.fsWriteFileWithMkdirp({
-                        data: xhr.data,
-                        modeDebug: true,
-                        modeUncaughtException: true,
-                        pathname: "tmp/build/app/" + elem.file
-                    }, resolve);
-                });
+                    res.on("data", function (chunk) {
+                        data.push(chunk);
+                    }).on("end", function () {
+                        local.fsWriteFileWithMkdirp({
+                            data: Buffer.concat(data),
+                            modeDebug: true,
+                            modeUncaughtException: true,
+                            pathname: "tmp/build/app/" + elem.file
+                        }, resolve);
+                    });
+                }).end();
             }));
         });
         // jslint app
@@ -46896,9 +46904,7 @@ local.buildLib = function (opt, onError) {
         opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
     });
     // customize assets.utility2.rollup.js
-    if (
-        require("fs").existsSync("./assets.utility2.rollup.js")
-    ) {
+    if (require("fs").existsSync("./assets.utility2.rollup.js")) {
         opt.dataTo = opt.dataTo.replace(
             "    // || globalThis.utility2_rollup_old",
             "    || globalThis.utility2_rollup_old"
@@ -47908,198 +47914,6 @@ local.gotoNext = function (opt, onError) {
     return opt;
 };
 
-local.httpFetch = function (url, opt = {}) {
-/*
- * this function will fetch <url> with given <opt>
- * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
- * https://developer.mozilla.org/en-US/docs/Web/API/Response
- */
-    let buf;
-    let cleanup;
-    let controller;
-    let debug;
-    let errStack;
-    let httpFetchProgressUpdate;
-    let isBrowser;
-    let isDebugged;
-    let isDone;
-    let nop;
-    let reject2;
-    let reject;
-    let request;
-    let resolve2;
-    let resolve;
-    let response;
-    let timeStart;
-    let timeout;
-    let timerTimeout;
-    // init function
-    cleanup = function () {
-        if (isDone) {
-            return true;
-        }
-        isDone = true;
-        // cleanup timerTimeout
-        clearTimeout(timerTimeout);
-        // decrement httpFetchProgressUpdate.cnt
-        httpFetchProgressUpdate.cnt = Math.max(
-            httpFetchProgressUpdate.cnt - 1,
-            0
-        );
-        httpFetchProgressUpdate();
-    };
-    debug = function () {
-        if (isDebugged) {
-            return;
-        }
-        isDebugged = true;
-        console.error("serverLog - " + JSON.stringify({
-            time: new Date(timeStart).toISOString(),
-            type: "httpFetchResponse",
-            method: opt.method,
-            url,
-            status: opt.status,
-            timeElapsed: Date.now() - timeStart,
-            // extra
-            responseContentLength: buf.byteLength
-        }) + "\n");
-    };
-    nop = function () {
-        return;
-    };
-    reject2 = function (err) {
-        if (cleanup()) {
-            return;
-        }
-        debug();
-        // append errStack
-        if (errStack) {
-            err.stack += "\n" + errStack;
-        }
-        Object.assign(err, opt);
-        reject(err);
-    };
-    resolve2 = async function (response) {
-        try {
-            if (isBrowser) {
-                Array.from(response.headers).forEach(function ([
-                    key, val
-                ]) {
-                    opt.responseHeaders[key.toLowerCase()] = val;
-                });
-                opt.status = response.status;
-                opt.ok = response.ok;
-                buf = new Uint8Array(
-                    await response.arrayBuffer()
-                );
-            } else {
-                // init responseproperties specified in
-                // https://fetch.spec.whatwg.org/#response-class
-                opt.responseHeaders = response.headers;
-                opt.status = response.statusCode;
-                opt.ok = 200 <= opt.status && opt.status <= 299;
-            }
-            switch (opt.responseType) {
-            case "json":
-                opt.data = JSON.parse(new TextDecoder().decode(buf));
-                break;
-            case "raw":
-                opt.data = buf;
-                break;
-            default:
-                opt.data = new TextDecoder().decode(buf);
-            }
-            if (opt.modeDebug) {
-                debug();
-            }
-            if (!opt.ok) {
-                reject2(new Error("httpFetch - status " + opt.status));
-                return;
-            }
-        } catch (err) {
-            reject2(err);
-            return;
-        }
-        cleanup();
-        resolve(opt);
-    };
-    // init httpFetchProgressUpdate
-    httpFetchProgressUpdate = globalThis.httpFetchProgressUpdate || nop;
-    httpFetchProgressUpdate.cnt |= 0;
-    httpFetchProgressUpdate.cnt += 1;
-    httpFetchProgressUpdate();
-    // init opt
-    opt.abort = function (err) {
-        controller.abort();
-        request.destroy();
-        response.destroy();
-        reject2(err || new Error("httpFetch - abort"));
-    };
-    opt.method = opt.method || "GET";
-    opt.responseHeaders = {};
-    opt.status = 400;
-    // init var
-    buf = new Uint8Array(0);
-    controller = {
-        abort: nop,
-        destroy: nop
-    };
-    isBrowser = (
-        typeof globalThis.AbortController === "function"
-        && typeof globalThis.fetch === "function"
-    );
-    request = controller;
-    response = controller;
-    timeStart = Date.now();
-    timeout = opt.timeout || 30000;
-    // init timerTimeout
-    timerTimeout = setTimeout(function () {
-        opt.abort(new Error("httpFetch - timeout " + timeout + " ms"));
-    }, timeout);
-    // init promise
-    return Object.assign(new Promise(function (aa, bb) {
-        reject = bb;
-        resolve = aa;
-        // browser - fetch
-        if (isBrowser) {
-            controller = new globalThis.AbortController();
-            opt.signal = controller.signal;
-            globalThis.fetch(url, opt).then(resolve2).catch(reject2);
-            return;
-        }
-        // node - request
-        errStack = new Error().stack;
-        request = require(
-            url.indexOf("https:") === 0
-            ? "https"
-            : "http"
-        ).request(url, opt, function (aa) {
-            response = aa;
-            let bufList;
-            // handle err
-            response.on("error", reject2);
-            // handle stream
-            if (opt.responseType === "stream") {
-                resolve2(response);
-                return;
-            }
-            // read buf
-            bufList = [];
-            response.on("data", function (chunk) {
-                bufList.push(chunk);
-            });
-            response.on("end", function () {
-                buf = Buffer.concat(bufList);
-                resolve2(response);
-            });
-        });
-        request.on("error", reject2);
-        request.end(opt.body);
-    }), {
-        abort: opt.abort
-    });
-};
-
 local.jslintAutofixLocalFunction = function (code, file) {
 /*
  * this function will jslint-autofix local-function
@@ -48602,45 +48416,6 @@ local.middlewareJsonpStateInit = function (req, res, next) {
     res.end(
         req.urlParsed.query.callback + "(" + JSON.stringify(state) + ");"
     );
-};
-
-local.objectAssignRecurse = function (dict, overrides, depth, env) {
-/*
- * this function will recursively set overrides for items in dict
- */
-    dict = dict || {};
-    env = env || (typeof process === "object" && process.env) || {};
-    overrides = overrides || {};
-    Object.keys(overrides).forEach(function (key) {
-        let dict2;
-        let overrides2;
-        dict2 = dict[key];
-        overrides2 = overrides[key];
-        if (overrides2 === undefined) {
-            return;
-        }
-        // if both dict2 and overrides2 are non-undefined and non-array objects,
-        // then recurse with dict2 and overrides2
-        if (
-            depth > 1
-            // dict2 is non-array object
-            && typeof dict2 === "object" && dict2 && !Array.isArray(dict2)
-            // overrides2 is non-array object
-            && typeof overrides2 === "object" && overrides2
-            && !Array.isArray(overrides2)
-        ) {
-            local.objectAssignRecurse(dict2, overrides2, depth - 1, env);
-            return;
-        }
-        // else set dict[key] with overrides[key]
-        dict[key] = (
-            dict === env
-            // if dict is env, then overrides falsy-value with empty-string
-            ? overrides2 || ""
-            : overrides2
-        );
-    });
-    return dict;
 };
 
 local.objectDeepCopyWithKeysSorted = function (obj) {
@@ -49436,7 +49211,18 @@ local.stateInit = function (opt) {
 /*
  * this function will init state <opt>
  */
-    local.objectAssignRecurse(local, opt, 10);
+    [
+        opt, local
+    ].forEach(function (dict) {
+        local.objectAssignDefault(dict, {
+            utility2: {
+                assetsDict: {},
+                env: {}
+            }
+        }, -1);
+    });
+    Object.assign(local.utility2.assetsDict, opt.utility2.assetsDict);
+    Object.assign(local.utility2.env, opt.utility2.env);
 };
 
 local.streamCleanup = function (stream) {
@@ -52092,9 +51878,10 @@ if (globalThis.utility2_serverHttp1) {\n\
 process.env.PORT = process.env.PORT || \"8081\";\n\
 console.error(\"http-server listening on port \" + process.env.PORT);\n\
 require(\"http\").createServer(function (req, res) {\n\
-    req.urlParsed = require(\"url\").parse(req.url);\n\
-    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {\n\
-        res.end(local.assetsDict[req.urlParsed.pathname]);\n\
+    let data;\n\
+    data = local.assetsDict[require(\"url\").parse(req.url).pathname];\n\
+    if (data !== undefined) {\n\
+        res.end(data);\n\
         return;\n\
     }\n\
     res.statusCode = 404;\n\

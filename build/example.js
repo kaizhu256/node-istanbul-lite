@@ -842,9 +842,10 @@ if (globalThis.utility2_serverHttp1) {
 process.env.PORT = process.env.PORT || "8081";
 console.error("http-server listening on port " + process.env.PORT);
 require("http").createServer(function (req, res) {
-    req.urlParsed = require("url").parse(req.url);
-    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {
-        res.end(local.assetsDict[req.urlParsed.pathname]);
+    let data;
+    data = local.assetsDict[require("url").parse(req.url).pathname];
+    if (data !== undefined) {
+        res.end(data);
         return;
     }
     res.statusCode = 404;
