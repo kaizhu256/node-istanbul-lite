@@ -2,25 +2,25 @@
 this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
 
 # live web demo
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app)
 
-[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app)
+[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app)
 
 
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html)
+[![travis-ci.com build-status](https://api.travis-ci.com/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.com/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html)
 
 [![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
 
-[![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-istanbul-lite)
+[![build commit status](https://kaizhu256.github.io/node-istanbul-lite/build/build.badge.svg)](https://travis-ci.com/kaizhu256/node-istanbul-lite)
 
 | git-branch : | [master](https://github.com/kaizhu256/node-istanbul-lite/tree/master) | [beta](https://github.com/kaizhu256/node-istanbul-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-istanbul-lite/tree/alpha)|
 |--:|:--|:--|:--|
-| test-server-github : | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/app) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/app)|
+| test-server-github : | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/app) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/app)|
 | test-server-heroku : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-alpha.herokuapp.com)|
-| test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/test-report.html)|
-| coverage : | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.org/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
-| build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.org)|
+| test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/test-report.html)|
+| coverage : | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/coverage.html/index.html)|
+| build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.com) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.com) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.com)|
 
 [![npmPackageListing](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageListing.svg)](https://github.com/kaizhu256/node-istanbul-lite)
 
@@ -42,29 +42,28 @@ this zero-dependency package will provide browser-compatible version of istanbul
 
 
 # cdn download
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.istanbul.js)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app/assets.istanbul.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app/assets.istanbul.js)
 
 
 
 # documentation
 #### api doc
-- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/apidoc.html)
+- [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html)
 
-[![apidoc](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/apidoc.html)
+[![apidoc](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html)
 
 #### cli help
 ![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageCliHelp.svg)
 
-#### changelog 2020.5.31
-- npm publish 2020.5.31
-- replace process.cwd() with path.resolve()
-- replace function fsReadFileOrEmptyStringSync with fsReadFileOrDefaultSync
-- remove dependency to file lib.swgg.js
-- istanbul - inline function templateRender
+#### changelog 2020.6.8
+- npm publish 2020.6.8
+- remove electron-dependency
+- migrate ci from travis-ci.org to travis-ci.com
+- istanbul - fix html-coverage-report bug showing branch-metrics instead of line-metrics
 - none
 
 #### todo
-- istanbul - inline function templateRender
+- istanbul - inline class Instrumenter into function instrumentSync
 - istanbul - remove filesUnderRoot subroutine
 - none
 
@@ -78,17 +77,17 @@ this zero-dependency package will provide browser-compatible version of istanbul
 
 # quickstart standalone app
 #### to run this example, follow instruction in script below
-- [assets.app.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.app.js)
+- [assets.app.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app/assets.app.js)
 ```shell
 # example.sh
 
-# this shell script will download and run a web-demo of istanbul-lite as a standalone app
+# this shell script will download and run web-demo of istanbul-lite as standalone app
 
 # 1. download standalone app
-curl -O https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/app/assets.app.js
+curl -O https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app/assets.app.js
 # 2. run standalone app
 PORT=8081 node ./assets.app.js
-# 3. open a browser to http://127.0.0.1:8081 and play with web-demo
+# 3. open browser to http://127.0.0.1:8081 and play with web-demo
 # 4. edit file assets.app.js to suit your needs
 ```
 
@@ -104,19 +103,19 @@ PORT=8081 node ./assets.app.js
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-istanbul-lite/build/app/assets.example.html)
 
 #### to run this example, follow instruction in script below
-- [example.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.org/example.js)
+- [example.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/example.js)
 ```javascript
 /*
 example.js
 
-this script will run a web-demo of istanbul-lite
+this script will run web-demo of istanbul-lite
 
 instruction
     1. save this script as example.js
     2. run shell-command:
         $ npm install istanbul-lite && \
             PORT=8081 node example.js
-    3. open a browser to http://127.0.0.1:8081 and play with web-demo
+    3. open browser to http://127.0.0.1:8081 and play with web-demo
     4. edit this script to suit your needs
 */
 
@@ -126,34 +125,27 @@ instruction
 // assets.utility2.header.js - start
 /* jslint utility2:true */
 /* istanbul ignore next */
+// run shared js-env code - init-local
 (function (globalThis) {
     "use strict";
     let consoleError;
-    let debugName;
     let local;
-    debugName = "debug" + String("Inline");
     // init globalThis
     globalThis.globalThis = globalThis.globalThis || globalThis;
-    // init debug_inline
-    if (!globalThis[debugName]) {
+    // init debugInline
+    if (!globalThis.debugInline) {
         consoleError = console.error;
-        globalThis[debugName] = function (...argList) {
+        globalThis.debugInline = function (...argList) {
         /*
          * this function will both print <argList> to stderr
          * and return <argList>[0]
          */
-            consoleError("\n\n" + debugName);
+            consoleError("\n\ndebugInline");
             consoleError(...argList);
             consoleError("\n");
             return argList[0];
         };
     }
-    String.prototype.trimEnd = (
-        String.prototype.trimEnd || String.prototype.trimRight
-    );
-    String.prototype.trimStart = (
-        String.prototype.trimStart || String.prototype.trimLeft
-    );
     // init local
     local = {};
     local.local = local;
@@ -169,9 +161,39 @@ instruction
         local.isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
+    local.assertJsonEqual = function (aa, bb) {
+    /*
+     * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
+     */
+        let objectDeepCopyWithKeysSorted;
+        objectDeepCopyWithKeysSorted = function (obj) {
+        /*
+         * this function will recursively deep-copy <obj> with keys sorted
+         */
+            let sorted;
+            if (typeof obj !== "object" || !obj) {
+                return obj;
+            }
+            // recursively deep-copy list with child-keys sorted
+            if (Array.isArray(obj)) {
+                return obj.map(objectDeepCopyWithKeysSorted);
+            }
+            // recursively deep-copy obj with keys sorted
+            sorted = {};
+            Object.keys(obj).sort().forEach(function (key) {
+                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
+            });
+            return sorted;
+        };
+        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
+        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
+        if (aa !== bb) {
+            throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
+        }
+    };
     local.assertOrThrow = function (passed, msg) {
     /*
-     * this function will throw err.<msg> if <passed> is falsy
+     * this function will throw <msg> if <passed> is falsy
      */
         if (passed) {
             return;
@@ -186,9 +208,9 @@ instruction
             ? msg
             : new Error(
                 typeof msg === "string"
-                // if msg is a string, then leave as is
+                // if msg is string, then leave as is
                 ? msg
-                // else JSON.stringify msg
+                // else JSON.stringify(msg)
                 : JSON.stringify(msg, undefined, 4)
             )
         );
@@ -202,98 +224,12 @@ instruction
         ii = 0;
         while (ii < argList.length) {
             arg = argList[ii];
-            if (arg !== null && arg !== undefined && arg !== "") {
-                break;
+            if (arg !== undefined && arg !== null && arg !== "") {
+                return arg;
             }
             ii += 1;
         }
         return arg;
-    };
-    local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
-    /*
-     * this function will sync-read <pathname> with given <type> and <dflt>
-     */
-        let fs;
-        // do nothing if module does not exist
-        try {
-            fs = require("fs");
-        } catch (ignore) {
-            return dflt;
-        }
-        pathname = require("path").resolve(pathname);
-        // try to read pathname
-        try {
-            return (
-                type === "json"
-                ? JSON.parse(fs.readFileSync(pathname, "utf8"))
-                : fs.readFileSync(pathname, type)
-            );
-        } catch (ignore) {
-            return dflt;
-        }
-    };
-    local.fsRmrfSync = function (pathname) {
-    /*
-     * this function will sync "rm -rf" <pathname>
-     */
-        let child_process;
-        // do nothing if module does not exist
-        try {
-            child_process = require("child_process");
-        } catch (ignore) {
-            return;
-        }
-        pathname = require("path").resolve(pathname);
-        if (process.platform !== "win32") {
-            child_process.spawnSync("rm", [
-                "-rf", pathname
-            ], {
-                stdio: [
-                    "ignore", 1, 2
-                ]
-            });
-            return;
-        }
-        try {
-            child_process.spawnSync("rd", [
-                "/s", "/q", pathname
-            ], {
-                stdio: [
-                    "ignore", 1, "ignore"
-                ]
-            });
-        } catch (ignore) {}
-    };
-    local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
-    /*
-     * this function will sync write <data> to <pathname> with "mkdir -p"
-     */
-        let fs;
-        let success;
-        // do nothing if module does not exist
-        try {
-            fs = require("fs");
-        } catch (ignore) {
-            return;
-        }
-        pathname = require("path").resolve(pathname);
-        // try to write pathname
-        try {
-            fs.writeFileSync(pathname, data);
-            success = true;
-        } catch (ignore) {
-            // mkdir -p
-            fs.mkdirSync(require("path").dirname(pathname), {
-                recursive: true
-            });
-            // re-write pathname
-            fs.writeFileSync(pathname, data);
-            success = true;
-        }
-        if (success && msg) {
-            console.error(msg.replace("{{pathname}}", pathname));
-        }
-        return success;
     };
     local.identity = function (val) {
     /*
@@ -335,35 +271,16 @@ instruction
         recurse(tgt, src, depth | 0);
         return tgt;
     };
-    // require builtin
-    if (!local.isBrowser) {
-        local.assert = require("assert");
-        local.buffer = require("buffer");
-        local.child_process = require("child_process");
-        local.cluster = require("cluster");
-        local.crypto = require("crypto");
-        local.dgram = require("dgram");
-        local.dns = require("dns");
-        local.domain = require("domain");
-        local.events = require("events");
-        local.fs = require("fs");
-        local.http = require("http");
-        local.https = require("https");
-        local.net = require("net");
-        local.os = require("os");
-        local.path = require("path");
-        local.querystring = require("querystring");
-        local.readline = require("readline");
-        local.repl = require("repl");
-        local.stream = require("stream");
-        local.string_decoder = require("string_decoder");
-        local.timers = require("timers");
-        local.tls = require("tls");
-        local.tty = require("tty");
-        local.url = require("url");
-        local.util = require("util");
-        local.vm = require("vm");
-        local.zlib = require("zlib");
+    // bug-workaround - throw unhandledRejections in node-process
+    if (
+        typeof process === "object" && process
+        && typeof process.on === "function"
+        && process.unhandledRejections !== "strict"
+    ) {
+        process.unhandledRejections = "strict";
+        process.on("unhandledRejection", function (err) {
+            throw err;
+        });
     }
 }((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
@@ -390,8 +307,8 @@ globalThis.local = local;
 
 
 
-// run browser js-env code - init-test
 /* istanbul ignore next */
+// run browser js-env code - init-test
 (function () {
 if (!local.isBrowser) {
     return;
@@ -427,8 +344,8 @@ globalThis.domOnEventDelegateDict = local;
 
 
 
-// run node js-env code - init-test
 /* istanbul ignore next */
+// run node js-env code - init-test
 (function () {
 if (local.isBrowser) {
     return;
@@ -983,8 +900,8 @@ utility2-comment -->\n\
 /* jslint ignore:end */
 local.assetsDict["/assets.istanbul.js"] = (
     local.assetsDict["/assets.istanbul.js"]
-    || local.fs.readFileSync(
-        local.path.resolve(local.__dirname + "/lib.istanbul.js"),
+    || require("fs").readFileSync(
+        require("path").resolve(local.__dirname + "/lib.istanbul.js"),
         "utf8"
     ).replace((
         /^#!\//
@@ -1016,7 +933,7 @@ if (module !== require.main || globalThis.utility2_rollup) {
 }
 local.assetsDict["/assets.example.js"] = (
     local.assetsDict["/assets.example.js"]
-    || local.fs.readFileSync(__filename, "utf8")
+    || require("fs").readFileSync(__filename, "utf8")
 );
 local.assetsDict["/favicon.ico"] = local.assetsDict["/favicon.ico"] || "";
 local.assetsDict["/index.html"] = local.assetsDict["/"];
@@ -1031,10 +948,11 @@ if (globalThis.utility2_serverHttp1) {
 }
 process.env.PORT = process.env.PORT || "8081";
 console.error("http-server listening on port " + process.env.PORT);
-local.http.createServer(function (req, res) {
-    req.urlParsed = local.url.parse(req.url);
-    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {
-        res.end(local.assetsDict[req.urlParsed.pathname]);
+require("http").createServer(function (req, res) {
+    let data;
+    data = local.assetsDict[require("url").parse(req.url).pathname];
+    if (data !== undefined) {
+        res.end(data);
         return;
     }
     res.statusCode = 404;
@@ -1094,7 +1012,6 @@ local.http.createServer(function (req, res) {
     },
     "description": "this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo",
     "devDependencies": {
-        "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": {
@@ -1130,7 +1047,7 @@ local.http.createServer(function (req, res) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2020.5.31"
+    "version": "2020.6.8"
 }
 ```
 

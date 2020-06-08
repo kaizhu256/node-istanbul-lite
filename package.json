@@ -5,7 +5,6 @@
     },
     "description": "this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo",
     "devDependencies": {
-        "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": {
@@ -41,5 +40,5 @@
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2020.5.31"
+    "version": "2020.6.8"
 }
