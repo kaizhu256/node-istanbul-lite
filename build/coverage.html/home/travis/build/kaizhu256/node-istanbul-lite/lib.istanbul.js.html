@@ -280,7 +280,7 @@
 <div class="header high">
 
     <h2 style="font-weight: bold;">
-        <a href="https://github.com/kaizhu256/node-istanbul-lite">istanbul-lite (2020.6.8)</a>
+        <a href="https://github.com/kaizhu256/node-istanbul-lite">istanbul-lite (2020.6.9)</a>
     </h2>
 
     <h2>Code coverage report for <span class="entity">home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</span></h2>
@@ -297,16 +297,16 @@
     <tbody>
         <td>
             Statements: 3713<br>
-            Branches: 3127<br>
+            Branches: 3125<br>
             Functions: 400
         </td>
         <td>
             95.03%<br>
-            (5396 / 5678)
+            (5395 / 5677)
         </td>
         <td>
             97.18%<br>
-            (3825 / 3936)
+            (3820 / 3931)
         </td>
         <td>
             95.05%<br>
@@ -314,7 +314,7 @@
         </td>
         <td>
             94.8%<br>
-            (5137 / 5419)
+            (5136 / 5418)
         </td>
     </tbody>
     </table>
@@ -12217,8 +12217,6 @@
 <a href="#l11892" id="l11892">11892</a>
 <a href="#l11893" id="l11893">11893</a>
 <a href="#l11894" id="l11894">11894</a>
-<a href="#l11895" id="l11895">11895</a>
-<a href="#l11896" id="l11896">11896</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -12238,8 +12236,6 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
@@ -23782,10 +23778,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">322</span>
+<span class="cline-any cline-yes">321</span>
 <span class="cline-any cline-yes">75</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">322</span>
+<span class="cline-any cline-yes">321</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -23815,10 +23811,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">719</span>
-<span class="cline-any cline-yes">719</span>
-<span class="cline-any cline-yes">719</span>
-<span class="cline-any cline-yes">719</span>
+<span class="cline-any cline-yes">717</span>
+<span class="cline-any cline-yes">717</span>
+<span class="cline-any cline-yes">717</span>
+<span class="cline-any cline-yes">717</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -23832,13 +23828,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32</span>
-<span class="cline-any cline-yes">32</span>
-<span class="cline-any cline-yes">76</span>
-<span class="cline-any cline-yes">76</span>
-<span class="cline-any cline-yes">76</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">71</span>
+<span class="cline-any cline-yes">71</span>
+<span class="cline-any cline-yes">71</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">30</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -24120,7 +24116,7 @@
         <td class="text"><pre class="prettyprint lang-js" tabIndex="0">
 //#!/usr/bin/env node
 /*
- * lib.istanbul.js (2020.6.8)
+ * lib.istanbul.js (2020.6.9)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -24133,12 +24129,10 @@
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || <span class="branch-1 cbranch-skip" title="branch not covered">globalThis;</span>
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
@@ -24289,7 +24283,7 @@
 <span class="cstat-skip" title="statement not covered">            throw err;</span>
         });
     }
-}((typeof globalThis === "object" &amp;&amp; globalThis) || <span class="branch-2 cbranch-skip" title="branch not covered">window)</span>);
+}());
 // assets.utility2.header.js - end
 
 

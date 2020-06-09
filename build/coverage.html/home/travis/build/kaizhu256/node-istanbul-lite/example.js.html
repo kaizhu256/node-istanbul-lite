@@ -280,7 +280,7 @@
 <div class="header high">
 
     <h2 style="font-weight: bold;">
-        <a href="https://github.com/kaizhu256/node-istanbul-lite">istanbul-lite (2020.6.8)</a>
+        <a href="https://github.com/kaizhu256/node-istanbul-lite">istanbul-lite (2020.6.9)</a>
     </h2>
 
     <h2>Code coverage report for <span class="entity">home/travis/build/kaizhu256/node-istanbul-lite/example.js</span></h2>
@@ -297,16 +297,16 @@
     <tbody>
         <td>
             Statements: 83<br>
-            Branches: 64<br>
+            Branches: 62<br>
             Functions: 16
         </td>
         <td>
             100%<br>
-            (122 / 122)
+            (121 / 121)
         </td>
         <td>
             100%<br>
-            (90 / 90)
+            (85 / 85)
         </td>
         <td>
             100%<br>
@@ -314,7 +314,7 @@
         </td>
         <td>
             100%<br>
-            (122 / 122)
+            (121 / 121)
         </td>
     </tbody>
     </table>
@@ -1281,10 +1281,6 @@
 <a href="#l956" id="l956">956</a>
 <a href="#l957" id="l957">957</a>
 <a href="#l958" id="l958">958</a>
-<a href="#l959" id="l959">959</a>
-<a href="#l960" id="l960">960</a>
-<a href="#l961" id="l961">961</a>
-<a href="#l962" id="l962">962</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1412,13 +1408,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
@@ -2355,8 +2347,6 @@
 
 
 
-
-
 /*
 example.js
 
@@ -2378,12 +2368,10 @@ instruction
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || <span class="branch-1 cbranch-skip" title="branch not covered">globalThis;</span>
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
@@ -2534,7 +2522,7 @@ instruction
 <span class="cstat-skip" title="statement not covered">            throw err;</span>
         });
     }
-}((typeof globalThis === "object" &amp;&amp; globalThis) || <span class="branch-2 cbranch-skip" title="branch not covered">window)</span>);
+}());
 // assets.utility2.header.js - end
 
 

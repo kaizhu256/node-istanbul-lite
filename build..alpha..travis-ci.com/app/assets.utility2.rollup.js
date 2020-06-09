@@ -11,12 +11,10 @@
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -167,7 +165,7 @@
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -190,7 +188,7 @@
 /* script-begin /assets.utility2.lib.apidoc.js */
 // usr/bin/env node
 /*
- * lib.apidoc.js (2020.6.8)
+ * lib.apidoc.js (2020.6.9)
  * https://github.com/kaizhu256/node-apidoc-lite
  * this zero-dependency package will auto-generate documentation for your npm-package with zero-config
  *
@@ -203,12 +201,10 @@
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -359,7 +355,7 @@
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -1501,7 +1497,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.istanbul.js */
 // usr/bin/env node
 /*
- * lib.istanbul.js (2020.6.8)
+ * lib.istanbul.js (2020.6.9)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -1514,12 +1510,10 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -1670,7 +1664,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -13402,7 +13396,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.jslint.js */
 // usr/bin/env node
 /*
- * lib.jslint.js (2020.6.8)
+ * lib.jslint.js (2020.6.9)
  * https://github.com/kaizhu256/node-jslint-lite
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo
  *
@@ -13415,12 +13409,10 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -13571,7 +13563,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -30864,12 +30856,10 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -31020,7 +31010,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -31283,12 +31273,10 @@ if (local.isBrowser) {
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -31439,7 +31427,7 @@ if (local.isBrowser) {
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -44094,12 +44082,10 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -44250,7 +44236,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+}());
 // assets.utility2.header.js - end
 
 
@@ -44318,12 +44304,10 @@ local.assetsDict["/assets.utility2.header.js"] = '\
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
 // run shared js-env code - init-local\n\
-(function (globalThis) {\n\
+(function () {\n\
     "use strict";\n\
     let consoleError;\n\
     let local;\n\
-    // init globalThis\n\
-    globalThis.globalThis = globalThis.globalThis || globalThis;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
         consoleError = console.error;\n\
@@ -44474,7 +44458,7 @@ local.assetsDict["/assets.utility2.header.js"] = '\
             throw err;\n\
         });\n\
     }\n\
-}((typeof globalThis === "object" && globalThis) || window));\n\
+}());\n\
 // assets.utility2.header.js - end\n\
 '
 
@@ -50923,12 +50907,10 @@ instruction\n\
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
 // run shared js-env code - init-local\n\
-(function (globalThis) {\n\
+(function () {\n\
     \"use strict\";\n\
     let consoleError;\n\
     let local;\n\
-    // init globalThis\n\
-    globalThis.globalThis = globalThis.globalThis || globalThis;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
         consoleError = console.error;\n\
@@ -51079,7 +51061,7 @@ instruction\n\
             throw err;\n\
         });\n\
     }\n\
-}((typeof globalThis === \"object\" && globalThis) || window));\n\
+}());\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
@@ -52500,7 +52482,7 @@ local.domOnEventInputChange({\n\
 local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 "// usr/bin/env node\n\
 /*\n\
- * lib.jslint.js (2020.6.8)\n\
+ * lib.jslint.js (2020.6.9)\n\
  * https://github.com/kaizhu256/node-jslint-lite\n\
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo\n\
  *\n\
@@ -52513,12 +52495,10 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
 // run shared js-env code - init-local\n\
-(function (globalThis) {\n\
+(function () {\n\
     \"use strict\";\n\
     let consoleError;\n\
     let local;\n\
-    // init globalThis\n\
-    globalThis.globalThis = globalThis.globalThis || globalThis;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
         consoleError = console.error;\n\
@@ -52669,7 +52649,7 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
             throw err;\n\
         });\n\
     }\n\
-}((typeof globalThis === \"object\" && globalThis) || window));\n\
+}());\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
@@ -69967,12 +69947,10 @@ local.assetsDict["/assets.utility2.test.js"] = (
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
 // run shared js-env code - init-local\n\
-(function (globalThis) {\n\
+(function () {\n\
     \"use strict\";\n\
     let consoleError;\n\
     let local;\n\
-    // init globalThis\n\
-    globalThis.globalThis = globalThis.globalThis || globalThis;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
         consoleError = console.error;\n\
@@ -70123,7 +70101,7 @@ local.assetsDict["/assets.utility2.test.js"] = (
             throw err;\n\
         });\n\
     }\n\
-}((typeof globalThis === \"object\" && globalThis) || window));\n\
+}());\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
