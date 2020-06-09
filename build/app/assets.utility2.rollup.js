@@ -44081,7 +44081,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.6.8)
+ * lib.utility2.js (2020.6.9)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -47263,7 +47263,6 @@ local.childProcessEval = function (code, opt) {
         "-e", (
             "/*jslint node*/\n"
             + "let data = \"\";\n"
-            + "process.stdin.setEncoding(\"utf8\");\n"
             + "process.stdin.on(\"readable\", function () {\n"
             + "    let chunk;\n"
             + "    while (true) {\n"
@@ -47273,7 +47272,7 @@ local.childProcessEval = function (code, opt) {
             + "        }\n"
             + "        data += chunk;\n"
             + "    }\n"
-            + "});\n"
+            + "}).setEncoding(\"utf8\");\n"
             + "process.stdin.on(\"end\", function () {\n"
             + "    require(\"vm\").runInThisContext(data);\n"
             + "});\n"
@@ -50908,7 +50907,7 @@ this script will demo automated browser-tests with coverage\n\
 instruction\n\
     1. save this script as example.js\n\
     2. run the shell-command:\n\
-        $ npm install kaizhu256/node-utility2#alpha && \\\n\
+        $ npm install utility2 && \\\n\
             PATH=\"$(pwd)/node_modules/.bin:$PATH\" \\\n\
             PORT=8081 \\\n\
             npm_config_mode_coverage=utility2 \\\n\
