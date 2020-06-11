@@ -188,7 +188,7 @@
 /* script-begin /assets.utility2.lib.apidoc.js */
 // usr/bin/env node
 /*
- * lib.apidoc.js (2020.6.9)
+ * lib.apidoc.js (2020.6.8)
  * https://github.com/kaizhu256/node-apidoc-lite
  * this zero-dependency package will auto-generate documentation for your npm-package with zero-config
  *
@@ -1497,7 +1497,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.istanbul.js */
 // usr/bin/env node
 /*
- * lib.istanbul.js (2020.6.9)
+ * lib.istanbul.js (2020.6.8)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -13396,7 +13396,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.jslint.js */
 // usr/bin/env node
 /*
- * lib.jslint.js (2020.6.9)
+ * lib.jslint.js (2020.6.8)
  * https://github.com/kaizhu256/node-jslint-lite
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo
  *
@@ -44911,7 +44911,7 @@ utility2-comment -->\n\
 {{#unless isRollup}}\n\
 <script src="assets.utility2.rollup.js"></script>\n\
 <script>window.utility2_onReadyBefore.cnt += 1;</script>\n\
-<script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
+<script src="utility2.state.init.js"></script>\n\
 utility2-comment -->\n\
 <script src="assets.{{packageJson.nameLib}}.js"></script>\n\
 <script src="assets.example.js"></script>\n\
@@ -46508,27 +46508,22 @@ local.browserTest = function (opt, onError) {
         return;
     }
     local.gotoNext(opt, function (err, data) {
-        let url;
         switch (opt.gotoState) {
         // node - init
         case 1:
-            url = require("url");
             onParallel = local.onParallel(opt.gotoNext);
             onParallel.cnt += 1;
             isDone = 0;
             testId = Math.random().toString(16);
             testName = local.env.MODE_BUILD + ".browser." + encodeURIComponent(
-                new url.URL(opt.url).pathname.replace(
-                    "/build.."
-                    + local.env.CI_BRANCH
-                    + ".." + local.env.CI_HOST,
+                require("url").parse(opt.url).pathname.replace(
+                    "/build.." + local.env.CI_BRANCH + ".." + local.env.CI_HOST,
                     "/build"
                 )
             );
             fileScreenshot = (
-                local.env.npm_config_dir_build + "/screenshot."
-                + testName
-                + ".png"
+                local.env.npm_config_dir_build
+                + "/screenshot." + testName + ".png"
             );
             opt.url = opt.url.replace(
                 "{{timeExit}}",
@@ -46539,8 +46534,7 @@ local.browserTest = function (opt, onError) {
                 opt.gotoNext,
                 local.timeoutDefault,
                 new Error(
-                    "timeout - " + local.timeoutDefault + " ms - "
-                    + testName
+                    "timeout - " + local.timeoutDefault + " ms - " + testName
                 )
             );
             // create puppeteer browser
@@ -46572,8 +46566,7 @@ local.browserTest = function (opt, onError) {
                 }).then(function () {
                     console.error(
                         "\nbrowserTest - created screenshot file "
-                        + fileScreenshot
-                        + "\n"
+                        + fileScreenshot + "\n"
                     );
                     onParallel();
                 });
@@ -46812,11 +46805,8 @@ local.buildApp = function (opt, onError) {
                 file: "/index.rollup.html",
                 url: "/index.rollup.html"
             }, {
-                file: "/jsonp.utility2.stateInit",
-                url: (
-                    "/jsonp.utility2.stateInit"
-                    + "?callback=window.utility2.stateInit"
-                )
+                file: "/utility2.state.init.js",
+                url: "/utility2.state.init.js"
             }
         ].concat(opt.assetsList).forEach(function (elem) {
             promiseList.push(new Promise(function (resolve) {
@@ -48360,7 +48350,7 @@ local.middlewareInit = function (req, res, next) {
     next();
 };
 
-local.middlewareJsonpStateInit = function (req, res, next) {
+local.middlewareUtility2StateInit = function (req, res, next) {
 /*
  * this function will run middleware to
  * serve browser-state wrapped in given jsonp-callback
@@ -48368,37 +48358,45 @@ local.middlewareJsonpStateInit = function (req, res, next) {
     let state;
     if (!(req.stateInit || (
         req.urlParsed
-        && req.urlParsed.pathname === "/jsonp.utility2.stateInit"
+        && req.urlParsed.pathname === "/utility2.state.init.js"
     ))) {
         next();
         return;
     }
     state = {
-        utility2: {
-            assetsDict: {
-                "/assets.example.html":
-                local.assetsDict["/assets.example.html"],
-                "/assets.example.js": local.assetsDict["/assets.example.js"],
-                "/assets.test.js": local.assetsDict["/assets.test.js"],
-                "/index.rollup.html": local.assetsDict["/index.rollup.html"]
-            },
-            env: {
-                NODE_ENV: local.env.NODE_ENV,
-                npm_config_mode_backend: local.env.npm_config_mode_backend,
-                npm_package_description: local.env.npm_package_description,
-                npm_package_homepage: local.env.npm_package_homepage,
-                npm_package_name: local.env.npm_package_name,
-                npm_package_nameLib: local.env.npm_package_nameLib,
-                npm_package_version: local.env.npm_package_version
-            }
-        }
+        assetsDict: {
+            "/assets.example.html":
+            local.assetsDict["/assets.example.html"],
+            "/assets.example.js": local.assetsDict["/assets.example.js"],
+            "/assets.test.js": local.assetsDict["/assets.test.js"],
+            "/index.rollup.html": local.assetsDict["/index.rollup.html"]
+        },
+        env: {
+            NODE_ENV: local.env.NODE_ENV,
+            npm_config_mode_backend: local.env.npm_config_mode_backend,
+            npm_package_description: local.env.npm_package_description,
+            npm_package_homepage: local.env.npm_package_homepage,
+            npm_package_name: local.env.npm_package_name,
+            npm_package_nameLib: local.env.npm_package_nameLib,
+            npm_package_version: local.env.npm_package_version
+        },
+        init: (
+            "(function (state) {\n"
+            + "let utility2 = globalThis.utility2;\n"
+            + "utility2.assetsDict = utility2.assetsDict || {};\n"
+            + "utility2.env = utility2.env || {};\n"
+            + "Object.assign(utility2.assetsDict, state.assetsDict);\n"
+            + "Object.assign(utility2.env, state.env);\n"
+            + "}({}));\n"
+        )
     };
     if (req.stateInit) {
         return state;
     }
-    res.end(
-        req.urlParsed.query.callback + "(" + JSON.stringify(state) + ");"
-    );
+    // handle large string-replace
+    res.end(state.init.replace("({})", function () {
+        return "(\n" + JSON.stringify(state) + "\n)";
+    }));
 };
 
 local.objectDeepCopyWithKeysSorted = function (obj) {
@@ -48944,7 +48942,7 @@ instruction\n\
             });
             break;
         case "local.stateInit":
-            tmp = local.middlewareJsonpStateInit({
+            tmp = local.middlewareUtility2StateInit({
                 stateInit: true
             });
             // add extra physical files to assetsDict
@@ -48956,18 +48954,16 @@ instruction\n\
                     && String(local.assetsDict[file])
                     === local.fsReadFileOrDefaultSync("." + file, "utf8", "")
                 ) {
-                    tmp.utility2.assetsDict[file] = local.assetsDict[file];
+                    tmp.assetsDict[file] = local.assetsDict[file];
                 }
             });
             // handle large string-replace
             code = local.assetsDict[
                 "/assets.utility2.rollup.content.js"
             ].replace("/* utility2.rollup.js content */", function () {
-                return (
-                    "local.stateInit("
-                    + JSON.stringify(tmp, undefined, 4)
-                    + ");"
-                );
+                return tmp.init.replace("({})", function () {
+                    return "(\n" + JSON.stringify(tmp) + "\n)";
+                });
             });
             break;
         default:
@@ -50200,7 +50196,7 @@ local.testRunServer = function (opt) {
         local.middlewareInit,
         local.middlewareForwardProxy,
         local.middlewareAssetsCached,
-        local.middlewareJsonpStateInit,
+        local.middlewareUtility2StateInit,
         local.middlewareFileServer
     ];
     if (globalThis.utility2_serverHttp1 || (
@@ -51785,7 +51781,7 @@ utility2-comment -->\\n\\\n\
 <script src=\"assets.utility2.lib.marked.js\"></script>\\n\\\n\
 <script src=\"assets.utility2.js\"></script>\\n\\\n\
 <script>window.utility2_onReadyBefore.cnt += 1;</script>\\n\\\n\
-<script src=\"jsonp.utility2.stateInit?callback=window.utility2.stateInit\"></script>\\n\\\n\
+<script src=\"utility2.state.init.js\"></script>\\n\\\n\
 <script src=\"assets.example.js\"></script>\\n\\\n\
 <script src=\"assets.test.js\"></script>\\n\\\n\
 <script>\\n\\\n\
@@ -52482,7 +52478,7 @@ local.domOnEventInputChange({\n\
 local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 "// usr/bin/env node\n\
 /*\n\
- * lib.jslint.js (2020.6.9)\n\
+ * lib.jslint.js (2020.6.8)\n\
  * https://github.com/kaizhu256/node-jslint-lite\n\
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo\n\
  *\n\
