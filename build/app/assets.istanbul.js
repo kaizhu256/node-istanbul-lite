@@ -7,7 +7,6 @@
  */
 
 
-
 /* istanbul instrument in package istanbul */
 // assets.utility2.header.js - start
 /* jslint utility2:true */
@@ -171,10 +170,8 @@
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -196,7 +193,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.istanbul = local;
-
 
 
 /* validateLineSortedReset */
@@ -626,7 +622,6 @@ local.templateRender = function (template, dict, opt = {}, ii = 0) {
 }());
 
 
-
 // run shared js-env code - function
 (function () {
 let escodegen;
@@ -662,12 +657,10 @@ require2 = function (key) {
 require2(escodegen, esprima);
 
 
-
 /*
 repo https://github.com/acornjs/acorn/tree/6.3.0
 committed 2019-08-12T09:40:59Z
 */
-
 
 
 /*
@@ -5646,12 +5639,10 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
 }());
 
 
-
 /*
 repo https://github.com/estools/estraverse/tree/4.2.0
 committed 2016-03-10T21:51:59Z
 */
-
 
 
 /*
@@ -6511,12 +6502,10 @@ file https://github.com/estools/estraverse/blob/4.2.0/estraverse.js
 }());
 
 
-
 /*
 repo https://github.com/estools/esutils/tree/2.0.3
 committed 2019-07-31T01:06:44Z
 */
-
 
 
 /*
@@ -6662,12 +6651,10 @@ file https://github.com/estools/esutils/blob/2.0.3/lib/code.js
 esutils = { code: module.exports }; }());
 
 
-
 /*
 repo https://github.com/estools/escodegen/tree/v1.12.0
 committed 2019-08-13T02:08:40Z
 */
-
 
 
 /*
@@ -9285,12 +9272,10 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
 }());
 
 
-
 /*
 repo https://github.com/gotwarlost/istanbul/tree/v0.4.5
 committed 2016-08-21T19:53:22Z
 */
-
 
 
 /*
@@ -10403,7 +10388,6 @@ file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 }());
 
 
-
 /*
 file https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/head.txt
 */
@@ -10798,7 +10782,6 @@ local.templateCoverageReport = '\
 ';
 
 
-
 /*
 file https://img.shields.io/badge/coverage-100.0%-00dd00.svg?style=flat
 */
@@ -10807,11 +10790,9 @@ local.templateCoverageBadgeSvg =
 /* jslint ignore:end */
 
 
-
 /*
 file none
 */
-
 
 
 let fileWrite;
@@ -11298,7 +11279,6 @@ reportTextWrite = function (node, dircoverage) {
 };
 
 
-
 // init local
 local.coverageMerge = function (coverage1 = {}, coverage2 = {}) {
 /*
@@ -11767,14 +11747,12 @@ local.instrumentSync = function (code, file) {
 }());
 
 
-
 // run node js-env code - init-after
 /* istanbul ignore next */
 (function () {
 if (local.isBrowser) {
     return;
 }
-
 
 
 local.cliDict = {};

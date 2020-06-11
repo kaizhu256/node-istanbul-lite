@@ -2064,22 +2064,6 @@
 <a href="#l938" id="l938">938</a>
 <a href="#l939" id="l939">939</a>
 <a href="#l940" id="l940">940</a>
-<a href="#l941" id="l941">941</a>
-<a href="#l942" id="l942">942</a>
-<a href="#l943" id="l943">943</a>
-<a href="#l944" id="l944">944</a>
-<a href="#l945" id="l945">945</a>
-<a href="#l946" id="l946">946</a>
-<a href="#l947" id="l947">947</a>
-<a href="#l948" id="l948">948</a>
-<a href="#l949" id="l949">949</a>
-<a href="#l950" id="l950">950</a>
-<a href="#l951" id="l951">951</a>
-<a href="#l952" id="l952">952</a>
-<a href="#l953" id="l953">953</a>
-<a href="#l954" id="l954">954</a>
-<a href="#l955" id="l955">955</a>
-<a href="#l956" id="l956">956</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2198,13 +2182,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2364,6 +2341,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2372,15 +2355,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2422,7 +2396,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
@@ -2433,11 +2406,6 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3136,12 +3104,6 @@
 
 
 
-
-
-
-
-
-
 /*
 example.js
 
@@ -3155,7 +3117,6 @@ instruction
     3. open browser to http://127.0.0.1:8081 and play with web-demo
     4. edit this script to suit your needs
 */
-
 
 
 /* istanbul instrument in package istanbul */
@@ -3321,11 +3282,9 @@ instruction
 // assets.utility2.header.js - end
 
 
-
 /* jslint utility2:true */
 (function (local) {
 "use strict";
-
 
 
 // run shared js-env code - init-before
@@ -3339,7 +3298,6 @@ local = (
 // init exports
 globalThis.local = local;
 }());
-
 
 
 /* istanbul ignore next */
@@ -3376,7 +3334,6 @@ if (!local.isBrowser) {
 local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
 globalThis.domOnEventDelegateDict = local;
 }());
-
 
 
 /* istanbul ignore next */
@@ -3523,7 +3480,6 @@ pre {\n\
         }, 100);\n\
     });\n\
 }());\n\
-\n\
 \n\
 \n\
 // init domOnEventAjaxProgressUpdate\n\
@@ -3680,7 +3636,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventDelegateDict\n\
 (function () {\n\
 /*\n\
@@ -3764,7 +3719,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
 /*\n\
@@ -3820,7 +3774,6 @@ utility2-comment --&gt;\n\
 &lt;button class="button" data-onevent="testRunBrowser" id="buttonTestRun1"&gt;run browser-tests&lt;/button&gt;&lt;br&gt;\n\
 &lt;div class="uiAnimateSlide" id="htmlTestReport1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"&gt;&lt;/div&gt;\n\
 utility2-comment --&gt;\n\
-\n\
 \n\
 \n\
 &lt;!-- custom-html-start --&gt;\n\
@@ -3899,7 +3852,6 @@ local.domOnEventInputChange({\n\
 });\n\
 &lt;/script&gt;\n\
 &lt;!-- custom-html-end --&gt;\n\
-\n\
 \n\
 \n\
 &lt;!-- utility2-comment\n\
@@ -16207,31 +16159,8 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <a href="#l11870" id="l11870">11870</a>
 <a href="#l11871" id="l11871">11871</a>
 <a href="#l11872" id="l11872">11872</a>
-<a href="#l11873" id="l11873">11873</a>
-<a href="#l11874" id="l11874">11874</a>
-<a href="#l11875" id="l11875">11875</a>
-<a href="#l11876" id="l11876">11876</a>
-<a href="#l11877" id="l11877">11877</a>
-<a href="#l11878" id="l11878">11878</a>
-<a href="#l11879" id="l11879">11879</a>
-<a href="#l11880" id="l11880">11880</a>
-<a href="#l11881" id="l11881">11881</a>
-<a href="#l11882" id="l11882">11882</a>
-<a href="#l11883" id="l11883">11883</a>
-<a href="#l11884" id="l11884">11884</a>
-<a href="#l11885" id="l11885">11885</a>
-<a href="#l11886" id="l11886">11886</a>
-<a href="#l11887" id="l11887">11887</a>
-<a href="#l11888" id="l11888">11888</a>
-<a href="#l11889" id="l11889">11889</a>
-<a href="#l11890" id="l11890">11890</a>
-<a href="#l11891" id="l11891">11891</a>
-<a href="#l11892" id="l11892">11892</a>
-<a href="#l11893" id="l11893">11893</a>
-<a href="#l11894" id="l11894">11894</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -16403,9 +16332,7 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -16428,7 +16355,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -16859,7 +16785,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
@@ -16892,8 +16817,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -21888,8 +21811,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -22738,8 +22659,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -22892,8 +22811,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -25527,8 +25444,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -26638,7 +26553,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27033,10 +26947,7 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27203,34 +27114,34 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">41</span>
 <span class="cline-any cline-yes">41</span>
 <span class="cline-any cline-yes">41</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">68512</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">68307</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">553498</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">553473</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">61537</span>
-<span class="cline-any cline-yes">61537</span>
+<span class="cline-any cline-yes">61512</span>
+<span class="cline-any cline-yes">61512</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">491961</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">68512</span>
-<span class="cline-any cline-yes">61539</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">68307</span>
+<span class="cline-any cline-yes">61514</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">61537</span>
-<span class="cline-any cline-yes">61537</span>
+<span class="cline-any cline-yes">61512</span>
+<span class="cline-any cline-yes">61512</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">68512</span>
+<span class="cline-any cline-yes">68307</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27383,17 +27294,17 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">41</span>
 <span class="cline-any cline-yes">41</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">68409</span>
-<span class="cline-any cline-yes">68409</span>
-<span class="cline-any cline-yes">68409</span>
+<span class="cline-any cline-yes">68204</span>
+<span class="cline-any cline-yes">68204</span>
+<span class="cline-any cline-yes">68204</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">68409</span>
-<span class="cline-any cline-yes">68409</span>
+<span class="cline-any cline-yes">68204</span>
+<span class="cline-any cline-yes">68204</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">41</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27527,7 +27438,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11</span>
 <span class="cline-any cline-yes">11</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -28001,11 +27911,9 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -28133,7 +28041,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
  */
-
 
 
 /* istanbul instrument in package istanbul */
@@ -28299,10 +28206,8 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -28324,7 +28229,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.istanbul = local;
-
 
 
 /* validateLineSortedReset */
@@ -28754,7 +28658,6 @@ local.templateRender = function (template, dict, opt = {}, ii = 0) {
 }());
 
 
-
 // run shared js-env code - function
 (function () {
 let escodegen;
@@ -28790,12 +28693,10 @@ require2 = function (key) {
 require2(escodegen, esprima);
 
 
-
 /*
 repo https://github.com/acornjs/acorn/tree/6.3.0
 committed 2019-08-12T09:40:59Z
 */
-
 
 
 /*
@@ -33774,12 +33675,10 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
 }());
 
 
-
 /*
 repo https://github.com/estools/estraverse/tree/4.2.0
 committed 2016-03-10T21:51:59Z
 */
-
 
 
 /*
@@ -34639,12 +34538,10 @@ file https://github.com/estools/estraverse/blob/4.2.0/estraverse.js
 }());
 
 
-
 /*
 repo https://github.com/estools/esutils/tree/2.0.3
 committed 2019-07-31T01:06:44Z
 */
-
 
 
 /*
@@ -34790,12 +34687,10 @@ file https://github.com/estools/esutils/blob/2.0.3/lib/code.js
 esutils = { code: module.exports }; }());
 
 
-
 /*
 repo https://github.com/estools/escodegen/tree/v1.12.0
 committed 2019-08-13T02:08:40Z
 */
-
 
 
 /*
@@ -37413,12 +37308,10 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
 }());
 
 
-
 /*
 repo https://github.com/gotwarlost/istanbul/tree/v0.4.5
 committed 2016-08-21T19:53:22Z
 */
-
 
 
 /*
@@ -38531,7 +38424,6 @@ file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 }());
 
 
-
 /*
 file https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/head.txt
 */
@@ -38926,7 +38818,6 @@ local.templateCoverageReport = '\
 ';
 
 
-
 /*
 file https://img.shields.io/badge/coverage-100.0%-00dd00.svg?style=flat
 */
@@ -38935,11 +38826,9 @@ local.templateCoverageBadgeSvg =
 /* jslint ignore:end */
 
 
-
 /*
 file none
 */
-
 
 
 let fileWrite;
@@ -39426,7 +39315,6 @@ reportTextWrite = function (node, dircoverage) {
 };
 
 
-
 // init local
 local.coverageMerge = function (coverage1 = {}, coverage2 = {}) {
 /*
@@ -39895,14 +39783,12 @@ local.instrumentSync = function (code, file) {
 }());
 
 
-
 // run node js-env code - init-after
 /* istanbul ignore next */
 (function () {
 if (local.isBrowser) {
     return;
 }
-
 
 
 local.cliDict = {};
@@ -41158,9 +41044,6 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <a href="#l796" id="l796">796</a>
 <a href="#l797" id="l797">797</a>
 <a href="#l798" id="l798">798</a>
-<a href="#l799" id="l799">799</a>
-<a href="#l800" id="l800">800</a>
-<a href="#l801" id="l801">801</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -41327,9 +41210,7 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -41341,7 +41222,6 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -42128,12 +42008,10 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 // assets.utility2.header.js - end
 
 
-
 /* jslint utility2:true */
 /* istanbul ignore next */
 (function (local) {
 "use strict";
-
 
 
 // run shared js-env code - init-before
@@ -42145,7 +42023,6 @@ globalThis.local = local;
 // init test
 local.testRunDefault(local);
 }());
-
 
 
 // run shared js-env code - function

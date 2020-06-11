@@ -161,12 +161,10 @@
 // assets.utility2.header.js - end
 
 
-
 /* jslint utility2:true */
 /* istanbul ignore next */
 (function (local) {
 "use strict";
-
 
 
 // run shared js-env code - init-before
@@ -178,7 +176,6 @@ globalThis.local = local;
 // init test
 local.testRunDefault(local);
 }());
-
 
 
 // run shared js-env code - function

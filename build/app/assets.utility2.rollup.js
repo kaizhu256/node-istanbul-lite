@@ -169,7 +169,6 @@
 // assets.utility2.header.js - end
 
 
-
 /* jslint utility2:true */
 (function () {
     "use strict";
@@ -193,7 +192,6 @@
  * this zero-dependency package will auto-generate documentation for your npm-package with zero-config
  *
  */
-
 
 
 /* istanbul instrument in package apidoc */
@@ -359,10 +357,8 @@
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -384,7 +380,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.apidoc = local;
-
 
 
 /* validateLineSortedReset */
@@ -935,7 +930,6 @@ local.tryCatchOnError = function (fnc, onError) {
 }());
 
 
-
 // run shared js-env code - function
 (function () {
 local.apidocCreate = function (opt) {
@@ -1460,14 +1454,12 @@ local.apidocModuleDictAdd = function (opt, moduleDict) {
 }());
 
 
-
 // run node js-env code - init-after
 /* istanbul ignore next */
 (function () {
 if (local.isBrowser) {
     return;
 }
-
 
 
 local.cliDict = {};
@@ -1502,7 +1494,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
  */
-
 
 
 /* istanbul instrument in package istanbul */
@@ -1668,10 +1659,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -1693,7 +1682,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.istanbul = local;
-
 
 
 /* validateLineSortedReset */
@@ -2123,7 +2111,6 @@ local.templateRender = function (template, dict, opt = {}, ii = 0) {
 }());
 
 
-
 // run shared js-env code - function
 (function () {
 let escodegen;
@@ -2159,12 +2146,10 @@ require2 = function (key) {
 require2(escodegen, esprima);
 
 
-
 /*
 repo https://github.com/acornjs/acorn/tree/6.3.0
 committed 2019-08-12T09:40:59Z
 */
-
 
 
 /*
@@ -7143,12 +7128,10 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
 }());
 
 
-
 /*
 repo https://github.com/estools/estraverse/tree/4.2.0
 committed 2016-03-10T21:51:59Z
 */
-
 
 
 /*
@@ -8008,12 +7991,10 @@ file https://github.com/estools/estraverse/blob/4.2.0/estraverse.js
 }());
 
 
-
 /*
 repo https://github.com/estools/esutils/tree/2.0.3
 committed 2019-07-31T01:06:44Z
 */
-
 
 
 /*
@@ -8159,12 +8140,10 @@ file https://github.com/estools/esutils/blob/2.0.3/lib/code.js
 esutils = { code: module.exports }; }());
 
 
-
 /*
 repo https://github.com/estools/escodegen/tree/v1.12.0
 committed 2019-08-13T02:08:40Z
 */
-
 
 
 /*
@@ -10782,12 +10761,10 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
 }());
 
 
-
 /*
 repo https://github.com/gotwarlost/istanbul/tree/v0.4.5
 committed 2016-08-21T19:53:22Z
 */
-
 
 
 /*
@@ -11900,7 +11877,6 @@ file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 }());
 
 
-
 /*
 file https://github.com/gotwarlost/istanbul/blob/v0.2.16/lib/report/templates/head.txt
 */
@@ -12295,7 +12271,6 @@ local.templateCoverageReport = '\
 ';
 
 
-
 /*
 file https://img.shields.io/badge/coverage-100.0%-00dd00.svg?style=flat
 */
@@ -12304,11 +12279,9 @@ local.templateCoverageBadgeSvg =
 /* jslint ignore:end */
 
 
-
 /*
 file none
 */
-
 
 
 let fileWrite;
@@ -12795,7 +12768,6 @@ reportTextWrite = function (node, dircoverage) {
 };
 
 
-
 // init local
 local.coverageMerge = function (coverage1 = {}, coverage2 = {}) {
 /*
@@ -13264,14 +13236,12 @@ local.instrumentSync = function (code, file) {
 }());
 
 
-
 // run node js-env code - init-after
 /* istanbul ignore next */
 (function () {
 if (local.isBrowser) {
     return;
 }
-
 
 
 local.cliDict = {};
@@ -13401,7 +13371,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo
  *
  */
-
 
 
 /* istanbul instrument in package jslint */
@@ -13567,10 +13536,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -13592,7 +13559,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.jslint = local;
-
 
 
 /* validateLineSortedReset */
@@ -13783,7 +13749,6 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
 }());
 
 
-
 /* istanbul ignore next */
 // run shared js-env code - function
 /* jslint ignore:start */
@@ -13792,7 +13757,6 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
 repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209
 committed 2018-02-25T11:28:16Z
 */
-
 
 
 /*
@@ -24510,12 +24474,10 @@ return CSSLint;
 })();
 
 
-
 /*
 repo https://github.com/douglascrockford/JSLint/tree/686716b71f6d45d3c233e1cfa026a1e5f46747aa
 committed 2020-03-28T12:46:58Z
 */
-
 
 
 /*
@@ -29756,14 +29718,12 @@ local.jslint_export = Object.freeze(function (
 });
 
 
-
 /*
 file none
 */
 local.CSSLint = CSSLint;
 }());
 /* jslint ignore:end */
-
 
 
 // run shared js-env code - function
@@ -30095,14 +30055,11 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /\n+?(\n\u0020*?[)\]}])/g
         ), "$1");
-        // autofix-all - normalize newlines to \n\n
+        // autofix-all - eslint - no-multiple-empty-lines
+        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
         code = code.replace((
-            /([^\n])\n{3}([^\n])/g
-        ), "$1\n\n$2");
-        // autofix-all - normalize newlines to \n\n\n\n
-        code = code.replace((
-            /\n{5,}/g
-        ), "\n\n\n\n");
+            /\n{4,}/g
+        ), "\n\n\n");
         // autofix-all - recurse <script>...</script>, <style>...</style>
         code = code.replace((
             /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\\n\\\n(?:^.*?\\n\\\n)*?)(';$|<\/script>\\n\\$|<\/style>\\n\\$)/gm
@@ -30343,10 +30300,10 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /\/\/_([^\n])/g
         ), "//_\n$1");
-        // autofix-js-whitespace - normalize (function { to \n\n\n\n(function {
+        // autofix-js-whitespace - normalize (function { to \n\n\n(function {
         code = code.replace((
             /\n+((?:\/\*_\*\/\n|\/\/_\n)*?\(function\u0020.*?)\n+/g
-        ), "\n\n\n\n$1\n");
+        ), "\n\n\n$1\n");
         // autofix-js-whitespace - remove double-whitespace
         code = code.replace((
             /(\S\u0020)\u0020+/g
@@ -30792,7 +30749,6 @@ local.jslintUtility2 = function (code, ignore, opt) {
 }());
 
 
-
 /* istanbul ignore next */
 // run node js-env code - init-after
 (function () {
@@ -30848,7 +30804,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
 
 /* script-begin /assets.utility2.lib.marked.js */
 // usr/bin/env node
-
 
 
 /* istanbul instrument in package marked */
@@ -31014,10 +30969,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -31041,11 +30994,9 @@ if (local.isBrowser) {
 local.marked = local;
 
 
-
 /* validateLineSortedReset */
 return;
 }());
-
 
 
 /* jslint ignore:start */
@@ -31267,7 +31218,6 @@ if (local.isBrowser) {
  */
 
 
-
 /* istanbul instrument in package puppeteer */
 // assets.utility2.header.js - start
 /* jslint utility2:true */
@@ -31431,10 +31381,8 @@ if (local.isBrowser) {
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -31456,7 +31404,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.puppeteer = local;
-
 
 
 /* validateLineSortedReset */
@@ -31620,7 +31567,6 @@ local.cliRun = function (opt) {
 }());
 
 
-
 /* istanbul ignore next */
 // run node js-env code - function
 (function () {
@@ -31759,7 +31705,6 @@ repo https://github.com/websockets/ws/tree/6.2.1
 */
 
 
-
 /*
 file https://github.com/websockets/ws/blob/6.2.1/package.json
 */
@@ -31810,7 +31755,6 @@ exports_websockets_ws_package_json = {
 }
 
 
-
 /*
 file https://github.com/websockets/ws/blob/6.2.1/lib/constants.js
 */
@@ -31824,7 +31768,6 @@ exports_websockets_ws_lib_constants = {
   EMPTY_BUFFER: Buffer.alloc(0),
   NOOP: () => {}
 };
-
 
 
 /*
@@ -31860,7 +31803,6 @@ exports_websockets_ws_lib_validation.isValidStatusCode = (code) => {
     (code >= 3000 && code <= 4999)
   );
 };
-
 
 
 /*
@@ -32010,7 +31952,6 @@ try {
     unmask: _unmask
   };
 }
-
 
 
 /*
@@ -32186,7 +32127,6 @@ const EventTarget = {
 };
 
 exports_websockets_ws_lib_event_target = EventTarget;
-
 
 
 /*
@@ -32414,7 +32354,6 @@ function format(extensions) {
 }
 
 exports_websockets_ws_lib_extension = { format, parse };
-
 
 
 /*
@@ -32914,7 +32853,6 @@ function error(ErrorCtor, message, prefix, statusCode) {
 }
 
 
-
 /*
 file https://github.com/websockets/ws/blob/6.2.1/lib/sender.js
 */
@@ -33276,7 +33214,6 @@ class Sender {
 }
 
 exports_websockets_ws_lib_sender = Sender;
-
 
 
 /*
@@ -33683,7 +33620,6 @@ function abortHandshake(socket, code, message, headers) {
   socket.removeListener('error', socketOnError);
   socket.destroy();
 }
-
 
 
 /*
@@ -34586,7 +34522,6 @@ function socketOnError() {
 }
 
 
-
 /*
 file https://github.com/websockets/ws/blob/6.2.1/index.js
 */
@@ -34601,11 +34536,9 @@ WebSocket.Sender = exports_websockets_ws_lib_sender;
 exports_websockets_ws_index = WebSocket;
 
 
-
 /*
 repo https://github.com/puppeteer/puppeteer/tree/v1.19.0
 */
-
 
 
 /*
@@ -34684,7 +34617,6 @@ exports_puppeteer_puppeteer_package_json = {
     "readline": false
   }
 }
-
 
 
 /*
@@ -34968,7 +34900,6 @@ exports_puppeteer_puppeteer_lib_helper = {
   debugError
 };
 let helper = exports_puppeteer_puppeteer_lib_helper.helper;
-
 
 
 /*
@@ -35397,7 +35328,6 @@ class AXNode {
 exports_puppeteer_puppeteer_lib_Accessibility = {Accessibility};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Browser.js
 */
@@ -35786,7 +35716,6 @@ class BrowserContext extends EventEmitter {
 exports_puppeteer_puppeteer_lib_Browser = {Browser, BrowserContext};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Connection.js
 */
@@ -36032,7 +35961,6 @@ function rewriteError(error, message) {
 }
 
 exports_puppeteer_puppeteer_lib_Connection = {Connection, CDPSession};
-
 
 
 /*
@@ -36350,7 +36278,6 @@ function convertToDisjointRanges(nestedRanges) {
   // Filter out empty ranges.
   return results.filter(range => range.end - range.start > 1);
 }
-
 
 
 /*
@@ -37075,7 +37002,6 @@ async function waitForPredicatePageFunction(predicateBody, polling, timeout, ...
 }
 
 exports_puppeteer_puppeteer_lib_DOMWorld = {DOMWorld};
-
 
 
 /*
@@ -37931,7 +37857,6 @@ for (const device of exports_puppeteer_puppeteer_lib_DeviceDescriptors)
   exports_puppeteer_puppeteer_lib_DeviceDescriptors[device.name] = device;
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Dialog.js
 */
@@ -38020,7 +37945,6 @@ Dialog.Type = {
 exports_puppeteer_puppeteer_lib_Dialog = {Dialog};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/EmulationManager.js
 */
@@ -38080,7 +38004,6 @@ class EmulationManager {
 exports_puppeteer_puppeteer_lib_EmulationManager = {EmulationManager};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Errors.js
 */
@@ -38113,7 +38036,6 @@ class TimeoutError extends CustomError {}
 exports_puppeteer_puppeteer_lib_Errors = {
   TimeoutError,
 };
-
 
 
 /*
@@ -38199,7 +38121,6 @@ const Events = {
 };
 
 exports_puppeteer_puppeteer_lib_Events = { Events };
-
 
 
 /*
@@ -38410,7 +38331,6 @@ class ExecutionContext {
 }
 
 exports_puppeteer_puppeteer_lib_ExecutionContext = {ExecutionContext, EVALUATION_SCRIPT_URL};
-
 
 
 /*
@@ -39136,7 +39056,6 @@ function assertNoLegacyNavigationOptions(options) {
 exports_puppeteer_puppeteer_lib_FrameManager = {FrameManager, Frame};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Input.js
 */
@@ -39453,7 +39372,6 @@ class Touchscreen {
 }
 
 exports_puppeteer_puppeteer_lib_Input = { Keyboard, Mouse, Touchscreen};
-
 
 
 /*
@@ -39986,7 +39904,6 @@ function computeQuadArea(quad) {
 exports_puppeteer_puppeteer_lib_JSHandle = {createJSHandle, JSHandle, ElementHandle};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Launcher.js
 */
@@ -40435,7 +40352,6 @@ function getWSEndpoint(browserURL) {
 exports_puppeteer_puppeteer_lib_Launcher = Launcher;
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/LifecycleWatcher.js
 */
@@ -40639,7 +40555,6 @@ const puppeteerToProtocolLifecycle = {
 exports_puppeteer_puppeteer_lib_LifecycleWatcher = {LifecycleWatcher};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Multimap.js
 */
@@ -40779,7 +40694,6 @@ class Multimap {
 }
 
 exports_puppeteer_puppeteer_lib_Multimap = Multimap;
-
 
 
 /*
@@ -41582,7 +41496,6 @@ const STATUS_TEXTS = {
 };
 
 exports_puppeteer_puppeteer_lib_NetworkManager = {Request, Response, NetworkManager, SecurityDetails};
-
 
 
 /*
@@ -42939,7 +42852,6 @@ class FileChooser {
 exports_puppeteer_puppeteer_lib_Page = {Page, ConsoleMessage, FileChooser};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/PipeTransport.js
 */
@@ -43023,7 +42935,6 @@ class PipeTransport {
 }
 
 exports_puppeteer_puppeteer_lib_PipeTransport = PipeTransport;
-
 
 
 /*
@@ -43113,7 +43024,6 @@ exports_puppeteer_puppeteer_lib_Puppeteer = class {
     return new BrowserFetcher(this._projectRoot, options);
   }
 };
-
 
 
 /*
@@ -43277,7 +43187,6 @@ class Target {
 exports_puppeteer_puppeteer_lib_Target = {Target};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/TaskQueue.js
 */
@@ -43298,7 +43207,6 @@ class TaskQueue {
 }
 
 exports_puppeteer_puppeteer_lib_TaskQueue = {TaskQueue};
-
 
 
 /*
@@ -43361,7 +43269,6 @@ class TimeoutSettings {
 }
 
 exports_puppeteer_puppeteer_lib_TimeoutSettings = {TimeoutSettings};
-
 
 
 /*
@@ -43439,7 +43346,6 @@ class Tracing {
 }
 
 exports_puppeteer_puppeteer_lib_Tracing = Tracing;
-
 
 
 /*
@@ -43735,7 +43641,6 @@ exports_puppeteer_puppeteer_lib_USKeyboardLayout = {
 };
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/WebSocketTransport.js
 */
@@ -43807,7 +43712,6 @@ class WebSocketTransport {
 }
 
 exports_puppeteer_puppeteer_lib_WebSocketTransport = WebSocketTransport;
-
 
 
 /*
@@ -43895,7 +43799,6 @@ class Worker extends EventEmitter {
 exports_puppeteer_puppeteer_lib_Worker = {Worker};
 
 
-
 /*
 file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/api.js
 */
@@ -43942,7 +43845,6 @@ exports_puppeteer_puppeteer_lib_api = {
   Tracing: exports_puppeteer_puppeteer_lib_Tracing,
   Worker: exports_puppeteer_puppeteer_lib_Worker.Worker,
 };
-
 
 
 /*
@@ -44051,7 +43953,6 @@ local.puppeteerLaunch = local._puppeteer.launch.bind(local._puppeteer);
 local.nop(local.puppeteerLaunch);
 
 
-
 /*
 file none
 */
@@ -44069,12 +43970,11 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.6.9)
+ * lib.utility2.js (2020.6.11)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
  */
-
 
 
 /* istanbul instrument in package utility2 */
@@ -44240,10 +44140,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // assets.utility2.header.js - end
 
 
-
 (function (local) {
 "use strict";
-
 
 
 /* istanbul ignore next */
@@ -44265,7 +44163,6 @@ if (local.isBrowser) {
 }
 // init lib main
 local.utility2 = local;
-
 
 
 /* validateLineSortedReset */
@@ -44292,10 +44189,8 @@ globalThis.utility2 = local;
 });
 
 
-
 // run shared js-env code - assets
 local.assetsDict = local.assetsDict || {};
-
 
 
 /* jslint ignore:start */
@@ -44463,7 +44358,6 @@ local.assetsDict["/assets.utility2.header.js"] = '\
 '
 
 
-
 local.assetsDict["/assets.index.template.html"] =
 local.assetsDict["/assets.utility2.template.html"] = '\
 <!doctype html>\n\
@@ -44598,7 +44492,6 @@ pre {\n\
         }, 100);\n\
     });\n\
 }());\n\
-\n\
 \n\
 \n\
 // init domOnEventAjaxProgressUpdate\n\
@@ -44755,7 +44648,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventDelegateDict\n\
 (function () {\n\
 /*\n\
@@ -44839,7 +44731,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
 /*\n\
@@ -44897,12 +44788,10 @@ utility2-comment -->\n\
 utility2-comment -->\n\
 \n\
 \n\
-\n\
 <!-- custom-html-start -->\n\
 <label>stderr and stdout</label>\n\
 <textarea class="onevent-reset-output readonly textarea" id="outputStdout1" readonly></textarea>\n\
 <!-- custom-html-end -->\n\
-\n\
 \n\
 \n\
 <!-- utility2-comment\n\
@@ -44937,15 +44826,12 @@ utility2-comment -->\n\
 ';
 
 
-
 // https://img.shields.io/badge/last_build-0000_00_00_00_00_00_UTC_--_master_--_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-0077ff.svg?style=flat
 local.assetsDict["/assets.buildBadge.template.svg"] =
 '<svg xmlns="http://www.w3.org/2000/svg" width="563" height="20"><linearGradient id="a" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><rect rx="0" width="563" height="20" fill="#555"/><rect rx="0" x="61" width="502" height="20" fill="#07f"/><path fill="#07f" d="M61 0h4v20h-4z"/><rect rx="0" width="563" height="20" fill="url(#a)"/><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11"><text x="31.5" y="15" fill="#010101" fill-opacity=".3">last build</text><text x="31.5" y="14">last build</text><text x="311" y="15" fill="#010101" fill-opacity=".3">0000-00-00 00:00:00 UTC - master - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</text><text x="311" y="14">0000-00-00 00:00:00 UTC - master - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</text></g></svg>';
 
 
-
 local.assetsDict["/assets.example.html"] = "";
-
 
 
 local.assetsDict["/assets.example.template.js"] = '\
@@ -44964,16 +44850,13 @@ instruction\n\
 */\n\
 \n\
 \n\
-\n\
 /* istanbul instrument in package my_app */\n\
 ' + local.assetsDict["/assets.utility2.header.js"] + '\
-\n\
 \n\
 \n\
 /* jslint utility2:true */\n\
 (function (local) {\n\
 "use strict";\n\
-\n\
 \n\
 \n\
 // run shared js\-env code - init-before\n\
@@ -44987,7 +44870,6 @@ local = (\n\
 // init exports\n\
 globalThis.local = local;\n\
 }());\n\
-\n\
 \n\
 \n\
 /* istanbul ignore next */\n\
@@ -45024,7 +44906,6 @@ if (!local.isBrowser) {\n\
 local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\n\
 globalThis.domOnEventDelegateDict = local;\n\
 }());\n\
-\n\
 \n\
 \n\
 /* istanbul ignore next */\n\
@@ -45108,7 +44989,6 @@ require("http").createServer(function (req, res) {\n\
 ';
 
 
-
 local.assetsDict["/assets.my_app.template.js"] = '\
 #!/usr/bin/env node\n\
 /*\n\
@@ -45119,15 +44999,12 @@ local.assetsDict["/assets.my_app.template.js"] = '\
  */\n\
 \n\
 \n\
-\n\
 /* istanbul instrument in package my_app */\n\
 ' + local.assetsDict["/assets.utility2.header.js"] + '\
 \n\
 \n\
-\n\
 (function (local) {\n\
 "use strict";\n\
-\n\
 \n\
 \n\
 /* istanbul ignore next */\n\
@@ -45151,13 +45028,11 @@ if (local.isBrowser) {\n\
 local.my_app = local;\n\
 \n\
 \n\
-\n\
 /* validateLineSortedReset */\n\
 return;\n\
 }());\n\
 }());\n\
 ';
-
 
 
 local.assetsDict["/assets.readme.template.md"] = '\
@@ -45168,7 +45043,6 @@ the greatest app in the world!\n\
 - [https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app)\n\
 \n\
 [![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.deployGithub.browser.%252Fnode-my-app-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app)\n\
-\n\
 \n\
 \n\
 [![travis-ci.com build-status](https://api.travis-ci.com/kaizhu256/node-my-app-lite.svg)](https://travis-ci.com/kaizhu256/node-my-app-lite) [![coverage](https://kaizhu256.github.io/node-my-app-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build/coverage.html/index.html)\n\
@@ -45190,14 +45064,11 @@ the greatest app in the world!\n\
 ![npmPackageDependencyTree](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.npmPackageDependencyTree.svg)\n\
 \n\
 \n\
-\n\
 # table of contents\n\
-\n\
 \n\
 \n\
 # cdn download\n\
 - [https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app/assets.my_app.js](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app/assets.my_app.js)\n\
-\n\
 \n\
 \n\
 # documentation\n\
@@ -45216,7 +45087,6 @@ the greatest app in the world!\n\
 \n\
 #### todo\n\
 - none\n\
-\n\
 \n\
 \n\
 # quickstart standalone app\n\
@@ -45242,7 +45112,6 @@ PORT=8081 node ./assets.app.js\n\
 ![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleSh.svg)\n\
 \n\
 \n\
-\n\
 # quickstart example.js\n\
 [![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-my-app-lite/build/app/assets.example.html)\n\
 \n\
@@ -45255,7 +45124,6 @@ PORT=8081 node ./assets.app.js\n\
 \n\
 #### output from shell\n\
 ![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleJs.svg)\n\
-\n\
 \n\
 \n\
 # extra screenshots\n\
@@ -45288,7 +45156,6 @@ PORT=8081 node ./assets.app.js\n\
 \n\
 1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleSh.browser.%252F.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleSh.browser.%252F.png)\n\
 [![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleSh.browser.%252F.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.testExampleSh.browser.%252F.png)\n\
-\n\
 \n\
 \n\
 # package.json\n\
@@ -45328,10 +45195,8 @@ PORT=8081 node ./assets.app.js\n\
 ```\n\
 \n\
 \n\
-\n\
 # changelog of last 50 commits\n\
 [![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.gitLog.svg)](https://github.com/kaizhu256/node-my-app-lite/commits)\n\
-\n\
 \n\
 \n\
 # internal build script\n\
@@ -45359,11 +45224,9 @@ shBuildCi\n\
 ```\n\
 \n\
 \n\
-\n\
 # misc\n\
 - this package was created with [utility2](https://github.com/kaizhu256/node-utility2)\n\
 ';
-
 
 
 local.assetsDict["/assets.test.template.js"] = '\
@@ -45371,12 +45234,10 @@ local.assetsDict["/assets.test.template.js"] = '\
 ' + local.assetsDict["/assets.utility2.header.js"] + '\
 \n\
 \n\
-\n\
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
 (function (local) {\n\
 "use strict";\n\
-\n\
 \n\
 \n\
 // run shared js\-env code - init-before\n\
@@ -45390,14 +45251,12 @@ local.testRunDefault(local);\n\
 }());\n\
 \n\
 \n\
-\n\
 // run shared js\-env code - function\n\
 (function () {\n\
 return;\n\
 }());\n\
 }());\n\
 ';
-
 
 
 local.assetsDict["/assets.testReport.template.html"] =
@@ -45550,18 +45409,15 @@ local.assetsDict["/assets.testReport.template.html"] =
 </body>');
 
 
-
 // https://img.shields.io/badge/tests_failed-999-dd0000.svg?style=flat
 local.assetsDict["/assets.testReportBadge.template.svg"] =
 '<svg xmlns="http://www.w3.org/2000/svg" width="103" height="20"><linearGradient id="a" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><rect rx="0" width="103" height="20" fill="#555"/><rect rx="0" x="72" width="31" height="20" fill="#d00"/><path fill="#d00" d="M72 0h4v20h-4z"/><rect rx="0" width="103" height="20" fill="url(#a)"/><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11"><text x="37" y="15" fill="#010101" fill-opacity=".3">tests failed</text><text x="37" y="14">tests failed</text><text x="86.5" y="15" fill="#010101" fill-opacity=".3">999</text><text x="86.5" y="14">999</text></g></svg>';
-
 
 
 local.assetsDict["/assets.utility2.rollup.start.js"] = '\
 /* utility2.rollup.js begin */\n\
 /* istanbul ignore all */\n\
 ' + local.assetsDict["/assets.utility2.header.js"] + '\
-\n\
 \n\
 \n\
 /* jslint utility2:true */\n\
@@ -45578,7 +45434,6 @@ local.assetsDict["/assets.utility2.rollup.start.js"] = '\
 ';
 
 
-
 local.assetsDict["/assets.utility2.rollup.content.js"] = '\
 (function (local) {\n\
     "use strict";\n\
@@ -45588,7 +45443,6 @@ local.assetsDict["/assets.utility2.rollup.content.js"] = '\
     return local;\n\
 }(globalThis.utility2_rollup));\n\
 ';
-
 
 
 local.assetsDict["/assets.utility2.rollup.end.js"] = '\
@@ -45601,10 +45455,8 @@ local.assetsDict["/assets.utility2.rollup.end.js"] = '\
 ';
 
 
-
 local.assetsDict["/favicon.ico"] = "";
 /* jslint ignore:end */
-
 
 
 // run shared js-env code - cli
@@ -45656,7 +45508,6 @@ local.cliDict["utility2.testReportCreate"] = function () {
     );
 };
 }());
-
 
 
 // run shared js-env code - function
@@ -46771,6 +46622,9 @@ local.buildApp = function (opt, onError) {
                 file: "/assets." + process.env.npm_package_nameLib + ".html",
                 url: "/index.html"
             }, {
+                file: "/assets." + process.env.npm_package_nameLib + ".css",
+                url: "/assets." + process.env.npm_package_nameLib + ".css"
+            }, {
                 file: "/assets." + process.env.npm_package_nameLib + ".js",
                 url: "/assets." + process.env.npm_package_nameLib + ".js"
             }, {
@@ -46812,10 +46666,6 @@ local.buildApp = function (opt, onError) {
                 ), function (res) {
                     let data;
                     data = [];
-                    if (!(res.statusCode < 400)) {
-                        resolve();
-                        return;
-                    }
                     res.on("data", function (chunk) {
                         data.push(chunk);
                     }).on("end", function () {
@@ -46906,8 +46756,8 @@ local.buildReadme = function (opt, onError) {
             "README.md",
             "utf8"
         ).replace((
-            /\n#\u0020table\u0020of\u0020contents$[\S\s]*?\n\n\n\n/m
-        ), "\n# table of contents\n\n\n\n"),
+            /\n#\u0020table\u0020of\u0020contents$[\S\s]*?\n\n\n/m
+        ), "\n# table of contents\n\n\n"),
         packageJsonRgx: (
             /\n#\u0020package.json\n```json\n([\S\s]*?)\n```\n/
         )
@@ -46985,15 +46835,15 @@ local.buildReadme = function (opt, onError) {
         ),
         // customize cdn-download
         (
-            /\n#\u0020cdn\u0020download\n[\S\s]*?\n\n\n\n/
+            /\n#\u0020cdn\u0020download\n[\S\s]*?\n\n\n/
         ),
         // customize live-web-demo
         (
-            /\n#\u0020live\u0020web\u0020demo\n[\S\s]*?\n\n\n\n/
+            /\n#\u0020live\u0020web\u0020demo\n[\S\s]*?\n\n\n/
         ),
         // customize changelog
         (
-            /\n####\u0020changelog\u0020[\S\s]*?\n\n\n\n/
+            /\n####\u0020changelog\u0020[\S\s]*?\n\n\n/
         ),
         // customize example.js - shared js\u002denv code - init-before
         (
@@ -47143,7 +46993,7 @@ local.buildReadme = function (opt, onError) {
     // customize toc
     opt.toc = "\n# table of contents\n";
     opt.dataTo.replace((
-        /\n\n\n\n#\u0020(.*)/g
+        /\n\n\n#\u0020(.*)/g
     ), function (ignore, match1) {
         if (match1 === "table of contents") {
             return;
@@ -47158,7 +47008,7 @@ local.buildReadme = function (opt, onError) {
     // customize whitespace
     opt.dataTo = opt.dataTo.replace((
         /\n{5,}/g
-    ), "\n\n\n\n");
+    ), "\n\n\n");
     // save README.md
     result = opt.dataTo;
     local.fsWriteFileWithMkdirpSync(
@@ -47186,7 +47036,7 @@ local.buildTest = function (opt, onError) {
     [
         // customize shared js\u002denv code - function
         (
-            /\n\}\(\)\);\n\n\n\n\/\/\u0020run\u0020shared\u0020js\u002denv\u0020code\u0020-\u0020function\n[\S\s]*?$/
+            /\n\}\(\)\);\n\n\n\/\/\u0020run\u0020shared\u0020js\u002denv\u0020code\u0020-\u0020function\n[\S\s]*?$/
         )
     ].forEach(function (rgx) {
         opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
@@ -48712,7 +48562,7 @@ local.requireReadme = function () {
     // if file is modified, then restart process
     if (env.npm_config_mode_auto_restart) {
         require("fs").readdir(".", function (ignore, fileList) {
-            fileList.forEach(function (file) {
+            fileList.concat(__filename).forEach(function (file) {
                 require("fs").stat(file, function (ignore, data) {
                     if (!data.isFile()) {
                         return;
@@ -48816,15 +48666,21 @@ local.requireReadme = function () {
         globalThis.utility2_moduleExports
     );
     // init assets lib.xxx.js
-    local.assetsDict[
-        "/assets." + env.npm_package_nameLib + ".js"
-    ] = local.fsReadFileOrDefaultSync(
-        env.npm_package_main,
-        "utf8",
-        ""
-    ).replace((
-        /^#!\//
-    ), "// ");
+    [
+        ".css", ".js"
+    ].forEach(function (extname) {
+        local.assetsDict[
+            "/assets." + env.npm_package_nameLib + extname
+        ] = local.fsReadFileOrDefaultSync(
+            require("path").resolve(env.npm_package_main).replace((
+                /\.\w+$/
+            ), extname),
+            "utf8",
+            ""
+        ).replace((
+            /^#!\//
+        ), "// ");
+    });
     Object.assign(local.assetsDict, module.exports.assetsDict);
     // instrument assets lib.xxx.js
     local.assetsDict["/assets." + env.npm_package_nameLib + ".js"] = (
@@ -48883,6 +48739,7 @@ local.requireReadme = function () {
         "/assets.utility2.rollup.js",
         "/assets.utility2.rollup.start.js",
         "local.stateInit",
+        "/assets.my_app.css",
         "/assets.my_app.js",
         "/assets.example.js",
         "/assets.test.js",
@@ -48895,7 +48752,6 @@ return '\
 /* this rollup was created with utility2\n\
  * https://github.com/kaizhu256/node-utility2\n\
  */\n\
-\n\
 \n\
 \n\
 /*\n\
@@ -48914,6 +48770,25 @@ instruction\n\
     /utility2_rollup/g
 ), "utility2_app");
 /* jslint ignore:end */
+        case "/assets.my_app.css":
+            tmp = "/assets." + env.npm_package_nameLib + ".css";
+            // handle large string-replace
+            code = local.assetsDict[
+                "/assets.utility2.rollup.content.js"
+            ].replace("/* utility2.rollup.js content */", function () {
+                return (
+                    "local.assetsDict[\"" + tmp + "\"] = (\n"
+                    + JSON.stringify(local.assetsDict[tmp]).replace((
+                        /\\\\/g
+                    ), "\u0000").replace((
+                        /\\n/g
+                    ), "\\n\\\n").replace((
+                        /\u0000/g
+                    ), "\\\\")
+                    + ");\n"
+                );
+            });
+            break;
         case "/assets.my_app.js":
             tmp = "/assets." + env.npm_package_nameLib + ".js";
             // handle large string-replace
@@ -50485,7 +50360,6 @@ local.uuid4Create = function () {
 }());
 
 
-
 /* istanbul ignore next */
 // run shared js-env code - init-after
 (function () {
@@ -50622,7 +50496,6 @@ globalThis.utility2_onReadyAfter(local.nop);
 }());
 
 
-
 // run browser js-env code - init-after
 (function () {
 if (!local.isBrowser) {
@@ -50631,7 +50504,6 @@ if (!local.isBrowser) {
 // require modules
 local.http = local._http;
 }());
-
 
 
 /* istanbul ignore next */
@@ -50890,7 +50762,6 @@ instruction\n\
 */\n\
 \n\
 \n\
-\n\
 /* istanbul instrument in package utility2 */\n\
 // assets.utility2.header.js - start\n\
 /* jslint utility2:true */\n\
@@ -51054,11 +50925,9 @@ instruction\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
-\n\
 /* jslint utility2:true */\n\
 (function (local) {\n\
 \"use strict\";\n\
-\n\
 \n\
 \n\
 // run shared js-env code - init-before\n\
@@ -51077,7 +50946,6 @@ local.testRunServer(local);\n\
 local.assetsDict[\"/assets.hello.txt\"] = \"hello \\ud83d\\ude01\\n\";\n\
 local.assetsDict[\"/assets.index.template.html\"] = \"\";\n\
 }());\n\
-\n\
 \n\
 \n\
 // run shared js-env code - function\n\
@@ -51149,7 +51017,6 @@ local.testCase_webpage_default = function (opt, onError) {\n\
 }());\n\
 \n\
 \n\
-\n\
 /* istanbul ignore next */\n\
 // run browser js-env code - init-test\n\
 (function () {\n\
@@ -51184,7 +51051,6 @@ if (!local.isBrowser) {\n\
 local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\n\
 globalThis.domOnEventDelegateDict = local;\n\
 }());\n\
-\n\
 \n\
 \n\
 /* istanbul ignore next */\n\
@@ -51331,7 +51197,6 @@ pre {\\n\\\n\
         }, 100);\\n\\\n\
     });\\n\\\n\
 }());\\n\\\n\
-\\n\\\n\
 \\n\\\n\
 \\n\\\n\
 // init domOnEventAjaxProgressUpdate\\n\\\n\
@@ -51488,7 +51353,6 @@ pre {\\n\\\n\
 }());\\n\\\n\
 \\n\\\n\
 \\n\\\n\
-\\n\\\n\
 // init domOnEventDelegateDict\\n\\\n\
 (function () {\\n\\\n\
 /*\\n\\\n\
@@ -51572,7 +51436,6 @@ pre {\\n\\\n\
 }());\\n\\\n\
 \\n\\\n\
 \\n\\\n\
-\\n\\\n\
 // init domOnEventSelectAllWithinPre\\n\\\n\
 (function () {\\n\\\n\
 /*\\n\\\n\
@@ -51628,7 +51491,6 @@ utility2-comment -->\\n\\\n\
 <button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\\n\\\n\
 <div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\\n\\\n\
 utility2-comment -->\\n\\\n\
-\\n\\\n\
 \\n\\\n\
 \\n\\\n\
 <!-- custom-html-start -->\\n\\\n\
@@ -51761,7 +51623,6 @@ local.domOnEventInputChange({\\n\\\n\
 });\\n\\\n\
 </script>\\n\\\n\
 <!-- custom-html-end -->\\n\\\n\
-\\n\\\n\
 \\n\\\n\
 \\n\\\n\
 <!-- utility2-comment\\n\\\n\
@@ -52007,7 +51868,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventAjaxProgressUpdate\n\
 (function () {\n\
 /*\n\
@@ -52162,7 +52022,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventDelegateDict\n\
 (function () {\n\
 /*\n\
@@ -52246,7 +52105,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
 /*\n\
@@ -52301,7 +52159,6 @@ pre {\n\
 <a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n\
 <button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n\
 <div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\n\
-\n\
 \n\
 \n\
 \n\
@@ -52439,7 +52296,6 @@ local.domOnEventInputChange({\n\
 \n\
 \n\
 \n\
-\n\
 <script src=\"assets.utility2.rollup.js\"></script>\n\
 <script src=\"assets.utility2.example.js\"></script>\n\
 <script src=\"assets.utility2.test.js\"></script>\n\
@@ -52476,7 +52332,6 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo\n\
  *\n\
  */\n\
-\n\
 \n\
 \n\
 /* istanbul instrument in package jslint */\n\
@@ -52642,10 +52497,8 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 // assets.utility2.header.js - end\n\
 \n\
 \n\
-\n\
 (function (local) {\n\
 \"use strict\";\n\
-\n\
 \n\
 \n\
 /* istanbul ignore next */\n\
@@ -52667,7 +52520,6 @@ if (local.isBrowser) {\n\
 }\n\
 // init lib main\n\
 local.jslint = local;\n\
-\n\
 \n\
 \n\
 /* validateLineSortedReset */\n\
@@ -52858,7 +52710,6 @@ local.objectDeepCopyWithKeysSorted = function (obj) {\n\
 }());\n\
 \n\
 \n\
-\n\
 /* istanbul ignore next */\n\
 // run shared js-env code - function\n\
 /* jslint ignore:start */\n\
@@ -52867,7 +52718,6 @@ local.objectDeepCopyWithKeysSorted = function (obj) {\n\
 repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209\n\
 committed 2018-02-25T11:28:16Z\n\
 */\n\
-\n\
 \n\
 \n\
 /*\n\
@@ -63585,12 +63435,10 @@ return CSSLint;\n\
 })();\n\
 \n\
 \n\
-\n\
 /*\n\
 repo https://github.com/douglascrockford/JSLint/tree/686716b71f6d45d3c233e1cfa026a1e5f46747aa\n\
 committed 2020-03-28T12:46:58Z\n\
 */\n\
-\n\
 \n\
 \n\
 /*\n\
@@ -68831,14 +68679,12 @@ local.jslint_export = Object.freeze(function (\n\
 });\n\
 \n\
 \n\
-\n\
 /*\n\
 file none\n\
 */\n\
 local.CSSLint = CSSLint;\n\
 }());\n\
 /* jslint ignore:end */\n\
-\n\
 \n\
 \n\
 // run shared js-env code - function\n\
@@ -69170,14 +69016,11 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /\\n+?(\\n\\u0020*?[)\\]}])/g\n\
         ), \"$1\");\n\
-        // autofix-all - normalize newlines to \\n\\n\n\
+        // autofix-all - eslint - no-multiple-empty-lines\n\
+        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md\n\
         code = code.replace((\n\
-            /([^\\n])\\n{3}([^\\n])/g\n\
-        ), \"$1\\n\\n$2\");\n\
-        // autofix-all - normalize newlines to \\n\\n\\n\\n\n\
-        code = code.replace((\n\
-            /\\n{5,}/g\n\
-        ), \"\\n\\n\\n\\n\");\n\
+            /\\n{4,}/g\n\
+        ), \"\\n\\n\\n\");\n\
         // autofix-all - recurse <script>...</script>, <style>...</style>\n\
         code = code.replace((\n\
             /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\\\n\\\\\\n(?:^.*?\\\\n\\\\\\n)*?)(';$|<\\/script>\\\\n\\\\$|<\\/style>\\\\n\\\\$)/gm\n\
@@ -69418,10 +69261,10 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /\\/\\/_([^\\n])/g\n\
         ), \"//_\\n$1\");\n\
-        // autofix-js-whitespace - normalize (function { to \\n\\n\\n\\n(function {\n\
+        // autofix-js-whitespace - normalize (function { to \\n\\n\\n(function {\n\
         code = code.replace((\n\
             /\\n+((?:\\/\\*_\\*\\/\\n|\\/\\/_\\n)*?\\(function\\u0020.*?)\\n+/g\n\
-        ), \"\\n\\n\\n\\n$1\\n\");\n\
+        ), \"\\n\\n\\n$1\\n\");\n\
         // autofix-js-whitespace - remove double-whitespace\n\
         code = code.replace((\n\
             /(\\S\\u0020)\\u0020+/g\n\
@@ -69867,7 +69710,6 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
 }());\n\
 \n\
 \n\
-\n\
 /* istanbul ignore next */\n\
 // run node js-env code - init-after\n\
 (function () {\n\
@@ -70094,12 +69936,10 @@ local.assetsDict["/assets.utility2.test.js"] = (
 // assets.utility2.header.js - end\n\
 \n\
 \n\
-\n\
 /* jslint utility2:true */\n\
 /* istanbul ignore next */\n\
 (function (local) {\n\
 \"use strict\";\n\
-\n\
 \n\
 \n\
 // run shared js-env code - init-before\n\
@@ -70111,7 +69951,6 @@ globalThis.local = local;\n\
 // init test\n\
 local.testRunDefault(local);\n\
 }());\n\
-\n\
 \n\
 \n\
 // run shared js-env code - function\n\
@@ -70594,7 +70433,7 @@ local.testCase_buildReadme_default = function (opt, onError) {\n\
         [\n\
             // customize quickstart-example-js-instruction\n\
             (\n\
-                /#\\u0020quickstart\\u0020example.js[\\S\\s]*?\\n\\n\\n\\n/\n\
+                /#\\u0020quickstart\\u0020example.js[\\S\\s]*?\\n\\n\\n/\n\
             ),\n\
             // customize quickstart-example-js-script\n\
             (\n\
@@ -71610,7 +71449,6 @@ local.utility2.serverLocalUrlTest = function (url) {\n\
 }());\n\
 \n\
 \n\
-\n\
 // run shared js-env code - init-after\n\
 (function () {\n\
 // hack-coverage - test testRunServer's multiple-call handling-behavior\n\
@@ -71682,14 +71520,12 @@ local.middlewareList.push(function (req, res, next) {\n\
 }());\n\
 \n\
 \n\
-\n\
 // run node js-env code - init-after\n\
 /* istanbul ignore next */\n\
 (function () {\n\
 if (local.isBrowser) {\n\
     return;\n\
 }\n\
-\n\
 \n\
 \n\
 (function () {\n\
@@ -71746,7 +71582,6 @@ if (local.isBrowser) {\n\
         break;\n\
     }\n\
 }());\n\
-\n\
 \n\
 \n\
 // init cli\n\
