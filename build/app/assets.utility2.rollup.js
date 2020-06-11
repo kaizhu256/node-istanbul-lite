@@ -45217,9 +45217,6 @@ the greatest app in the world!\n\
 #### todo\n\
 - none\n\
 \n\
-#### this package requires\n\
-- darwin or linux os\n\
-\n\
 \n\
 \n\
 # quickstart standalone app\n\
@@ -45312,10 +45309,6 @@ PORT=8081 node ./assets.app.js\n\
     "main": "lib.my_app.js",\n\
     "name": "my-app-lite",\n\
     "nameAliasPublish": "",\n\
-    "os": [\n\
-        "darwin",\n\
-        "linux"\n\
-    ],\n\
     "repository": {\n\
         "type": "git",\n\
         "url": "https://github.com/kaizhu256/node-my-app-lite.git"\n\
