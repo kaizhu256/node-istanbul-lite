@@ -10806,6 +10806,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
 
         result = this[type](expr, precedence, flags);
 
+
         if (extra.comment) {
             result = addComments(expr, result);
         }
@@ -10911,6 +10912,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
             pair = {code: result.toString(), map: null};
             return options.sourceMapWithCode ? pair : pair.code;
         }
+
 
         pair = result.toStringWithSourceMap({
             file: options.file,
@@ -14725,6 +14727,7 @@ function Parser(options) {
     //inherit event functionality
     EventTarget.call(this);
 
+
     this.options = options || {};
 
     this._tokenStream = null;
@@ -15229,6 +15232,7 @@ Parser.prototype = function() {
                 });
             },
 
+
             //CSS3 Media Queries
             _media_query_list: function() {
                 /*
@@ -15238,6 +15242,7 @@ Parser.prototype = function() {
                  */
                 var tokenStream = this._tokenStream,
                     mediaList   = [];
+
 
                 this._readWhitespace();
 
@@ -15802,6 +15807,7 @@ Parser.prototype = function() {
                     tt,
                     selectors;
 
+
                 /*
                  * Error Recovery: If even a single selector fails to parse,
                  * then the entire ruleset should be thrown away.
@@ -16003,6 +16009,7 @@ Parser.prototype = function() {
                     line,
                     col;
 
+
                 //get starting line and column for the selector
                 line = tokenStream.LT(1).startLine;
                 col = tokenStream.LT(1).startCol;
@@ -16043,6 +16050,7 @@ Parser.prototype = function() {
                         component = null;
                     }
                 }
+
 
                 return selectorText !== "" ?
                         new SelectorPart(elementName, modifiers, selectorText, line, col) :
@@ -16966,6 +16974,7 @@ Parser.prototype = function() {
                 var tokenStream = this._tokenStream,
                     tt;
 
+
                 this._readWhitespace();
 
                 if (checkStart) {
@@ -17045,6 +17054,7 @@ Parser.prototype = function() {
 
                 return ws;
             },
+
 
             /**
              * Throws an error when an unexpected token is found.
@@ -17198,6 +17208,7 @@ Parser.prototype = function() {
 
     return proto;
 }();
+
 
 /*
 nth
@@ -18447,6 +18458,7 @@ var h = /^[0-9a-fA-F]$/,
 // Helper functions
 //-----------------------------------------------------------------------------
 
+
 function isHexDigit(c) {
     return c !== null && h.test(c);
 }
@@ -18488,6 +18500,7 @@ function mix(receiver, supplier) {
 // CSS Token Stream
 //-----------------------------------------------------------------------------
 
+
 /**
  * A token stream that produces CSS tokens.
  * @param {String|Reader} input The source of text to tokenize.
@@ -18517,6 +18530,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {
             startCol    = reader.getCol();
 
         c = reader.read();
+
 
         while (c) {
             switch (c) {
@@ -19228,6 +19242,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {
         return this.createToken(Tokens.S, value, startLine, startCol);
     },
 
+
     //-------------------------------------------------------------------------
     // Methods to read values from the string stream
     //-------------------------------------------------------------------------
@@ -19276,6 +19291,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {
             number  = first,
             hasDot  = (first === "."),
             c       = reader.peek();
+
 
         while (c) {
             if (isDigit(c)) {
@@ -19882,6 +19898,7 @@ copy(ValidationTypes, {
         return result;
     },
 
+
     simple: {
         __proto__: null,
 
@@ -20387,6 +20404,7 @@ function StringReader(text) {
      */
     this._input = text.replace(/(\r\n?|\n)/g, "\n");
 
+
     /**
      * The row for the character to be read next.
      * @property _line
@@ -20394,6 +20412,7 @@ function StringReader(text) {
      * @private
      */
     this._line = 1;
+
 
     /**
      * The column for the character to be read next.
@@ -20614,6 +20633,7 @@ StringReader.prototype = {
         return value;
     },
 
+
     /**
      * Reads a given number of characters. If the end of the input is reached,
      * it reads only the remaining characters and does not throw an error.
@@ -20689,6 +20709,7 @@ module.exports = SyntaxUnit;
  * @param {int} col The column of text on which the unit resides.
  */
 function SyntaxUnit(text, line, col, type) {
+
 
     /**
      * The column of text on which the unit resides.
@@ -21677,6 +21698,7 @@ var CSSLint = (function() {
             }
         }
 
+
         // capture most horrible error type
         try {
             parser.parse(text);
@@ -22327,6 +22349,7 @@ CSSLint.addRule({
             "writing-mode"               : "epub ms"
         };
 
+
         for (prop in compatiblePrefixes) {
             if (compatiblePrefixes.hasOwnProperty(prop)) {
                 variations = [];
@@ -22822,6 +22845,7 @@ CSSLint.addRule({
         "use strict";
         var rule = this,
             count = 0;
+
 
         parser.addListener("startfontface", function() {
             count++;
@@ -23707,6 +23731,7 @@ CSSLint.addRule({
             textIndent,
             direction;
 
+
         function startRule() {
             textIndent = false;
             direction = "inherit";
@@ -24209,6 +24234,7 @@ CSSLint.addRule({
                 }
                 return "net.csslint." + rule.name.replace(/\s/g, "");
             };
+
 
             if (messages.length > 0) {
                 output.push("<file name=\""+filename+"\">");
@@ -31828,6 +31854,8 @@ const removeFolder = function (dir, onError) {
 };
 removeFolder.sync = local.fsRmrfSync;
 const removeRecursive = removeFolder;
+
+
 let EventEmitter = require('events');
 let URL = require('url');
 // let WebSocket = require('ws');
@@ -31898,6 +31926,7 @@ let exports_websockets_ws_lib_websocket_server = {};
 let exports_websockets_ws_package_json = {};
 /*
 repo https://github.com/websockets/ws/tree/6.2.1
+committed 2019-03-27T08:34:10Z
 */
 
 
@@ -34734,6 +34763,7 @@ exports_websockets_ws_index = WebSocket;
 
 /*
 repo https://github.com/puppeteer/puppeteer/tree/v1.19.0
+committed 2019-07-23T05:02:45Z
 */
 
 
@@ -35095,6 +35125,7 @@ exports_puppeteer_puppeteer_lib_helper = {
   assert,
   debugError
 };
+// hack-puppeteer - init helper
 let helper = exports_puppeteer_puppeteer_lib_helper.helper;
 
 
@@ -35230,6 +35261,7 @@ function serializeTree(node, whitelistedNodes) {
     serializedNode.children = children;
   return [serializedNode];
 }
+
 
 class AXNode {
   /**
@@ -40151,7 +40183,7 @@ const DEFAULT_ARGS = [
   '--disable-default-apps',
   '--disable-dev-shm-usage',
   '--disable-extensions',
-  // TODO: Support OOOPIF. @see https://github.com/puppeteer/puppeteer/issues/2548
+  // TODO: Support OOOPIF. @see https://github.com/GoogleChrome/puppeteer/issues/2548
   // BlinkGenPropertyTrees disabled due to crbug.com/937609
   '--disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees',
   '--disable-hang-monitor',
@@ -40454,7 +40486,7 @@ function waitForWSEndpoint(chromeProcess, timeout, preferredRevision) {
         'Failed to launch chrome!' + (error ? ' ' + error.message : ''),
         stderr,
         '',
-        'TROUBLESHOOTING: https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md',
+        'TROUBLESHOOTING: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md',
         '',
       ].join('\n')));
     }
@@ -40544,6 +40576,7 @@ function getWSEndpoint(browserURL) {
  * @property {(?Puppeteer.Viewport)=} defaultViewport
  * @property {number=} slowMo
  */
+
 
 exports_puppeteer_puppeteer_lib_Launcher = Launcher;
 
@@ -41136,6 +41169,7 @@ class NetworkManager extends EventEmitter {
     this._requestIdToRequest.set(event.requestId, request);
     this.emit(Events.NetworkManager.Request, request);
   }
+
 
   /**
    * @param {!Protocol.Network.requestServedFromCachePayload} event
@@ -42241,7 +42275,7 @@ class Page extends EventEmitter {
       //   to the 'console'
       //   page event.
       //
-      // @see https://github.com/puppeteer/puppeteer/issues/3865
+      // @see https://github.com/GoogleChrome/puppeteer/issues/3865
       return;
     }
     const context = this._frameManager.executionContextById(event.executionContextId);
@@ -42937,6 +42971,7 @@ function convertPrintParameterToInches(parameter) {
  * @property {boolean} session
  * @property {("Strict"|"Lax"|"Extended"|"None")=} sameSite
  */
+
 
 /**
  * @typedef {Object} Network.CookieParam
@@ -44071,7 +44106,7 @@ try {
 
 if (asyncawait) {
 //   const {helper} = exports_puppeteer_puppeteer_lib_helper;
-  const api = exports_puppeteer_puppeteer_lib_api;
+     const api = exports_puppeteer_puppeteer_lib_api;
   for (const className in api) {
     // Puppeteer-web excludes certain classes from bundle, e.g. BrowserFetcher.
     if (typeof api[className] === 'function')
@@ -48432,7 +48467,7 @@ local.middlewareUtility2StateInit = function (req, res, next) {
     if (req.stateInit) {
         return state;
     }
-    // handle large string-replace
+    // disable $-escape in replacement-string
     res.end(state.init.replace("({})", function () {
         return "(\n" + JSON.stringify(state) + "\n)";
     }));
@@ -48968,7 +49003,7 @@ instruction\n\
 /* jslint ignore:end */
         case "/assets.my_app.css":
             tmp = "/assets." + env.npm_package_nameLib + ".css";
-            // handle large string-replace
+            // disable $-escape in replacement-string
             code = local.assetsDict[
                 "/assets.utility2.rollup.content.js"
             ].replace("/* utility2.rollup.js content */", function () {
@@ -48987,7 +49022,7 @@ instruction\n\
             break;
         case "/assets.my_app.js":
             tmp = "/assets." + env.npm_package_nameLib + ".js";
-            // handle large string-replace
+            // disable $-escape in replacement-string
             code = local.assetsDict[
                 "/assets.utility2.rollup.content.js"
             ].replace("/* utility2.rollup.js content */", function () {
@@ -49021,7 +49056,7 @@ instruction\n\
                     tmp.assetsDict[file] = local.assetsDict[file];
                 }
             });
-            // handle large string-replace
+            // disable $-escape in replacement-string
             code = local.assetsDict[
                 "/assets.utility2.rollup.content.js"
             ].replace("/* utility2.rollup.js content */", function () {
@@ -50887,7 +50922,7 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
     case "/assets.utility2.html":
     case "/assets.utility2.lib.jslint.js":
     case "/assets.utility2.test.js":
-        // handle large string-replace
+        // disable $-escape in replacement-string
         code = local.assetsDict[
             "/assets.utility2.rollup.content.js"
         ].replace("/* utility2.rollup.js content */", function () {
@@ -53686,6 +53721,7 @@ function Parser(options) {\n\
     //inherit event functionality\n\
     EventTarget.call(this);\n\
 \n\
+\n\
     this.options = options || {};\n\
 \n\
     this._tokenStream = null;\n\
@@ -54190,6 +54226,7 @@ Parser.prototype = function() {\n\
                 });\n\
             },\n\
 \n\
+\n\
             //CSS3 Media Queries\n\
             _media_query_list: function() {\n\
                 /*\n\
@@ -54199,6 +54236,7 @@ Parser.prototype = function() {\n\
                  */\n\
                 var tokenStream = this._tokenStream,\n\
                     mediaList   = [];\n\
+\n\
 \n\
                 this._readWhitespace();\n\
 \n\
@@ -54763,6 +54801,7 @@ Parser.prototype = function() {\n\
                     tt,\n\
                     selectors;\n\
 \n\
+\n\
                 /*\n\
                  * Error Recovery: If even a single selector fails to parse,\n\
                  * then the entire ruleset should be thrown away.\n\
@@ -54964,6 +55003,7 @@ Parser.prototype = function() {\n\
                     line,\n\
                     col;\n\
 \n\
+\n\
                 //get starting line and column for the selector\n\
                 line = tokenStream.LT(1).startLine;\n\
                 col = tokenStream.LT(1).startCol;\n\
@@ -55004,6 +55044,7 @@ Parser.prototype = function() {\n\
                         component = null;\n\
                     }\n\
                 }\n\
+\n\
 \n\
                 return selectorText !== \"\" ?\n\
                         new SelectorPart(elementName, modifiers, selectorText, line, col) :\n\
@@ -55927,6 +55968,7 @@ Parser.prototype = function() {\n\
                 var tokenStream = this._tokenStream,\n\
                     tt;\n\
 \n\
+\n\
                 this._readWhitespace();\n\
 \n\
                 if (checkStart) {\n\
@@ -56006,6 +56048,7 @@ Parser.prototype = function() {\n\
 \n\
                 return ws;\n\
             },\n\
+\n\
 \n\
             /**\n\
              * Throws an error when an unexpected token is found.\n\
@@ -56159,6 +56202,7 @@ Parser.prototype = function() {\n\
 \n\
     return proto;\n\
 }();\n\
+\n\
 \n\
 /*\n\
 nth\n\
@@ -57408,6 +57452,7 @@ var h = /^[0-9a-fA-F]$/,\n\
 // Helper functions\n\
 //-----------------------------------------------------------------------------\n\
 \n\
+\n\
 function isHexDigit(c) {\n\
     return c !== null && h.test(c);\n\
 }\n\
@@ -57449,6 +57494,7 @@ function mix(receiver, supplier) {\n\
 // CSS Token Stream\n\
 //-----------------------------------------------------------------------------\n\
 \n\
+\n\
 /**\n\
  * A token stream that produces CSS tokens.\n\
  * @param {String|Reader} input The source of text to tokenize.\n\
@@ -57478,6 +57524,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {\n\
             startCol    = reader.getCol();\n\
 \n\
         c = reader.read();\n\
+\n\
 \n\
         while (c) {\n\
             switch (c) {\n\
@@ -58189,6 +58236,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {\n\
         return this.createToken(Tokens.S, value, startLine, startCol);\n\
     },\n\
 \n\
+\n\
     //-------------------------------------------------------------------------\n\
     // Methods to read values from the string stream\n\
     //-------------------------------------------------------------------------\n\
@@ -58237,6 +58285,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {\n\
             number  = first,\n\
             hasDot  = (first === \".\"),\n\
             c       = reader.peek();\n\
+\n\
 \n\
         while (c) {\n\
             if (isDigit(c)) {\n\
@@ -58843,6 +58892,7 @@ copy(ValidationTypes, {\n\
         return result;\n\
     },\n\
 \n\
+\n\
     simple: {\n\
         __proto__: null,\n\
 \n\
@@ -59348,6 +59398,7 @@ function StringReader(text) {\n\
      */\n\
     this._input = text.replace(/(\\r\\n?|\\n)/g, \"\\n\");\n\
 \n\
+\n\
     /**\n\
      * The row for the character to be read next.\n\
      * @property _line\n\
@@ -59355,6 +59406,7 @@ function StringReader(text) {\n\
      * @private\n\
      */\n\
     this._line = 1;\n\
+\n\
 \n\
     /**\n\
      * The column for the character to be read next.\n\
@@ -59575,6 +59627,7 @@ StringReader.prototype = {\n\
         return value;\n\
     },\n\
 \n\
+\n\
     /**\n\
      * Reads a given number of characters. If the end of the input is reached,\n\
      * it reads only the remaining characters and does not throw an error.\n\
@@ -59650,6 +59703,7 @@ module.exports = SyntaxUnit;\n\
  * @param {int} col The column of text on which the unit resides.\n\
  */\n\
 function SyntaxUnit(text, line, col, type) {\n\
+\n\
 \n\
     /**\n\
      * The column of text on which the unit resides.\n\
@@ -60638,6 +60692,7 @@ var CSSLint = (function() {\n\
             }\n\
         }\n\
 \n\
+\n\
         // capture most horrible error type\n\
         try {\n\
             parser.parse(text);\n\
@@ -61288,6 +61343,7 @@ CSSLint.addRule({\n\
             \"writing-mode\"               : \"epub ms\"\n\
         };\n\
 \n\
+\n\
         for (prop in compatiblePrefixes) {\n\
             if (compatiblePrefixes.hasOwnProperty(prop)) {\n\
                 variations = [];\n\
@@ -61783,6 +61839,7 @@ CSSLint.addRule({\n\
         \"use strict\";\n\
         var rule = this,\n\
             count = 0;\n\
+\n\
 \n\
         parser.addListener(\"startfontface\", function() {\n\
             count++;\n\
@@ -62668,6 +62725,7 @@ CSSLint.addRule({\n\
             textIndent,\n\
             direction;\n\
 \n\
+\n\
         function startRule() {\n\
             textIndent = false;\n\
             direction = \"inherit\";\n\
@@ -63170,6 +63228,7 @@ CSSLint.addRule({\n\
                 }\n\
                 return \"net.csslint.\" + rule.name.replace(/\\s/g, \"\");\n\
             };\n\
+\n\
 \n\
             if (messages.length > 0) {\n\
                 output.push(\"<file name=\\\"\"+filename+\"\\\">\");\n\
@@ -81174,6 +81233,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js\n\
 \n\
         result = this[type](expr, precedence, flags);\n\
 \n\
+\n\
         if (extra.comment) {\n\
             result = addComments(expr, result);\n\
         }\n\
@@ -81279,6 +81339,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js\n\
             pair = {code: result.toString(), map: null};\n\
             return options.sourceMapWithCode ? pair : pair.code;\n\
         }\n\
+\n\
 \n\
         pair = result.toStringWithSourceMap({\n\
             file: options.file,\n\
@@ -93047,6 +93108,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
 
         result = this[type](expr, precedence, flags);
 
+
         if (extra.comment) {
             result = addComments(expr, result);
         }
@@ -93152,6 +93214,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
             pair = {code: result.toString(), map: null};
             return options.sourceMapWithCode ? pair : pair.code;
         }
+
 
         pair = result.toStringWithSourceMap({
             file: options.file,

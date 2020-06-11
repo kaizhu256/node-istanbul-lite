@@ -9121,6 +9121,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
 
         result = this[type](expr, precedence, flags);
 
+
         if (extra.comment) {
             result = addComments(expr, result);
         }
@@ -9226,6 +9227,7 @@ file https://github.com/estools/escodegen/blob/v1.12.0/escodegen.js
             pair = {code: result.toString(), map: null};
             return options.sourceMapWithCode ? pair : pair.code;
         }
+
 
         pair = result.toStringWithSourceMap({
             file: options.file,

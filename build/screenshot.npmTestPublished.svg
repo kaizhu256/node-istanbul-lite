@@ -1,9 +1,9 @@
-<svg height="12894" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="12894" fill="#555" width="720"></rect>
+<svg height="12814" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="12814" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=npmTestPublished]\x1b[0m - 2020-06-11T19:02:44.470Z - npm-testing /tmp/npmTe\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=npmTestPublished]\x1b[0m - 2020-06-11T22:21:39.164Z - npm-testing /tmp/npmTe\</tspan>
 <tspan x="10" y="58">stPublished/node_modules/istanbul-lite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -13,12 +13,12 @@
 <tspan x="10" y="106">istanbul - covering $ /home/travis/.nvm/versions/node/v14.4.0/bin/node /tmp/npmTestPublished/nod\</tspan>
 <tspan x="10" y="122">e_modules/istanbul-lite/test.js</tspan>
 
-<tspan x="10" y="138">&gt; jslint - 5ms - /tmp/npmTestPublished/node_modules/istanbul-lite/npm_scripts.sh</tspan>
+<tspan x="10" y="138">&gt; jslint - 6ms - /tmp/npmTestPublished/node_modules/istanbul-lite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="154">--- /tmp/npmTestPublished/node_modules/istanbul-lite/package.json.autofix.old	2020-06-11 19:02:4\</tspan>
-<tspan x="10" y="170">4.952014818 +0000</tspan>
+<tspan x="10" y="154">--- /tmp/npmTestPublished/node_modules/istanbul-lite/package.json.autofix.old	2020-06-11 22:21:3\</tspan>
+<tspan x="10" y="170">9.699731367 +0000</tspan>
 
-<tspan x="10" y="186">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/package.json	2020-06-11 19:02:44.952014818 \</tspan>
+<tspan x="10" y="186">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/package.json	2020-06-11 22:21:39.699731367 \</tspan>
 <tspan x="10" y="202">+0000</tspan>
 
 <tspan x="10" y="218">@@ -1,76 +1,76 @@</tspan>
@@ -328,12 +328,12 @@
 <tspan x="10" y="2682">jslint-autofix - modified and saved file /tmp/npmTestPublished/node_modules/istanbul-lite/packag\</tspan>
 <tspan x="10" y="2698">e.json</tspan>
 
-<tspan x="10" y="2714">jslint - 28ms - /tmp/npmTestPublished/node_modules/istanbul-lite/package.json</tspan>
+<tspan x="10" y="2714">jslint - 51ms - /tmp/npmTestPublished/node_modules/istanbul-lite/package.json</tspan>
 
-<tspan x="10" y="2730">--- /tmp/npmTestPublished/node_modules/istanbul-lite/test.js.autofix.old	2020-06-11 19:02:45.047\</tspan>
-<tspan x="10" y="2746">966821 +0000</tspan>
+<tspan x="10" y="2730">--- /tmp/npmTestPublished/node_modules/istanbul-lite/test.js.autofix.old	2020-06-11 22:21:39.863\</tspan>
+<tspan x="10" y="2746">731387 +0000</tspan>
 
-<tspan x="10" y="2762">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/test.js	2020-06-11 19:02:45.043968821 +0000</tspan>
+<tspan x="10" y="2762">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/test.js	2020-06-11 22:21:39.863731387 +0000</tspan>
 
 <tspan x="10" y="2778">@@ -3,12 +3,10 @@</tspan>
 
@@ -422,12 +422,12 @@
 <tspan x="10" y="3450">jslint-autofix - modified and saved file /tmp/npmTestPublished/node_modules/istanbul-lite/test.j\</tspan>
 <tspan x="10" y="3466">s</tspan>
 
-<tspan x="10" y="3482">jslint - 121ms - /tmp/npmTestPublished/node_modules/istanbul-lite/test.js</tspan>
+<tspan x="10" y="3482">jslint - 211ms - /tmp/npmTestPublished/node_modules/istanbul-lite/test.js</tspan>
 
-<tspan x="10" y="3498">--- /tmp/npmTestPublished/node_modules/istanbul-lite/README.md.autofix.old	2020-06-11 19:02:45.4\</tspan>
-<tspan x="10" y="3514">11784835 +0000</tspan>
+<tspan x="10" y="3498">--- /tmp/npmTestPublished/node_modules/istanbul-lite/README.md.autofix.old	2020-06-11 22:21:40.2\</tspan>
+<tspan x="10" y="3514">43731432 +0000</tspan>
 
-<tspan x="10" y="3530">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/README.md	2020-06-11 19:02:45.411784835 +00\</tspan>
+<tspan x="10" y="3530">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/README.md	2020-06-11 22:21:40.243731432 +00\</tspan>
 <tspan x="10" y="3546">00</tspan>
 
 <tspan x="10" y="3562">@@ -7,7 +7,6 @@</tspan>
@@ -774,13 +774,13 @@
 <tspan x="10" y="6458">jslint-autofix - modified and saved file /tmp/npmTestPublished/node_modules/istanbul-lite/README\</tspan>
 <tspan x="10" y="6474">.md</tspan>
 
-<tspan x="10" y="6490">jslint - 487ms - /tmp/npmTestPublished/node_modules/istanbul-lite/README.md</tspan>
+<tspan x="10" y="6490">jslint - 587ms - /tmp/npmTestPublished/node_modules/istanbul-lite/README.md</tspan>
 
-<tspan x="10" y="6506">--- /tmp/npmTestPublished/node_modules/istanbul-lite/lib.istanbul.js.autofix.old	2020-06-11 19:0\</tspan>
-<tspan x="10" y="6522">2:46.039470857 +0000</tspan>
+<tspan x="10" y="6506">--- /tmp/npmTestPublished/node_modules/istanbul-lite/lib.istanbul.js.autofix.old	2020-06-11 22:2\</tspan>
+<tspan x="10" y="6522">1:40.947731516 +0000</tspan>
 
-<tspan x="10" y="6538">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/lib.istanbul.js	2020-06-11 19:02:46.0354728\</tspan>
-<tspan x="10" y="6554">57 +0000</tspan>
+<tspan x="10" y="6538">+++ /tmp/npmTestPublished/node_modules/istanbul-lite/lib.istanbul.js	2020-06-11 22:21:40.9477315\</tspan>
+<tspan x="10" y="6554">16 +0000</tspan>
 
 <tspan x="10" y="6570">@@ -7,18 +7,15 @@</tspan>
 
@@ -1151,15 +1151,15 @@
 <tspan x="10" y="9498">jslint-autofix - modified and saved file /tmp/npmTestPublished/node_modules/istanbul-lite/lib.is\</tspan>
 <tspan x="10" y="9514">tanbul.js</tspan>
 
-<tspan x="10" y="9530">jslint - 1120ms - /tmp/npmTestPublished/node_modules/istanbul-lite/lib.istanbul.js</tspan>
+<tspan x="10" y="9530">jslint - 1322ms - /tmp/npmTestPublished/node_modules/istanbul-lite/lib.istanbul.js</tspan>
 
-<tspan x="10" y="9546">http-server listening on port 46139</tspan>
+<tspan x="10" y="9546">http-server listening on port 57135</tspan>
 
-<tspan x="10" y="9562">testRunDefault - 57 ms - [node test-case 1 of 12 passed] - testCase_buildLib_default</tspan>
+<tspan x="10" y="9562">testRunDefault - 79 ms - [node test-case 1 of 12 passed] - testCase_buildLib_default</tspan>
 
-<tspan x="10" y="9578">testRunDefault - 62 ms - [node test-case 2 of 12 passed] - testCase_buildReadme_default</tspan>
+<tspan x="10" y="9578">testRunDefault - 84 ms - [node test-case 2 of 12 passed] - testCase_buildReadme_default</tspan>
 
-<tspan x="10" y="9594">testRunDefault - 65 ms - [node test-case 3 of 12 passed] - testCase_buildTest_default</tspan>
+<tspan x="10" y="9594">testRunDefault - 87 ms - [node test-case 3 of 12 passed] - testCase_buildTest_default</tspan>
 
 <tspan x="10" y="9610">Bob knows John</tspan>
 
@@ -1229,304 +1229,297 @@
 
 <tspan x="10" y="10138">Assertion failed: undefined</tspan>
 
-<tspan x="10" y="10154">testRunDefault - 73 ms - [node test-case 4 of 12 passed] - testCase_coverage_es6</tspan>
+<tspan x="10" y="10154">testRunDefault - 97 ms - [node test-case 4 of 12 passed] - testCase_coverage_es6</tspan>
 
-<tspan x="10" y="10170">testRunDefault - 92 ms - [node test-case 5 of 12 passed] - testCase_istanbulCoverageMerge_defaul\</tspan>
-<tspan x="10" y="10186">t</tspan>
+<tspan x="10" y="10170">testRunDefault - 117 ms - [node test-case 5 of 12 passed] - testCase_istanbulCoverageMerge_defau\</tspan>
+<tspan x="10" y="10186">lt</tspan>
 
-<tspan x="10" y="10202">testRunDefault - 1251 ms - [node test-case 6 of 12 passed] - testCase_istanbulCoverageReportCrea\</tspan>
+<tspan x="10" y="10202">testRunDefault - 1364 ms - [node test-case 6 of 12 passed] - testCase_istanbulCoverageReportCrea\</tspan>
 <tspan x="10" y="10218">te_default</tspan>
 
-<tspan x="10" y="10234">testRunDefault - 1253 ms - [node test-case 7 of 12 passed] - testCase_istanbulInstrumentInPackag\</tspan>
+<tspan x="10" y="10234">testRunDefault - 1366 ms - [node test-case 7 of 12 passed] - testCase_istanbulInstrumentInPackag\</tspan>
 <tspan x="10" y="10250">e_default</tspan>
 
-<tspan x="10" y="10266">testRunDefault - 1256 ms - [node test-case 8 of 12 passed] - testCase_istanbulInstrumentSync_def\</tspan>
+<tspan x="10" y="10266">testRunDefault - 1369 ms - [node test-case 8 of 12 passed] - testCase_istanbulInstrumentSync_def\</tspan>
 <tspan x="10" y="10282">ault</tspan>
 
-<tspan x="10" y="10298">testRunDefault - 1256 ms - [node test-case 9 of 12 passed] - testCase_nop_default</tspan>
+<tspan x="10" y="10298">testRunDefault - 1370 ms - [node test-case 9 of 12 passed] - testCase_nop_default</tspan>
 
-<tspan x="10" y="10314">testRunDefault - 1430 ms - [node test-case 10 of 12 passed] - testCase_buildApidoc_default</tspan>
+<tspan x="10" y="10314">testRunDefault - 1553 ms - [node test-case 10 of 12 passed] - testCase_buildApidoc_default</tspan>
 
 <tspan x="10" y="10330"></tspan>
 
-<tspan x="10" y="10346">DevTools listening on ws://127.0.0.1:39145/devtools/browser/e5f75d98-548c-4a5c-9c3b-58ee2f2a4cc3</tspan>
+<tspan x="10" y="10346">DevTools listening on ws://127.0.0.1:41455/devtools/browser/9b5e55f8-66b3-4b0f-be35-80b57112ebc1</tspan>
 
-<tspan x="10" y="10362">[0611/190249.199769:WARNING:ipc_message_attachment_set.cc(49)] MessageAttachmentSet destroyed wi\</tspan>
-<tspan x="10" y="10378">th unconsumed attachments: 0/1</tspan>
+<tspan x="10" y="10362">&gt; http-server listening on port 54355</tspan>
 
-<tspan x="10" y="10394">[0611/190249.199809:ERROR:command_buffer_proxy_impl.cc(122)] ContextResult::kTransientFailure: F\</tspan>
-<tspan x="10" y="10410">ailed to send GpuChannelMsg_CreateCommandBuffer.</tspan>
+<tspan x="10" y="10378">[0611/222144.910017:INFO:CONSOLE(8)] "hello", source: http://127.0.0.1:57135/assets.example.js (\</tspan>
+<tspan x="10" y="10394">8)</tspan>
 
-<tspan x="10" y="10426">&gt; http-server listening on port 50562</tspan>
+<tspan x="10" y="10410">[0611/222144.919130:INFO:CONSOLE(8)] "1", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10442">[0611/190249.859404:INFO:CONSOLE(8)] "hello", source: http://127.0.0.1:46139/assets.example.js (\</tspan>
-<tspan x="10" y="10458">8)</tspan>
+<tspan x="10" y="10426">[0611/222144.921863:INFO:CONSOLE(8)] "2", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10474">[0611/190249.869560:INFO:CONSOLE(8)] "1", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10442">[0611/222144.924963:INFO:CONSOLE(8)] "3", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10490">[0611/190249.871918:INFO:CONSOLE(8)] "2", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10458">[0611/222144.927742:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10506">[0611/190249.874164:INFO:CONSOLE(8)] "3", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10474">[0611/222144.930380:INFO:CONSOLE(8)] "8", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10522">[0611/190249.875982:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10490">[0611/222144.933119:INFO:CONSOLE(8)] "13", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10538">[0611/190249.877906:INFO:CONSOLE(8)] "8", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10506">[0611/222144.936079:INFO:CONSOLE(8)] "21", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10554">[0611/190249.879684:INFO:CONSOLE(8)] "13", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10522">[0611/222144.938719:INFO:CONSOLE(8)] "34", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10570">[0611/190249.881365:INFO:CONSOLE(8)] "21", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10538">[0611/222144.940962:INFO:CONSOLE(8)] "55", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10586">[0611/190249.883136:INFO:CONSOLE(8)] "34", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10554">[0611/222144.944080:INFO:CONSOLE(8)] "89", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10602">[0611/190249.884765:INFO:CONSOLE(8)] "55", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10570">[0611/222144.947127:INFO:CONSOLE(8)] "144", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10618">[0611/190249.886309:INFO:CONSOLE(8)] "89", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10586">[0611/222144.950004:INFO:CONSOLE(8)] "233", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10634">[0611/190249.888047:INFO:CONSOLE(8)] "144", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10602">[0611/222144.952558:INFO:CONSOLE(8)] "377", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10650">[0611/190249.890279:INFO:CONSOLE(8)] "233", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10618">[0611/222144.955108:INFO:CONSOLE(8)] "610", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10666">[0611/190249.892016:INFO:CONSOLE(8)] "377", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10634">[0611/222144.957624:INFO:CONSOLE(8)] "987", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10682">[0611/190249.893402:INFO:CONSOLE(8)] "610", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10650">[0611/222144.969446:INFO:CONSOLE(8)] "--------------------|---------|---------|---------|-------\</tspan>
+<tspan x="10" y="10666">--|</tspan>
 
-<tspan x="10" y="10698">[0611/190249.894890:INFO:CONSOLE(8)] "987", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10682">File                | % Stmts | % Brchs | % Funcs | % Lines |</tspan>
 
-<tspan x="10" y="10714">[0611/190249.907420:INFO:CONSOLE(8)] "--------------------|---------|---------|---------|-------\</tspan>
-<tspan x="10" y="10730">--|</tspan>
+<tspan x="10" y="10698">--------------------|---------|---------|---------|---------|</tspan>
 
-<tspan x="10" y="10746">File                | % Stmts | % Brchs | % Funcs | % Lines |</tspan>
+<tspan x="10" y="10714">All files           |   91.67 |      75 |     100 |   91.67 |</tspan>
+
+<tspan x="10" y="10730">All files           |   91.67 |      75 |     100 |   91.67 |</tspan>
+
+<tspan x="10" y="10746">  inputTextarea1.js |   91.67 |      75 |     100 |   91.67 |</tspan>
 
 <tspan x="10" y="10762">--------------------|---------|---------|---------|---------|</tspan>
 
-<tspan x="10" y="10778">All files           |   91.67 |      75 |     100 |   91.67 |</tspan>
+<tspan x="10" y="10778">", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10794">All files           |   91.67 |      75 |     100 |   91.67 |</tspan>
+<tspan x="10" y="10794">[0611/222145.034704:INFO:CONSOLE(8)] "istanbul - created coverage file tmp/build/coverage.html/i\</tspan>
+<tspan x="10" y="10810">ndex.html", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10810">  inputTextarea1.js |   91.67 |      75 |     100 |   91.67 |</tspan>
+<tspan x="10" y="10826">[0611/222145.066564:INFO:CONSOLE(8)] "Bob knows John", source: http://127.0.0.1:57135/assets.exa\</tspan>
+<tspan x="10" y="10842">mple.js (8)</tspan>
 
-<tspan x="10" y="10826">--------------------|---------|---------|---------|---------|</tspan>
+<tspan x="10" y="10858">[0611/222145.074270:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10842">", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10874">[0611/222145.076879:INFO:CONSOLE(8)] "1", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10858">[0611/190249.969862:INFO:CONSOLE(8)] "istanbul - created coverage file tmp/build/coverage.html/i\</tspan>
-<tspan x="10" y="10874">ndex.html", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10890">[0611/222145.078955:INFO:CONSOLE(8)] "2", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10890">[0611/190250.014548:INFO:CONSOLE(8)] "Bob knows John", source: http://127.0.0.1:46139/assets.exa\</tspan>
-<tspan x="10" y="10906">mple.js (8)</tspan>
+<tspan x="10" y="10906">[0611/222145.081038:INFO:CONSOLE(8)] "3", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10922">[0611/190250.026837:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10922">[0611/222145.083109:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10938">[0611/190250.031684:INFO:CONSOLE(8)] "1", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10938">[0611/222145.085176:INFO:CONSOLE(8)] "8", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10954">[0611/190250.036124:INFO:CONSOLE(8)] "2", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10954">[0611/222145.086905:INFO:CONSOLE(8)] "13", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10970">[0611/190250.041251:INFO:CONSOLE(8)] "3", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10970">[0611/222145.088782:INFO:CONSOLE(8)] "21", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="10986">[0611/190250.045184:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="10986">[0611/222145.090808:INFO:CONSOLE(8)] "34", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11002">[0611/190250.049048:INFO:CONSOLE(8)] "8", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11002">[0611/222145.092750:INFO:CONSOLE(8)] "55", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11018">[0611/190250.052893:INFO:CONSOLE(8)] "13", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11018">[0611/222145.094577:INFO:CONSOLE(8)] "89", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11034">[0611/190250.056637:INFO:CONSOLE(8)] "21", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11034">[0611/222145.096529:INFO:CONSOLE(8)] "144", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11050">[0611/190250.057839:INFO:CONSOLE(8)] "34", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11050">[0611/222145.098482:INFO:CONSOLE(8)] "233", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11066">[0611/190250.065134:INFO:CONSOLE(8)] "55", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11066">[0611/222145.100429:INFO:CONSOLE(8)] "377", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11082">[0611/190250.069197:INFO:CONSOLE(8)] "89", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11082">[0611/222145.102067:INFO:CONSOLE(8)] "610", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11098">[0611/190250.072782:INFO:CONSOLE(8)] "144", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11098">[0611/222145.103829:INFO:CONSOLE(8)] "987", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11114">[0611/190250.077265:INFO:CONSOLE(8)] "233", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11114">[0611/222145.105569:INFO:CONSOLE(8)] "1", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11130">[0611/190250.081082:INFO:CONSOLE(8)] "377", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11130">[0611/222145.107067:INFO:CONSOLE(8)] "2", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11146">[0611/190250.084790:INFO:CONSOLE(8)] "610", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11146">[0611/222145.108518:INFO:CONSOLE(8)] "3", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11162">[0611/190250.088779:INFO:CONSOLE(8)] "987", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11162">[0611/222145.109938:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11178">[0611/190250.093011:INFO:CONSOLE(8)] "1", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11178">[0611/222145.111389:INFO:CONSOLE(8)] "8", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11194">[0611/190250.096635:INFO:CONSOLE(8)] "2", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11194">[0611/222145.112935:INFO:CONSOLE(8)] "13", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11210">[0611/190250.100313:INFO:CONSOLE(8)] "3", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11210">[0611/222145.114389:INFO:CONSOLE(8)] "21", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11226">[0611/190250.104147:INFO:CONSOLE(8)] "5", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11226">[0611/222145.115910:INFO:CONSOLE(8)] "34", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11242">[0611/190250.108112:INFO:CONSOLE(8)] "8", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11242">[0611/222145.117733:INFO:CONSOLE(8)] "55", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11258">[0611/190250.114039:INFO:CONSOLE(8)] "13", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11258">[0611/222145.119905:INFO:CONSOLE(8)] "89", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11274">[0611/190250.114106:INFO:CONSOLE(8)] "21", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11274">[0611/222145.122325:INFO:CONSOLE(8)] "144", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11290">[0611/190250.114695:INFO:CONSOLE(8)] "34", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11290">[0611/222145.125222:INFO:CONSOLE(8)] "233", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11306">[0611/190250.123209:INFO:CONSOLE(8)] "55", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11306">[0611/222145.127984:INFO:CONSOLE(8)] "377", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11322">[0611/190250.126847:INFO:CONSOLE(8)] "89", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11322">[0611/222145.130248:INFO:CONSOLE(8)] "610", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11338">[0611/190250.130528:INFO:CONSOLE(8)] "144", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11338">[0611/222145.132211:INFO:CONSOLE(8)] "987", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11354">[0611/190250.134026:INFO:CONSOLE(8)] "233", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11354">[0611/222145.135149:INFO:CONSOLE(8)] "𠮷", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11370">[0611/190250.137388:INFO:CONSOLE(8)] "377", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11370">[0611/222145.144915:INFO:CONSOLE(12)] "undefined", source: http://127.0.0.1:57135/assets.test.js\</tspan>
+<tspan x="10" y="11386"> (12)</tspan>
 
-<tspan x="10" y="11386">[0611/190250.141468:INFO:CONSOLE(8)] "610", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11402">[0611/222145.149640:INFO:CONSOLE(8)] "testRunDefault - 92 ms - [browser test-case 1 of 6 passed]\</tspan>
+<tspan x="10" y="11418"> - testCase_coverage_es6", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11402">[0611/190250.146505:INFO:CONSOLE(8)] "987", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11434">[0611/222145.154537:INFO:CONSOLE(8)] "testRunDefault - 97 ms - [browser test-case 2 of 6 passed]\</tspan>
+<tspan x="10" y="11450"> - testCase_istanbulCoverageMerge_default", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11418">[0611/190250.149013:INFO:CONSOLE(8)] "𠮷", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11466">[0611/222145.292213:INFO:CONSOLE(8)] "testRunDefault - 234 ms - [browser test-case 3 of 6 passed\</tspan>
+<tspan x="10" y="11482">] - testCase_istanbulCoverageReportCreate_default", source: http://127.0.0.1:57135/assets.exampl\</tspan>
+<tspan x="10" y="11498">e.js (8)</tspan>
 
-<tspan x="10" y="11434">[0611/190250.157344:INFO:CONSOLE(12)] "undefined", source: http://127.0.0.1:46139/assets.test.js\</tspan>
-<tspan x="10" y="11450"> (12)</tspan>
+<tspan x="10" y="11514">[0611/222145.296176:INFO:CONSOLE(8)] "testRunDefault - 238 ms - [browser test-case 4 of 6 passed\</tspan>
+<tspan x="10" y="11530">] - testCase_istanbulInstrumentInPackage_default", source: http://127.0.0.1:57135/assets.example\</tspan>
+<tspan x="10" y="11546">.js (8)</tspan>
 
-<tspan x="10" y="11466">[0611/190250.160453:INFO:CONSOLE(8)] "testRunDefault - 155 ms - [browser test-case 1 of 6 passed\</tspan>
-<tspan x="10" y="11482">] - testCase_coverage_es6", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11562">[0611/222145.300630:INFO:CONSOLE(8)] "testRunDefault - 243 ms - [browser test-case 5 of 6 passed\</tspan>
+<tspan x="10" y="11578">] - testCase_istanbulInstrumentSync_default", source: http://127.0.0.1:57135/assets.example.js (\</tspan>
+<tspan x="10" y="11594">8)</tspan>
 
-<tspan x="10" y="11498">[0611/190250.164516:INFO:CONSOLE(8)] "testRunDefault - 158 ms - [browser test-case 2 of 6 passed\</tspan>
-<tspan x="10" y="11514">] - testCase_istanbulCoverageMerge_default", source: http://127.0.0.1:46139/assets.example.js (8\</tspan>
-<tspan x="10" y="11530">)</tspan>
+<tspan x="10" y="11610">[0611/222145.304077:INFO:CONSOLE(8)] "testRunDefault - 246 ms - [browser test-case 6 of 6 passed\</tspan>
+<tspan x="10" y="11626">] - testCase_nop_default", source: http://127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11546">[0611/190250.299441:INFO:CONSOLE(8)] "testRunDefault - 293 ms - [browser test-case 3 of 6 passed\</tspan>
-<tspan x="10" y="11562">] - testCase_istanbulCoverageReportCreate_default", source: http://127.0.0.1:46139/assets.exampl\</tspan>
-<tspan x="10" y="11578">e.js (8)</tspan>
+<tspan x="10" y="11642">[0611/222145.314508:INFO:CONSOLE(8)] "domOnEventWindowOnloadTimeElapsed = 1112", source: http://\</tspan>
+<tspan x="10" y="11658">127.0.0.1:57135/assets.example.js (8)</tspan>
 
-<tspan x="10" y="11594">[0611/190250.304475:INFO:CONSOLE(8)] "testRunDefault - 298 ms - [browser test-case 4 of 6 passed\</tspan>
-<tspan x="10" y="11610">] - testCase_istanbulInstrumentInPackage_default", source: http://127.0.0.1:46139/assets.example\</tspan>
-<tspan x="10" y="11626">.js (8)</tspan>
+<tspan x="10" y="11674">testRunDefault - 3424 ms - [node test-case 11 of 12 passed] - testCase_webpage_default</tspan>
 
-<tspan x="10" y="11642">[0611/190250.309912:INFO:CONSOLE(8)] "testRunDefault - 304 ms - [browser test-case 5 of 6 passed\</tspan>
-<tspan x="10" y="11658">] - testCase_istanbulInstrumentSync_default", source: http://127.0.0.1:46139/assets.example.js (\</tspan>
-<tspan x="10" y="11674">8)</tspan>
+<tspan x="10" y="11690">testRunDefault - 6068 ms - testCase pending - testCase_buildApp_default ...</tspan>
 
-<tspan x="10" y="11690">[0611/190250.313351:INFO:CONSOLE(8)] "testRunDefault - 307 ms - [browser test-case 6 of 6 passed\</tspan>
-<tspan x="10" y="11706">] - testCase_nop_default", source: http://127.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11706">jslint - 2ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.istanbul.cs\</tspan>
+<tspan x="10" y="11722">s</tspan>
 
-<tspan x="10" y="11722">[0611/190250.326655:INFO:CONSOLE(8)] "domOnEventWindowOnloadTimeElapsed = 914", source: http://1\</tspan>
-<tspan x="10" y="11738">27.0.0.1:46139/assets.example.js (8)</tspan>
+<tspan x="10" y="11738">jslint - 7ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.example.htm\</tspan>
+<tspan x="10" y="11754">l</tspan>
 
-<tspan x="10" y="11754">testRunDefault - 3102 ms - [node test-case 11 of 12 passed] - testCase_webpage_default</tspan>
+<tspan x="10" y="11770">jslint - 7ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.istanbul.ht\</tspan>
+<tspan x="10" y="11786">ml</tspan>
 
-<tspan x="10" y="11770">testRunDefault - 6037 ms - testCase pending - testCase_buildApp_default ...</tspan>
+<tspan x="10" y="11802">jslint - 10ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/index.html</tspan>
 
-<tspan x="10" y="11786">jslint - 3ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.istanbul.cs\</tspan>
-<tspan x="10" y="11802">s</tspan>
+<tspan x="10" y="11818">jslint - 11ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.utility2.h\</tspan>
+<tspan x="10" y="11834">tml</tspan>
 
-<tspan x="10" y="11818">jslint - 7ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.example.htm\</tspan>
-<tspan x="10" y="11834">l</tspan>
+<tspan x="10" y="11850">jslint - 12ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.example.js</tspan>
 
-<tspan x="10" y="11850">jslint - 7ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.istanbul.ht\</tspan>
-<tspan x="10" y="11866">ml</tspan>
+<tspan x="10" y="11866">jslint - 13ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.test.js</tspan>
 
-<tspan x="10" y="11882">jslint - 7ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/index.html</tspan>
+<tspan x="10" y="11882">jslint - 15ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/utility2.state.in\</tspan>
+<tspan x="10" y="11898">it.js</tspan>
 
-<tspan x="10" y="11898">jslint - 8ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.utility2.ht\</tspan>
-<tspan x="10" y="11914">ml</tspan>
+<tspan x="10" y="11914">jslint - 29ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.istanbul.j\</tspan>
+<tspan x="10" y="11930">s</tspan>
 
-<tspan x="10" y="11930">jslint - 10ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.example.js</tspan>
+<tspan x="10" y="11946">testRunDefault - 7345 ms - [node test-case 12 of 12 passed] - testCase_buildApp_default</tspan>
 
-<tspan x="10" y="11946">jslint - 10ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.test.js</tspan>
+<tspan x="10" y="11962">------------------|---------|---------|---------|---------|</tspan>
 
-<tspan x="10" y="11962">jslint - 13ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/utility2.state.in\</tspan>
-<tspan x="10" y="11978">it.js</tspan>
+<tspan x="10" y="11978">File              | % Stmts | % Brchs | % Funcs | % Lines |</tspan>
 
-<tspan x="10" y="11994">jslint - 32ms - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/app/assets.istanbul.j\</tspan>
-<tspan x="10" y="12010">s</tspan>
+<tspan x="10" y="11994">------------------|---------|---------|---------|---------|</tspan>
 
-<tspan x="10" y="12026">testRunDefault - 7017 ms - [node test-case 12 of 12 passed] - testCase_buildApp_default</tspan>
+<tspan x="10" y="12010">All files         |   99.92 |   90.53 |     100 |   99.91 |</tspan>
 
-<tspan x="10" y="12042">------------------|---------|---------|---------|---------|</tspan>
+<tspan x="10" y="12026">istanbul-lite/    |   99.92 |   90.53 |     100 |   99.91 |</tspan>
 
-<tspan x="10" y="12058">File              | % Stmts | % Brchs | % Funcs | % Lines |</tspan>
+<tspan x="10" y="12042">  example.js      |     100 |     100 |     100 |     100 |</tspan>
 
-<tspan x="10" y="12074">------------------|---------|---------|---------|---------|</tspan>
+<tspan x="10" y="12058">  lib.istanbul.js |   99.91 |    90.4 |     100 |   99.91 |</tspan>
 
-<tspan x="10" y="12090">All files         |   99.92 |   90.53 |     100 |   99.91 |</tspan>
+<tspan x="10" y="12074">  test.js         |     100 |   87.36 |     100 |     100 |</tspan>
 
-<tspan x="10" y="12106">istanbul-lite/    |   99.92 |   90.53 |     100 |   99.91 |</tspan>
+<tspan x="10" y="12090">------------------|---------|---------|---------|---------|</tspan>
 
-<tspan x="10" y="12122">  example.js      |     100 |     100 |     100 |     100 |</tspan>
+<tspan x="10" y="12106"></tspan>
 
-<tspan x="10" y="12138">  lib.istanbul.js |   99.91 |    90.4 |     100 |   99.91 |</tspan>
+<tspan x="10" y="12122">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12138">ge.html/coverage.txt</tspan>
 
-<tspan x="10" y="12154">  test.js         |     100 |   87.36 |     100 |     100 |</tspan>
+<tspan x="10" y="12154">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12170">ge.html/index.html</tspan>
 
-<tspan x="10" y="12170">------------------|---------|---------|---------|---------|</tspan>
+<tspan x="10" y="12186">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12202">ge.html/istanbul-lite/index.html</tspan>
 
-<tspan x="10" y="12186"></tspan>
+<tspan x="10" y="12218">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12234">ge.html/istanbul-lite/example.js.html</tspan>
 
-<tspan x="10" y="12202">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12218">ge.html/coverage.txt</tspan>
+<tspan x="10" y="12250">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12266">ge.html/istanbul-lite/lib.istanbul.js.html</tspan>
 
-<tspan x="10" y="12234">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12250">ge.html/index.html</tspan>
+<tspan x="10" y="12282">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12298">ge.html/istanbul-lite/test.js.html</tspan>
 
-<tspan x="10" y="12266">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12282">ge.html/istanbul-lite/index.html</tspan>
+<tspan x="10" y="12314">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12330">ge.html/coverage.all.html</tspan>
 
-<tspan x="10" y="12298">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12314">ge.html/istanbul-lite/example.js.html</tspan>
+<tspan x="10" y="12346">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12362">ge.html/coverage.json</tspan>
 
-<tspan x="10" y="12330">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12346">ge.html/istanbul-lite/lib.istanbul.js.html</tspan>
+<tspan x="10" y="12378">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12394">ge.html/coverage.include.json</tspan>
 
-<tspan x="10" y="12362">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12378">ge.html/istanbul-lite/test.js.html</tspan>
+<tspan x="10" y="12410">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
+<tspan x="10" y="12426">ge.badge.svg</tspan>
 
-<tspan x="10" y="12394">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12410">ge.html/coverage.all.html</tspan>
+<tspan x="10" y="12442">istanbul - created coverage file /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/cove\</tspan>
+<tspan x="10" y="12458">rage.html/index.html</tspan>
 
-<tspan x="10" y="12426">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12442">ge.html/coverage.json</tspan>
+<tspan x="10" y="12474"></tspan>
 
-<tspan x="10" y="12458">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12474">ge.html/coverage.include.json</tspan>
+<tspan x="10" y="12490">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="12490">wrote file - coverage-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/covera\</tspan>
-<tspan x="10" y="12506">ge.badge.svg</tspan>
+<tspan x="10" y="12506">| test-report - npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537\</tspan>
+<tspan x="10" y="12522">.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-11T22:21:44.334Z</tspan>
 
-<tspan x="10" y="12522">istanbul - created coverage file /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/cove\</tspan>
-<tspan x="10" y="12538">rage.html/index.html</tspan>
+<tspan x="10" y="12538">|     249 ms            0 failed        6 passed      |</tspan>
 
-<tspan x="10" y="12554"></tspan>
+<tspan x="10" y="12554">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="12570">-------------------------------------------------------</tspan>
+<tspan x="10" y="12570">| test-report - npmTestPublished - node - linux v14.4.0 - 2020-06-11T22:21:39.385Z</tspan>
 
-<tspan x="10" y="12586">| test-report - npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537\</tspan>
-<tspan x="10" y="12602">.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-11T19:02:49.578Z</tspan>
+<tspan x="10" y="12586">|    7345 ms            0 failed       12 passed      |</tspan>
 
-<tspan x="10" y="12618">|     310 ms            0 failed        6 passed      |</tspan>
+<tspan x="10" y="12602">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="12634">-------------------------------------------------------</tspan>
+<tspan x="10" y="12618"></tspan>
 
-<tspan x="10" y="12650">| test-report - npmTestPublished - node - linux v14.4.0 - 2020-06-11T19:02:44.675Z</tspan>
+<tspan x="10" y="12634">wrote file - test-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/test-repor\</tspan>
+<tspan x="10" y="12650">t.html</tspan>
 
-<tspan x="10" y="12666">|    7017 ms            0 failed       12 passed      |</tspan>
+<tspan x="10" y="12666">wrote file - test-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/build.badg\</tspan>
+<tspan x="10" y="12682">e.svg</tspan>
 
-<tspan x="10" y="12682">-------------------------------------------------------</tspan>
+<tspan x="10" y="12698">wrote file - test-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/test-repor\</tspan>
+<tspan x="10" y="12714">t.badge.svg</tspan>
 
-<tspan x="10" y="12698"></tspan>
+<tspan x="10" y="12730"></tspan>
 
-<tspan x="10" y="12714">wrote file - test-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/test-repor\</tspan>
-<tspan x="10" y="12730">t.html</tspan>
+<tspan x="10" y="12746">npmTestPublished - 0 failed tests</tspan>
 
-<tspan x="10" y="12746">wrote file - test-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/build.badg\</tspan>
-<tspan x="10" y="12762">e.svg</tspan>
+<tspan x="10" y="12762"></tspan>
 
-<tspan x="10" y="12778">wrote file - test-report - /tmp/npmTestPublished/node_modules/istanbul-lite/tmp/build/test-repor\</tspan>
-<tspan x="10" y="12794">t.badge.svg</tspan>
+<tspan x="10" y="12778"></tspan>
 
-<tspan x="10" y="12810"></tspan>
-
-<tspan x="10" y="12826">npmTestPublished - 0 failed tests</tspan>
-
-<tspan x="10" y="12842"></tspan>
-
-<tspan x="10" y="12858"></tspan>
-
-<tspan x="10" y="12874">\x1b[35m[MODE_BUILD=npmTestPublished]\x1b[0m - 2020-06-11T19:02:54.860Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="12794">\x1b[35m[MODE_BUILD=npmTestPublished]\x1b[0m - 2020-06-11T22:21:49.848Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>
