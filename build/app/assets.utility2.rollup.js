@@ -47040,9 +47040,10 @@ local.buildReadme = function (opt, onError) {
         ), "-") + ")\n";
     });
     opt.dataTo = opt.dataTo.replace("\n# table of contents\n", opt.toc);
-    // customize whitespace
+    // eslint - no-multiple-empty-lines
+    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
     opt.dataTo = opt.dataTo.replace((
-        /\n{5,}/g
+        /\n{4,}/g
     ), "\n\n\n");
     // save README.md
     result = opt.dataTo;
@@ -48598,7 +48599,8 @@ local.requireReadme = function () {
     if (env.npm_config_mode_auto_restart) {
         require("fs").readdir(".", function (ignore, fileList) {
             fileList.concat(__filename).forEach(function (file) {
-                require("fs").stat(file, function (ignore, data) {
+                require("fs").stat(file, function (err, data) {
+                    local.onErrorThrow(err);
                     if (!data.isFile()) {
                         return;
                     }
