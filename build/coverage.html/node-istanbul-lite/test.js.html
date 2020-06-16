@@ -296,25 +296,25 @@
     </thead>
     <tbody>
         <td>
-            Statements: 50<br>
-            Branches: 38<br>
-            Functions: 12
+            Statements: 52<br>
+            Branches: 40<br>
+            Functions: 13
         </td>
         <td>
             100%<br>
-            (321 / 321)
+            (324 / 324)
         </td>
         <td>
             100%<br>
-            (71 / 71)
+            (73 / 73)
         </td>
         <td>
             100%<br>
-            (82 / 82)
+            (83 / 83)
         </td>
         <td>
             100%<br>
-            (314 / 314)
+            (317 / 317)
         </td>
     </tbody>
     </table>
@@ -1121,6 +1121,20 @@
 <a href="#l796" id="l796">796</a>
 <a href="#l797" id="l797">797</a>
 <a href="#l798" id="l798">798</a>
+<a href="#l799" id="l799">799</a>
+<a href="#l800" id="l800">800</a>
+<a href="#l801" id="l801">801</a>
+<a href="#l802" id="l802">802</a>
+<a href="#l803" id="l803">803</a>
+<a href="#l804" id="l804">804</a>
+<a href="#l805" id="l805">805</a>
+<a href="#l806" id="l806">806</a>
+<a href="#l807" id="l807">807</a>
+<a href="#l808" id="l808">808</a>
+<a href="#l809" id="l809">809</a>
+<a href="#l810" id="l810">810</a>
+<a href="#l811" id="l811">811</a>
+<a href="#l812" id="l812">812</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1270,6 +1284,14 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1286,8 +1308,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1836,6 +1858,12 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2070,6 +2098,14 @@
 <span class="cstat-skip" title="statement not covered">        recurse(tgt, src, depth | 0);</span>
 <span class="cstat-skip" title="statement not covered">        return tgt;</span>
     };
+    local.onErrorThrow = <span class="fstat-skip" title="function not covered">function (err) {</span>
+    /*
+     * this function will throw &lt;err&gt; if exists
+     */
+<span class="cstat-skip" title="statement not covered">        if (err) {</span>
+<span class="cstat-skip" title="statement not covered">            throw err;</span>
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     <span class="skip-if-branch" title="if path not taken">I</span>if (
         typeof process === "object" &amp;&amp; process
@@ -2086,11 +2122,11 @@
 
 
 /* jslint utility2:true */
-/* istanbul ignore next */
 (function (local) {
 "use strict";
 
 
+/* istanbul ignore next */
 // run shared js-env code - init-before
 (function () {
 // init local
@@ -2633,7 +2669,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
     ], function (onError) {
         // cleanup old coverage
         if (!local.isBrowser) {
-            local.fsRmrfSync("tmp/build/coverage.html/aa");
+            require("child_process").spawnSync("rm", [
+                "-rf", "tmp/build/coverage.html/aa"
+            ], {
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            });
         }
         // test path handling-behavior
         [

@@ -138,7 +138,7 @@
 
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>fsWriteFileWithMkdirpSync
-            <span class="apidocSignatureSpan">(pathname, data, msg)</span>
+            <span class="apidocSignatureSpan">(pathname, data)</span>
             </a>
 
         </li>
@@ -184,6 +184,15 @@
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.objectAssignDefault">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>objectAssignDefault
             <span class="apidocSignatureSpan">(tgt = {}, src = {}, depth = 0)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.onErrorThrow">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>onErrorThrow
+            <span class="apidocSignatureSpan">(err)</span>
             </a>
 
         </li>
@@ -1283,13 +1292,13 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
  * this function will sync-read &lt;pathname&gt; with given &lt;type&gt; and &lt;dflt&gt;
  */
 </span>    let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require(&quot;fs&quot;);
+        pathname = require(&quot;path&quot;).resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require(&quot;path&quot;).resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -1309,27 +1318,25 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
     <h2>
         <a href="#apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync" id="apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync">
         function <span class="apidocSignatureSpan">istanbul-lite.</span>fsWriteFileWithMkdirpSync
-        <span class="apidocSignatureSpan">(pathname, data, msg)</span>
+        <span class="apidocSignatureSpan">(pathname, data)</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+    <li>description and source-code<pre class="apidocCodePre">fsWriteFileWithMkdirpSync = function (pathname, data) {
 <span class="apidocCodeCommentSpan">/*
  * this function will sync write &lt;data&gt; to &lt;pathname&gt; with &quot;mkdir -p&quot;
  */
 </span>    let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require(&quot;fs&quot;);
+        pathname = require(&quot;path&quot;).resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require(&quot;path&quot;).resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require(&quot;path&quot;).dirname(pathname), {
@@ -1337,12 +1344,9 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success &amp;&amp; msg) {
-        console.error(msg.replace(&quot;{{pathname}}&quot;, pathname));
-    }
-    return success;
+    console.error(&quot;fsWriteFileWithMkdirpSync - &quot; + pathname);
+    return true;
 }</pre></li>
     <li>example use<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -1454,10 +1458,11 @@ local.testCase_istanbulInstrumentInPackage_default = function (opt, onError) {
 </span>    // 1. normalize &lt;file&gt;
     file = path.resolve(file);
     // 2. save &lt;code&gt; to __coverageInclude__[&lt;file&gt;] for future html-report
-    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};
-    globalThis.__coverageInclude__[file] = 1;
     // 3. return instrumented-code
-    return new local.Instrumenter({
+    return (
+        &quot;globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};&quot;
+        + &quot;globalThis.__coverageInclude__[&quot; + JSON.stringify(file) + &quot;] = 1;\n&quot;
+    ) + new local.Instrumenter({
         embedSource: true,
         esModules: true,
         noAutoWrap: true
@@ -1554,6 +1559,26 @@ globalThis.domOnEventDelegateDict = local;
 // run node js-env code - init-test
 (function () {
 ...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.onErrorThrow" id="apidoc.elem.istanbul-lite.onErrorThrow">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>onErrorThrow
+        <span class="apidocSignatureSpan">(err)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">onErrorThrow = function (err) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will throw &lt;err&gt; if exists
+ */
+</span>    if (err) {
+        throw err;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -2923,15 +2948,12 @@ Reference.prototype.remove = function remove() {
     moduleExtensionsJs = tmp._extensions[&quot;.js&quot;];
     tmp._extensions[&quot;.js&quot;] = function (module, file) {
         if (typeof file === &quot;string&quot; &amp;&amp; (
-            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (
-                file.indexOf(process.cwd() + require(&quot;path&quot;).sep) === 0
-                &amp;&amp; (
-                    process.env.npm_config_mode_coverage === &quot;node_modules&quot;
-                    || file.indexOf(
-                        require(&quot;path&quot;).resolve(&quot;node_modules&quot;)
-                        + require(&quot;path&quot;).sep
-                    ) !== 0
-                )
+            file.indexOf(process.cwd() + require(&quot;path&quot;).sep) === 0 &amp;&amp; (
+                process.env.npm_config_mode_coverage === &quot;node_modules&quot;
+                || file.indexOf(
+                    require(&quot;path&quot;).resolve(&quot;node_modules&quot;)
+                    + require(&quot;path&quot;).sep
+                ) !== 0
             )
         )) {
             module._compile(local.instrumentInPackage(

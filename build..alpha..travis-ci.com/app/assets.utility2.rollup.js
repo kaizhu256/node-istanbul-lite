@@ -154,6 +154,14 @@
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -341,6 +349,14 @@
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -1644,6 +1660,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -1848,13 +1872,13 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
  * this function will sync-read <pathname> with given <type> and <dflt>
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require("path").resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -1867,23 +1891,21 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
     }
 };
 
-local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+local.fsWriteFileWithMkdirpSync = function (pathname, data) {
 /*
  * this function will sync write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require("path").resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require("path").dirname(pathname), {
@@ -1891,12 +1913,9 @@ local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success && msg) {
-        console.error(msg.replace("{{pathname}}", pathname));
-    }
-    return success;
+    console.error("fsWriteFileWithMkdirpSync - " + pathname);
+    return true;
 };
 
 local.templateRender = function (template, dict, opt = {}, ii = 0) {
@@ -12311,11 +12330,7 @@ fileWrite = function (file, data) {
 /*
  * this function will write <data> to <file>
  */
-    local.fsWriteFileWithMkdirpSync(
-        file,
-        data,
-        "wrote file - coverage-report - {{pathname}}"
-    );
+    local.fsWriteFileWithMkdirpSync(file, data);
 };
 reportHtmlWrite = function (node, dirCoverage, coverage) {
 /*
@@ -13226,10 +13241,11 @@ local.instrumentSync = function (code, file) {
     // 1. normalize <file>
     file = path.resolve(file);
     // 2. save <code> to __coverageInclude__[<file>] for future html-report
-    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};
-    globalThis.__coverageInclude__[file] = 1;
     // 3. return instrumented-code
-    return new local.Instrumenter({
+    return (
+        "globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};"
+        + "globalThis.__coverageInclude__[" + JSON.stringify(file) + "] = 1;\n"
+    ) + new local.Instrumenter({
         embedSource: true,
         esModules: true,
         noAutoWrap: true
@@ -13274,15 +13290,12 @@ local.cliDict.cover = function () {
     moduleExtensionsJs = tmp._extensions[".js"];
     tmp._extensions[".js"] = function (module, file) {
         if (typeof file === "string" && (
-            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (
-                file.indexOf(process.cwd() + require("path").sep) === 0
-                && (
-                    process.env.npm_config_mode_coverage === "node_modules"
-                    || file.indexOf(
-                        require("path").resolve("node_modules")
-                        + require("path").sep
-                    ) !== 0
-                )
+            file.indexOf(process.cwd() + require("path").sep) === 0 && (
+                process.env.npm_config_mode_coverage === "node_modules"
+                || file.indexOf(
+                    require("path").resolve("node_modules")
+                    + require("path").sep
+                ) !== 0
             )
         )) {
             module._compile(local.instrumentInPackage(
@@ -13523,6 +13536,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -13751,10 +13772,9 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
 }());
 
 
-/* istanbul ignore next */
 // run shared js-env code - function
-/* jslint ignore:start */
 (function () {
+/* jslint ignore:start */
 /*
 repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209
 committed 2018-02-25T11:28:16Z
@@ -13788,6 +13808,7 @@ THE SOFTWARE.
 
 */
 
+/* istanbul ignore next */
 var CSSLint = (function(){
   var module = module || {},
       exports = exports || {};
@@ -29483,8 +29504,8 @@ function whitage() {
 
 // The jslint function itself.
 
-// hack-jslint - jslint_export
-local.jslint_export = Object.freeze(function (
+// hack-jslint - jslint0
+local.jslint0 = Object.freeze(function (
     source = "",
     option_object = empty(),
     global_array = []
@@ -29676,19 +29697,6 @@ local.jslint_export = Object.freeze(function (
         }
         return true;
     });
-    // expected_space_a_b: "Expected one space between '{a}' and '{b}'.",
-    // unexpected_space_a_b: "Unexpected space between '{a}' and '{b}'.",
-    source = lines_extra.map(function (element, ii) {
-        return element.source_autofixed || lines[ii];
-    }).join("\n").replace((
-        /\s+?\u0000/g
-    ), "\u0000").replace((
-        /(\n\u0020+)(.*?)\n\u0020*?(\/\/.*?)\u0000/g
-    ), "$1$3$1$2\u0000").replace((
-        /\u0000expected_space_a_b\u0000/g
-    ), " ").replace((
-        /\u0000unexpected_space_a_b\u0000/g
-    ), "");
     // hack-jslint - debug warning
     warnings.some(function (warning) {
         if (!option.utility2) {
@@ -29739,7 +29747,19 @@ local.jslint_export = Object.freeze(function (
             );
         }),
         // hack-jslint - autofix
-        source_autofixed: source
+        // expected_space_a_b: "Expected one space between '{a}' and '{b}'.",
+        // unexpected_space_a_b: "Unexpected space between '{a}' and '{b}'.",
+        source_autofixed: lines_extra.map(function (element, ii) {
+            return element.source_autofixed || lines[ii];
+        }).join("\n").replace((
+            /\s+?\u0000/g
+        ), "\u0000").replace((
+            /(\n\u0020+)(.*?)\n\u0020*?(\/\/.*?)\u0000/g
+        ), "$1$3$1$2\u0000").replace((
+            /\u0000expected_space_a_b\u0000/g
+        ), " ").replace((
+            /\u0000unexpected_space_a_b\u0000/g
+        ), "")
     };
 });
 
@@ -29748,310 +29768,15 @@ local.jslint_export = Object.freeze(function (
 file none
 */
 local.CSSLint = CSSLint;
-}());
 /* jslint ignore:end */
 
 
-// run shared js-env code - function
-(function () {
-local.jslintAndPrint = function (code = "", file = "undefined", opt = {}) {
-/*
- * this function will jslint/csslint <code> and print any errors to stderr
- */
-    let ii;
-    let tmp;
-    if (!(opt && opt.gotoState)) {
-        local.jslintResult = {
-            gotoState: 0
-        };
-    }
-    opt = Object.assign(local.jslintResult, opt);
-    opt.gotoState += 1;
-    switch (opt.gotoState) {
-    // jslint - init
-    case 1:
-        // cleanup
-        opt.errList = [];
-        opt.errMsg = "";
-        // preserve lineno
-        if (opt.iiStart) {
-            // optimization - efficiently count number of newlines
-            // https://jsperf.com/regexp-counting-2/8
-            opt.lineOffset |= 0;
-            ii = 0;
-            while (true) {
-                ii = code.indexOf("\n", ii);
-                if (ii === 0 || ii > opt.iiStart) {
-                    break;
-                }
-                ii += 1;
-                opt.lineOffset += 1;
-            }
-            code = code.slice(opt.iiStart, opt.iiEnd || code.length);
-        }
-        switch (opt.fileType0) {
-        // de-embed-js - '\\n\\\n...\\n\\\n'
-        case ".\\n\\":
-            // rgx - remove \\n\\
-            code = code.replace((
-                /\\n\\$|\\(.)/gm
-            ), function (ignore, match1) {
-                return match1 || "";
-            });
-            break;
-        // de-embed-js - '\n...\n'
-        case ".sh":
-            // rgx - convert '"'"' to '
-            code = code.replace((
-                /'"'"'/g
-            ), "'");
-            break;
-        }
-        // init
-        opt = Object.assign(opt, {
-            ".css": (
-                /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".html": (
-                /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".js": (
-                /^\/\*jslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".json": (
-                /^\s*?(?:\[|\{)/
-            ),
-            ".md": (
-                /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".sh": (
-                /(^#\u0020jslint\u0020utility2:true$)/m
-            ),
-            code0: code,
-            fileType: (
-                /\.\w+?$|$/m
-            ).exec(file)[0]
-        });
-        // jslint - .json
-        if (opt.fileType === ".js" && opt[".json"].test(code)) {
-            opt.fileType = ".json";
-        }
-        try {
-            opt.conditionalPassed = opt[opt.fileType].exec(code);
-        } catch (ignore) {}
-        opt.utility2 = (
-            opt.conditionalPassed && opt.conditionalPassed[1]
-        ) || opt.autofix;
-        if (
-            opt.conditional
-            && (!opt.conditionalPassed || opt.coverage)
-        ) {
-            break;
-        }
-        opt.gotoState = 10;
-        break;
-    // jslint - autofix
-    case 11:
-        code = local.jslintAutofix(code, file, opt);
-        local.jslintResult = opt;
-        break;
-    // jslint - csslint and jslint
-    case 12:
-        // restore lineOffset
-        code = "\n".repeat(opt.lineOffset | 0) + code;
-        switch (opt.fileType) {
-        case ".css":
-            // csslint
-            Object.assign(opt, local.CSSLint.verify(code));
-            // init errList
-            opt.errList = opt.messages.map(function (err) {
-                err.column = err.col;
-                err.message = (
-                    err.type + " - " + err.rule.id + " - " + err.message
-                    + "\n    " + err.rule.desc
-                );
-                return err;
-            });
-            break;
-        case ".html":
-        case ".md":
-        case ".sh":
-            break;
-        default:
-            // jslint - .js
-            Object.assign(opt, local.jslint_export(code, opt));
-            code = opt.source_autofixed || code;
-            // init errList
-            opt.errList = opt.warnings.filter(function (err) {
-                return err && err.message;
-            }).map(function (err) {
-                err.column = err.column + 1;
-                err.evidence = err.source;
-                err.line = err.line + 1;
-                // debug early_stop
-                if (err.early_stop) {
-                    err.message = (
-                        "[JSLint was unable to finish] - "
-                        + err.message
-                    );
-                }
-                return err;
-            });
-        }
-        break;
-    // jslint - utility2
-    case 13:
-        local.jslintUtility2(code, file, opt);
-        break;
-    // jslint - print
-    default:
-        switch (Boolean(opt.fileType0) && opt.fileType0) {
-        // re-embed-js - '\\n\\\n...\\n\\\n'
-        case ".\\n\\":
-            code = code.trim();
-            // rgx - escape \ to \\
-            code = code.replace((
-                /\\/g
-            ), "\\\\");
-            // rgx - append \n\
-            code = code.replace((
-                /$/gm
-            ), "\\n\\");
-            // rgx - escape ' to \'
-            code = code.replace((
-                /'/g
-            ), "\\'");
-            // rgx - escape js-env to js\-env
-            code = code.replace((
-                /\u0020js-env\u0020/g
-            ), " js\\-env ");
-            code += "\n";
-            break;
-        // re-embed-js - '\n...\n'
-        case ".sh":
-            // rgx - escape ' to '"'"'
-            code = code.trim().replace((
-                /'/g
-            ), "'\"'\"'") + "\n";
-            break;
-        case false:
-            code = code.trimEnd() + "\n";
-            break;
-        default:
-            code = code.trim() + "\n";
-        }
-        // autofix-save
-        if (
-            !local.isBrowser
-            && opt.autofix
-            && !opt.fileType0
-            && !opt.stop
-            && code !== opt.code0
-            && require("fs").existsSync(file)
-        ) {
-            require("fs").writeFileSync(file, code);
-            require("fs").writeFileSync(file + ".autofix.old", opt.code0);
-            require("child_process").spawnSync(
-                "diff",
-                [
-                    "-u", file + ".autofix.old", file
-                ],
-                {
-                    stdio: [
-                        "ignore", 2, "ignore"
-                    ]
-                }
-            );
-            require("fs").unlinkSync(file + ".autofix.old");
-            console.error(
-                "\u001b[1mjslint-autofix - modified and saved file " + file
-                + "\u001b[22m"
-            );
-        }
-        // print colorized errMsg to stderr
-        // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99
-        opt.errList.filter(function (warning) {
-            return warning && warning.message;
-        // print only first 10 warnings
-        }).slice(0, 10).forEach(function (err, ii) {
-            opt.errMsg = (
-                opt.errMsg || " \u001b[1mjslint " + file + "\u001b[22m\n"
-            );
-            opt.errMsg += (
-                ("  " + String(ii + 1)).slice(-3)
-                + " \u001b[31m" + err.message + "\u001b[39m"
-                + " \u001b[90m\/\/ line " + err.line + ", column "
-                + err.column
-                + "\u001b[39m\n"
-                + ("    " + String(err.evidence).trim()).slice(0, 80) + "\n"
-            );
-            if (!ii && err.stack && err.a !== "debug\u0049nline") {
-                tmp = err.stack;
-                Object.entries(err).forEach(function ([
-                    key, val
-                ]) {
-                    if ((typeof val === "object" && val) || key === "stack") {
-                        delete err[key];
-                    }
-                });
-                opt.errMsg += (
-                    JSON.stringify(err, undefined, 4) + "\n" + tmp.trim() + "\n"
-                );
-            }
-        });
-        opt.errMsg = opt.errMsg.trim();
-        if (opt.errMsg) {
-            // print err to stderr
-            console.error(opt.errMsg);
-        }
-        opt.code = code;
-        return code;
-    }
-    // recurse
-    return local.jslintAndPrint(code, file, opt);
-};
+let jslintAutofix;
+let jslintRecurse;
+let jslintUtility2;
+let stringGetLineAndCol;
 
-local.jslintAndPrintDir = async function (dir, opt) {
-/*
- * this function will jslint files in shallow <dir>
- */
-    let errCnt;
-    errCnt = 0;
-    await Promise.all((
-        await require("fs").promises.readdir(require("path").resolve(dir))
-    ).map(async function (file) {
-        let data;
-        let timeStart;
-        timeStart = Date.now();
-        file = require("path").resolve(file);
-        switch ((
-            /\.\w+?$|$/m
-        ).exec(file)[0]) {
-        case ".css":
-        case ".html":
-        case ".js":
-        case ".json":
-        case ".md":
-        case ".sh":
-            if ((
-                /\b(?:assets\.app\.js|lock|min|raw|rollup)\b/
-            ).test(file)) {
-                return;
-            }
-            // jslint file
-            data = await require("fs").promises.readFile(file, "utf8");
-            local.jslintAndPrint(data, file, opt);
-            errCnt += local.jslintResult.errList.length;
-            console.error(
-                "jslint - " + (Date.now() - timeStart) + "ms - " + file
-            );
-            break;
-        }
-    }));
-    return Math.min(errCnt, 255);
-};
-
-local.jslintAutofix = function (code, file, opt) {
+jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {
 /*
  * this function will jslint-autofix <code>
  */
@@ -30060,53 +29785,47 @@ local.jslintAutofix = function (code, file, opt) {
     let dataList;
     let ignoreList;
     let ii;
+    let result;
     let rgx1;
     let rgx2;
     let tmp;
-    // autofix-all
-    if (opt.autofix) {
-        // autofix-all - normalize local-function
-        if (
-            globalThis.utility2
-            && typeof globalThis.utility2.jslintAutofixLocalFunction
-            === "function"
-        ) {
-            code = globalThis.utility2.jslintAutofixLocalFunction(code, file);
-        }
-        // autofix-all - remove trailing-whitespace
-        code = code.replace((
-            /\u0020+$/gm
-        ), "");
-        // autofix-all - remove leading-whitespace before )]}
-        code = code.replace((
-            /\n+?(\n\u0020*?[)\]}])/g
-        ), "$1");
-        // autofix-all - eslint - no-multiple-empty-lines
-        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
-        code = code.replace((
-            /\n{4,}/g
-        ), "\n\n\n");
-        // autofix-all - recurse <script>...</script>, <style>...</style>
-        code = code.replace((
-            /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\\n\\\n(?:^.*?\\n\\\n)*?)(';$|<\/script>\\n\\$|<\/style>\\n\\$)/gm
-        ), function (ignore, match1, match2, ii) {
-            return local.jslintAndPrint(
-                code,
-                file + (
-                    match2.indexOf("style") > -1
-                    ? ".<style>.css"
-                    : ".<script>.js"
-                ),
-                Object.assign({}, opt, {
-                    fileType0: ".\\n\\",
-                    iiEnd: ii + match1.length,
-                    iiStart: ii,
-                    gotoState: 0
-                })
-            ) + match2;
-        });
+    // autofix-all - normalize local-function
+    if (
+        globalThis.utility2
+        && typeof globalThis.utility2.jslintAutofixLocalFunction
+        === "function"
+    ) {
+        code = globalThis.utility2.jslintAutofixLocalFunction(code, file);
     }
-    switch (opt.autofix && opt.fileType) {
+    // autofix-all - remove trailing-whitespace
+    code = code.replace((
+        /\u0020+$/gm
+    ), "");
+    // autofix-all - remove leading-whitespace before )]}
+    code = code.replace((
+        /\n+?(\n\u0020*?[)\]}])/g
+    ), "$1");
+    // autofix-all - eslint - no-multiple-empty-lines
+    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
+    code = code.replace((
+        /\n{4,}/g
+    ), "\n\n\n");
+    // autofix-all - recurse <script>...</script>, <style>...</style>
+    code = code.replace((
+        /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\\n\\\n(?:^.*?\\n\\\n)*?)(';$|<\/script>\\n\\$|<\/style>\\n\\$)/gm
+    ), function (ignore, match1, match2, ii) {
+        return jslintRecurse(code, file + (
+            match2.indexOf("style") >= 0
+            ? ".<style>.css"
+            : ".<script>.js"
+        ), opt, {
+            fileType0: ".\\n\\",
+            iiEnd: ii + match1.length,
+            iiLine,
+            iiStart: ii
+        }) + match2;
+    });
+    switch (fileType) {
     case ".css":
         break;
     case ".html":
@@ -30114,25 +29833,21 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /^(\/\*\u0020jslint\u0020utility2:true\u0020\*\/\n[\S\s]*?\n)(<\/(?:script|style)>)$/gm
         ), function (ignore, match1, match2, ii) {
-            return local.jslintAndPrint(
-                code,
-                file + (
-                    match2.indexOf("style") >= 0
-                    ? ".<style>.css"
-                    : ".<script>.js"
-                ),
-                Object.assign({}, opt, {
-                    fileType0: opt.fileType,
-                    iiEnd: ii + match1.length,
-                    iiStart: ii,
-                    gotoState: 0
-                })
-            ) + match2;
+            return jslintRecurse(code, file + (
+                match2.indexOf("style") >= 0
+                ? ".<style>.css"
+                : ".<script>.js"
+            ), opt, {
+                fileType0: fileType,
+                iiEnd: ii + match1.length,
+                iiLine,
+                iiStart: ii
+            }) + match2;
         });
         break;
     case ".js":
     case ".json":
-        // autofix-js - demux code to [code, ignoreList]
+        // autofix-js - de-mux code to [code, ignoreList]
         ignoreList = [];
         code = code.replace((
             /^\u0020*?\/\*\u0020jslint\u0020ignore:start\u0020\*\/$[\S\s]*?^\/\*\u0020jslint\u0020ignore:end\u0020\*\/$/gm
@@ -30149,7 +29864,7 @@ local.jslintAutofix = function (code, file, opt) {
                 + match0.charCodeAt(0).toString(16)
             ).slice(-4);
         });
-        // autofix-js - demux code2 to [code2, ignoreList]
+        // autofix-js - de-mux code2 to [code2, ignoreList]
         code2 = "";
         dataList = [];
         ii = 0;
@@ -30162,7 +29877,7 @@ local.jslintAutofix = function (code, file, opt) {
             /(?:[^.]\b(?:case|delete|in|instanceof|new|return|typeof|void|yield)|[!%&(*+,\-\/:;<=>?\[\^{|}~])[\s\u0028]*?\/[^*\/]/g
         );
         tmp = "";
-        // autofix-js - demux shebang
+        // autofix-js - de-mux shebang
         code.replace((
             /^#!.*/
         ), function (match0) {
@@ -30239,7 +29954,6 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /\/_\*\//g
         ), "/_/");
-        opt.codeDemux = code;
         // autofix-js - left-align comment //_
         tmp = undefined;
         code = code.split("\n").reverse().map(function (line) {
@@ -30385,17 +30099,17 @@ local.jslintAutofix = function (code, file, opt) {
                 /\t/g
             ), "\\t");
         });
-        // autofix-js - remux shebang
+        // autofix-js - re-mux shebang
         code = code.replace((
             /^#!/
         ), function () {
             return dataList.shift().code;
         });
-        // autofix-js - remux [code, dataList] to code
+        // autofix-js - re-mux [code, dataList] to code
         code = code.replace((
             /"_"|'_'|\/\*_\*\/|\/\/!!_|\/\/_|\/_\/|`_`/g
         ), function (match0) {
-            // autofix-js - defer remux rgx /_/
+            // autofix-js - defer re-mux rgx /_/
             if (match0 === "/_/") {
                 dataList.push(dataList.shift());
                 return "/\u0000/";
@@ -30407,14 +30121,14 @@ local.jslintAutofix = function (code, file, opt) {
         while (true) {
             ii += 1;
             code0 = code;
-            Object.assign(opt, local.jslint_export(code, opt));
-            code = opt.source_autofixed;
-            if (ii >= 10 || opt.stop || code0 === code) {
+            result = local.jslint0(code, opt, globalList);
+            code = result.source_autofixed;
+            if (ii >= 10 || result.stop || code0 === code) {
                 break;
             }
         }
         // autofix-json - jsonStringifyOrdered
-        if (opt.fileType === ".json") {
+        if (fileType === ".json") {
             code = JSON.stringify(
                 local.objectDeepCopyWithKeysSorted(JSON.parse(code)),
                 undefined,
@@ -30422,7 +30136,7 @@ local.jslintAutofix = function (code, file, opt) {
             );
             break;
         }
-        // autofix-js - remux - code, dataList./_/ to code
+        // autofix-js - re-mux - code, dataList./_/ to code
         code = code.replace((
             /\/\u0000\//g
         ), function () {
@@ -30434,7 +30148,7 @@ local.jslintAutofix = function (code, file, opt) {
         ), function (match0) {
             return match0.split("\n").slice(0, -1).sort().join("\n") + "\n";
         });
-        // autofix-js - remux - code, ignoreList to code
+        // autofix-js - re-mux - code, ignoreList to code
         code = code.replace((
             /^\u0020*?\/\*\u0020jslint\u0020ignore:start:end\u0020\*\/$/gm
         ), function () {
@@ -30446,16 +30160,14 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /^(```javascript\n)([\S\s]*?\n)```$/gm
         ), function (ignore, match1, match2, ii) {
-            return match1 + local.jslintAndPrint(
-                code,
-                file + ".<```javascript>.js",
-                Object.assign({}, opt, {
-                    fileType0: opt.fileType,
-                    iiEnd: ii + match1.length + match2.length,
-                    iiStart: ii + match1.length,
-                    gotoState: 0
-                })
-            ) + "```";
+            return match1 + jslintRecurse(code, (
+                file + ".<```javascript>.js"
+            ), opt, {
+                fileType0: fileType,
+                iiEnd: ii + match1.length + match2.length,
+                iiLine,
+                iiStart: ii + match1.length
+            }) + "```";
         });
         break;
     case ".sh":
@@ -30463,43 +30175,273 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\n[\S\s]*?\n'/gm
         ), function (match0, ii) {
-            return local.jslintAndPrint(
-                code,
-                file + ".<node -e>.js",
-                Object.assign({}, opt, {
-                    fileType0: opt.fileType,
-                    iiEnd: ii + match0.length - 1,
-                    iiStart: ii,
-                    gotoState: 0
-                })
-            ) + "'";
+            return jslintRecurse(code, file + ".<node -e>.js", opt, {
+                fileType0: fileType,
+                iiEnd: ii + match0.length - 1,
+                iiLine,
+                iiStart: ii
+            }) + "'";
         });
         break;
     }
     return code;
 };
 
-local.jslintGetColumnLine = function (code, ii) {
+jslintRecurse = function (code, file, opt, {
+    fileType0,
+    iiEnd,
+    iiLine = 0,
+    iiStart = 0
+}) {
 /*
- * this function will transform <code> and <ii> to {column, line, evidence}
+ * this function will recursively jslint <code> for embedded code
  */
-    let column;
-    let evidence;
-    let line;
-    evidence = code.slice(0, ii).split("\n");
-    line = evidence.length - 1;
-    column = evidence[line].length;
-    evidence = evidence[line] + code.slice(ii, ii + 100).split("\n")[0];
-    return {
-        column,
-        evidence,
-        line
+    let code0;
+    let errList;
+    let errMsg;
+    let fileType;
+    let globalList;
+    let modeAutofix;
+    let modeConditional;
+    let modeCoverage;
+    let result;
+    let tmp;
+    // init opt
+    local.jslintResult = {};
+    opt = Object.assign(local.jslintResult, opt, {
+        errList: [],
+        errMsg: ""
+    });
+    // init var
+    errList = [];
+    fileType = (
+        /\.\w+?$|$/m
+    ).exec(file)[0];
+    globalList = opt.globalList;
+    modeAutofix = opt.autofix;
+    modeConditional = opt.conditional;
+    modeCoverage = opt.coverage;
+    result = {};
+    // preserve lineno - save iiLine
+    iiLine += stringGetLineAndCol(code, iiStart).line;
+    // de-embed
+    code = code.slice(iiStart, iiEnd || code.length);
+    switch (fileType0) {
+    // de-embed-js - '\\n\\\n...\\n\\\n'
+    case ".\\n\\":
+        // rgx - remove \\n\\
+        code = code.replace((
+            /\\n\\$|\\(.)/gm
+        ), function (ignore, match1) {
+            return match1 || "";
+        });
+        break;
+    // de-embed-js - '\n...\n'
+    case ".sh":
+        // rgx - convert '"'"' to '
+        code = code.replace((
+            /'"'"'/g
+        ), "'");
+        break;
+    }
+    // init
+    code0 = code;
+    tmp = {
+        ".css": (
+            /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".html": (
+            /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".js": (
+            /^\/\*jslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".json": (
+            /^\s*?(?:\[|\{)/
+        ),
+        ".md": (
+            /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".sh": (
+            /(^#\u0020jslint\u0020utility2:true$)/m
+        )
     };
+    // jslint - .json
+    if (fileType === ".js" && tmp[".json"].test(code)) {
+        fileType = ".json";
+    }
+    // init mode-utility2
+    tmp = tmp[fileType] && tmp[fileType].exec(code);
+    opt.utility2 = Boolean((tmp && tmp[1]) || modeAutofix);
+    // if not modeConditional, then do not jslint
+    if ((modeConditional && !tmp) || modeCoverage) {
+        return code;
+    }
+    // jslint - modeAutofix
+    if (modeAutofix) {
+        code = jslintAutofix(code, file, opt, {
+            fileType,
+            globalList,
+            iiLine
+        });
+    }
+    // preserve lineno - restore iiLine
+    code = "\n".repeat(iiLine) + code;
+    switch (fileType) {
+    // jslint - .css
+    case ".css":
+        // call csslint
+        result = local.CSSLint.verify(code);
+        // init errList
+        errList = result.messages.map(function (err) {
+            err.column = err.col;
+            err.message = (
+                err.type + " - " + err.rule.id + " - " + err.message
+                + "\n    " + err.rule.desc
+            );
+            return err;
+        });
+        break;
+    case ".html":
+    case ".md":
+    case ".sh":
+        break;
+    // jslint - .js
+    default:
+        // call jslint
+        result = local.jslint0(code, opt, globalList);
+        code = result.source_autofixed || code;
+        // init errList
+        errList = result.warnings.filter(function (err) {
+            return err && err.message;
+        }).map(function (err) {
+            err.column = err.column + 1;
+            err.evidence = err.source;
+            err.line = err.line + 1;
+            // debug early_stop
+            if (err.early_stop) {
+                err.message = (
+                    "[JSLint was unable to finish] - "
+                    + err.message
+                );
+            }
+            return err;
+        });
+    }
+    if (opt.utility2) {
+        jslintUtility2({
+            code,
+            errList,
+            fileType
+        });
+    }
+    // jslint - print
+    switch (Boolean(fileType0) && fileType0) {
+    // re-embed-js - '\\n\\\n...\\n\\\n'
+    case ".\\n\\":
+        code = code.trim();
+        // rgx - escape \ to \\
+        code = code.replace((
+            /\\/g
+        ), "\\\\");
+        // rgx - append \n\
+        code = code.replace((
+            /$/gm
+        ), "\\n\\");
+        // rgx - escape ' to \'
+        code = code.replace((
+            /'/g
+        ), "\\'");
+        // rgx - escape js-env to js\-env
+        code = code.replace((
+            /\u0020js\u002denv\u0020/g
+        ), " js\\\u002denv ");
+        code += "\n";
+        break;
+    // re-embed-js - '\n...\n'
+    case ".sh":
+        // rgx - escape ' to '"'"'
+        code = code.trim().replace((
+            /'/g
+        ), "'\"'\"'") + "\n";
+        break;
+    case false:
+        code = code.trimEnd() + "\n";
+        break;
+    default:
+        code = code.trim() + "\n";
+    }
+    // autofix-save
+    if (
+        !local.isBrowser
+        && modeAutofix
+        && !fileType0
+        && !result.stop
+        && code !== code0
+        && require("fs").existsSync(file)
+    ) {
+        require("fs").writeFileSync(file, code);
+        require("fs").writeFileSync(file + ".autofix.old", code0);
+        require("child_process").spawnSync(
+            "diff",
+            [
+                "-u", file + ".autofix.old", file
+            ],
+            {
+                stdio: [
+                    "ignore", 2, "ignore"
+                ]
+            }
+        );
+        require("fs").unlinkSync(file + ".autofix.old");
+        console.error(
+            "\u001b[1mjslint-autofix - modified and saved file " + file
+            + "\u001b[22m"
+        );
+    }
+    // print colorized errMsg to stderr
+    // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99
+    errMsg = "";
+    errList.filter(function (warning) {
+        return warning && warning.message;
+    // print only first 10 warnings
+    }).slice(0, 10).forEach(function (err, ii) {
+        errMsg = errMsg || " \u001b[1mjslint " + file + "\u001b[22m\n";
+        errMsg += (
+            ("  " + String(ii + 1)).slice(-3)
+            + " \u001b[31m" + err.message + "\u001b[39m"
+            + " \u001b[90m\/\/ line " + err.line + ", column "
+            + err.column
+            + "\u001b[39m\n"
+            + ("    " + String(err.evidence).trim()).slice(0, 80) + "\n"
+        );
+        if (!ii && err.stack && err.a !== "debug\u0049nline") {
+            tmp = err.stack;
+            Object.entries(err).forEach(function ([
+                key, val
+            ]) {
+                if ((typeof val === "object" && val) || key === "stack") {
+                    delete err[key];
+                }
+            });
+            errMsg += (
+                JSON.stringify(err, undefined, 4) + "\n" + tmp.trim() + "\n"
+            );
+        }
+    });
+    errMsg = errMsg.trim();
+    if (errMsg) {
+        // print err to stderr
+        console.error(errMsg);
+    }
+    return Object.assign(local.jslintResult, opt, result, {
+        code,
+        errList,
+        errMsg
+    }).code;
 };
 
-local.jslintResult = {};
-
-local.jslintUtility2 = function (code, ignore, opt) {
+jslintUtility2 = function ({code, errList, fileType}) {
 /*
  * this function will jslint <code> with utiity2-specific rules
  */
@@ -30508,54 +30450,52 @@ local.jslintUtility2 = function (code, ignore, opt) {
     let indent;
     let previous;
     // jslintUtility2 - all
-    if (opt.utility2) {
-        code2 = code;
-        // ignore start to end
-        code2 = code2.replace((
-            /^\/\*\u0020jslint\u0020ignore:start\u0020\*\/$[\S\s]+?^\/\*\u0020jslint\u0020ignore:end\u0020\*\/$/gm
-        ), function (match0) {
-            // preserve lineno
-            return match0.replace((
-                /.+/g
-            ), "");
-        });
-        // lint whitespace
-        code2.replace((
-            /^\u0020+?(?:\*|\/\/!!)|^\u0020+|[\r\t]/gm
-        ), function (match0, ii) {
-            switch (match0.slice(-1)) {
-            case " ":
-                if (match0.length % 4 === 0) {
-                    return "";
-                }
-                err = {
-                    message: "non 4-space indent"
-                };
-                break;
-            case "\r":
-                err = {
-                    message: "unexpected \\r"
-                };
-                break;
-            case "\t":
-                err = {
-                    message: "unexpected \\t"
-                };
-                break;
-            default:
+    code2 = code;
+    // ignore start to end
+    code2 = code2.replace((
+        /^\/\*\u0020jslint\u0020ignore:start\u0020\*\/$[\S\s]+?^\/\*\u0020jslint\u0020ignore:end\u0020\*\/$/gm
+    ), function (match0) {
+        // preserve lineno
+        return match0.replace((
+            /.+/g
+        ), "");
+    });
+    // lint whitespace
+    code2.replace((
+        /^\u0020+?(?:\*|\/\/!!)|^\u0020+|[\r\t]/gm
+    ), function (match0, ii) {
+        switch (match0.slice(-1)) {
+        case " ":
+            if (match0.length % 4 === 0) {
                 return "";
             }
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));
-            opt.errList.push({
-                column: err.column + 1,
-                evidence: JSON.stringify(err.evidence),
-                line: err.line + 1,
-                message: err.message
-            });
+            err = {
+                message: "non 4-space indent"
+            };
+            break;
+        case "\r":
+            err = {
+                message: "unexpected \\r"
+            };
+            break;
+        case "\t":
+            err = {
+                message: "unexpected \\t"
+            };
+            break;
+        default:
             return "";
+        }
+        Object.assign(err, stringGetLineAndCol(code2, ii));
+        errList.push({
+            column: err.column + 1,
+            evidence: JSON.stringify(err.evidence),
+            line: err.line + 1,
+            message: err.message
         });
-    }
-    switch (opt.utility2 && opt.fileType) {
+        return "";
+    });
+    switch (fileType) {
     // jslintUtility2 - .css
     case ".css":
         // ignore comment
@@ -30568,7 +30508,7 @@ local.jslintUtility2 = function (code, ignore, opt) {
             ), "");
         });
         code2.replace((
-            /\S\u0020{2}|\u0020,|^\S.*?[,;{}]./gm
+            /\S\u0020{2}|\u0020,|^\S.*?,.|[;{}]./gm
         ), function (match0, ii) {
             switch (match0.slice(-2)) {
             case "  ":
@@ -30589,8 +30529,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                     message: "unexpected multiline-statement"
                 };
             }
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));
-            opt.errList.push({
+            Object.assign(err, stringGetLineAndCol(code2, ii));
+            errList.push({
                 column: err.column + err.colOffset,
                 evidence: JSON.stringify(err.evidence),
                 line: err.line + 1,
@@ -30647,8 +30587,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 : undefined
             );
             if (err) {
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30682,8 +30622,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 err = {
                     message: "lines not sorted\n" + previous + "\n" + match1
                 };
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30718,8 +30658,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 previous = match1;
             }
             if (err) {
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30759,8 +30699,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 previous = match2;
             }
             if (err) {
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30772,6 +30712,93 @@ local.jslintUtility2 = function (code, ignore, opt) {
         break;
     }
 };
+
+stringGetLineAndCol = function (code, ii) {
+/*
+ * this function will get line and column from <code> at <ii>
+ */
+    let aa;
+    let bb;
+    let line;
+    // https://jsperf.com/regexp-counting-2/8
+    bb = 0;
+    line = 0;
+    while (true) {
+        aa = bb;
+        bb = code.indexOf("\n", bb) + 1;
+        if (bb === 0 || ii < bb) {
+            break;
+        }
+        line += 1;
+    }
+    return {
+        column: ii - aa,
+        evidence: code.slice(aa, Math.max((bb || code.length) - 1, 0)),
+        line
+    };
+};
+
+local.jslintAndPrint = function (code, file = "undefined", opt = {}) {
+/*
+ * this function will jslint-autofix <code>
+ */
+    return jslintRecurse(code, file, opt, {});
+};
+
+local.jslintAndPrintDir = function (dir, opt, onError) {
+/*
+ * this function will jslint files in <dir>
+ */
+    let errCnt;
+    errCnt = 0;
+    onError = onError || function (err) {
+        process.exit(Math.min((err && err.message) | 0, 127));
+    };
+    dir = require("path").resolve(dir) + require("path").sep;
+    require("fs").readdir(dir, function (err, fileList) {
+        local.onErrorThrow(err);
+        Promise.all(fileList.map(function (file) {
+            return new Promise(function (resolve) {
+                let timeStart;
+                timeStart = Date.now();
+                file = dir + file;
+                switch ((
+                    /\.\w+?$|$/m
+                ).exec(file)[0]) {
+                case ".css":
+                case ".html":
+                case ".js":
+                case ".json":
+                case ".md":
+                case ".sh":
+                    if ((
+                        /\b(?:assets\.app\.js|lock|min|raw|rollup)\b/
+                    ).test(file)) {
+                        resolve();
+                        return;
+                    }
+                    // jslint file
+                    require("fs").readFile(file, "utf8", function (err, data) {
+                        local.onErrorThrow(err);
+                        local.jslintAndPrint(data, file, opt);
+                        errCnt += local.jslintResult.errList.length;
+                        console.error(
+                            "jslint - " + (Date.now() - timeStart) + "ms - "
+                            + file
+                        );
+                        resolve();
+                    });
+                    return;
+                }
+                resolve();
+            });
+        })).then(function () {
+            onError(errCnt && new Error(errCnt));
+        });
+    });
+};
+
+local.jslintResult = {};
 }());
 
 
@@ -30815,7 +30842,7 @@ local.cliDict.dir = function () {
     local.jslintAndPrintDir(process.argv[3], {
         autofix: process.argv.indexOf("--autofix") >= 0,
         conditional: process.argv.indexOf("--conditional") >= 0
-    }).then(process.exit);
+    });
 };
 
 // run the cli
@@ -30979,6 +31006,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -31392,6 +31427,14 @@ if (local.isBrowser) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -31604,7 +31647,7 @@ local.fsRmrfSync = function (pathname) {
  * this function will sync "rm -rf" <pathname>
  */
     let child_process;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         child_process = require("child_process");
     } catch (ignore) {
@@ -44005,7 +44048,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.6.11)
+ * lib.utility2.js (2020.6.14)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -44159,6 +44202,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -44376,6 +44427,14 @@ local.assetsDict["/assets.utility2.header.js"] = '\
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
+    };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
     };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
@@ -45270,11 +45329,11 @@ local.assetsDict["/assets.test.template.js"] = '\
 \n\
 \n\
 /* jslint utility2:true */\n\
-/* istanbul ignore next */\n\
 (function (local) {\n\
 "use strict";\n\
 \n\
 \n\
+/* istanbul ignore next */\n\
 // run shared js\-env code - init-before\n\
 (function () {\n\
 // init local\n\
@@ -45548,7 +45607,11 @@ local.cliDict["utility2.testReportCreate"] = function () {
 // run shared js-env code - function
 (function () {
 let localEventListenerDict;
+let localEventListenerId;
+let onErrorThrow;
 localEventListenerDict = {};
+localEventListenerId = 0;
+onErrorThrow = local.onErrorThrow;
 // init lib Blob
 local.Blob = globalThis.Blob || function (list, opt) {
     /*
@@ -45744,6 +45807,7 @@ local._testCase_buildApidoc_default = function (opt, onError) {
             require("v8"),
             require("vm"),
             {
+                // coverage-hack
                 "__zjqx1234__": nop
             }
         ].forEach(function (dict) {
@@ -45769,25 +45833,22 @@ local._testCase_buildApidoc_default = function (opt, onError) {
                 console.error(errCaught);
             }
             onError();
-        }, local.onErrorThrow);
+        }, onErrorThrow);
         return exports;
     };
     // coverage-hack
     require2();
     // save apidoc.html
-    local.fsWriteFileWithMkdirp({
-        data: local.apidocCreate(local.objectAssignDefault(opt, {
+    local.fsWriteFileWithMkdirp("tmp/build/apidoc.html", local.apidocCreate(
+        Object.assign({
             blacklistDict: local,
             modeNop: (
                 process.env.npm_config_mode_test_case
                 !== "testCase_buildApidoc_default"
             ),
             require: require2
-        })),
-        modeDebug: true,
-        modeUncaughtException: true,
-        pathname: "tmp/build/apidoc.html"
-    }, onError);
+        }, opt)
+    ), onError);
 };
 
 local._testCase_buildApp_default = function (opt, onError) {
@@ -45798,54 +45859,19 @@ local._testCase_buildApp_default = function (opt, onError) {
         onError(undefined, opt);
         return;
     }
-    globalThis.local.testCase_buildReadme_default(opt, local.onErrorThrow);
-    globalThis.local.testCase_buildLib_default(opt, local.onErrorThrow);
-    globalThis.local.testCase_buildTest_default(opt, local.onErrorThrow);
     local.buildApp(opt, onError);
-};
-
-local._testCase_buildLib_default = function (opt, onError) {
-/*
- * this function will test buildLib's default handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    return local.buildLib({}, onError);
-};
-
-local._testCase_buildReadme_default = function (opt, onError) {
-/*
- * this function will test buildReadme's default handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    return local.buildReadme({}, onError);
-};
-
-local._testCase_buildTest_default = function (opt, onError) {
-/*
- * this function will test buildTest's default handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    return local.buildTest({}, onError);
 };
 
 local._testCase_webpage_default = function (opt, onError) {
 /*
  * this function will test webpage's default handling-behavior
  */
+    local.domQuerySelectorAllTagName("html");
+    local.domStyleValidate();
     if (local.isBrowser) {
         onError(undefined, opt);
         return;
     }
-    local.domStyleValidate();
     local.browserTest({
         fileScreenshot: (
             process.env.npm_config_dir_build
@@ -46604,544 +46630,606 @@ local.bufferValidateAndCoerce = function (buf, mode) {
     return buf;
 };
 
-local.buildApp = function (opt, onError) {
+local.buildApp = function ({
+    assetsList = [],
+    customizeReadmeList = []
+}, onError) {
 /*
- * this function will build app with given <opt>
+ * this function will build app
  */
-    // cleanup app
-    require("child_process").spawn((
-        "rm -rf tmp/build/app tmp/buildAssetsAppJs;"
-    ), {
-        shell: true,
-        stdio: [
-            "ignore", 1, 2
-        ]
-    }).on("error", onError).on("exit", function (exitCode) {
-        let promiseList;
-        // validate exitCode
-        local.assertOrThrow(!exitCode, exitCode);
-        promiseList = [];
-        // test standalone assets.app.js
-        promiseList.push(new Promise(function (resolve) {
-            local.fsWriteFileWithMkdirp({
-                data: local.assetsDict["/assets.app.js"],
-                modeDebug: true,
-                modeUncaughtException: true,
-                pathname: "tmp/buildAssetsAppJs/assets.app.js"
-            }, function () {
-                require("child_process").spawn("node", [
-                    "assets.app.js"
-                ], {
-                    cwd: "tmp/buildAssetsAppJs",
-                    env: {
-                        PATH: process.env.PATH,
-                        PORT: (Math.random() * 0x10000) | 0x8000,
-                        npm_config_timeout_exit: 5000
-                    },
-                    stdio: [
-                        "ignore", 1, 2
-                    ]
-                }).on("exit", function (exitCode) {
-                    // handle exitCode
-                    local.assertOrThrow(!exitCode, exitCode);
-                    resolve();
-                });
-            });
-        }));
-        // build app
-        [
-            {
-                file: "/LICENSE",
-                url: "/LICENSE"
-            }, {
-                file: "/assets." + process.env.npm_package_nameLib + ".html",
-                url: "/index.html"
-            }, {
-                file: "/assets." + process.env.npm_package_nameLib + ".css",
-                url: "/assets." + process.env.npm_package_nameLib + ".css"
-            }, {
-                file: "/assets." + process.env.npm_package_nameLib + ".js",
-                url: "/assets." + process.env.npm_package_nameLib + ".js"
-            }, {
-                file: "/assets.app.js",
-                url: "/assets.app.js"
-            }, {
-                file: "/assets.example.html",
-                url: "/assets.example.html"
-            }, {
-                file: "/assets.example.js",
-                url: "/assets.example.js"
-            }, {
-                file: "/assets.test.js",
-                url: "/assets.test.js"
-            }, {
-                file: "/assets.utility2.html",
-                url: "/assets.utility2.html"
-            }, {
-                file: "/assets.utility2.rollup.js",
-                url: "/assets.utility2.rollup.js"
-            }, {
-                file: "/index.html",
-                url: "/index.html"
-            }, {
-                file: "/index.rollup.html",
-                url: "/index.rollup.html"
-            }, {
-                file: "/utility2.state.init.js",
-                url: "/utility2.state.init.js"
+    let buildAppAssets;
+    let buildAppStandalone;
+    let buildLib;
+    let buildReadme;
+    let buildTest;
+    let fileDict;
+    let port;
+    let promiseList;
+    let src;
+    let tgt;
+    let tgtReplaceConditional;
+    let writeFile;
+    let writeFileLog;
+    tgtReplaceConditional = function (condition, replaceList) {
+    /*
+     * this function will conditionally replace <tgt> with replacements in
+     * <replaceList>
+     */
+        replaceList.forEach(function ({
+            aa,
+            bb,
+            merge
+        }) {
+            let isMatch;
+            if (!condition) {
+                aa = aa || merge;
+                console.error(
+                    "buildApp - replace-skipped - "
+                    + JSON.stringify((aa && aa.source) || aa)
+                );
+                return;
             }
-        ].concat(opt.assetsList).forEach(function (elem) {
-            promiseList.push(new Promise(function (resolve) {
-                if (!elem) {
-                    resolve();
+            if (aa) {
+                if (!tgt.match(aa)) {
+                    console.error(
+                        "buildApp - replace-unmatched - "
+                        + JSON.stringify((aa && aa.source) || aa)
+                    );
                     return;
                 }
+                tgt = tgt.replace(aa, bb);
+                return;
+            }
+            src.replace(merge, function (match2) {
+                tgt.replace(merge, function (match1) {
+                    isMatch = true;
+                    // disable $-escape in replacement-string
+                    tgt = tgt.replace(match1, function () {
+                        return match2;
+                    });
+                    return "";
+                });
+                return "";
+            });
+            if (!isMatch) {
+                console.error(
+                    "buildApp - replace-unmatched - "
+                    + JSON.stringify(merge.source)
+                );
+            }
+        });
+    };
+    writeFile = function (file, data, resolve) {
+    /*
+     * this function will write <data> to <file> with notification
+     */
+        require("fs").writeFile(file, data, function (err) {
+            onErrorThrow(err);
+            writeFileLog(file);
+            resolve();
+        });
+    };
+    writeFileLog = function (file) {
+    /*
+     * this function will notify <file> written
+     */
+        console.error("buildApp - wrote - " + require("path").resolve(file));
+    };
+    buildAppAssets = function (resolve) {
+        let promiseList2;
+        promiseList2 = [];
+        // fetch assets
+        [
+            {
+                url: "/LICENSE"
+            }, {
+                file: (
+                    "/assets." + process.env.npm_package_nameLib + ".html"
+                ),
+                url: "/index.html"
+            }, {
+                url: "/assets." + process.env.npm_package_nameLib + ".css"
+            }, {
+                url: "/assets." + process.env.npm_package_nameLib + ".js"
+            }, {
+                url: "/assets.app.js"
+            }, {
+                url: "/assets.example.html"
+            }, {
+                url: "/assets.example.js"
+            }, {
+                url: "/assets.test.js"
+            }, {
+                url: "/assets.utility2.html"
+            }, {
+                url: "/assets.utility2.lib.jslint.js"
+            }, {
+                url: "/assets.utility2.rollup.js"
+            }, {
+                url: "/index.html"
+            }, {
+                url: "/index.rollup.html"
+            }, {
+                url: "/utility2.state.init.js"
+            }
+        ].concat(assetsList).forEach(function (elem) {
+            promiseList2.push(new Promise(function (resolve) {
                 require("http").request((
                     "http://127.0.0.1:" + process.env.PORT + elem.url
                 ), function (res) {
-                    let data;
-                    data = [];
-                    res.on("data", function (chunk) {
-                        data.push(chunk);
-                    }).on("end", function () {
-                        local.fsWriteFileWithMkdirp({
-                            data: Buffer.concat(data),
-                            modeDebug: true,
-                            modeUncaughtException: true,
-                            pathname: "tmp/build/app/" + elem.file
-                        }, resolve);
-                    });
+                    let file;
+                    file = "tmp/build/app/" + (elem.file || elem.url);
+                    res.pipe(require("fs").createWriteStream(
+                        file
+                    ).on("close", function () {
+                        writeFileLog(file);
+                        resolve();
+                    }));
                 }).end();
             }));
         });
-        // jslint app
-        Promise.all(promiseList).then(function () {
-            local.local.childProcessEval((
-                local.assetsDict["/assets.utility2.lib.jslint.js"]
-                + ";module.exports.jslintAndPrintDir(\".\","
-                + "{conditional:true});"
-            ), {
-                cwd: "tmp/build/app"
-            }).then(onError);
+        // jslint assets
+        Promise.all(promiseList2).then(function (errList) {
+            errList.forEach(onErrorThrow);
+            require("child_process").spawn("node", [
+                "assets.utility2.lib.jslint.js", "dir", ".", "--conditional"
+            ], {
+                cwd: "tmp/build/app",
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            }).on("exit", resolve);
         });
-    });
-};
-
-local.buildLib = function (opt, onError) {
-/*
- * this function will build lib with given <opt>
- */
-    let result;
-    local.objectAssignDefault(opt, {
-        customize: local.nop,
-        dataFrom: require("fs").readFileSync(
-            "lib." + process.env.npm_package_nameLib + ".js",
-            "utf8"
-        ),
-        dataTo: local.templateRenderMyApp(
+    };
+    buildAppStandalone = function (resolve) {
+        // write assets.app.js
+        writeFile((
+            "tmp/build/app.standalone/assets.app.js"
+        ), local.assetsDict["/assets.app.js"], function () {
+            // test-file assets.app.js
+            require("child_process").spawn("node", [
+                "assets.app.js"
+            ], {
+                cwd: "tmp/build/app.standalone",
+                env: {
+                    PATH: process.env.PATH,
+                    PORT: port,
+                    npm_config_timeout_exit: 4000
+                },
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            }).on("exit", resolve);
+        });
+    };
+    buildLib = function (resolve) {
+        src = fileDict["lib." + process.env.npm_package_nameLib + ".js"];
+        // render lib.xxx.js
+        tgt = local.templateRenderMyApp(
             local.assetsDict["/assets.my_app.template.js"]
-        )
-    });
-    // search-and-replace - customize dataTo
-    [
-        // customize top-level comment-description
-        (
-            /\n\u0020\*\n(?:[\S\s]*?\n)?\u0020\*\/\n/
-        ),
-        // customize code after /* validateLineSortedReset */
-        (
-            /\n\/\*\u0020validateLineSortedReset\u0020\*\/\n[\S\s]*?$/
-        )
-    ].forEach(function (rgx) {
-        opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-    });
-    // customize assets.utility2.rollup.js
-    if (require("fs").existsSync("./assets.utility2.rollup.js")) {
-        opt.dataTo = opt.dataTo.replace(
-            "    // || globalThis.utility2_rollup_old",
-            "    || globalThis.utility2_rollup_old"
-        ).replace(
-            "    // || require(\"./assets.utility2.rollup.js\")",
-            "    || require(\"./assets.utility2.rollup.js\")"
         );
-    }
-    // save lib
-    result = opt.dataTo;
-    if (!process.env.npm_config_mode_coverage) {
-        local.fsWriteFileWithMkdirpSync(
+        tgtReplaceConditional(true, [
+            {
+                // customize top-level comment-description
+                merge: (
+                    /\n\u0020\*\n(?:[\S\s]*?\n)?\u0020\*\/\n/
+                )
+            }, {
+                // customize code after /* validateLineSortedReset */
+                merge: (
+                    /\n\/\*\u0020validateLineSortedReset\u0020\*\/\n[\S\s]*?$/
+                )
+            }
+        ]);
+        // customize assets.utility2.rollup.js
+        tgtReplaceConditional(fileDict["assets.utility2.rollup.js"], [
+            {
+                aa: "    // || globalThis.utility2_rollup_old",
+                bb: "    || globalThis.utility2_rollup_old"
+            }, {
+                aa: "    // || require(\"./assets.utility2.rollup.js\")",
+                bb: "    || require(\"./assets.utility2.rollup.js\")"
+            }
+        ]);
+        // write lib.xxx.js
+        writeFile(
             "lib." + process.env.npm_package_nameLib + ".js",
-            result,
-            "wrote file - lib - {{pathname}}"
+            tgt,
+            resolve
         );
-    }
-    opt.customize(opt);
-    onError();
-    return result;
-};
-
-local.buildReadme = function (opt, onError) {
-/*
- * this function will build readme with given <opt> my-app-lite template
- */
-    let result;
-    local.objectAssignDefault(opt, {
-        customize: local.nop,
+    };
+    buildReadme = function (resolve) {
+    /*
+     * this function will build readme with template assets.readme.template.md
+     */
+        let packageJson;
+        let packageJsonRgx;
+        let toc;
         // reset toc
-        dataFrom: require("fs").readFileSync(
-            "README.md",
-            "utf8"
-        ).replace((
+        src = fileDict["README.md"].replace((
             /\n#\u0020table\u0020of\u0020contents$[\S\s]*?\n\n\n/m
-        ), "\n# table of contents\n\n\n"),
-        packageJsonRgx: (
+        ), "\n# table of contents\n\n\n");
+        packageJsonRgx = (
             /\n#\u0020package.json\n```json\n([\S\s]*?)\n```\n/
-        )
-    });
-    // render dataTo
-    opt.dataTo = local.templateRenderMyApp(
-        local.assetsDict["/assets.readme.template.md"]
-    );
-    // init package.json
-    opt.dataFrom.replace(opt.packageJsonRgx, function (match0, match1) {
-        // remove null from package.json
-        opt.packageJson = JSON.parse(match1.replace((
-            /\u0020{4}".*?":\u0020null,?$/gm
-        ), ""));
-        opt.packageJson.description = opt.dataFrom.split("\n")[1];
-        local.objectAssignDefault(opt.packageJson, {
-            nameLib: JSON.parse(
-                require("fs").readFileSync("package.json", "utf8")
-            ).nameLib
-        });
-        opt.packageJson = local.objectAssignDefault(opt.packageJson, {
-            nameLib: opt.packageJson.name.replace((
-                /\W/g
-            ), "_"),
-            nameOriginal: opt.packageJson.name
-        });
-        opt.packageJson = local.objectAssignDefault(
-            opt.packageJson,
-            JSON.parse(local.templateRenderMyApp(opt.packageJsonRgx.exec(
-                local.assetsDict["/assets.readme.template.md"]
-            )[1])),
-            2
         );
-        // avoid npm-installing that
-        delete opt.packageJson.devDependencies[opt.packageJson.name];
-        // reset scripts
-        opt.packageJson.scripts = {
-            "build-ci": "./npm_scripts.sh",
-            env: "env",
-            eval: "./npm_scripts.sh",
-            "heroku-postbuild": "./npm_scripts.sh",
-            postinstall: "./npm_scripts.sh",
-            start: "./npm_scripts.sh",
-            test: "./npm_scripts.sh",
-            utility2: "./npm_scripts.sh"
-        };
-        // save package.json
-        local.fsWriteFileWithMkdirpSync(
-            "package.json",
-            JSON.stringify(local.objectDeepCopyWithKeysSorted(
-                opt.packageJson
-            ), undefined, 4) + "\n",
-            "wrote file - package.json - {{pathname}}"
-        );
-        // re-render dataTo
-        opt.dataTo = local.templateRenderMyApp(
+        // render README.md
+        tgt = local.templateRenderMyApp(
             local.assetsDict["/assets.readme.template.md"]
         );
-        opt.dataTo = opt.dataTo.replace(
-            opt.packageJsonRgx,
-            match0.replace(
+        // init package.json
+        src.replace(packageJsonRgx, function (match0, match1) {
+            // remove null from package.json
+            packageJson = JSON.parse(match1.replace((
+                /\u0020{4}".*?":\u0020null,?$/gm
+            ), ""));
+            packageJson.description = src.split("\n")[1];
+            local.objectAssignDefault(packageJson, {
+                nameLib: JSON.parse(fileDict["package.json"]).nameLib
+            });
+            packageJson = local.objectAssignDefault(packageJson, {
+                nameLib: packageJson.name.replace((
+                    /\W/g
+                ), "_"),
+                nameOriginal: packageJson.name
+            });
+            packageJson = local.objectAssignDefault(
+                packageJson,
+                JSON.parse(local.templateRenderMyApp(packageJsonRgx.exec(
+                    local.assetsDict["/assets.readme.template.md"]
+                )[1])),
+                2
+            );
+            // avoid npm-installing that
+            delete packageJson.devDependencies[packageJson.name];
+            // reset scripts
+            packageJson.scripts = {
+                "build-ci": "./npm_scripts.sh",
+                env: "env",
+                eval: "./npm_scripts.sh",
+                "heroku-postbuild": "./npm_scripts.sh",
+                postinstall: "./npm_scripts.sh",
+                start: "./npm_scripts.sh",
+                test: "./npm_scripts.sh",
+                utility2: "./npm_scripts.sh"
+            };
+            // write package.json
+            require("fs").writeFileSync(
+                "package.json",
+                JSON.stringify(local.objectDeepCopyWithKeysSorted(
+                    packageJson
+                ), undefined, 4) + "\n"
+            );
+            writeFileLog("package.json");
+            // re-render README.md
+            tgt = local.templateRenderMyApp(
+                local.assetsDict["/assets.readme.template.md"]
+            ).replace(packageJsonRgx, match0.replace(
                 match1,
                 JSON.stringify(local.objectDeepCopyWithKeysSorted(
-                    opt.packageJson
+                    packageJson
                 ), undefined, 4)
-            )
-        );
-        return "";
-    });
-    // search-and-replace - customize dataTo
-    [
-        // customize name and description
-        (
-            /.*?\n.*?\n/
-        ),
-        // customize cdn-download
-        (
-            /\n#\u0020cdn\u0020download\n[\S\s]*?\n\n\n/
-        ),
-        // customize live-web-demo
-        (
-            /\n#\u0020live\u0020web\u0020demo\n[\S\s]*?\n\n\n/
-        ),
-        // customize changelog
-        (
-            /\n####\u0020changelog\u0020[\S\s]*?\n\n\n/
-        ),
-        // customize example.js - shared js\u002denv code - init-before
-        (
-            /\nglobalThis\.local\u0020=\u0020local;\n[^`]*?\n\/\*\u0020istanbul\u0020ignore\u0020next\u0020\*\/\n\/\/\u0020run\u0020browser\u0020js\u002denv\u0020code\u0020-\u0020init-test\n/
-        ),
-        // customize example.js - html-body
-        (
-            /\n<!--\u0020custom-html-start\u0020-->\\n\\\n[^`]*?\n<!--\u0020custom-html-end\u0020-->\\n\\\n/
-        ),
-        // customize build_ci - shBuildCiAfter
-        (
-            /\nshBuildCiAfter\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
-        ),
-        // customize build_ci - shBuildCiBefore
-        (
-            /\nshBuildCiBefore\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
-        )
-    ].forEach(function (rgx) {
-        opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-    });
-    // customize private-repository
-    if (process.env.npm_package_private) {
-        opt.dataTo = opt.dataTo.replace((
-            /\n\[!\[NPM\]\(https:\/\/nodei.co\/npm\/.*?\n/
-        ), "");
-        opt.dataTo = opt.dataTo.replace("$ npm install ", (
-            "$ git clone \\\n"
-            + process.env.npm_package_repository_url.replace(
-                "git+https://github.com/",
-                "git@github.com:"
-            ) + " \\\n--single-branch -b beta node_modules/"
-        ));
-    }
-    // customize version
-    [
-        "dataFrom", "dataTo"
-    ].forEach(function (elem) {
-        opt[elem] = opt[elem].replace((
-            /\n(####\u0020changelog\u0020|-\u0020npm\u0020publish\u0020)\d+?\.\d+?\.\d+?.*?\n/g
-        ), "\n$1" + opt.packageJson.version + "\n");
-    });
-    // customize example.js
-    if (
-        local.assetsDict["/index.html"].indexOf(
-            "<script src=\"assets.example.js\"></script>"
-        ) < 0
-    ) {
-        opt.dataTo = opt.dataTo.replace((
-            /\nif\u0020\(!local.isBrowser\)\u0020\{\n[\S\s]*?\n\}\(\)\);\n/g
-        ), "\nif (!local.isBrowser) {\n    return;\n}\n}());\n");
-    }
-    // customize comment
-    opt.dataFrom.replace((
-        /^(\u0020*?)(?:#\!\!\u0020|#\/\/\u0020|\/\/\!\!\u0020|<!--\u0020)(.*?)(?:\u0020-->)?$/gm
-    ), function (match0, match1, match2) {
-        opt.dataTo = opt.dataTo.replace(
-            "\n" + match1 + match2 + "\n",
-            "\n" + match0 + "\n"
-        );
-    });
-    // customize - user-defined
-    opt.customize(opt);
-    // customize assets.index.template.html
-    if (local.assetsDict["/assets.index.template.html"].indexOf(
-        "\"assets.utility2.template.html\""
-    ) < 0) {
-        opt.dataTo = opt.dataTo.replace((
-            /\n\/\*\u0020jslint\u0020ignore:start\u0020\*\/\nlocal.assetsDict\["\/assets.index.template.html"\]\u0020=\u0020'\\\n[\S\s]*?\n\/\*\u0020jslint\u0020ignore:end\u0020\*\/\n/
-        ), "\n");
-    }
-    // customize shDeployCustom
-    if (opt.dataFrom.indexOf("    shDeployCustom\n") >= 0) {
+            ));
+            return "";
+        });
+        tgtReplaceConditional(true, [
+            {
+                // customize name and description
+                merge: (
+                    /.*?\n.*?\n/
+                )
+            }, {
+                // customize cdn-download
+                merge: (
+                    /\n#\u0020cdn\u0020download\n[\S\s]*?\n\n\n/
+                )
+            }, {
+                // customize live-web-demo
+                merge: (
+                    /\n#\u0020live\u0020web\u0020demo\n[\S\s]*?\n\n\n/
+                )
+            }, {
+                // customize changelog
+                merge: (
+                    /\n####\u0020changelog\u0020[\S\s]*?\n\n\n/
+                )
+            }, {
+                // customize example.js - shared js\u002denv code - init-before
+                merge: (
+                    /\nglobalThis\.local\u0020=\u0020local;\n[^`]*?\n\/\*\u0020istanbul\u0020ignore\u0020next\u0020\*\/\n\/\/\u0020run\u0020browser\u0020js\u002denv\u0020code\u0020-\u0020init-test\n/
+                )
+            }, {
+                // customize example.js - html-body
+                merge: (
+                    /\n<!--\u0020custom-html-start\u0020-->\\n\\\n[^`]*?\n<!--\u0020custom-html-end\u0020-->\\n\\\n/
+                )
+            }, {
+                // customize build_ci - shBuildCiAfter
+                merge: (
+                    /\nshBuildCiAfter\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
+                )
+            }, {
+                // customize build_ci - shBuildCiBefore
+                merge: (
+                    /\nshBuildCiBefore\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
+                )
+            }
+        ]);
+        // customize private-repository
+        tgtReplaceConditional(process.env.npm_package_private, [
+            {
+                aa: (
+                    /\n\[!\[NPM\]\(https:\/\/nodei.co\/npm\/.*?\n/
+                ),
+                bb: ""
+            }, {
+                aa: "$ npm install ",
+                bb: (
+                    "$ git clone \\\n"
+                    + process.env.npm_package_repository_url.replace(
+                        "git+https://github.com/",
+                        "git@github.com:"
+                    ) + " \\\n--single-branch -b beta node_modules/"
+                )
+            }
+        ]);
+        // customize version
         [
-            // customize example.sh
-            (
-                /\n####\u0020changelog\u0020[\S\s]*?\n#\u0020quickstart\u0020example.js\n/
-            ), (
-                opt.dataFrom.indexOf("\"assets.utility2.template.html\"") < 0
-                && local.identity(
+            src, tgt
+        ] = [
+            src, tgt
+        ].map(function (elem) {
+            return elem.replace((
+                /\n(####\u0020changelog\u0020|-\u0020npm\u0020publish\u0020)\d+?\.\d+?\.\d+?.*?\n/g
+            ), "\n$1" + packageJson.version + "\n");
+        });
+        // customize example.js
+        tgtReplaceConditional(local.assetsDict[
+            "/index.html"
+        ].indexOf("<script src=\"assets.example.js\"></script>") < 0, [
+            {
+                aa: (
+                    /\nif\u0020\(!local.isBrowser\)\u0020\{\n[\S\s]*?\n\}\(\)\);\n/g
+                ),
+                bb: "\nif (!local.isBrowser) {\n    return;\n}\n}());\n"
+            }
+        ]);
+        // customize comment
+        src.replace((
+            /^(\u0020*?)(?:#\!\!\u0020|#\/\/\u0020|\/\/\!\!\u0020|<!--\u0020)(.*?)(?:\u0020-->)?$/gm
+        ), function (match0, match1, match2) {
+            tgt = tgt.replace(
+                "\n" + match1 + match2 + "\n",
+                "\n" + match0 + "\n"
+            );
+        });
+        // customize - user-defined
+        tgtReplaceConditional(true, customizeReadmeList);
+        // customize assets.index.template.html
+        tgtReplaceConditional(local.assetsDict[
+            "/assets.index.template.html"
+        ].indexOf("\"assets.utility2.template.html\"") < 0, [
+            {
+                aa: (
+                    /\n\/\*\u0020jslint\u0020ignore:start\u0020\*\/\nlocal.assetsDict\["\/assets.index.template.html"\]\u0020=\u0020'\\\n[\S\s]*?\n\/\*\u0020jslint\u0020ignore:end\u0020\*\/\n/
+                ),
+                bb: "\n"
+            }
+        ]);
+        // customize shDeployCustom
+        tgtReplaceConditional(src.indexOf("    shDeployCustom\n") >= 0, [
+            {
+                // customize example.sh
+                merge: (
+                    /\n####\u0020changelog\u0020[\S\s]*?\n#\u0020quickstart\u0020example.js\n/
+                )
+            }, {
+                // customize screenshot
+                merge: (
                     /\n#\u0020quickstart\u0020[\S\s]*?\n#\u0020extra\u0020screenshots\n/
                 )
-            )
-        ].forEach(function (rgx) {
-            opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-        });
-        // customize screenshot
-        opt.dataTo = opt.dataTo.replace((
-            /^1\.\u0020.*?screenshot\.(?:npmTest|testExampleJs|testExampleSh).*?\.png[\S\s]*?\n\n/gm
-        ), "");
-    }
-    // customize shNpmTestPublished
-    opt.dataTo = opt.dataTo.replace(
-        "$ npm install " + process.env.GITHUB_REPO + "#alpha",
-        "$ npm install " + process.env.npm_package_name
-    );
-    if (opt.dataFrom.indexOf("    shNpmTestPublished\n") < 0) {
-        opt.dataTo = opt.dataTo.replace(
-            "$ npm install " + process.env.npm_package_name,
-            "$ npm install " + process.env.GITHUB_REPO + "#alpha"
+            }, {
+                // customize screenshot
+                aa: (
+                    /^1\.\u0020.*?screenshot\.(?:npmTest|testExampleJs|testExampleSh).*?\.png[\S\s]*?\n\n/gm
+                ),
+                bb: ""
+            }
+        ]);
+        // customize shNpmTestPublished
+        tgt = tgt.replace(
+            "$ npm install " + process.env.GITHUB_REPO + "#alpha",
+            "$ npm install " + process.env.npm_package_name
         );
+        tgtReplaceConditional(src.indexOf("    shNpmTestPublished\n") < 0, [
+            {
+                aa: "$ npm install " + process.env.npm_package_name,
+                bb: "$ npm install " + process.env.GITHUB_REPO + "#alpha"
+            }, {
+                aa: (
+                    /\n.*?\bhttps:\/\/www.npmjs.com\/package\/.*?\n/
+                ),
+                bb: ""
+            }, {
+                aa: (
+                    /\n.*?npmPackageDependencyTree.*?\n/
+                ),
+                bb: ""
+            }
+        ]);
+        // customize shBuildCiAfter and shBuildCiBefore
         [
-            (
-                /\n.*?\bhttps:\/\/www.npmjs.com\/package\/.*?\n/
-            ), (
-                /\n.*?npmPackageDependencyTree.*?\n/
-            )
-        ].forEach(function (rgx) {
-            opt.dataTo = opt.dataTo.replace(rgx, "");
-        });
-    }
-    // customize shBuildCiAfter and shBuildCiBefore
-    [
-        [
-            "shDeployGithub", (
-                /.*?\/screenshot\.deployGithub.*?\n/g
-            )
-        ], [
-            "shDeployHeroku", (
-                /.*?\/screenshot\.deployHeroku.*?\n/g
-            )
-        ], [
-            "shReadmeTest example.js", (
-                /.*?\/screenshot\.testExampleJs.*?\n/g
-            )
-        ], [
-            "shReadmeTest example.sh", (
-                /.*?\/screenshot\.testExampleSh.*?\n/g
-            )
-        ]
-    ].forEach(function (elem) {
-        if (opt.dataFrom.indexOf("    " + elem[0] + "\n") >= 0) {
-            return;
-        }
-        // customize test-server
-        opt.dataTo = opt.dataTo.replace(
-            new RegExp(
-                "\\n\\| test-server-"
-                + elem[0].replace("shDeploy", "").toLowerCase()
-                + " : \\|.*?\\n"
-            ),
-            "\n"
-        );
-        // customize screenshot
-        opt.dataTo = opt.dataTo.replace(elem[1], "");
-    });
-    opt.dataTo = local.templateRenderMyApp(opt.dataTo);
-    // customize toc
-    opt.toc = "\n# table of contents\n";
-    opt.dataTo.replace((
-        /\n\n\n#\u0020(.*)/g
-    ), function (ignore, match1) {
-        if (match1 === "table of contents") {
-            return;
-        }
-        opt.toc += "1. [" + match1 + "](#" + match1.toLowerCase().replace((
-            /[^\u0020\-0-9A-Z_a-z]/g
-        ), "").replace((
-            /\u0020/g
-        ), "-") + ")\n";
-    });
-    opt.dataTo = opt.dataTo.replace("\n# table of contents\n", opt.toc);
-    // eslint - no-multiple-empty-lines
-    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
-    opt.dataTo = opt.dataTo.replace((
-        /\n{4,}/g
-    ), "\n\n\n");
-    // save README.md
-    result = opt.dataTo;
-    local.fsWriteFileWithMkdirpSync(
-        "README.md",
-        result,
-        "wrote file - README - {{pathname}}"
-    );
-    onError();
-    return result;
-};
-
-local.buildTest = function (opt, onError) {
-/*
- * this function will build test with given <opt>
- */
-    let result;
-    local.objectAssignDefault(opt, {
-        customize: local.nop,
-        dataFrom: require("fs").readFileSync("test.js", "utf8"),
-        dataTo: local.templateRenderMyApp(
-            local.assetsDict["/assets.test.template.js"]
-        )
-    });
-    // search-and-replace - customize dataTo
-    [
-        // customize shared js\u002denv code - function
-        (
-            /\n\}\(\)\);\n\n\n\/\/\u0020run\u0020shared\u0020js\u002denv\u0020code\u0020-\u0020function\n[\S\s]*?$/
-        )
-    ].forEach(function (rgx) {
-        opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-    });
-    // customize require("utility2")
-    [
-        "./assets.utility2.rollup.js",
-        "./lib.utility2.js"
-    ].forEach(function (file) {
-        if (require("fs").existsSync(file)) {
-            opt.dataTo = opt.dataTo.replace(
-                "require(\"utility2\")",
-                "require(\"" + file + "\")"
+            [
+                "shDeployGithub", (
+                    /.*?\/screenshot\.deployGithub.*?\n/g
+                )
+            ], [
+                "shDeployHeroku", (
+                    /.*?\/screenshot\.deployHeroku.*?\n/g
+                )
+            ], [
+                "shReadmeTest example.js", (
+                    /.*?\/screenshot\.testExampleJs.*?\n/g
+                )
+            ], [
+                "shReadmeTest example.sh", (
+                    /.*?\/screenshot\.testExampleSh.*?\n/g
+                )
+            ], [
+                // coverage-hack
+                "__zjqx1234__" + Math.random(), "__zjqx1234__" + Math.random()
+            ]
+        ].forEach(function ([
+            condition, rgxScreenshot
+        ]) {
+            if (src.indexOf("    " + condition + "\n") >= 0) {
+                return;
+            }
+            // customize test-server
+            tgt = tgt.replace(
+                new RegExp(
+                    "\\n\\| test-server-"
+                    + condition.replace("shDeploy", "").toLowerCase()
+                    + " : \\|.*?\\n"
+                ),
+                "\n"
             );
-        }
+            // customize screenshot
+            tgt = tgt.replace(rgxScreenshot, "");
+        });
+        tgt = local.templateRenderMyApp(tgt);
+        // customize toc
+        toc = "\n# table of contents\n";
+        tgt.replace((
+            /\n\n\n#\u0020(.*)/g
+        ), function (ignore, match1) {
+            if (match1 === "table of contents") {
+                return;
+            }
+            toc += "1. [" + match1 + "](#" + match1.toLowerCase().replace((
+                /[^\u0020\-0-9A-Z_a-z]/g
+            ), "").replace((
+                /\u0020/g
+            ), "-") + ")\n";
+        });
+        tgt = tgt.replace("\n# table of contents\n", toc);
+        // eslint - no-multiple-empty-lines
+        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
+        tgt = tgt.replace((
+            /\n{4,}/g
+        ), "\n\n\n");
+        // write README.md
+        writeFile("README.md", tgt, resolve);
+    };
+    buildTest = function (resolve) {
+        src = fileDict["test.js"];
+        // render test.js
+        tgt = local.templateRenderMyApp(
+            local.assetsDict["/assets.test.template.js"]
+        );
+        // customize shared js\u002denv code - function
+        tgtReplaceConditional(true, [
+            {
+                merge: (
+                    /\n\}\(\)\);\n\n\n\/\/\u0020run\u0020shared\u0020js\u002denv\u0020code\u0020-\u0020function\n[\S\s]*?$/
+                )
+            }
+        ]);
+        // customize require("utility2")
+        Array.from([
+            "assets.utility2.rollup.js",
+            "lib.utility2.js"
+        ]).some(function (file) {
+            if (fileDict[file]) {
+                tgt = tgt.replace(
+                    "require(\"utility2\")",
+                    "require(\"./" + file + "\")"
+                );
+                return true;
+            }
+        });
+        // write test.js
+        writeFile("test.js", tgt, resolve);
+    };
+    // buildInit
+    Promise.resolve().then(function () {
+        fileDict = {};
+        promiseList = [];
+        // cleanup build-dir
+        promiseList.push(new Promise(function (resolve) {
+            require("child_process").spawn((
+                "for DIR in tmp/build/app/ tmp/build/app.standalone/;"
+                + "do rm -rf $DIR; mkdir -p $DIR; done"
+            ), {
+                shell: true,
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            }).on("exit", resolve);
+        }));
+        // init port
+        promiseList.push(new Promise(function (resolve) {
+            let recurse;
+            let server;
+            recurse = function (err) {
+                if (server) {
+                    server.close();
+                }
+                if (!err) {
+                    resolve();
+                    return;
+                }
+                port = Number(
+                    "0x" + require("crypto").randomBytes(2).toString("hex")
+                ) | 0x8000;
+                server = require("net").createServer().listen(port);
+                server.on("error", recurse).on("listening", recurse);
+            };
+            recurse(true);
+        }));
+        // read file
+        [
+            "README.md",
+            "lib." + process.env.npm_package_nameLib + ".js",
+            "package.json",
+            "test.js"
+        ].forEach(function (file) {
+            promiseList.push(new Promise(function (resolve) {
+                require("fs").readFile(file, "utf8", function (err, data) {
+                    fileDict[file] = data;
+                    resolve(err);
+                });
+            }));
+        });
+        // exists file
+        [
+            "assets.utility2.rollup.js",
+            "lib.utility2.js"
+        ].forEach(function (file) {
+            promiseList.push(new Promise(function (resolve) {
+                require("fs").access(file, function (notExists) {
+                    fileDict[file] = !notExists;
+                    resolve();
+                });
+            }));
+        });
+        return Promise.all(promiseList);
+    }).then(function (errList) {
+        errList.forEach(onErrorThrow);
+        promiseList = [];
+        promiseList.push(new Promise(buildReadme));
+        promiseList.push(new Promise(buildLib));
+        promiseList.push(new Promise(buildTest));
+        return Promise.all(promiseList);
+    }).then(function (errList) {
+        errList.forEach(onErrorThrow);
+        promiseList = [];
+        promiseList.push(new Promise(buildAppAssets));
+        promiseList.push(new Promise(buildAppStandalone));
+        return Promise.all(promiseList);
+    }).then(function (errList) {
+        errList.forEach(onErrorThrow);
+        onError();
     });
-    opt.customize(opt);
-    // save test.js
-    result = opt.dataTo;
-    local.fsWriteFileWithMkdirpSync(
-        "test.js",
-        result,
-        "wrote file - test - {{pathname}}"
-    );
-    onError();
-    return result;
-};
-
-local.childProcessEval = function (code, opt) {
-/*
- * this function will eval <code> in child-process
- */
-    let promise;
-    let reject;
-    let resolve;
-    promise = new Promise(function (aa, bb) {
-        reject = bb;
-        resolve = aa;
-    });
-    promise.child = require("child_process").spawn("node", [
-        "-e", (
-            "/*jslint node*/\n"
-            + "let data = \"\";\n"
-            + "process.stdin.on(\"readable\", function () {\n"
-            + "    let chunk;\n"
-            + "    while (true) {\n"
-            + "        chunk = process.stdin.read();\n"
-            + "        if (chunk === null) {\n"
-            + "            return;\n"
-            + "        }\n"
-            + "        data += chunk;\n"
-            + "    }\n"
-            + "}).setEncoding(\"utf8\");\n"
-            + "process.stdin.on(\"end\", function () {\n"
-            + "    require(\"vm\").runInThisContext(data);\n"
-            + "});\n"
-        )
-    ], Object.assign({
-        stdio: [
-            "pipe", 1, 2
-        ]
-    }, opt)).on("error", reject).on("exit", function (exitCode) {
-        if (!exitCode) {
-            resolve();
-            return;
-        }
-        reject(new Error("child-process - exitCode " + exitCode));
-    }).stdin.end(code);
-    return promise;
 };
 
 local.cliRun = function (opt) {
@@ -47492,25 +47580,19 @@ local.domFragmentRender = function (template, dict) {
 
 local.domQuerySelectorAllTagName = function (selector) {
 /*
- * this function will return all tagName that match <selector>
+ * this function will return list of tagName matching <selector>
  */
     let set;
+    try {
+        document.getElementById("undefined");
+    } catch (ignore) {
+        return [];
+    }
     set = new Set();
     document.querySelectorAll(selector).forEach(function (elem) {
         set.add(elem.tagName);
     });
     return Array.from(set).sort();
-};
-
-local.domSelectOptionValue = function (elem) {
-/*
- * this function will return <elem>.options[<elem>.selectedIndex].value
- */
-    if (typeof elem === "string") {
-        elem = document.querySelector(elem);
-    }
-    elem = elem && elem.options[elem.selectedIndex];
-    return (elem && elem.value) || "";
 };
 
 local.domStyleValidate = function () {
@@ -47520,7 +47602,7 @@ local.domStyleValidate = function () {
     let rgx;
     let tmp;
     try {
-        document.querySelector("#undefined");
+        document.getElementById("undefined");
     } catch (ignore) {
         return;
     }
@@ -47559,38 +47641,40 @@ local.eventListenerAdd = function (type, listener, opt = {}) {
 /*
  * this function will listen evt <type> with <listener>
  */
-    let isDone;
-    let listenerOnce;
-    listenerOnce = function listener2(msg) {
-        let ii;
-        ii = localEventListenerDict[type].length;
-        while (ii > 0) {
-            ii -= 1;
-            if (localEventListenerDict[type][ii] === listener2) {
-                localEventListenerDict[type].splice(ii, 1);
-            }
-        }
-        if (!isDone) {
-            isDone = true;
-            listener(msg);
-        }
+    localEventListenerId = (localEventListenerId + 1) | 0;
+    localEventListenerDict[localEventListenerId] = {
+        listener,
+        once: opt.once,
+        type
     };
-    localEventListenerDict[type] = localEventListenerDict[type] || [];
-    localEventListenerDict[type].push(
-        opt.once
-        ? listenerOnce
-        : listener
-    );
 };
 
 local.eventListenerEmit = function (type, msg) {
 /*
  * this function will emit evt <type> with <msg>
  */
-    Array.from(
-        localEventListenerDict[type] || []
-    ).forEach(function (listener) {
-        listener(msg);
+    Object.entries(localEventListenerDict).forEach(function ([
+        id, elem
+    ]) {
+        if (elem.type === type) {
+            if (elem.once) {
+                delete localEventListenerDict[id];
+            }
+            elem.listener(msg);
+        }
+    });
+};
+
+local.eventListenerRemove = function (listener) {
+/*
+ * this function will emit evt <type> with <msg>
+ */
+    Object.entries(localEventListenerDict).forEach(function ([
+        id, elem
+    ]) {
+        if (elem.listener === listener) {
+            delete localEventListenerDict[id];
+        }
     });
 };
 
@@ -47599,13 +47683,13 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
  * this function will sync-read <pathname> with given <type> and <dflt>
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require("path").resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -47618,62 +47702,22 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
     }
 };
 
-local.fsRmrfSync = function (pathname) {
-/*
- * this function will sync "rm -rf" <pathname>
- */
-    let child_process;
-    // do nothing if module does not exist
-    try {
-        child_process = require("child_process");
-    } catch (ignore) {
-        return;
-    }
-    pathname = require("path").resolve(pathname);
-    if (process.platform !== "win32") {
-        child_process.spawnSync("rm", [
-            "-rf", pathname
-        ], {
-            stdio: [
-                "ignore", 1, 2
-            ]
-        });
-        return;
-    }
-    try {
-        child_process.spawnSync("rd", [
-            "/s", "/q", pathname
-        ], {
-            stdio: [
-                "ignore", 1, 2
-            ]
-        });
-    } catch (ignore) {}
-};
-
-local.fsWriteFileWithMkdirp = function ({
-    data,
-    modeDebug,
-    modeUncaughtException,
-    pathname
-}, onError) {
+local.fsWriteFileWithMkdirp = function (pathname, data, onError) {
 /*
  * this function will async write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         onError();
     }
-    pathname = require("path").resolve(pathname);
     // write pathname
     fs.writeFile(pathname, data, function (err) {
         if (!err) {
-            if (modeDebug) {
-                console.error("fsWriteFileWithMkdirp - " + pathname);
-            }
+            console.error("fsWriteFileWithMkdirp - " + pathname);
             onError(undefined, true);
             return;
         }
@@ -47683,39 +47727,31 @@ local.fsWriteFileWithMkdirp = function ({
         }, function (ignore) {
             // re-write pathname
             fs.writeFile(pathname, data, function (err) {
-                if (!err) {
-                    if (modeDebug) {
-                        console.error("fsWriteFileWithMkdirp - " + pathname);
-                    }
-                    onError(undefined, true);
-                    return;
-                }
-                if (modeUncaughtException) {
+                if (err) {
                     throw err;
                 }
-                onError(err);
+                console.error("fsWriteFileWithMkdirp - " + pathname);
+                onError(undefined, true);
             });
         });
     });
 };
 
-local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+local.fsWriteFileWithMkdirpSync = function (pathname, data) {
 /*
  * this function will sync write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require("path").resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require("path").dirname(pathname), {
@@ -47723,12 +47759,9 @@ local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success && msg) {
-        console.error(msg.replace("{{pathname}}", pathname));
-    }
-    return success;
+    console.error("fsWriteFileWithMkdirpSync - " + pathname);
+    return true;
 };
 
 local.gotoNext = function (opt, onError) {
@@ -47924,7 +47957,8 @@ local.jslintAutofixLocalFunction = function (code, file) {
         "coalesce",
         "identity",
         "nop",
-        "objectAssignDefault"
+        "objectAssignDefault",
+        "onErrorThrow"
     ].forEach(function (key) {
         dictFnc[key] = true;
         dictProp[key] = true;
@@ -48042,7 +48076,7 @@ local.middlewareBodyRead = function (req, ignore, next) {
 
 local.middlewareError = function (err, req, res) {
 /*
- * this function will run middleware to handle errors
+ * this function will run middleware to handle <err>
  */
     // default - 404 Not Found
     if (!err) {
@@ -48303,16 +48337,6 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
         return sorted;
     };
     return objectDeepCopyWithKeysSorted(obj);
-};
-
-local.onErrorThrow = function (err) {
-/*
- * this function will if <err> exists, then throw it
- */
-    if (err) {
-        throw err;
-    }
-    return err;
 };
 
 local.onErrorWithStack = function (onError) {
@@ -48600,7 +48624,7 @@ local.requireReadme = function () {
         require("fs").readdir(".", function (ignore, fileList) {
             fileList.concat(__filename).forEach(function (file) {
                 require("fs").stat(file, function (err, data) {
-                    local.onErrorThrow(err);
+                    onErrorThrow(err);
                     if (!data.isFile()) {
                         return;
                     }
@@ -48629,18 +48653,17 @@ local.requireReadme = function () {
     // jslint process.cwd()
     require("child_process").spawn("node", [
         "-e", (
-            "require("
-            + JSON.stringify(__filename)
-            + ").jslint.jslintAndPrintDir("
-            + JSON.stringify(process.cwd())
-            + ", {autofix:true,conditional:true}, process.exit);"
+            "require(" + JSON.stringify(__filename)
+            + ").jslint.jslintAndPrintDir(" + JSON.stringify(process.cwd())
+            + ", {autofix:" + (!env.npm_config_mode_test)
+            + ",conditional:true});"
         )
     ], {
         env: Object.assign({}, env, {
             npm_config_mode_lib: "1"
         }),
         stdio: [
-            "ignore", "ignore", 2
+            "ignore", 1, 2
         ]
     });
     if (globalThis.utility2_rollup || env.npm_config_mode_start) {
@@ -48672,9 +48695,9 @@ local.requireReadme = function () {
     );
     local.fsReadFileOrDefaultSync("README.md", "utf8", "").replace((
         /\n```javascript(\n\/\*\nexample\.js\n[\S\s]*?\n)```\n/
-    ), function (ignore, match1, index, input) {
+    ), function (ignore, match1, ii, input) {
         // preserve lineno
-        code = input.slice(0, index).replace((
+        code = input.slice(0, ii).replace((
             /.+/g
         ), "") + "\n" + match1;
         return "";
@@ -49534,8 +49557,7 @@ local.testReportCreate = function (testReport) {
     // create test-report.html
     local.fsWriteFileWithMkdirpSync(
         "tmp/build/test-report.html",
-        local.testReportMerge(testReport),
-        "wrote file - test-report - {{pathname}}"
+        local.testReportMerge(testReport)
     );
     // create build.badge.svg
     local.fsWriteFileWithMkdirpSync(
@@ -49545,8 +49567,7 @@ local.testReportCreate = function (testReport) {
         ), (
             new Date().toISOString().slice(0, 19).replace("T", " ")
             + " - " + process.env.CI_BRANCH + " - " + process.env.CI_COMMIT_ID
-        )),
-        "wrote file - test-report - {{pathname}}"
+        ))
     );
     // create test-report.badge.svg
     local.fsWriteFileWithMkdirpSync(
@@ -49561,8 +49582,7 @@ local.testReportCreate = function (testReport) {
             testReport.testsFailed
             ? "d00"
             : "0d0"
-        )),
-        "wrote file - test-report - {{pathname}}"
+        ))
     );
     // if any test failed, then exit with non-zero exitCode
     console.error(
@@ -49893,7 +49913,12 @@ local.testRunDefault = function (opt) {
     // mock proces.exit
     if (!local.isBrowser) {
         processExit = process.exit;
-        process.exit = local.nop;
+        process.exit = function (exitCode) {
+            local.eventListenerEmit(
+                "utility2.testRunMock.process.exit",
+                exitCode | 0
+            );
+        };
     }
     // init modeTestCase
     local.modeTestCase = (
@@ -50067,8 +50092,7 @@ local.testRunDefault = function (opt) {
         delete testReport.coverage;
         local.fsWriteFileWithMkdirpSync(
             local.env.npm_config_dir_build + "/test-report.json",
-            JSON.stringify(testReport, undefined, 4),
-            "wrote file - test-report - {{pathname}}"
+            JSON.stringify(testReport, undefined, 4)
         );
         // restore console.log
         console.error = consoleError;
@@ -50946,6 +50970,14 @@ instruction\n\
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
+    };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
     };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
@@ -52519,6 +52551,14 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
     };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
+    };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -52747,10 +52787,9 @@ local.objectDeepCopyWithKeysSorted = function (obj) {\n\
 }());\n\
 \n\
 \n\
-/* istanbul ignore next */\n\
 // run shared js-env code - function\n\
-/* jslint ignore:start */\n\
 (function () {\n\
+/* jslint ignore:start */\n\
 /*\n\
 repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209\n\
 committed 2018-02-25T11:28:16Z\n\
@@ -52784,6 +52823,7 @@ THE SOFTWARE.\n\
 \n\
 */\n\
 \n\
+/* istanbul ignore next */\n\
 var CSSLint = (function(){\n\
   var module = module || {},\n\
       exports = exports || {};\n\
@@ -68479,8 +68519,8 @@ function whitage() {\n\
 \n\
 // The jslint function itself.\n\
 \n\
-// hack-jslint - jslint_export\n\
-local.jslint_export = Object.freeze(function (\n\
+// hack-jslint - jslint0\n\
+local.jslint0 = Object.freeze(function (\n\
     source = \"\",\n\
     option_object = empty(),\n\
     global_array = []\n\
@@ -68672,19 +68712,6 @@ local.jslint_export = Object.freeze(function (\n\
         }\n\
         return true;\n\
     });\n\
-    // expected_space_a_b: \"Expected one space between '{a}' and '{b}'.\",\n\
-    // unexpected_space_a_b: \"Unexpected space between '{a}' and '{b}'.\",\n\
-    source = lines_extra.map(function (element, ii) {\n\
-        return element.source_autofixed || lines[ii];\n\
-    }).join(\"\\n\").replace((\n\
-        /\\s+?\\u0000/g\n\
-    ), \"\\u0000\").replace((\n\
-        /(\\n\\u0020+)(.*?)\\n\\u0020*?(\\/\\/.*?)\\u0000/g\n\
-    ), \"$1$3$1$2\\u0000\").replace((\n\
-        /\\u0000expected_space_a_b\\u0000/g\n\
-    ), \" \").replace((\n\
-        /\\u0000unexpected_space_a_b\\u0000/g\n\
-    ), \"\");\n\
     // hack-jslint - debug warning\n\
     warnings.some(function (warning) {\n\
         if (!option.utility2) {\n\
@@ -68735,7 +68762,19 @@ local.jslint_export = Object.freeze(function (\n\
             );\n\
         }),\n\
         // hack-jslint - autofix\n\
-        source_autofixed: source\n\
+        // expected_space_a_b: \"Expected one space between '{a}' and '{b}'.\",\n\
+        // unexpected_space_a_b: \"Unexpected space between '{a}' and '{b}'.\",\n\
+        source_autofixed: lines_extra.map(function (element, ii) {\n\
+            return element.source_autofixed || lines[ii];\n\
+        }).join(\"\\n\").replace((\n\
+            /\\s+?\\u0000/g\n\
+        ), \"\\u0000\").replace((\n\
+            /(\\n\\u0020+)(.*?)\\n\\u0020*?(\\/\\/.*?)\\u0000/g\n\
+        ), \"$1$3$1$2\\u0000\").replace((\n\
+            /\\u0000expected_space_a_b\\u0000/g\n\
+        ), \" \").replace((\n\
+            /\\u0000unexpected_space_a_b\\u0000/g\n\
+        ), \"\")\n\
     };\n\
 });\n\
 \n\
@@ -68744,310 +68783,15 @@ local.jslint_export = Object.freeze(function (\n\
 file none\n\
 */\n\
 local.CSSLint = CSSLint;\n\
-}());\n\
 /* jslint ignore:end */\n\
 \n\
 \n\
-// run shared js-env code - function\n\
-(function () {\n\
-local.jslintAndPrint = function (code = \"\", file = \"undefined\", opt = {}) {\n\
-/*\n\
- * this function will jslint/csslint <code> and print any errors to stderr\n\
- */\n\
-    let ii;\n\
-    let tmp;\n\
-    if (!(opt && opt.gotoState)) {\n\
-        local.jslintResult = {\n\
-            gotoState: 0\n\
-        };\n\
-    }\n\
-    opt = Object.assign(local.jslintResult, opt);\n\
-    opt.gotoState += 1;\n\
-    switch (opt.gotoState) {\n\
-    // jslint - init\n\
-    case 1:\n\
-        // cleanup\n\
-        opt.errList = [];\n\
-        opt.errMsg = \"\";\n\
-        // preserve lineno\n\
-        if (opt.iiStart) {\n\
-            // optimization - efficiently count number of newlines\n\
-            // https://jsperf.com/regexp-counting-2/8\n\
-            opt.lineOffset |= 0;\n\
-            ii = 0;\n\
-            while (true) {\n\
-                ii = code.indexOf(\"\\n\", ii);\n\
-                if (ii === 0 || ii > opt.iiStart) {\n\
-                    break;\n\
-                }\n\
-                ii += 1;\n\
-                opt.lineOffset += 1;\n\
-            }\n\
-            code = code.slice(opt.iiStart, opt.iiEnd || code.length);\n\
-        }\n\
-        switch (opt.fileType0) {\n\
-        // de-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
-        case \".\\\\n\\\\\":\n\
-            // rgx - remove \\\\n\\\\\n\
-            code = code.replace((\n\
-                /\\\\n\\\\$|\\\\(.)/gm\n\
-            ), function (ignore, match1) {\n\
-                return match1 || \"\";\n\
-            });\n\
-            break;\n\
-        // de-embed-js - '\\n...\\n'\n\
-        case \".sh\":\n\
-            // rgx - convert '\"'\"' to '\n\
-            code = code.replace((\n\
-                /'\"'\"'/g\n\
-            ), \"'\");\n\
-            break;\n\
-        }\n\
-        // init\n\
-        opt = Object.assign(opt, {\n\
-            \".css\": (\n\
-                /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".html\": (\n\
-                /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".js\": (\n\
-                /^\\/\\*jslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".json\": (\n\
-                /^\\s*?(?:\\[|\\{)/\n\
-            ),\n\
-            \".md\": (\n\
-                /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".sh\": (\n\
-                /(^#\\u0020jslint\\u0020utility2:true$)/m\n\
-            ),\n\
-            code0: code,\n\
-            fileType: (\n\
-                /\\.\\w+?$|$/m\n\
-            ).exec(file)[0]\n\
-        });\n\
-        // jslint - .json\n\
-        if (opt.fileType === \".js\" && opt[\".json\"].test(code)) {\n\
-            opt.fileType = \".json\";\n\
-        }\n\
-        try {\n\
-            opt.conditionalPassed = opt[opt.fileType].exec(code);\n\
-        } catch (ignore) {}\n\
-        opt.utility2 = (\n\
-            opt.conditionalPassed && opt.conditionalPassed[1]\n\
-        ) || opt.autofix;\n\
-        if (\n\
-            opt.conditional\n\
-            && (!opt.conditionalPassed || opt.coverage)\n\
-        ) {\n\
-            break;\n\
-        }\n\
-        opt.gotoState = 10;\n\
-        break;\n\
-    // jslint - autofix\n\
-    case 11:\n\
-        code = local.jslintAutofix(code, file, opt);\n\
-        local.jslintResult = opt;\n\
-        break;\n\
-    // jslint - csslint and jslint\n\
-    case 12:\n\
-        // restore lineOffset\n\
-        code = \"\\n\".repeat(opt.lineOffset | 0) + code;\n\
-        switch (opt.fileType) {\n\
-        case \".css\":\n\
-            // csslint\n\
-            Object.assign(opt, local.CSSLint.verify(code));\n\
-            // init errList\n\
-            opt.errList = opt.messages.map(function (err) {\n\
-                err.column = err.col;\n\
-                err.message = (\n\
-                    err.type + \" - \" + err.rule.id + \" - \" + err.message\n\
-                    + \"\\n    \" + err.rule.desc\n\
-                );\n\
-                return err;\n\
-            });\n\
-            break;\n\
-        case \".html\":\n\
-        case \".md\":\n\
-        case \".sh\":\n\
-            break;\n\
-        default:\n\
-            // jslint - .js\n\
-            Object.assign(opt, local.jslint_export(code, opt));\n\
-            code = opt.source_autofixed || code;\n\
-            // init errList\n\
-            opt.errList = opt.warnings.filter(function (err) {\n\
-                return err && err.message;\n\
-            }).map(function (err) {\n\
-                err.column = err.column + 1;\n\
-                err.evidence = err.source;\n\
-                err.line = err.line + 1;\n\
-                // debug early_stop\n\
-                if (err.early_stop) {\n\
-                    err.message = (\n\
-                        \"[JSLint was unable to finish] - \"\n\
-                        + err.message\n\
-                    );\n\
-                }\n\
-                return err;\n\
-            });\n\
-        }\n\
-        break;\n\
-    // jslint - utility2\n\
-    case 13:\n\
-        local.jslintUtility2(code, file, opt);\n\
-        break;\n\
-    // jslint - print\n\
-    default:\n\
-        switch (Boolean(opt.fileType0) && opt.fileType0) {\n\
-        // re-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
-        case \".\\\\n\\\\\":\n\
-            code = code.trim();\n\
-            // rgx - escape \\ to \\\\\n\
-            code = code.replace((\n\
-                /\\\\/g\n\
-            ), \"\\\\\\\\\");\n\
-            // rgx - append \\n\\\n\
-            code = code.replace((\n\
-                /$/gm\n\
-            ), \"\\\\n\\\\\");\n\
-            // rgx - escape ' to \\'\n\
-            code = code.replace((\n\
-                /'/g\n\
-            ), \"\\\\'\");\n\
-            // rgx - escape js-env to js\\-env\n\
-            code = code.replace((\n\
-                /\\u0020js-env\\u0020/g\n\
-            ), \" js\\\\-env \");\n\
-            code += \"\\n\";\n\
-            break;\n\
-        // re-embed-js - '\\n...\\n'\n\
-        case \".sh\":\n\
-            // rgx - escape ' to '\"'\"'\n\
-            code = code.trim().replace((\n\
-                /'/g\n\
-            ), \"'\\\"'\\\"'\") + \"\\n\";\n\
-            break;\n\
-        case false:\n\
-            code = code.trimEnd() + \"\\n\";\n\
-            break;\n\
-        default:\n\
-            code = code.trim() + \"\\n\";\n\
-        }\n\
-        // autofix-save\n\
-        if (\n\
-            !local.isBrowser\n\
-            && opt.autofix\n\
-            && !opt.fileType0\n\
-            && !opt.stop\n\
-            && code !== opt.code0\n\
-            && require(\"fs\").existsSync(file)\n\
-        ) {\n\
-            require(\"fs\").writeFileSync(file, code);\n\
-            require(\"fs\").writeFileSync(file + \".autofix.old\", opt.code0);\n\
-            require(\"child_process\").spawnSync(\n\
-                \"diff\",\n\
-                [\n\
-                    \"-u\", file + \".autofix.old\", file\n\
-                ],\n\
-                {\n\
-                    stdio: [\n\
-                        \"ignore\", 2, \"ignore\"\n\
-                    ]\n\
-                }\n\
-            );\n\
-            require(\"fs\").unlinkSync(file + \".autofix.old\");\n\
-            console.error(\n\
-                \"\\u001b[1mjslint-autofix - modified and saved file \" + file\n\
-                + \"\\u001b[22m\"\n\
-            );\n\
-        }\n\
-        // print colorized errMsg to stderr\n\
-        // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99\n\
-        opt.errList.filter(function (warning) {\n\
-            return warning && warning.message;\n\
-        // print only first 10 warnings\n\
-        }).slice(0, 10).forEach(function (err, ii) {\n\
-            opt.errMsg = (\n\
-                opt.errMsg || \" \\u001b[1mjslint \" + file + \"\\u001b[22m\\n\"\n\
-            );\n\
-            opt.errMsg += (\n\
-                (\"  \" + String(ii + 1)).slice(-3)\n\
-                + \" \\u001b[31m\" + err.message + \"\\u001b[39m\"\n\
-                + \" \\u001b[90m\\/\\/ line \" + err.line + \", column \"\n\
-                + err.column\n\
-                + \"\\u001b[39m\\n\"\n\
-                + (\"    \" + String(err.evidence).trim()).slice(0, 80) + \"\\n\"\n\
-            );\n\
-            if (!ii && err.stack && err.a !== \"debug\\u0049nline\") {\n\
-                tmp = err.stack;\n\
-                Object.entries(err).forEach(function ([\n\
-                    key, val\n\
-                ]) {\n\
-                    if ((typeof val === \"object\" && val) || key === \"stack\") {\n\
-                        delete err[key];\n\
-                    }\n\
-                });\n\
-                opt.errMsg += (\n\
-                    JSON.stringify(err, undefined, 4) + \"\\n\" + tmp.trim() + \"\\n\"\n\
-                );\n\
-            }\n\
-        });\n\
-        opt.errMsg = opt.errMsg.trim();\n\
-        if (opt.errMsg) {\n\
-            // print err to stderr\n\
-            console.error(opt.errMsg);\n\
-        }\n\
-        opt.code = code;\n\
-        return code;\n\
-    }\n\
-    // recurse\n\
-    return local.jslintAndPrint(code, file, opt);\n\
-};\n\
+let jslintAutofix;\n\
+let jslintRecurse;\n\
+let jslintUtility2;\n\
+let stringGetLineAndCol;\n\
 \n\
-local.jslintAndPrintDir = async function (dir, opt) {\n\
-/*\n\
- * this function will jslint files in shallow <dir>\n\
- */\n\
-    let errCnt;\n\
-    errCnt = 0;\n\
-    await Promise.all((\n\
-        await require(\"fs\").promises.readdir(require(\"path\").resolve(dir))\n\
-    ).map(async function (file) {\n\
-        let data;\n\
-        let timeStart;\n\
-        timeStart = Date.now();\n\
-        file = require(\"path\").resolve(file);\n\
-        switch ((\n\
-            /\\.\\w+?$|$/m\n\
-        ).exec(file)[0]) {\n\
-        case \".css\":\n\
-        case \".html\":\n\
-        case \".js\":\n\
-        case \".json\":\n\
-        case \".md\":\n\
-        case \".sh\":\n\
-            if ((\n\
-                /\\b(?:assets\\.app\\.js|lock|min|raw|rollup)\\b/\n\
-            ).test(file)) {\n\
-                return;\n\
-            }\n\
-            // jslint file\n\
-            data = await require(\"fs\").promises.readFile(file, \"utf8\");\n\
-            local.jslintAndPrint(data, file, opt);\n\
-            errCnt += local.jslintResult.errList.length;\n\
-            console.error(\n\
-                \"jslint - \" + (Date.now() - timeStart) + \"ms - \" + file\n\
-            );\n\
-            break;\n\
-        }\n\
-    }));\n\
-    return Math.min(errCnt, 255);\n\
-};\n\
-\n\
-local.jslintAutofix = function (code, file, opt) {\n\
+jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {\n\
 /*\n\
  * this function will jslint-autofix <code>\n\
  */\n\
@@ -69056,53 +68800,47 @@ local.jslintAutofix = function (code, file, opt) {\n\
     let dataList;\n\
     let ignoreList;\n\
     let ii;\n\
+    let result;\n\
     let rgx1;\n\
     let rgx2;\n\
     let tmp;\n\
-    // autofix-all\n\
-    if (opt.autofix) {\n\
-        // autofix-all - normalize local-function\n\
-        if (\n\
-            globalThis.utility2\n\
-            && typeof globalThis.utility2.jslintAutofixLocalFunction\n\
-            === \"function\"\n\
-        ) {\n\
-            code = globalThis.utility2.jslintAutofixLocalFunction(code, file);\n\
-        }\n\
-        // autofix-all - remove trailing-whitespace\n\
-        code = code.replace((\n\
-            /\\u0020+$/gm\n\
-        ), \"\");\n\
-        // autofix-all - remove leading-whitespace before )]}\n\
-        code = code.replace((\n\
-            /\\n+?(\\n\\u0020*?[)\\]}])/g\n\
-        ), \"$1\");\n\
-        // autofix-all - eslint - no-multiple-empty-lines\n\
-        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md\n\
-        code = code.replace((\n\
-            /\\n{4,}/g\n\
-        ), \"\\n\\n\\n\");\n\
-        // autofix-all - recurse <script>...</script>, <style>...</style>\n\
-        code = code.replace((\n\
-            /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\\\n\\\\\\n(?:^.*?\\\\n\\\\\\n)*?)(';$|<\\/script>\\\\n\\\\$|<\\/style>\\\\n\\\\$)/gm\n\
-        ), function (ignore, match1, match2, ii) {\n\
-            return local.jslintAndPrint(\n\
-                code,\n\
-                file + (\n\
-                    match2.indexOf(\"style\") > -1\n\
-                    ? \".<style>.css\"\n\
-                    : \".<script>.js\"\n\
-                ),\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: \".\\\\n\\\\\",\n\
-                    iiEnd: ii + match1.length,\n\
-                    iiStart: ii,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + match2;\n\
-        });\n\
+    // autofix-all - normalize local-function\n\
+    if (\n\
+        globalThis.utility2\n\
+        && typeof globalThis.utility2.jslintAutofixLocalFunction\n\
+        === \"function\"\n\
+    ) {\n\
+        code = globalThis.utility2.jslintAutofixLocalFunction(code, file);\n\
     }\n\
-    switch (opt.autofix && opt.fileType) {\n\
+    // autofix-all - remove trailing-whitespace\n\
+    code = code.replace((\n\
+        /\\u0020+$/gm\n\
+    ), \"\");\n\
+    // autofix-all - remove leading-whitespace before )]}\n\
+    code = code.replace((\n\
+        /\\n+?(\\n\\u0020*?[)\\]}])/g\n\
+    ), \"$1\");\n\
+    // autofix-all - eslint - no-multiple-empty-lines\n\
+    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md\n\
+    code = code.replace((\n\
+        /\\n{4,}/g\n\
+    ), \"\\n\\n\\n\");\n\
+    // autofix-all - recurse <script>...</script>, <style>...</style>\n\
+    code = code.replace((\n\
+        /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\\\n\\\\\\n(?:^.*?\\\\n\\\\\\n)*?)(';$|<\\/script>\\\\n\\\\$|<\\/style>\\\\n\\\\$)/gm\n\
+    ), function (ignore, match1, match2, ii) {\n\
+        return jslintRecurse(code, file + (\n\
+            match2.indexOf(\"style\") >= 0\n\
+            ? \".<style>.css\"\n\
+            : \".<script>.js\"\n\
+        ), opt, {\n\
+            fileType0: \".\\\\n\\\\\",\n\
+            iiEnd: ii + match1.length,\n\
+            iiLine,\n\
+            iiStart: ii\n\
+        }) + match2;\n\
+    });\n\
+    switch (fileType) {\n\
     case \".css\":\n\
         break;\n\
     case \".html\":\n\
@@ -69110,25 +68848,21 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /^(\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\n[\\S\\s]*?\\n)(<\\/(?:script|style)>)$/gm\n\
         ), function (ignore, match1, match2, ii) {\n\
-            return local.jslintAndPrint(\n\
-                code,\n\
-                file + (\n\
-                    match2.indexOf(\"style\") >= 0\n\
-                    ? \".<style>.css\"\n\
-                    : \".<script>.js\"\n\
-                ),\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: opt.fileType,\n\
-                    iiEnd: ii + match1.length,\n\
-                    iiStart: ii,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + match2;\n\
+            return jslintRecurse(code, file + (\n\
+                match2.indexOf(\"style\") >= 0\n\
+                ? \".<style>.css\"\n\
+                : \".<script>.js\"\n\
+            ), opt, {\n\
+                fileType0: fileType,\n\
+                iiEnd: ii + match1.length,\n\
+                iiLine,\n\
+                iiStart: ii\n\
+            }) + match2;\n\
         });\n\
         break;\n\
     case \".js\":\n\
     case \".json\":\n\
-        // autofix-js - demux code to [code, ignoreList]\n\
+        // autofix-js - de-mux code to [code, ignoreList]\n\
         ignoreList = [];\n\
         code = code.replace((\n\
             /^\\u0020*?\\/\\*\\u0020jslint\\u0020ignore:start\\u0020\\*\\/$[\\S\\s]*?^\\/\\*\\u0020jslint\\u0020ignore:end\\u0020\\*\\/$/gm\n\
@@ -69145,7 +68879,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
                 + match0.charCodeAt(0).toString(16)\n\
             ).slice(-4);\n\
         });\n\
-        // autofix-js - demux code2 to [code2, ignoreList]\n\
+        // autofix-js - de-mux code2 to [code2, ignoreList]\n\
         code2 = \"\";\n\
         dataList = [];\n\
         ii = 0;\n\
@@ -69158,7 +68892,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
             /(?:[^.]\\b(?:case|delete|in|instanceof|new|return|typeof|void|yield)|[!%&(*+,\\-\\/:;<=>?\\[\\^{|}~])[\\s\\u0028]*?\\/[^*\\/]/g\n\
         );\n\
         tmp = \"\";\n\
-        // autofix-js - demux shebang\n\
+        // autofix-js - de-mux shebang\n\
         code.replace((\n\
             /^#!.*/\n\
         ), function (match0) {\n\
@@ -69235,7 +68969,6 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /\\/_\\*\\//g\n\
         ), \"/_/\");\n\
-        opt.codeDemux = code;\n\
         // autofix-js - left-align comment //_\n\
         tmp = undefined;\n\
         code = code.split(\"\\n\").reverse().map(function (line) {\n\
@@ -69381,17 +69114,17 @@ local.jslintAutofix = function (code, file, opt) {\n\
                 /\\t/g\n\
             ), \"\\\\t\");\n\
         });\n\
-        // autofix-js - remux shebang\n\
+        // autofix-js - re-mux shebang\n\
         code = code.replace((\n\
             /^#!/\n\
         ), function () {\n\
             return dataList.shift().code;\n\
         });\n\
-        // autofix-js - remux [code, dataList] to code\n\
+        // autofix-js - re-mux [code, dataList] to code\n\
         code = code.replace((\n\
             /\"_\"|'_'|\\/\\*_\\*\\/|\\/\\/!!_|\\/\\/_|\\/_\\/|`_`/g\n\
         ), function (match0) {\n\
-            // autofix-js - defer remux rgx /_/\n\
+            // autofix-js - defer re-mux rgx /_/\n\
             if (match0 === \"/_/\") {\n\
                 dataList.push(dataList.shift());\n\
                 return \"/\\u0000/\";\n\
@@ -69403,14 +69136,14 @@ local.jslintAutofix = function (code, file, opt) {\n\
         while (true) {\n\
             ii += 1;\n\
             code0 = code;\n\
-            Object.assign(opt, local.jslint_export(code, opt));\n\
-            code = opt.source_autofixed;\n\
-            if (ii >= 10 || opt.stop || code0 === code) {\n\
+            result = local.jslint0(code, opt, globalList);\n\
+            code = result.source_autofixed;\n\
+            if (ii >= 10 || result.stop || code0 === code) {\n\
                 break;\n\
             }\n\
         }\n\
         // autofix-json - jsonStringifyOrdered\n\
-        if (opt.fileType === \".json\") {\n\
+        if (fileType === \".json\") {\n\
             code = JSON.stringify(\n\
                 local.objectDeepCopyWithKeysSorted(JSON.parse(code)),\n\
                 undefined,\n\
@@ -69418,7 +69151,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
             );\n\
             break;\n\
         }\n\
-        // autofix-js - remux - code, dataList./_/ to code\n\
+        // autofix-js - re-mux - code, dataList./_/ to code\n\
         code = code.replace((\n\
             /\\/\\u0000\\//g\n\
         ), function () {\n\
@@ -69430,7 +69163,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
         ), function (match0) {\n\
             return match0.split(\"\\n\").slice(0, -1).sort().join(\"\\n\") + \"\\n\";\n\
         });\n\
-        // autofix-js - remux - code, ignoreList to code\n\
+        // autofix-js - re-mux - code, ignoreList to code\n\
         code = code.replace((\n\
             /^\\u0020*?\\/\\*\\u0020jslint\\u0020ignore:start:end\\u0020\\*\\/$/gm\n\
         ), function () {\n\
@@ -69442,16 +69175,14 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /^(```javascript\\n)([\\S\\s]*?\\n)```$/gm\n\
         ), function (ignore, match1, match2, ii) {\n\
-            return match1 + local.jslintAndPrint(\n\
-                code,\n\
-                file + \".<```javascript>.js\",\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: opt.fileType,\n\
-                    iiEnd: ii + match1.length + match2.length,\n\
-                    iiStart: ii + match1.length,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + \"```\";\n\
+            return match1 + jslintRecurse(code, (\n\
+                file + \".<```javascript>.js\"\n\
+            ), opt, {\n\
+                fileType0: fileType,\n\
+                iiEnd: ii + match1.length + match2.length,\n\
+                iiLine,\n\
+                iiStart: ii + match1.length\n\
+            }) + \"```\";\n\
         });\n\
         break;\n\
     case \".sh\":\n\
@@ -69459,43 +69190,273 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\n[\\S\\s]*?\\n'/gm\n\
         ), function (match0, ii) {\n\
-            return local.jslintAndPrint(\n\
-                code,\n\
-                file + \".<node -e>.js\",\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: opt.fileType,\n\
-                    iiEnd: ii + match0.length - 1,\n\
-                    iiStart: ii,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + \"'\";\n\
+            return jslintRecurse(code, file + \".<node -e>.js\", opt, {\n\
+                fileType0: fileType,\n\
+                iiEnd: ii + match0.length - 1,\n\
+                iiLine,\n\
+                iiStart: ii\n\
+            }) + \"'\";\n\
         });\n\
         break;\n\
     }\n\
     return code;\n\
 };\n\
 \n\
-local.jslintGetColumnLine = function (code, ii) {\n\
+jslintRecurse = function (code, file, opt, {\n\
+    fileType0,\n\
+    iiEnd,\n\
+    iiLine = 0,\n\
+    iiStart = 0\n\
+}) {\n\
 /*\n\
- * this function will transform <code> and <ii> to {column, line, evidence}\n\
+ * this function will recursively jslint <code> for embedded code\n\
  */\n\
-    let column;\n\
-    let evidence;\n\
-    let line;\n\
-    evidence = code.slice(0, ii).split(\"\\n\");\n\
-    line = evidence.length - 1;\n\
-    column = evidence[line].length;\n\
-    evidence = evidence[line] + code.slice(ii, ii + 100).split(\"\\n\")[0];\n\
-    return {\n\
-        column,\n\
-        evidence,\n\
-        line\n\
+    let code0;\n\
+    let errList;\n\
+    let errMsg;\n\
+    let fileType;\n\
+    let globalList;\n\
+    let modeAutofix;\n\
+    let modeConditional;\n\
+    let modeCoverage;\n\
+    let result;\n\
+    let tmp;\n\
+    // init opt\n\
+    local.jslintResult = {};\n\
+    opt = Object.assign(local.jslintResult, opt, {\n\
+        errList: [],\n\
+        errMsg: \"\"\n\
+    });\n\
+    // init var\n\
+    errList = [];\n\
+    fileType = (\n\
+        /\\.\\w+?$|$/m\n\
+    ).exec(file)[0];\n\
+    globalList = opt.globalList;\n\
+    modeAutofix = opt.autofix;\n\
+    modeConditional = opt.conditional;\n\
+    modeCoverage = opt.coverage;\n\
+    result = {};\n\
+    // preserve lineno - save iiLine\n\
+    iiLine += stringGetLineAndCol(code, iiStart).line;\n\
+    // de-embed\n\
+    code = code.slice(iiStart, iiEnd || code.length);\n\
+    switch (fileType0) {\n\
+    // de-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
+    case \".\\\\n\\\\\":\n\
+        // rgx - remove \\\\n\\\\\n\
+        code = code.replace((\n\
+            /\\\\n\\\\$|\\\\(.)/gm\n\
+        ), function (ignore, match1) {\n\
+            return match1 || \"\";\n\
+        });\n\
+        break;\n\
+    // de-embed-js - '\\n...\\n'\n\
+    case \".sh\":\n\
+        // rgx - convert '\"'\"' to '\n\
+        code = code.replace((\n\
+            /'\"'\"'/g\n\
+        ), \"'\");\n\
+        break;\n\
+    }\n\
+    // init\n\
+    code0 = code;\n\
+    tmp = {\n\
+        \".css\": (\n\
+            /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".html\": (\n\
+            /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".js\": (\n\
+            /^\\/\\*jslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".json\": (\n\
+            /^\\s*?(?:\\[|\\{)/\n\
+        ),\n\
+        \".md\": (\n\
+            /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".sh\": (\n\
+            /(^#\\u0020jslint\\u0020utility2:true$)/m\n\
+        )\n\
     };\n\
+    // jslint - .json\n\
+    if (fileType === \".js\" && tmp[\".json\"].test(code)) {\n\
+        fileType = \".json\";\n\
+    }\n\
+    // init mode-utility2\n\
+    tmp = tmp[fileType] && tmp[fileType].exec(code);\n\
+    opt.utility2 = Boolean((tmp && tmp[1]) || modeAutofix);\n\
+    // if not modeConditional, then do not jslint\n\
+    if ((modeConditional && !tmp) || modeCoverage) {\n\
+        return code;\n\
+    }\n\
+    // jslint - modeAutofix\n\
+    if (modeAutofix) {\n\
+        code = jslintAutofix(code, file, opt, {\n\
+            fileType,\n\
+            globalList,\n\
+            iiLine\n\
+        });\n\
+    }\n\
+    // preserve lineno - restore iiLine\n\
+    code = \"\\n\".repeat(iiLine) + code;\n\
+    switch (fileType) {\n\
+    // jslint - .css\n\
+    case \".css\":\n\
+        // call csslint\n\
+        result = local.CSSLint.verify(code);\n\
+        // init errList\n\
+        errList = result.messages.map(function (err) {\n\
+            err.column = err.col;\n\
+            err.message = (\n\
+                err.type + \" - \" + err.rule.id + \" - \" + err.message\n\
+                + \"\\n    \" + err.rule.desc\n\
+            );\n\
+            return err;\n\
+        });\n\
+        break;\n\
+    case \".html\":\n\
+    case \".md\":\n\
+    case \".sh\":\n\
+        break;\n\
+    // jslint - .js\n\
+    default:\n\
+        // call jslint\n\
+        result = local.jslint0(code, opt, globalList);\n\
+        code = result.source_autofixed || code;\n\
+        // init errList\n\
+        errList = result.warnings.filter(function (err) {\n\
+            return err && err.message;\n\
+        }).map(function (err) {\n\
+            err.column = err.column + 1;\n\
+            err.evidence = err.source;\n\
+            err.line = err.line + 1;\n\
+            // debug early_stop\n\
+            if (err.early_stop) {\n\
+                err.message = (\n\
+                    \"[JSLint was unable to finish] - \"\n\
+                    + err.message\n\
+                );\n\
+            }\n\
+            return err;\n\
+        });\n\
+    }\n\
+    if (opt.utility2) {\n\
+        jslintUtility2({\n\
+            code,\n\
+            errList,\n\
+            fileType\n\
+        });\n\
+    }\n\
+    // jslint - print\n\
+    switch (Boolean(fileType0) && fileType0) {\n\
+    // re-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
+    case \".\\\\n\\\\\":\n\
+        code = code.trim();\n\
+        // rgx - escape \\ to \\\\\n\
+        code = code.replace((\n\
+            /\\\\/g\n\
+        ), \"\\\\\\\\\");\n\
+        // rgx - append \\n\\\n\
+        code = code.replace((\n\
+            /$/gm\n\
+        ), \"\\\\n\\\\\");\n\
+        // rgx - escape ' to \\'\n\
+        code = code.replace((\n\
+            /'/g\n\
+        ), \"\\\\'\");\n\
+        // rgx - escape js-env to js\\-env\n\
+        code = code.replace((\n\
+            /\\u0020js\\u002denv\\u0020/g\n\
+        ), \" js\\\\\\u002denv \");\n\
+        code += \"\\n\";\n\
+        break;\n\
+    // re-embed-js - '\\n...\\n'\n\
+    case \".sh\":\n\
+        // rgx - escape ' to '\"'\"'\n\
+        code = code.trim().replace((\n\
+            /'/g\n\
+        ), \"'\\\"'\\\"'\") + \"\\n\";\n\
+        break;\n\
+    case false:\n\
+        code = code.trimEnd() + \"\\n\";\n\
+        break;\n\
+    default:\n\
+        code = code.trim() + \"\\n\";\n\
+    }\n\
+    // autofix-save\n\
+    if (\n\
+        !local.isBrowser\n\
+        && modeAutofix\n\
+        && !fileType0\n\
+        && !result.stop\n\
+        && code !== code0\n\
+        && require(\"fs\").existsSync(file)\n\
+    ) {\n\
+        require(\"fs\").writeFileSync(file, code);\n\
+        require(\"fs\").writeFileSync(file + \".autofix.old\", code0);\n\
+        require(\"child_process\").spawnSync(\n\
+            \"diff\",\n\
+            [\n\
+                \"-u\", file + \".autofix.old\", file\n\
+            ],\n\
+            {\n\
+                stdio: [\n\
+                    \"ignore\", 2, \"ignore\"\n\
+                ]\n\
+            }\n\
+        );\n\
+        require(\"fs\").unlinkSync(file + \".autofix.old\");\n\
+        console.error(\n\
+            \"\\u001b[1mjslint-autofix - modified and saved file \" + file\n\
+            + \"\\u001b[22m\"\n\
+        );\n\
+    }\n\
+    // print colorized errMsg to stderr\n\
+    // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99\n\
+    errMsg = \"\";\n\
+    errList.filter(function (warning) {\n\
+        return warning && warning.message;\n\
+    // print only first 10 warnings\n\
+    }).slice(0, 10).forEach(function (err, ii) {\n\
+        errMsg = errMsg || \" \\u001b[1mjslint \" + file + \"\\u001b[22m\\n\";\n\
+        errMsg += (\n\
+            (\"  \" + String(ii + 1)).slice(-3)\n\
+            + \" \\u001b[31m\" + err.message + \"\\u001b[39m\"\n\
+            + \" \\u001b[90m\\/\\/ line \" + err.line + \", column \"\n\
+            + err.column\n\
+            + \"\\u001b[39m\\n\"\n\
+            + (\"    \" + String(err.evidence).trim()).slice(0, 80) + \"\\n\"\n\
+        );\n\
+        if (!ii && err.stack && err.a !== \"debug\\u0049nline\") {\n\
+            tmp = err.stack;\n\
+            Object.entries(err).forEach(function ([\n\
+                key, val\n\
+            ]) {\n\
+                if ((typeof val === \"object\" && val) || key === \"stack\") {\n\
+                    delete err[key];\n\
+                }\n\
+            });\n\
+            errMsg += (\n\
+                JSON.stringify(err, undefined, 4) + \"\\n\" + tmp.trim() + \"\\n\"\n\
+            );\n\
+        }\n\
+    });\n\
+    errMsg = errMsg.trim();\n\
+    if (errMsg) {\n\
+        // print err to stderr\n\
+        console.error(errMsg);\n\
+    }\n\
+    return Object.assign(local.jslintResult, opt, result, {\n\
+        code,\n\
+        errList,\n\
+        errMsg\n\
+    }).code;\n\
 };\n\
 \n\
-local.jslintResult = {};\n\
-\n\
-local.jslintUtility2 = function (code, ignore, opt) {\n\
+jslintUtility2 = function ({code, errList, fileType}) {\n\
 /*\n\
  * this function will jslint <code> with utiity2-specific rules\n\
  */\n\
@@ -69504,54 +69465,52 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
     let indent;\n\
     let previous;\n\
     // jslintUtility2 - all\n\
-    if (opt.utility2) {\n\
-        code2 = code;\n\
-        // ignore start to end\n\
-        code2 = code2.replace((\n\
-            /^\\/\\*\\u0020jslint\\u0020ignore:start\\u0020\\*\\/$[\\S\\s]+?^\\/\\*\\u0020jslint\\u0020ignore:end\\u0020\\*\\/$/gm\n\
-        ), function (match0) {\n\
-            // preserve lineno\n\
-            return match0.replace((\n\
-                /.+/g\n\
-            ), \"\");\n\
-        });\n\
-        // lint whitespace\n\
-        code2.replace((\n\
-            /^\\u0020+?(?:\\*|\\/\\/!!)|^\\u0020+|[\\r\\t]/gm\n\
-        ), function (match0, ii) {\n\
-            switch (match0.slice(-1)) {\n\
-            case \" \":\n\
-                if (match0.length % 4 === 0) {\n\
-                    return \"\";\n\
-                }\n\
-                err = {\n\
-                    message: \"non 4-space indent\"\n\
-                };\n\
-                break;\n\
-            case \"\\r\":\n\
-                err = {\n\
-                    message: \"unexpected \\\\r\"\n\
-                };\n\
-                break;\n\
-            case \"\\t\":\n\
-                err = {\n\
-                    message: \"unexpected \\\\t\"\n\
-                };\n\
-                break;\n\
-            default:\n\
+    code2 = code;\n\
+    // ignore start to end\n\
+    code2 = code2.replace((\n\
+        /^\\/\\*\\u0020jslint\\u0020ignore:start\\u0020\\*\\/$[\\S\\s]+?^\\/\\*\\u0020jslint\\u0020ignore:end\\u0020\\*\\/$/gm\n\
+    ), function (match0) {\n\
+        // preserve lineno\n\
+        return match0.replace((\n\
+            /.+/g\n\
+        ), \"\");\n\
+    });\n\
+    // lint whitespace\n\
+    code2.replace((\n\
+        /^\\u0020+?(?:\\*|\\/\\/!!)|^\\u0020+|[\\r\\t]/gm\n\
+    ), function (match0, ii) {\n\
+        switch (match0.slice(-1)) {\n\
+        case \" \":\n\
+            if (match0.length % 4 === 0) {\n\
                 return \"\";\n\
             }\n\
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-            opt.errList.push({\n\
-                column: err.column + 1,\n\
-                evidence: JSON.stringify(err.evidence),\n\
-                line: err.line + 1,\n\
-                message: err.message\n\
-            });\n\
+            err = {\n\
+                message: \"non 4-space indent\"\n\
+            };\n\
+            break;\n\
+        case \"\\r\":\n\
+            err = {\n\
+                message: \"unexpected \\\\r\"\n\
+            };\n\
+            break;\n\
+        case \"\\t\":\n\
+            err = {\n\
+                message: \"unexpected \\\\t\"\n\
+            };\n\
+            break;\n\
+        default:\n\
             return \"\";\n\
+        }\n\
+        Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+        errList.push({\n\
+            column: err.column + 1,\n\
+            evidence: JSON.stringify(err.evidence),\n\
+            line: err.line + 1,\n\
+            message: err.message\n\
         });\n\
-    }\n\
-    switch (opt.utility2 && opt.fileType) {\n\
+        return \"\";\n\
+    });\n\
+    switch (fileType) {\n\
     // jslintUtility2 - .css\n\
     case \".css\":\n\
         // ignore comment\n\
@@ -69564,7 +69523,7 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
             ), \"\");\n\
         });\n\
         code2.replace((\n\
-            /\\S\\u0020{2}|\\u0020,|^\\S.*?[,;{}]./gm\n\
+            /\\S\\u0020{2}|\\u0020,|^\\S.*?,.|[;{}]./gm\n\
         ), function (match0, ii) {\n\
             switch (match0.slice(-2)) {\n\
             case \"  \":\n\
@@ -69585,8 +69544,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                     message: \"unexpected multiline-statement\"\n\
                 };\n\
             }\n\
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-            opt.errList.push({\n\
+            Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+            errList.push({\n\
                 column: err.column + err.colOffset,\n\
                 evidence: JSON.stringify(err.evidence),\n\
                 line: err.line + 1,\n\
@@ -69643,8 +69602,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 : undefined\n\
             );\n\
             if (err) {\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69678,8 +69637,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 err = {\n\
                     message: \"lines not sorted\\n\" + previous + \"\\n\" + match1\n\
                 };\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69714,8 +69673,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 previous = match1;\n\
             }\n\
             if (err) {\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69755,8 +69714,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 previous = match2;\n\
             }\n\
             if (err) {\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69768,6 +69727,93 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
         break;\n\
     }\n\
 };\n\
+\n\
+stringGetLineAndCol = function (code, ii) {\n\
+/*\n\
+ * this function will get line and column from <code> at <ii>\n\
+ */\n\
+    let aa;\n\
+    let bb;\n\
+    let line;\n\
+    // https://jsperf.com/regexp-counting-2/8\n\
+    bb = 0;\n\
+    line = 0;\n\
+    while (true) {\n\
+        aa = bb;\n\
+        bb = code.indexOf(\"\\n\", bb) + 1;\n\
+        if (bb === 0 || ii < bb) {\n\
+            break;\n\
+        }\n\
+        line += 1;\n\
+    }\n\
+    return {\n\
+        column: ii - aa,\n\
+        evidence: code.slice(aa, Math.max((bb || code.length) - 1, 0)),\n\
+        line\n\
+    };\n\
+};\n\
+\n\
+local.jslintAndPrint = function (code, file = \"undefined\", opt = {}) {\n\
+/*\n\
+ * this function will jslint-autofix <code>\n\
+ */\n\
+    return jslintRecurse(code, file, opt, {});\n\
+};\n\
+\n\
+local.jslintAndPrintDir = function (dir, opt, onError) {\n\
+/*\n\
+ * this function will jslint files in <dir>\n\
+ */\n\
+    let errCnt;\n\
+    errCnt = 0;\n\
+    onError = onError || function (err) {\n\
+        process.exit(Math.min((err && err.message) | 0, 127));\n\
+    };\n\
+    dir = require(\"path\").resolve(dir) + require(\"path\").sep;\n\
+    require(\"fs\").readdir(dir, function (err, fileList) {\n\
+        local.onErrorThrow(err);\n\
+        Promise.all(fileList.map(function (file) {\n\
+            return new Promise(function (resolve) {\n\
+                let timeStart;\n\
+                timeStart = Date.now();\n\
+                file = dir + file;\n\
+                switch ((\n\
+                    /\\.\\w+?$|$/m\n\
+                ).exec(file)[0]) {\n\
+                case \".css\":\n\
+                case \".html\":\n\
+                case \".js\":\n\
+                case \".json\":\n\
+                case \".md\":\n\
+                case \".sh\":\n\
+                    if ((\n\
+                        /\\b(?:assets\\.app\\.js|lock|min|raw|rollup)\\b/\n\
+                    ).test(file)) {\n\
+                        resolve();\n\
+                        return;\n\
+                    }\n\
+                    // jslint file\n\
+                    require(\"fs\").readFile(file, \"utf8\", function (err, data) {\n\
+                        local.onErrorThrow(err);\n\
+                        local.jslintAndPrint(data, file, opt);\n\
+                        errCnt += local.jslintResult.errList.length;\n\
+                        console.error(\n\
+                            \"jslint - \" + (Date.now() - timeStart) + \"ms - \"\n\
+                            + file\n\
+                        );\n\
+                        resolve();\n\
+                    });\n\
+                    return;\n\
+                }\n\
+                resolve();\n\
+            });\n\
+        })).then(function () {\n\
+            onError(errCnt && new Error(errCnt));\n\
+        });\n\
+    });\n\
+};\n\
+\n\
+local.jslintResult = {};\n\
 }());\n\
 \n\
 \n\
@@ -69811,7 +69857,7 @@ local.cliDict.dir = function () {\n\
     local.jslintAndPrintDir(process.argv[3], {\n\
         autofix: process.argv.indexOf(\"--autofix\") >= 0,\n\
         conditional: process.argv.indexOf(\"--conditional\") >= 0\n\
-    }).then(process.exit);\n\
+    });\n\
 };\n\
 \n\
 // run the cli\n\
@@ -69982,6 +70028,14 @@ local.assetsDict["/assets.utility2.test.js"] = (
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
     };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
+    };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -69998,11 +70052,11 @@ local.assetsDict["/assets.utility2.test.js"] = (
 \n\
 \n\
 /* jslint utility2:true */\n\
-/* istanbul ignore next */\n\
 (function (local) {\n\
 \"use strict\";\n\
 \n\
 \n\
+/* istanbul ignore next */\n\
 // run shared js-env code - init-before\n\
 (function () {\n\
 // init local\n\
@@ -70018,8 +70072,10 @@ local.testRunDefault(local);\n\
 (function () {\n\
 let assertJsonEqual;\n\
 let assertOrThrow;\n\
+let onErrorThrow;\n\
 assertJsonEqual = local.assertJsonEqual;\n\
 assertOrThrow = local.assertOrThrow;\n\
+onErrorThrow = local.onErrorThrow;\n\
 local.testCase_ajax_cache = function (opt, onError) {\n\
 /*\n\
  * this function will test ajax's cache handling-behavior\n\
@@ -70103,8 +70159,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
             responseType: responseType.replace(\"blob\", \"arraybuffer\"),\n\
             url: \"/test.body\"\n\
         }, function (err, xhr) {\n\
-            // handle err\n\
-            assertOrThrow(!err, err);\n\
+            onErrorThrow(err);\n\
             // validate statusCode\n\
             assertJsonEqual(xhr.statusCode, 200);\n\
             // validate responseText\n\
@@ -70166,8 +70221,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
         modeDebug: true,\n\
         url: \"/test.echo\"\n\
     }, function (err, xhr) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate statusCode\n\
         assertJsonEqual(xhr.statusCode, 200);\n\
         // validate resHeaders\n\
@@ -70214,8 +70268,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
     local.ajax({\n\
         url: \"LICENSE\"\n\
     }, function (err, xhr) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate statusCode\n\
         assertJsonEqual(xhr.statusCode, 200);\n\
         // validate responseText\n\
@@ -70247,8 +70300,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
                     : local.serverLocalHost\n\
                 )\n\
             }, function (err, xhr) {\n\
-                // handle err\n\
-                assertOrThrow(!err, err);\n\
+                onErrorThrow(err);\n\
                 // validate statusCode\n\
                 assertJsonEqual(xhr.statusCode, 200);\n\
                 onParallel();\n\
@@ -70380,8 +70432,7 @@ local.testCase_blobRead_default = function (opt, onError) {\n\
         new Uint8Array(0),\n\
         local.stringHelloEmoji\n\
     ]), function (err, data) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate data\n\
         assertJsonEqual(\n\
             local.bufferToUtf8(data),\n\
@@ -70448,14 +70499,7 @@ local.testCase_buildApp_default = function (opt, onError) {\n\
 /*\n\
  * this function will test buildApp's default handling-behavior\n\
  */\n\
-    if (local.isBrowser) {\n\
-        onError(undefined, opt);\n\
-        return;\n\
-    }\n\
-    local.testCase_buildReadme_default(opt, local.onErrorThrow);\n\
-    local.testCase_buildLib_default(opt, local.onErrorThrow);\n\
-    local.testCase_buildTest_default(opt, local.onErrorThrow);\n\
-    local.buildApp({\n\
+    local._testCase_buildApp_default({\n\
         assetsList: [\n\
             {\n\
                 file: \"/assets.hello.txt\",\n\
@@ -70476,43 +70520,41 @@ local.testCase_buildApp_default = function (opt, onError) {\n\
                 file: \"/assets.utility2.rollup.js\",\n\
                 url: \"/assets.utility2.rollup.js\"\n\
             }\n\
+        ],\n\
+        customizeReadmeList: [\n\
+            {\n\
+                // customize quickstart-example-js-instruction\n\
+                merge: (\n\
+                    /#\\u0020quickstart\\u0020example.js[\\S\\s]*?\\n\\n\\n/\n\
+                )\n\
+            }, {\n\
+                // customize quickstart-example-js-script\n\
+                merge: (\n\
+                    /#unless\\u0020isRollup[\\S\\s]*?<script\\u0020src=\"assets\\.example\\.js\">/\n\
+                )\n\
+            }, {\n\
+                // customize quickstart-example-js-screenshot\n\
+                merge: (\n\
+                    /```[^`]*?\\n#\\u0020extra\\u0020screenshots/\n\
+                )\n\
+            }, {\n\
+                // customize build-script\n\
+                merge: (\n\
+                    /\\n#\\u0020internal\\u0020build\\u0020script\\n[\\S\\s]*?\\nshBuildCi\\n/\n\
+                )\n\
+            }, {\n\
+                // coverage-hack\n\
+                aa: \" \",\n\
+                bb: \" \"\n\
+            }, {\n\
+                // coverage-hack\n\
+                aa: \"__zjqx1234__\" + Math.random()\n\
+            }, {\n\
+                // coverage-hack\n\
+                merge: new RegExp(\"__zjqx1234__\" + Math.random())\n\
+            }\n\
         ]\n\
-    }, onError);\n\
-};\n\
-\n\
-local.testCase_buildReadme_default = function (opt, onError) {\n\
-/*\n\
- * this function will test buildReadme's default handling-behavior\n\
- */\n\
-    if (local.isBrowser) {\n\
-        onError(undefined, opt);\n\
-        return;\n\
-    }\n\
-    opt = {};\n\
-    opt.customize = function () {\n\
-        // search-and-replace - customize dataTo\n\
-        [\n\
-            // customize quickstart-example-js-instruction\n\
-            (\n\
-                /#\\u0020quickstart\\u0020example.js[\\S\\s]*?\\n\\n\\n/\n\
-            ),\n\
-            // customize quickstart-example-js-script\n\
-            (\n\
-                /#unless\\u0020isRollup[\\S\\s]*?<script\\u0020src=\"assets\\.example\\.js\">/\n\
-            ),\n\
-            // customize quickstart-example-js-screenshot\n\
-            (\n\
-                /```[^`]*?\\n#\\u0020extra\\u0020screenshots/\n\
-            ),\n\
-            // customize build-script\n\
-            (\n\
-                /\\n#\\u0020internal\\u0020build\\u0020script\\n[\\S\\s]*?\\nshBuildCi\\n/\n\
-            )\n\
-        ].forEach(function (rgx) {\n\
-            opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);\n\
-        });\n\
-    };\n\
-    local.buildReadme(opt, onError);\n\
+    }, onError, opt);\n\
 };\n\
 \n\
 local.testCase_buildXxx_default = function (opt, onError) {\n\
@@ -70522,28 +70564,17 @@ local.testCase_buildXxx_default = function (opt, onError) {\n\
     local.testMock([\n\
         [\n\
             local, {\n\
-                assetsDict: {\n\
-                    \"/\": \"\"\n\
-                },\n\
-                browserTest: local.nop,\n\
-                buildApidoc: local.nop,\n\
-                buildLib: local.nop,\n\
-                buildReadme: local.nop,\n\
-                buildTest: local.nop,\n\
-                fsWriteFileWithMkdirp: local.nop,\n\
-                testCase_buildReadme_default: local.nop,\n\
-                testCase_buildLib_default: local.nop,\n\
-                testCase_buildTest_default: local.nop\n\
+                //!! assetsDict: {\n\
+                    //!! \"/\": \"\"\n\
+                //!! },\n\
+                browserTest: local.nop\n\
+                //!! buildApidoc: local.nop,\n\
+                //!! fsWriteFileWithMkdirp: local.nop,\n\
             }\n\
         ]\n\
     ], function (onError) {\n\
-        local._testCase_buildApidoc_default({}, local.nop);\n\
-        local._testCase_buildApp_default({}, local.nop);\n\
-        local._testCase_buildLib_default({}, local.nop);\n\
-        local._testCase_buildReadme_default({}, local.nop);\n\
-        local._testCase_buildTest_default({}, local.nop);\n\
-        local._testCase_webpage_default({}, local.nop);\n\
-        local.assetsDict[\"/\"] = \"<script src=\\\"assets.test.js\\\"></script>\";\n\
+        //!! local._testCase_buildApidoc_default({}, local.nop);\n\
+        //!! local.assetsDict[\"/\"] = \"<script src=\\\"assets.test.js\\\"></script>\";\n\
         local._testCase_webpage_default({}, local.nop);\n\
         onError(undefined, opt);\n\
     }, onError);\n\
@@ -70697,6 +70728,24 @@ local.testCase_domFragmentRender_default = function (opt, onError) {\n\
     onError(undefined, opt);\n\
 };\n\
 \n\
+local.testCase_eventListenerXxx_default = function (opt, onError) {\n\
+/*\n\
+ * this function will test eventListenerXxx's default handling-behavior\n\
+ */\n\
+    let listener;\n\
+    listener = function (msg) {\n\
+        assertJsonEqual(msg, \"bb\");\n\
+    };\n\
+    local.eventListenerAdd(\"aa\", listener);\n\
+    local.eventListenerAdd(\"aa\", listener, {\n\
+        once: true\n\
+    });\n\
+    local.eventListenerEmit(\"aa\", \"bb\");\n\
+    local.eventListenerEmit(\"aa\", \"bb\");\n\
+    local.eventListenerRemove(listener);\n\
+    onError(undefined, opt);\n\
+};\n\
+\n\
 local.testCase_libUtility2Js_standalone = function (opt, onError) {\n\
 /*\n\
  * this function will test lib.utility2.js's standalone handling-behavior\n\
@@ -70706,14 +70755,12 @@ local.testCase_libUtility2Js_standalone = function (opt, onError) {\n\
         return;\n\
     }\n\
     require(\"fs\").readFile(\"lib.utility2.js\", \"utf8\", function (err, data) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         require(\"fs\").writeFile(\"tmp/lib.utility2.js\", data.replace(\n\
             \"/* istanbul instrument in package utility2 */\",\n\
             \"\"\n\
         ), function (err) {\n\
-            // handle err\n\
-            assertOrThrow(!err, err);\n\
+            onErrorThrow(err);\n\
             require(\"./tmp/lib.utility2.js\");\n\
         });\n\
         onError(undefined, opt);\n\
@@ -70773,8 +70820,7 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
         },\n\
         url: \"\"\n\
     }, function (err, xhr) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate responseText\n\
         assertJsonEqual(xhr.responseText, local.stringHelloEmoji);\n\
         onParallel(undefined, opt, xhr);\n\
@@ -70792,19 +70838,6 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
         onParallel(undefined, opt);\n\
     });\n\
     onParallel(undefined, opt);\n\
-};\n\
-\n\
-local.testCase_onErrorThrow_err = function (opt, onError) {\n\
-/*\n\
- * this function will test onErrorThrow's err handling-behavior\n\
- */\n\
-    local.tryCatchOnError(function () {\n\
-        local.onErrorThrow(new Error());\n\
-    }, function (err) {\n\
-        // handle err\n\
-        assertOrThrow(err, err);\n\
-        onError(undefined, opt);\n\
-    });\n\
 };\n\
 \n\
 local.testCase_onErrorWithStack_toString = function (opt, onError) {\n\
@@ -70847,7 +70880,7 @@ local.testCase_onParallelList_default = function (opt, onError) {\n\
         switch (opt.gotoState) {\n\
         case 1:\n\
             // test null-case handling-behavior\n\
-            local.onParallelList({}, local.onErrorThrow, opt.gotoNext);\n\
+            local.onParallelList({}, onErrorThrow, opt.gotoNext);\n\
             break;\n\
         case 2:\n\
             opt.list = [\n\
@@ -71052,11 +71085,10 @@ local.testCase_requireReadme_misc = function (opt, onError) {\n\
     ], function (onError) {\n\
         local.requireReadme();\n\
         onError(undefined, opt);\n\
-    }, local.onErrorThrow);\n\
+    }, onErrorThrow);\n\
     // test file-modified handling-behavior\n\
     require(\"fs\").utimes(__filename, new Date(), new Date(), function (err) {\n\
-        // handle err\n\
-        local.assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         onError(undefined, opt);\n\
     });\n\
 };\n\

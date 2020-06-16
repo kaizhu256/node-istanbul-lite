@@ -164,6 +164,14 @@ instruction
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -349,6 +357,14 @@ instruction
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -537,6 +553,14 @@ instruction
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -1840,6 +1864,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -2044,13 +2076,13 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
  * this function will sync-read <pathname> with given <type> and <dflt>
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require("path").resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -2063,23 +2095,21 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
     }
 };
 
-local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+local.fsWriteFileWithMkdirpSync = function (pathname, data) {
 /*
  * this function will sync write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require("path").resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require("path").dirname(pathname), {
@@ -2087,12 +2117,9 @@ local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success && msg) {
-        console.error(msg.replace("{{pathname}}", pathname));
-    }
-    return success;
+    console.error("fsWriteFileWithMkdirpSync - " + pathname);
+    return true;
 };
 
 local.templateRender = function (template, dict, opt = {}, ii = 0) {
@@ -12507,11 +12534,7 @@ fileWrite = function (file, data) {
 /*
  * this function will write <data> to <file>
  */
-    local.fsWriteFileWithMkdirpSync(
-        file,
-        data,
-        "wrote file - coverage-report - {{pathname}}"
-    );
+    local.fsWriteFileWithMkdirpSync(file, data);
 };
 reportHtmlWrite = function (node, dirCoverage, coverage) {
 /*
@@ -13422,10 +13445,11 @@ local.instrumentSync = function (code, file) {
     // 1. normalize <file>
     file = path.resolve(file);
     // 2. save <code> to __coverageInclude__[<file>] for future html-report
-    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};
-    globalThis.__coverageInclude__[file] = 1;
     // 3. return instrumented-code
-    return new local.Instrumenter({
+    return (
+        "globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};"
+        + "globalThis.__coverageInclude__[" + JSON.stringify(file) + "] = 1;\n"
+    ) + new local.Instrumenter({
         embedSource: true,
         esModules: true,
         noAutoWrap: true
@@ -13470,15 +13494,12 @@ local.cliDict.cover = function () {
     moduleExtensionsJs = tmp._extensions[".js"];
     tmp._extensions[".js"] = function (module, file) {
         if (typeof file === "string" && (
-            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (
-                file.indexOf(process.cwd() + require("path").sep) === 0
-                && (
-                    process.env.npm_config_mode_coverage === "node_modules"
-                    || file.indexOf(
-                        require("path").resolve("node_modules")
-                        + require("path").sep
-                    ) !== 0
-                )
+            file.indexOf(process.cwd() + require("path").sep) === 0 && (
+                process.env.npm_config_mode_coverage === "node_modules"
+                || file.indexOf(
+                    require("path").resolve("node_modules")
+                    + require("path").sep
+                ) !== 0
             )
         )) {
             module._compile(local.instrumentInPackage(
@@ -13719,6 +13740,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -13947,10 +13976,9 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
 }());
 
 
-/* istanbul ignore next */
 // run shared js-env code - function
-/* jslint ignore:start */
 (function () {
+/* jslint ignore:start */
 /*
 repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209
 committed 2018-02-25T11:28:16Z
@@ -13984,6 +14012,7 @@ THE SOFTWARE.
 
 */
 
+/* istanbul ignore next */
 var CSSLint = (function(){
   var module = module || {},
       exports = exports || {};
@@ -29679,8 +29708,8 @@ function whitage() {
 
 // The jslint function itself.
 
-// hack-jslint - jslint_export
-local.jslint_export = Object.freeze(function (
+// hack-jslint - jslint0
+local.jslint0 = Object.freeze(function (
     source = "",
     option_object = empty(),
     global_array = []
@@ -29872,19 +29901,6 @@ local.jslint_export = Object.freeze(function (
         }
         return true;
     });
-    // expected_space_a_b: "Expected one space between '{a}' and '{b}'.",
-    // unexpected_space_a_b: "Unexpected space between '{a}' and '{b}'.",
-    source = lines_extra.map(function (element, ii) {
-        return element.source_autofixed || lines[ii];
-    }).join("\n").replace((
-        /\s+?\u0000/g
-    ), "\u0000").replace((
-        /(\n\u0020+)(.*?)\n\u0020*?(\/\/.*?)\u0000/g
-    ), "$1$3$1$2\u0000").replace((
-        /\u0000expected_space_a_b\u0000/g
-    ), " ").replace((
-        /\u0000unexpected_space_a_b\u0000/g
-    ), "");
     // hack-jslint - debug warning
     warnings.some(function (warning) {
         if (!option.utility2) {
@@ -29935,7 +29951,19 @@ local.jslint_export = Object.freeze(function (
             );
         }),
         // hack-jslint - autofix
-        source_autofixed: source
+        // expected_space_a_b: "Expected one space between '{a}' and '{b}'.",
+        // unexpected_space_a_b: "Unexpected space between '{a}' and '{b}'.",
+        source_autofixed: lines_extra.map(function (element, ii) {
+            return element.source_autofixed || lines[ii];
+        }).join("\n").replace((
+            /\s+?\u0000/g
+        ), "\u0000").replace((
+            /(\n\u0020+)(.*?)\n\u0020*?(\/\/.*?)\u0000/g
+        ), "$1$3$1$2\u0000").replace((
+            /\u0000expected_space_a_b\u0000/g
+        ), " ").replace((
+            /\u0000unexpected_space_a_b\u0000/g
+        ), "")
     };
 });
 
@@ -29944,310 +29972,15 @@ local.jslint_export = Object.freeze(function (
 file none
 */
 local.CSSLint = CSSLint;
-}());
 /* jslint ignore:end */
 
 
-// run shared js-env code - function
-(function () {
-local.jslintAndPrint = function (code = "", file = "undefined", opt = {}) {
-/*
- * this function will jslint/csslint <code> and print any errors to stderr
- */
-    let ii;
-    let tmp;
-    if (!(opt && opt.gotoState)) {
-        local.jslintResult = {
-            gotoState: 0
-        };
-    }
-    opt = Object.assign(local.jslintResult, opt);
-    opt.gotoState += 1;
-    switch (opt.gotoState) {
-    // jslint - init
-    case 1:
-        // cleanup
-        opt.errList = [];
-        opt.errMsg = "";
-        // preserve lineno
-        if (opt.iiStart) {
-            // optimization - efficiently count number of newlines
-            // https://jsperf.com/regexp-counting-2/8
-            opt.lineOffset |= 0;
-            ii = 0;
-            while (true) {
-                ii = code.indexOf("\n", ii);
-                if (ii === 0 || ii > opt.iiStart) {
-                    break;
-                }
-                ii += 1;
-                opt.lineOffset += 1;
-            }
-            code = code.slice(opt.iiStart, opt.iiEnd || code.length);
-        }
-        switch (opt.fileType0) {
-        // de-embed-js - '\\n\\\n...\\n\\\n'
-        case ".\\n\\":
-            // rgx - remove \\n\\
-            code = code.replace((
-                /\\n\\$|\\(.)/gm
-            ), function (ignore, match1) {
-                return match1 || "";
-            });
-            break;
-        // de-embed-js - '\n...\n'
-        case ".sh":
-            // rgx - convert '"'"' to '
-            code = code.replace((
-                /'"'"'/g
-            ), "'");
-            break;
-        }
-        // init
-        opt = Object.assign(opt, {
-            ".css": (
-                /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".html": (
-                /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".js": (
-                /^\/\*jslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".json": (
-                /^\s*?(?:\[|\{)/
-            ),
-            ".md": (
-                /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
-            ),
-            ".sh": (
-                /(^#\u0020jslint\u0020utility2:true$)/m
-            ),
-            code0: code,
-            fileType: (
-                /\.\w+?$|$/m
-            ).exec(file)[0]
-        });
-        // jslint - .json
-        if (opt.fileType === ".js" && opt[".json"].test(code)) {
-            opt.fileType = ".json";
-        }
-        try {
-            opt.conditionalPassed = opt[opt.fileType].exec(code);
-        } catch (ignore) {}
-        opt.utility2 = (
-            opt.conditionalPassed && opt.conditionalPassed[1]
-        ) || opt.autofix;
-        if (
-            opt.conditional
-            && (!opt.conditionalPassed || opt.coverage)
-        ) {
-            break;
-        }
-        opt.gotoState = 10;
-        break;
-    // jslint - autofix
-    case 11:
-        code = local.jslintAutofix(code, file, opt);
-        local.jslintResult = opt;
-        break;
-    // jslint - csslint and jslint
-    case 12:
-        // restore lineOffset
-        code = "\n".repeat(opt.lineOffset | 0) + code;
-        switch (opt.fileType) {
-        case ".css":
-            // csslint
-            Object.assign(opt, local.CSSLint.verify(code));
-            // init errList
-            opt.errList = opt.messages.map(function (err) {
-                err.column = err.col;
-                err.message = (
-                    err.type + " - " + err.rule.id + " - " + err.message
-                    + "\n    " + err.rule.desc
-                );
-                return err;
-            });
-            break;
-        case ".html":
-        case ".md":
-        case ".sh":
-            break;
-        default:
-            // jslint - .js
-            Object.assign(opt, local.jslint_export(code, opt));
-            code = opt.source_autofixed || code;
-            // init errList
-            opt.errList = opt.warnings.filter(function (err) {
-                return err && err.message;
-            }).map(function (err) {
-                err.column = err.column + 1;
-                err.evidence = err.source;
-                err.line = err.line + 1;
-                // debug early_stop
-                if (err.early_stop) {
-                    err.message = (
-                        "[JSLint was unable to finish] - "
-                        + err.message
-                    );
-                }
-                return err;
-            });
-        }
-        break;
-    // jslint - utility2
-    case 13:
-        local.jslintUtility2(code, file, opt);
-        break;
-    // jslint - print
-    default:
-        switch (Boolean(opt.fileType0) && opt.fileType0) {
-        // re-embed-js - '\\n\\\n...\\n\\\n'
-        case ".\\n\\":
-            code = code.trim();
-            // rgx - escape \ to \\
-            code = code.replace((
-                /\\/g
-            ), "\\\\");
-            // rgx - append \n\
-            code = code.replace((
-                /$/gm
-            ), "\\n\\");
-            // rgx - escape ' to \'
-            code = code.replace((
-                /'/g
-            ), "\\'");
-            // rgx - escape js-env to js\-env
-            code = code.replace((
-                /\u0020js-env\u0020/g
-            ), " js\\-env ");
-            code += "\n";
-            break;
-        // re-embed-js - '\n...\n'
-        case ".sh":
-            // rgx - escape ' to '"'"'
-            code = code.trim().replace((
-                /'/g
-            ), "'\"'\"'") + "\n";
-            break;
-        case false:
-            code = code.trimEnd() + "\n";
-            break;
-        default:
-            code = code.trim() + "\n";
-        }
-        // autofix-save
-        if (
-            !local.isBrowser
-            && opt.autofix
-            && !opt.fileType0
-            && !opt.stop
-            && code !== opt.code0
-            && require("fs").existsSync(file)
-        ) {
-            require("fs").writeFileSync(file, code);
-            require("fs").writeFileSync(file + ".autofix.old", opt.code0);
-            require("child_process").spawnSync(
-                "diff",
-                [
-                    "-u", file + ".autofix.old", file
-                ],
-                {
-                    stdio: [
-                        "ignore", 2, "ignore"
-                    ]
-                }
-            );
-            require("fs").unlinkSync(file + ".autofix.old");
-            console.error(
-                "\u001b[1mjslint-autofix - modified and saved file " + file
-                + "\u001b[22m"
-            );
-        }
-        // print colorized errMsg to stderr
-        // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99
-        opt.errList.filter(function (warning) {
-            return warning && warning.message;
-        // print only first 10 warnings
-        }).slice(0, 10).forEach(function (err, ii) {
-            opt.errMsg = (
-                opt.errMsg || " \u001b[1mjslint " + file + "\u001b[22m\n"
-            );
-            opt.errMsg += (
-                ("  " + String(ii + 1)).slice(-3)
-                + " \u001b[31m" + err.message + "\u001b[39m"
-                + " \u001b[90m\/\/ line " + err.line + ", column "
-                + err.column
-                + "\u001b[39m\n"
-                + ("    " + String(err.evidence).trim()).slice(0, 80) + "\n"
-            );
-            if (!ii && err.stack && err.a !== "debug\u0049nline") {
-                tmp = err.stack;
-                Object.entries(err).forEach(function ([
-                    key, val
-                ]) {
-                    if ((typeof val === "object" && val) || key === "stack") {
-                        delete err[key];
-                    }
-                });
-                opt.errMsg += (
-                    JSON.stringify(err, undefined, 4) + "\n" + tmp.trim() + "\n"
-                );
-            }
-        });
-        opt.errMsg = opt.errMsg.trim();
-        if (opt.errMsg) {
-            // print err to stderr
-            console.error(opt.errMsg);
-        }
-        opt.code = code;
-        return code;
-    }
-    // recurse
-    return local.jslintAndPrint(code, file, opt);
-};
+let jslintAutofix;
+let jslintRecurse;
+let jslintUtility2;
+let stringGetLineAndCol;
 
-local.jslintAndPrintDir = async function (dir, opt) {
-/*
- * this function will jslint files in shallow <dir>
- */
-    let errCnt;
-    errCnt = 0;
-    await Promise.all((
-        await require("fs").promises.readdir(require("path").resolve(dir))
-    ).map(async function (file) {
-        let data;
-        let timeStart;
-        timeStart = Date.now();
-        file = require("path").resolve(file);
-        switch ((
-            /\.\w+?$|$/m
-        ).exec(file)[0]) {
-        case ".css":
-        case ".html":
-        case ".js":
-        case ".json":
-        case ".md":
-        case ".sh":
-            if ((
-                /\b(?:assets\.app\.js|lock|min|raw|rollup)\b/
-            ).test(file)) {
-                return;
-            }
-            // jslint file
-            data = await require("fs").promises.readFile(file, "utf8");
-            local.jslintAndPrint(data, file, opt);
-            errCnt += local.jslintResult.errList.length;
-            console.error(
-                "jslint - " + (Date.now() - timeStart) + "ms - " + file
-            );
-            break;
-        }
-    }));
-    return Math.min(errCnt, 255);
-};
-
-local.jslintAutofix = function (code, file, opt) {
+jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {
 /*
  * this function will jslint-autofix <code>
  */
@@ -30256,53 +29989,47 @@ local.jslintAutofix = function (code, file, opt) {
     let dataList;
     let ignoreList;
     let ii;
+    let result;
     let rgx1;
     let rgx2;
     let tmp;
-    // autofix-all
-    if (opt.autofix) {
-        // autofix-all - normalize local-function
-        if (
-            globalThis.utility2
-            && typeof globalThis.utility2.jslintAutofixLocalFunction
-            === "function"
-        ) {
-            code = globalThis.utility2.jslintAutofixLocalFunction(code, file);
-        }
-        // autofix-all - remove trailing-whitespace
-        code = code.replace((
-            /\u0020+$/gm
-        ), "");
-        // autofix-all - remove leading-whitespace before )]}
-        code = code.replace((
-            /\n+?(\n\u0020*?[)\]}])/g
-        ), "$1");
-        // autofix-all - eslint - no-multiple-empty-lines
-        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
-        code = code.replace((
-            /\n{4,}/g
-        ), "\n\n\n");
-        // autofix-all - recurse <script>...</script>, <style>...</style>
-        code = code.replace((
-            /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\\n\\\n(?:^.*?\\n\\\n)*?)(';$|<\/script>\\n\\$|<\/style>\\n\\$)/gm
-        ), function (ignore, match1, match2, ii) {
-            return local.jslintAndPrint(
-                code,
-                file + (
-                    match2.indexOf("style") > -1
-                    ? ".<style>.css"
-                    : ".<script>.js"
-                ),
-                Object.assign({}, opt, {
-                    fileType0: ".\\n\\",
-                    iiEnd: ii + match1.length,
-                    iiStart: ii,
-                    gotoState: 0
-                })
-            ) + match2;
-        });
+    // autofix-all - normalize local-function
+    if (
+        globalThis.utility2
+        && typeof globalThis.utility2.jslintAutofixLocalFunction
+        === "function"
+    ) {
+        code = globalThis.utility2.jslintAutofixLocalFunction(code, file);
     }
-    switch (opt.autofix && opt.fileType) {
+    // autofix-all - remove trailing-whitespace
+    code = code.replace((
+        /\u0020+$/gm
+    ), "");
+    // autofix-all - remove leading-whitespace before )]}
+    code = code.replace((
+        /\n+?(\n\u0020*?[)\]}])/g
+    ), "$1");
+    // autofix-all - eslint - no-multiple-empty-lines
+    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
+    code = code.replace((
+        /\n{4,}/g
+    ), "\n\n\n");
+    // autofix-all - recurse <script>...</script>, <style>...</style>
+    code = code.replace((
+        /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\\n\\\n(?:^.*?\\n\\\n)*?)(';$|<\/script>\\n\\$|<\/style>\\n\\$)/gm
+    ), function (ignore, match1, match2, ii) {
+        return jslintRecurse(code, file + (
+            match2.indexOf("style") >= 0
+            ? ".<style>.css"
+            : ".<script>.js"
+        ), opt, {
+            fileType0: ".\\n\\",
+            iiEnd: ii + match1.length,
+            iiLine,
+            iiStart: ii
+        }) + match2;
+    });
+    switch (fileType) {
     case ".css":
         break;
     case ".html":
@@ -30310,25 +30037,21 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /^(\/\*\u0020jslint\u0020utility2:true\u0020\*\/\n[\S\s]*?\n)(<\/(?:script|style)>)$/gm
         ), function (ignore, match1, match2, ii) {
-            return local.jslintAndPrint(
-                code,
-                file + (
-                    match2.indexOf("style") >= 0
-                    ? ".<style>.css"
-                    : ".<script>.js"
-                ),
-                Object.assign({}, opt, {
-                    fileType0: opt.fileType,
-                    iiEnd: ii + match1.length,
-                    iiStart: ii,
-                    gotoState: 0
-                })
-            ) + match2;
+            return jslintRecurse(code, file + (
+                match2.indexOf("style") >= 0
+                ? ".<style>.css"
+                : ".<script>.js"
+            ), opt, {
+                fileType0: fileType,
+                iiEnd: ii + match1.length,
+                iiLine,
+                iiStart: ii
+            }) + match2;
         });
         break;
     case ".js":
     case ".json":
-        // autofix-js - demux code to [code, ignoreList]
+        // autofix-js - de-mux code to [code, ignoreList]
         ignoreList = [];
         code = code.replace((
             /^\u0020*?\/\*\u0020jslint\u0020ignore:start\u0020\*\/$[\S\s]*?^\/\*\u0020jslint\u0020ignore:end\u0020\*\/$/gm
@@ -30345,7 +30068,7 @@ local.jslintAutofix = function (code, file, opt) {
                 + match0.charCodeAt(0).toString(16)
             ).slice(-4);
         });
-        // autofix-js - demux code2 to [code2, ignoreList]
+        // autofix-js - de-mux code2 to [code2, ignoreList]
         code2 = "";
         dataList = [];
         ii = 0;
@@ -30358,7 +30081,7 @@ local.jslintAutofix = function (code, file, opt) {
             /(?:[^.]\b(?:case|delete|in|instanceof|new|return|typeof|void|yield)|[!%&(*+,\-\/:;<=>?\[\^{|}~])[\s\u0028]*?\/[^*\/]/g
         );
         tmp = "";
-        // autofix-js - demux shebang
+        // autofix-js - de-mux shebang
         code.replace((
             /^#!.*/
         ), function (match0) {
@@ -30435,7 +30158,6 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /\/_\*\//g
         ), "/_/");
-        opt.codeDemux = code;
         // autofix-js - left-align comment //_
         tmp = undefined;
         code = code.split("\n").reverse().map(function (line) {
@@ -30581,17 +30303,17 @@ local.jslintAutofix = function (code, file, opt) {
                 /\t/g
             ), "\\t");
         });
-        // autofix-js - remux shebang
+        // autofix-js - re-mux shebang
         code = code.replace((
             /^#!/
         ), function () {
             return dataList.shift().code;
         });
-        // autofix-js - remux [code, dataList] to code
+        // autofix-js - re-mux [code, dataList] to code
         code = code.replace((
             /"_"|'_'|\/\*_\*\/|\/\/!!_|\/\/_|\/_\/|`_`/g
         ), function (match0) {
-            // autofix-js - defer remux rgx /_/
+            // autofix-js - defer re-mux rgx /_/
             if (match0 === "/_/") {
                 dataList.push(dataList.shift());
                 return "/\u0000/";
@@ -30603,14 +30325,14 @@ local.jslintAutofix = function (code, file, opt) {
         while (true) {
             ii += 1;
             code0 = code;
-            Object.assign(opt, local.jslint_export(code, opt));
-            code = opt.source_autofixed;
-            if (ii >= 10 || opt.stop || code0 === code) {
+            result = local.jslint0(code, opt, globalList);
+            code = result.source_autofixed;
+            if (ii >= 10 || result.stop || code0 === code) {
                 break;
             }
         }
         // autofix-json - jsonStringifyOrdered
-        if (opt.fileType === ".json") {
+        if (fileType === ".json") {
             code = JSON.stringify(
                 local.objectDeepCopyWithKeysSorted(JSON.parse(code)),
                 undefined,
@@ -30618,7 +30340,7 @@ local.jslintAutofix = function (code, file, opt) {
             );
             break;
         }
-        // autofix-js - remux - code, dataList./_/ to code
+        // autofix-js - re-mux - code, dataList./_/ to code
         code = code.replace((
             /\/\u0000\//g
         ), function () {
@@ -30630,7 +30352,7 @@ local.jslintAutofix = function (code, file, opt) {
         ), function (match0) {
             return match0.split("\n").slice(0, -1).sort().join("\n") + "\n";
         });
-        // autofix-js - remux - code, ignoreList to code
+        // autofix-js - re-mux - code, ignoreList to code
         code = code.replace((
             /^\u0020*?\/\*\u0020jslint\u0020ignore:start:end\u0020\*\/$/gm
         ), function () {
@@ -30642,16 +30364,14 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /^(```javascript\n)([\S\s]*?\n)```$/gm
         ), function (ignore, match1, match2, ii) {
-            return match1 + local.jslintAndPrint(
-                code,
-                file + ".<```javascript>.js",
-                Object.assign({}, opt, {
-                    fileType0: opt.fileType,
-                    iiEnd: ii + match1.length + match2.length,
-                    iiStart: ii + match1.length,
-                    gotoState: 0
-                })
-            ) + "```";
+            return match1 + jslintRecurse(code, (
+                file + ".<```javascript>.js"
+            ), opt, {
+                fileType0: fileType,
+                iiEnd: ii + match1.length + match2.length,
+                iiLine,
+                iiStart: ii + match1.length
+            }) + "```";
         });
         break;
     case ".sh":
@@ -30659,43 +30379,273 @@ local.jslintAutofix = function (code, file, opt) {
         code = code.replace((
             /^\/\*\u0020jslint\u0020utility2:true\u0020\*\/\n[\S\s]*?\n'/gm
         ), function (match0, ii) {
-            return local.jslintAndPrint(
-                code,
-                file + ".<node -e>.js",
-                Object.assign({}, opt, {
-                    fileType0: opt.fileType,
-                    iiEnd: ii + match0.length - 1,
-                    iiStart: ii,
-                    gotoState: 0
-                })
-            ) + "'";
+            return jslintRecurse(code, file + ".<node -e>.js", opt, {
+                fileType0: fileType,
+                iiEnd: ii + match0.length - 1,
+                iiLine,
+                iiStart: ii
+            }) + "'";
         });
         break;
     }
     return code;
 };
 
-local.jslintGetColumnLine = function (code, ii) {
+jslintRecurse = function (code, file, opt, {
+    fileType0,
+    iiEnd,
+    iiLine = 0,
+    iiStart = 0
+}) {
 /*
- * this function will transform <code> and <ii> to {column, line, evidence}
+ * this function will recursively jslint <code> for embedded code
  */
-    let column;
-    let evidence;
-    let line;
-    evidence = code.slice(0, ii).split("\n");
-    line = evidence.length - 1;
-    column = evidence[line].length;
-    evidence = evidence[line] + code.slice(ii, ii + 100).split("\n")[0];
-    return {
-        column,
-        evidence,
-        line
+    let code0;
+    let errList;
+    let errMsg;
+    let fileType;
+    let globalList;
+    let modeAutofix;
+    let modeConditional;
+    let modeCoverage;
+    let result;
+    let tmp;
+    // init opt
+    local.jslintResult = {};
+    opt = Object.assign(local.jslintResult, opt, {
+        errList: [],
+        errMsg: ""
+    });
+    // init var
+    errList = [];
+    fileType = (
+        /\.\w+?$|$/m
+    ).exec(file)[0];
+    globalList = opt.globalList;
+    modeAutofix = opt.autofix;
+    modeConditional = opt.conditional;
+    modeCoverage = opt.coverage;
+    result = {};
+    // preserve lineno - save iiLine
+    iiLine += stringGetLineAndCol(code, iiStart).line;
+    // de-embed
+    code = code.slice(iiStart, iiEnd || code.length);
+    switch (fileType0) {
+    // de-embed-js - '\\n\\\n...\\n\\\n'
+    case ".\\n\\":
+        // rgx - remove \\n\\
+        code = code.replace((
+            /\\n\\$|\\(.)/gm
+        ), function (ignore, match1) {
+            return match1 || "";
+        });
+        break;
+    // de-embed-js - '\n...\n'
+    case ".sh":
+        // rgx - convert '"'"' to '
+        code = code.replace((
+            /'"'"'/g
+        ), "'");
+        break;
+    }
+    // init
+    code0 = code;
+    tmp = {
+        ".css": (
+            /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".html": (
+            /^\/\*csslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".js": (
+            /^\/\*jslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".json": (
+            /^\s*?(?:\[|\{)/
+        ),
+        ".md": (
+            /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
+        ),
+        ".sh": (
+            /(^#\u0020jslint\u0020utility2:true$)/m
+        )
     };
+    // jslint - .json
+    if (fileType === ".js" && tmp[".json"].test(code)) {
+        fileType = ".json";
+    }
+    // init mode-utility2
+    tmp = tmp[fileType] && tmp[fileType].exec(code);
+    opt.utility2 = Boolean((tmp && tmp[1]) || modeAutofix);
+    // if not modeConditional, then do not jslint
+    if ((modeConditional && !tmp) || modeCoverage) {
+        return code;
+    }
+    // jslint - modeAutofix
+    if (modeAutofix) {
+        code = jslintAutofix(code, file, opt, {
+            fileType,
+            globalList,
+            iiLine
+        });
+    }
+    // preserve lineno - restore iiLine
+    code = "\n".repeat(iiLine) + code;
+    switch (fileType) {
+    // jslint - .css
+    case ".css":
+        // call csslint
+        result = local.CSSLint.verify(code);
+        // init errList
+        errList = result.messages.map(function (err) {
+            err.column = err.col;
+            err.message = (
+                err.type + " - " + err.rule.id + " - " + err.message
+                + "\n    " + err.rule.desc
+            );
+            return err;
+        });
+        break;
+    case ".html":
+    case ".md":
+    case ".sh":
+        break;
+    // jslint - .js
+    default:
+        // call jslint
+        result = local.jslint0(code, opt, globalList);
+        code = result.source_autofixed || code;
+        // init errList
+        errList = result.warnings.filter(function (err) {
+            return err && err.message;
+        }).map(function (err) {
+            err.column = err.column + 1;
+            err.evidence = err.source;
+            err.line = err.line + 1;
+            // debug early_stop
+            if (err.early_stop) {
+                err.message = (
+                    "[JSLint was unable to finish] - "
+                    + err.message
+                );
+            }
+            return err;
+        });
+    }
+    if (opt.utility2) {
+        jslintUtility2({
+            code,
+            errList,
+            fileType
+        });
+    }
+    // jslint - print
+    switch (Boolean(fileType0) && fileType0) {
+    // re-embed-js - '\\n\\\n...\\n\\\n'
+    case ".\\n\\":
+        code = code.trim();
+        // rgx - escape \ to \\
+        code = code.replace((
+            /\\/g
+        ), "\\\\");
+        // rgx - append \n\
+        code = code.replace((
+            /$/gm
+        ), "\\n\\");
+        // rgx - escape ' to \'
+        code = code.replace((
+            /'/g
+        ), "\\'");
+        // rgx - escape js-env to js\-env
+        code = code.replace((
+            /\u0020js\u002denv\u0020/g
+        ), " js\\\u002denv ");
+        code += "\n";
+        break;
+    // re-embed-js - '\n...\n'
+    case ".sh":
+        // rgx - escape ' to '"'"'
+        code = code.trim().replace((
+            /'/g
+        ), "'\"'\"'") + "\n";
+        break;
+    case false:
+        code = code.trimEnd() + "\n";
+        break;
+    default:
+        code = code.trim() + "\n";
+    }
+    // autofix-save
+    if (
+        !local.isBrowser
+        && modeAutofix
+        && !fileType0
+        && !result.stop
+        && code !== code0
+        && require("fs").existsSync(file)
+    ) {
+        require("fs").writeFileSync(file, code);
+        require("fs").writeFileSync(file + ".autofix.old", code0);
+        require("child_process").spawnSync(
+            "diff",
+            [
+                "-u", file + ".autofix.old", file
+            ],
+            {
+                stdio: [
+                    "ignore", 2, "ignore"
+                ]
+            }
+        );
+        require("fs").unlinkSync(file + ".autofix.old");
+        console.error(
+            "\u001b[1mjslint-autofix - modified and saved file " + file
+            + "\u001b[22m"
+        );
+    }
+    // print colorized errMsg to stderr
+    // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99
+    errMsg = "";
+    errList.filter(function (warning) {
+        return warning && warning.message;
+    // print only first 10 warnings
+    }).slice(0, 10).forEach(function (err, ii) {
+        errMsg = errMsg || " \u001b[1mjslint " + file + "\u001b[22m\n";
+        errMsg += (
+            ("  " + String(ii + 1)).slice(-3)
+            + " \u001b[31m" + err.message + "\u001b[39m"
+            + " \u001b[90m\/\/ line " + err.line + ", column "
+            + err.column
+            + "\u001b[39m\n"
+            + ("    " + String(err.evidence).trim()).slice(0, 80) + "\n"
+        );
+        if (!ii && err.stack && err.a !== "debug\u0049nline") {
+            tmp = err.stack;
+            Object.entries(err).forEach(function ([
+                key, val
+            ]) {
+                if ((typeof val === "object" && val) || key === "stack") {
+                    delete err[key];
+                }
+            });
+            errMsg += (
+                JSON.stringify(err, undefined, 4) + "\n" + tmp.trim() + "\n"
+            );
+        }
+    });
+    errMsg = errMsg.trim();
+    if (errMsg) {
+        // print err to stderr
+        console.error(errMsg);
+    }
+    return Object.assign(local.jslintResult, opt, result, {
+        code,
+        errList,
+        errMsg
+    }).code;
 };
 
-local.jslintResult = {};
-
-local.jslintUtility2 = function (code, ignore, opt) {
+jslintUtility2 = function ({code, errList, fileType}) {
 /*
  * this function will jslint <code> with utiity2-specific rules
  */
@@ -30704,54 +30654,52 @@ local.jslintUtility2 = function (code, ignore, opt) {
     let indent;
     let previous;
     // jslintUtility2 - all
-    if (opt.utility2) {
-        code2 = code;
-        // ignore start to end
-        code2 = code2.replace((
-            /^\/\*\u0020jslint\u0020ignore:start\u0020\*\/$[\S\s]+?^\/\*\u0020jslint\u0020ignore:end\u0020\*\/$/gm
-        ), function (match0) {
-            // preserve lineno
-            return match0.replace((
-                /.+/g
-            ), "");
-        });
-        // lint whitespace
-        code2.replace((
-            /^\u0020+?(?:\*|\/\/!!)|^\u0020+|[\r\t]/gm
-        ), function (match0, ii) {
-            switch (match0.slice(-1)) {
-            case " ":
-                if (match0.length % 4 === 0) {
-                    return "";
-                }
-                err = {
-                    message: "non 4-space indent"
-                };
-                break;
-            case "\r":
-                err = {
-                    message: "unexpected \\r"
-                };
-                break;
-            case "\t":
-                err = {
-                    message: "unexpected \\t"
-                };
-                break;
-            default:
+    code2 = code;
+    // ignore start to end
+    code2 = code2.replace((
+        /^\/\*\u0020jslint\u0020ignore:start\u0020\*\/$[\S\s]+?^\/\*\u0020jslint\u0020ignore:end\u0020\*\/$/gm
+    ), function (match0) {
+        // preserve lineno
+        return match0.replace((
+            /.+/g
+        ), "");
+    });
+    // lint whitespace
+    code2.replace((
+        /^\u0020+?(?:\*|\/\/!!)|^\u0020+|[\r\t]/gm
+    ), function (match0, ii) {
+        switch (match0.slice(-1)) {
+        case " ":
+            if (match0.length % 4 === 0) {
                 return "";
             }
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));
-            opt.errList.push({
-                column: err.column + 1,
-                evidence: JSON.stringify(err.evidence),
-                line: err.line + 1,
-                message: err.message
-            });
+            err = {
+                message: "non 4-space indent"
+            };
+            break;
+        case "\r":
+            err = {
+                message: "unexpected \\r"
+            };
+            break;
+        case "\t":
+            err = {
+                message: "unexpected \\t"
+            };
+            break;
+        default:
             return "";
+        }
+        Object.assign(err, stringGetLineAndCol(code2, ii));
+        errList.push({
+            column: err.column + 1,
+            evidence: JSON.stringify(err.evidence),
+            line: err.line + 1,
+            message: err.message
         });
-    }
-    switch (opt.utility2 && opt.fileType) {
+        return "";
+    });
+    switch (fileType) {
     // jslintUtility2 - .css
     case ".css":
         // ignore comment
@@ -30764,7 +30712,7 @@ local.jslintUtility2 = function (code, ignore, opt) {
             ), "");
         });
         code2.replace((
-            /\S\u0020{2}|\u0020,|^\S.*?[,;{}]./gm
+            /\S\u0020{2}|\u0020,|^\S.*?,.|[;{}]./gm
         ), function (match0, ii) {
             switch (match0.slice(-2)) {
             case "  ":
@@ -30785,8 +30733,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                     message: "unexpected multiline-statement"
                 };
             }
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));
-            opt.errList.push({
+            Object.assign(err, stringGetLineAndCol(code2, ii));
+            errList.push({
                 column: err.column + err.colOffset,
                 evidence: JSON.stringify(err.evidence),
                 line: err.line + 1,
@@ -30843,8 +30791,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 : undefined
             );
             if (err) {
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30878,8 +30826,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 err = {
                     message: "lines not sorted\n" + previous + "\n" + match1
                 };
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30914,8 +30862,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 previous = match1;
             }
             if (err) {
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30955,8 +30903,8 @@ local.jslintUtility2 = function (code, ignore, opt) {
                 previous = match2;
             }
             if (err) {
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));
-                opt.errList.push({
+                Object.assign(err, stringGetLineAndCol(code2, ii));
+                errList.push({
                     column: err.column + 1,
                     evidence: err.evidence,
                     line: err.line + 1,
@@ -30968,6 +30916,93 @@ local.jslintUtility2 = function (code, ignore, opt) {
         break;
     }
 };
+
+stringGetLineAndCol = function (code, ii) {
+/*
+ * this function will get line and column from <code> at <ii>
+ */
+    let aa;
+    let bb;
+    let line;
+    // https://jsperf.com/regexp-counting-2/8
+    bb = 0;
+    line = 0;
+    while (true) {
+        aa = bb;
+        bb = code.indexOf("\n", bb) + 1;
+        if (bb === 0 || ii < bb) {
+            break;
+        }
+        line += 1;
+    }
+    return {
+        column: ii - aa,
+        evidence: code.slice(aa, Math.max((bb || code.length) - 1, 0)),
+        line
+    };
+};
+
+local.jslintAndPrint = function (code, file = "undefined", opt = {}) {
+/*
+ * this function will jslint-autofix <code>
+ */
+    return jslintRecurse(code, file, opt, {});
+};
+
+local.jslintAndPrintDir = function (dir, opt, onError) {
+/*
+ * this function will jslint files in <dir>
+ */
+    let errCnt;
+    errCnt = 0;
+    onError = onError || function (err) {
+        process.exit(Math.min((err && err.message) | 0, 127));
+    };
+    dir = require("path").resolve(dir) + require("path").sep;
+    require("fs").readdir(dir, function (err, fileList) {
+        local.onErrorThrow(err);
+        Promise.all(fileList.map(function (file) {
+            return new Promise(function (resolve) {
+                let timeStart;
+                timeStart = Date.now();
+                file = dir + file;
+                switch ((
+                    /\.\w+?$|$/m
+                ).exec(file)[0]) {
+                case ".css":
+                case ".html":
+                case ".js":
+                case ".json":
+                case ".md":
+                case ".sh":
+                    if ((
+                        /\b(?:assets\.app\.js|lock|min|raw|rollup)\b/
+                    ).test(file)) {
+                        resolve();
+                        return;
+                    }
+                    // jslint file
+                    require("fs").readFile(file, "utf8", function (err, data) {
+                        local.onErrorThrow(err);
+                        local.jslintAndPrint(data, file, opt);
+                        errCnt += local.jslintResult.errList.length;
+                        console.error(
+                            "jslint - " + (Date.now() - timeStart) + "ms - "
+                            + file
+                        );
+                        resolve();
+                    });
+                    return;
+                }
+                resolve();
+            });
+        })).then(function () {
+            onError(errCnt && new Error(errCnt));
+        });
+    });
+};
+
+local.jslintResult = {};
 }());
 
 
@@ -31011,7 +31046,7 @@ local.cliDict.dir = function () {
     local.jslintAndPrintDir(process.argv[3], {
         autofix: process.argv.indexOf("--autofix") >= 0,
         conditional: process.argv.indexOf("--conditional") >= 0
-    }).then(process.exit);
+    });
 };
 
 // run the cli
@@ -31175,6 +31210,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -31588,6 +31631,14 @@ if (local.isBrowser) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -31800,7 +31851,7 @@ local.fsRmrfSync = function (pathname) {
  * this function will sync "rm -rf" <pathname>
  */
     let child_process;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         child_process = require("child_process");
     } catch (ignore) {
@@ -44201,7 +44252,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.6.11)
+ * lib.utility2.js (2020.6.14)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -44355,6 +44406,14 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -44572,6 +44631,14 @@ local.assetsDict["/assets.utility2.header.js"] = '\
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
+    };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
     };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
@@ -45466,11 +45533,11 @@ local.assetsDict["/assets.test.template.js"] = '\
 \n\
 \n\
 /* jslint utility2:true */\n\
-/* istanbul ignore next */\n\
 (function (local) {\n\
 "use strict";\n\
 \n\
 \n\
+/* istanbul ignore next */\n\
 // run shared js\-env code - init-before\n\
 (function () {\n\
 // init local\n\
@@ -45744,7 +45811,11 @@ local.cliDict["utility2.testReportCreate"] = function () {
 // run shared js-env code - function
 (function () {
 let localEventListenerDict;
+let localEventListenerId;
+let onErrorThrow;
 localEventListenerDict = {};
+localEventListenerId = 0;
+onErrorThrow = local.onErrorThrow;
 // init lib Blob
 local.Blob = globalThis.Blob || function (list, opt) {
     /*
@@ -45940,6 +46011,7 @@ local._testCase_buildApidoc_default = function (opt, onError) {
             require("v8"),
             require("vm"),
             {
+                // coverage-hack
                 "__zjqx1234__": nop
             }
         ].forEach(function (dict) {
@@ -45965,25 +46037,22 @@ local._testCase_buildApidoc_default = function (opt, onError) {
                 console.error(errCaught);
             }
             onError();
-        }, local.onErrorThrow);
+        }, onErrorThrow);
         return exports;
     };
     // coverage-hack
     require2();
     // save apidoc.html
-    local.fsWriteFileWithMkdirp({
-        data: local.apidocCreate(local.objectAssignDefault(opt, {
+    local.fsWriteFileWithMkdirp("tmp/build/apidoc.html", local.apidocCreate(
+        Object.assign({
             blacklistDict: local,
             modeNop: (
                 process.env.npm_config_mode_test_case
                 !== "testCase_buildApidoc_default"
             ),
             require: require2
-        })),
-        modeDebug: true,
-        modeUncaughtException: true,
-        pathname: "tmp/build/apidoc.html"
-    }, onError);
+        }, opt)
+    ), onError);
 };
 
 local._testCase_buildApp_default = function (opt, onError) {
@@ -45994,54 +46063,19 @@ local._testCase_buildApp_default = function (opt, onError) {
         onError(undefined, opt);
         return;
     }
-    globalThis.local.testCase_buildReadme_default(opt, local.onErrorThrow);
-    globalThis.local.testCase_buildLib_default(opt, local.onErrorThrow);
-    globalThis.local.testCase_buildTest_default(opt, local.onErrorThrow);
     local.buildApp(opt, onError);
-};
-
-local._testCase_buildLib_default = function (opt, onError) {
-/*
- * this function will test buildLib's default handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    return local.buildLib({}, onError);
-};
-
-local._testCase_buildReadme_default = function (opt, onError) {
-/*
- * this function will test buildReadme's default handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    return local.buildReadme({}, onError);
-};
-
-local._testCase_buildTest_default = function (opt, onError) {
-/*
- * this function will test buildTest's default handling-behavior
- */
-    if (local.isBrowser) {
-        onError(undefined, opt);
-        return;
-    }
-    return local.buildTest({}, onError);
 };
 
 local._testCase_webpage_default = function (opt, onError) {
 /*
  * this function will test webpage's default handling-behavior
  */
+    local.domQuerySelectorAllTagName("html");
+    local.domStyleValidate();
     if (local.isBrowser) {
         onError(undefined, opt);
         return;
     }
-    local.domStyleValidate();
     local.browserTest({
         fileScreenshot: (
             process.env.npm_config_dir_build
@@ -46800,544 +46834,606 @@ local.bufferValidateAndCoerce = function (buf, mode) {
     return buf;
 };
 
-local.buildApp = function (opt, onError) {
+local.buildApp = function ({
+    assetsList = [],
+    customizeReadmeList = []
+}, onError) {
 /*
- * this function will build app with given <opt>
+ * this function will build app
  */
-    // cleanup app
-    require("child_process").spawn((
-        "rm -rf tmp/build/app tmp/buildAssetsAppJs;"
-    ), {
-        shell: true,
-        stdio: [
-            "ignore", 1, 2
-        ]
-    }).on("error", onError).on("exit", function (exitCode) {
-        let promiseList;
-        // validate exitCode
-        local.assertOrThrow(!exitCode, exitCode);
-        promiseList = [];
-        // test standalone assets.app.js
-        promiseList.push(new Promise(function (resolve) {
-            local.fsWriteFileWithMkdirp({
-                data: local.assetsDict["/assets.app.js"],
-                modeDebug: true,
-                modeUncaughtException: true,
-                pathname: "tmp/buildAssetsAppJs/assets.app.js"
-            }, function () {
-                require("child_process").spawn("node", [
-                    "assets.app.js"
-                ], {
-                    cwd: "tmp/buildAssetsAppJs",
-                    env: {
-                        PATH: process.env.PATH,
-                        PORT: (Math.random() * 0x10000) | 0x8000,
-                        npm_config_timeout_exit: 5000
-                    },
-                    stdio: [
-                        "ignore", 1, 2
-                    ]
-                }).on("exit", function (exitCode) {
-                    // handle exitCode
-                    local.assertOrThrow(!exitCode, exitCode);
-                    resolve();
-                });
-            });
-        }));
-        // build app
-        [
-            {
-                file: "/LICENSE",
-                url: "/LICENSE"
-            }, {
-                file: "/assets." + process.env.npm_package_nameLib + ".html",
-                url: "/index.html"
-            }, {
-                file: "/assets." + process.env.npm_package_nameLib + ".css",
-                url: "/assets." + process.env.npm_package_nameLib + ".css"
-            }, {
-                file: "/assets." + process.env.npm_package_nameLib + ".js",
-                url: "/assets." + process.env.npm_package_nameLib + ".js"
-            }, {
-                file: "/assets.app.js",
-                url: "/assets.app.js"
-            }, {
-                file: "/assets.example.html",
-                url: "/assets.example.html"
-            }, {
-                file: "/assets.example.js",
-                url: "/assets.example.js"
-            }, {
-                file: "/assets.test.js",
-                url: "/assets.test.js"
-            }, {
-                file: "/assets.utility2.html",
-                url: "/assets.utility2.html"
-            }, {
-                file: "/assets.utility2.rollup.js",
-                url: "/assets.utility2.rollup.js"
-            }, {
-                file: "/index.html",
-                url: "/index.html"
-            }, {
-                file: "/index.rollup.html",
-                url: "/index.rollup.html"
-            }, {
-                file: "/utility2.state.init.js",
-                url: "/utility2.state.init.js"
+    let buildAppAssets;
+    let buildAppStandalone;
+    let buildLib;
+    let buildReadme;
+    let buildTest;
+    let fileDict;
+    let port;
+    let promiseList;
+    let src;
+    let tgt;
+    let tgtReplaceConditional;
+    let writeFile;
+    let writeFileLog;
+    tgtReplaceConditional = function (condition, replaceList) {
+    /*
+     * this function will conditionally replace <tgt> with replacements in
+     * <replaceList>
+     */
+        replaceList.forEach(function ({
+            aa,
+            bb,
+            merge
+        }) {
+            let isMatch;
+            if (!condition) {
+                aa = aa || merge;
+                console.error(
+                    "buildApp - replace-skipped - "
+                    + JSON.stringify((aa && aa.source) || aa)
+                );
+                return;
             }
-        ].concat(opt.assetsList).forEach(function (elem) {
-            promiseList.push(new Promise(function (resolve) {
-                if (!elem) {
-                    resolve();
+            if (aa) {
+                if (!tgt.match(aa)) {
+                    console.error(
+                        "buildApp - replace-unmatched - "
+                        + JSON.stringify((aa && aa.source) || aa)
+                    );
                     return;
                 }
+                tgt = tgt.replace(aa, bb);
+                return;
+            }
+            src.replace(merge, function (match2) {
+                tgt.replace(merge, function (match1) {
+                    isMatch = true;
+                    // disable $-escape in replacement-string
+                    tgt = tgt.replace(match1, function () {
+                        return match2;
+                    });
+                    return "";
+                });
+                return "";
+            });
+            if (!isMatch) {
+                console.error(
+                    "buildApp - replace-unmatched - "
+                    + JSON.stringify(merge.source)
+                );
+            }
+        });
+    };
+    writeFile = function (file, data, resolve) {
+    /*
+     * this function will write <data> to <file> with notification
+     */
+        require("fs").writeFile(file, data, function (err) {
+            onErrorThrow(err);
+            writeFileLog(file);
+            resolve();
+        });
+    };
+    writeFileLog = function (file) {
+    /*
+     * this function will notify <file> written
+     */
+        console.error("buildApp - wrote - " + require("path").resolve(file));
+    };
+    buildAppAssets = function (resolve) {
+        let promiseList2;
+        promiseList2 = [];
+        // fetch assets
+        [
+            {
+                url: "/LICENSE"
+            }, {
+                file: (
+                    "/assets." + process.env.npm_package_nameLib + ".html"
+                ),
+                url: "/index.html"
+            }, {
+                url: "/assets." + process.env.npm_package_nameLib + ".css"
+            }, {
+                url: "/assets." + process.env.npm_package_nameLib + ".js"
+            }, {
+                url: "/assets.app.js"
+            }, {
+                url: "/assets.example.html"
+            }, {
+                url: "/assets.example.js"
+            }, {
+                url: "/assets.test.js"
+            }, {
+                url: "/assets.utility2.html"
+            }, {
+                url: "/assets.utility2.lib.jslint.js"
+            }, {
+                url: "/assets.utility2.rollup.js"
+            }, {
+                url: "/index.html"
+            }, {
+                url: "/index.rollup.html"
+            }, {
+                url: "/utility2.state.init.js"
+            }
+        ].concat(assetsList).forEach(function (elem) {
+            promiseList2.push(new Promise(function (resolve) {
                 require("http").request((
                     "http://127.0.0.1:" + process.env.PORT + elem.url
                 ), function (res) {
-                    let data;
-                    data = [];
-                    res.on("data", function (chunk) {
-                        data.push(chunk);
-                    }).on("end", function () {
-                        local.fsWriteFileWithMkdirp({
-                            data: Buffer.concat(data),
-                            modeDebug: true,
-                            modeUncaughtException: true,
-                            pathname: "tmp/build/app/" + elem.file
-                        }, resolve);
-                    });
+                    let file;
+                    file = "tmp/build/app/" + (elem.file || elem.url);
+                    res.pipe(require("fs").createWriteStream(
+                        file
+                    ).on("close", function () {
+                        writeFileLog(file);
+                        resolve();
+                    }));
                 }).end();
             }));
         });
-        // jslint app
-        Promise.all(promiseList).then(function () {
-            local.local.childProcessEval((
-                local.assetsDict["/assets.utility2.lib.jslint.js"]
-                + ";module.exports.jslintAndPrintDir(\".\","
-                + "{conditional:true});"
-            ), {
-                cwd: "tmp/build/app"
-            }).then(onError);
+        // jslint assets
+        Promise.all(promiseList2).then(function (errList) {
+            errList.forEach(onErrorThrow);
+            require("child_process").spawn("node", [
+                "assets.utility2.lib.jslint.js", "dir", ".", "--conditional"
+            ], {
+                cwd: "tmp/build/app",
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            }).on("exit", resolve);
         });
-    });
-};
-
-local.buildLib = function (opt, onError) {
-/*
- * this function will build lib with given <opt>
- */
-    let result;
-    local.objectAssignDefault(opt, {
-        customize: local.nop,
-        dataFrom: require("fs").readFileSync(
-            "lib." + process.env.npm_package_nameLib + ".js",
-            "utf8"
-        ),
-        dataTo: local.templateRenderMyApp(
+    };
+    buildAppStandalone = function (resolve) {
+        // write assets.app.js
+        writeFile((
+            "tmp/build/app.standalone/assets.app.js"
+        ), local.assetsDict["/assets.app.js"], function () {
+            // test-file assets.app.js
+            require("child_process").spawn("node", [
+                "assets.app.js"
+            ], {
+                cwd: "tmp/build/app.standalone",
+                env: {
+                    PATH: process.env.PATH,
+                    PORT: port,
+                    npm_config_timeout_exit: 4000
+                },
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            }).on("exit", resolve);
+        });
+    };
+    buildLib = function (resolve) {
+        src = fileDict["lib." + process.env.npm_package_nameLib + ".js"];
+        // render lib.xxx.js
+        tgt = local.templateRenderMyApp(
             local.assetsDict["/assets.my_app.template.js"]
-        )
-    });
-    // search-and-replace - customize dataTo
-    [
-        // customize top-level comment-description
-        (
-            /\n\u0020\*\n(?:[\S\s]*?\n)?\u0020\*\/\n/
-        ),
-        // customize code after /* validateLineSortedReset */
-        (
-            /\n\/\*\u0020validateLineSortedReset\u0020\*\/\n[\S\s]*?$/
-        )
-    ].forEach(function (rgx) {
-        opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-    });
-    // customize assets.utility2.rollup.js
-    if (require("fs").existsSync("./assets.utility2.rollup.js")) {
-        opt.dataTo = opt.dataTo.replace(
-            "    // || globalThis.utility2_rollup_old",
-            "    || globalThis.utility2_rollup_old"
-        ).replace(
-            "    // || require(\"./assets.utility2.rollup.js\")",
-            "    || require(\"./assets.utility2.rollup.js\")"
         );
-    }
-    // save lib
-    result = opt.dataTo;
-    if (!process.env.npm_config_mode_coverage) {
-        local.fsWriteFileWithMkdirpSync(
+        tgtReplaceConditional(true, [
+            {
+                // customize top-level comment-description
+                merge: (
+                    /\n\u0020\*\n(?:[\S\s]*?\n)?\u0020\*\/\n/
+                )
+            }, {
+                // customize code after /* validateLineSortedReset */
+                merge: (
+                    /\n\/\*\u0020validateLineSortedReset\u0020\*\/\n[\S\s]*?$/
+                )
+            }
+        ]);
+        // customize assets.utility2.rollup.js
+        tgtReplaceConditional(fileDict["assets.utility2.rollup.js"], [
+            {
+                aa: "    // || globalThis.utility2_rollup_old",
+                bb: "    || globalThis.utility2_rollup_old"
+            }, {
+                aa: "    // || require(\"./assets.utility2.rollup.js\")",
+                bb: "    || require(\"./assets.utility2.rollup.js\")"
+            }
+        ]);
+        // write lib.xxx.js
+        writeFile(
             "lib." + process.env.npm_package_nameLib + ".js",
-            result,
-            "wrote file - lib - {{pathname}}"
+            tgt,
+            resolve
         );
-    }
-    opt.customize(opt);
-    onError();
-    return result;
-};
-
-local.buildReadme = function (opt, onError) {
-/*
- * this function will build readme with given <opt> my-app-lite template
- */
-    let result;
-    local.objectAssignDefault(opt, {
-        customize: local.nop,
+    };
+    buildReadme = function (resolve) {
+    /*
+     * this function will build readme with template assets.readme.template.md
+     */
+        let packageJson;
+        let packageJsonRgx;
+        let toc;
         // reset toc
-        dataFrom: require("fs").readFileSync(
-            "README.md",
-            "utf8"
-        ).replace((
+        src = fileDict["README.md"].replace((
             /\n#\u0020table\u0020of\u0020contents$[\S\s]*?\n\n\n/m
-        ), "\n# table of contents\n\n\n"),
-        packageJsonRgx: (
+        ), "\n# table of contents\n\n\n");
+        packageJsonRgx = (
             /\n#\u0020package.json\n```json\n([\S\s]*?)\n```\n/
-        )
-    });
-    // render dataTo
-    opt.dataTo = local.templateRenderMyApp(
-        local.assetsDict["/assets.readme.template.md"]
-    );
-    // init package.json
-    opt.dataFrom.replace(opt.packageJsonRgx, function (match0, match1) {
-        // remove null from package.json
-        opt.packageJson = JSON.parse(match1.replace((
-            /\u0020{4}".*?":\u0020null,?$/gm
-        ), ""));
-        opt.packageJson.description = opt.dataFrom.split("\n")[1];
-        local.objectAssignDefault(opt.packageJson, {
-            nameLib: JSON.parse(
-                require("fs").readFileSync("package.json", "utf8")
-            ).nameLib
-        });
-        opt.packageJson = local.objectAssignDefault(opt.packageJson, {
-            nameLib: opt.packageJson.name.replace((
-                /\W/g
-            ), "_"),
-            nameOriginal: opt.packageJson.name
-        });
-        opt.packageJson = local.objectAssignDefault(
-            opt.packageJson,
-            JSON.parse(local.templateRenderMyApp(opt.packageJsonRgx.exec(
-                local.assetsDict["/assets.readme.template.md"]
-            )[1])),
-            2
         );
-        // avoid npm-installing that
-        delete opt.packageJson.devDependencies[opt.packageJson.name];
-        // reset scripts
-        opt.packageJson.scripts = {
-            "build-ci": "./npm_scripts.sh",
-            env: "env",
-            eval: "./npm_scripts.sh",
-            "heroku-postbuild": "./npm_scripts.sh",
-            postinstall: "./npm_scripts.sh",
-            start: "./npm_scripts.sh",
-            test: "./npm_scripts.sh",
-            utility2: "./npm_scripts.sh"
-        };
-        // save package.json
-        local.fsWriteFileWithMkdirpSync(
-            "package.json",
-            JSON.stringify(local.objectDeepCopyWithKeysSorted(
-                opt.packageJson
-            ), undefined, 4) + "\n",
-            "wrote file - package.json - {{pathname}}"
-        );
-        // re-render dataTo
-        opt.dataTo = local.templateRenderMyApp(
+        // render README.md
+        tgt = local.templateRenderMyApp(
             local.assetsDict["/assets.readme.template.md"]
         );
-        opt.dataTo = opt.dataTo.replace(
-            opt.packageJsonRgx,
-            match0.replace(
+        // init package.json
+        src.replace(packageJsonRgx, function (match0, match1) {
+            // remove null from package.json
+            packageJson = JSON.parse(match1.replace((
+                /\u0020{4}".*?":\u0020null,?$/gm
+            ), ""));
+            packageJson.description = src.split("\n")[1];
+            local.objectAssignDefault(packageJson, {
+                nameLib: JSON.parse(fileDict["package.json"]).nameLib
+            });
+            packageJson = local.objectAssignDefault(packageJson, {
+                nameLib: packageJson.name.replace((
+                    /\W/g
+                ), "_"),
+                nameOriginal: packageJson.name
+            });
+            packageJson = local.objectAssignDefault(
+                packageJson,
+                JSON.parse(local.templateRenderMyApp(packageJsonRgx.exec(
+                    local.assetsDict["/assets.readme.template.md"]
+                )[1])),
+                2
+            );
+            // avoid npm-installing that
+            delete packageJson.devDependencies[packageJson.name];
+            // reset scripts
+            packageJson.scripts = {
+                "build-ci": "./npm_scripts.sh",
+                env: "env",
+                eval: "./npm_scripts.sh",
+                "heroku-postbuild": "./npm_scripts.sh",
+                postinstall: "./npm_scripts.sh",
+                start: "./npm_scripts.sh",
+                test: "./npm_scripts.sh",
+                utility2: "./npm_scripts.sh"
+            };
+            // write package.json
+            require("fs").writeFileSync(
+                "package.json",
+                JSON.stringify(local.objectDeepCopyWithKeysSorted(
+                    packageJson
+                ), undefined, 4) + "\n"
+            );
+            writeFileLog("package.json");
+            // re-render README.md
+            tgt = local.templateRenderMyApp(
+                local.assetsDict["/assets.readme.template.md"]
+            ).replace(packageJsonRgx, match0.replace(
                 match1,
                 JSON.stringify(local.objectDeepCopyWithKeysSorted(
-                    opt.packageJson
+                    packageJson
                 ), undefined, 4)
-            )
-        );
-        return "";
-    });
-    // search-and-replace - customize dataTo
-    [
-        // customize name and description
-        (
-            /.*?\n.*?\n/
-        ),
-        // customize cdn-download
-        (
-            /\n#\u0020cdn\u0020download\n[\S\s]*?\n\n\n/
-        ),
-        // customize live-web-demo
-        (
-            /\n#\u0020live\u0020web\u0020demo\n[\S\s]*?\n\n\n/
-        ),
-        // customize changelog
-        (
-            /\n####\u0020changelog\u0020[\S\s]*?\n\n\n/
-        ),
-        // customize example.js - shared js\u002denv code - init-before
-        (
-            /\nglobalThis\.local\u0020=\u0020local;\n[^`]*?\n\/\*\u0020istanbul\u0020ignore\u0020next\u0020\*\/\n\/\/\u0020run\u0020browser\u0020js\u002denv\u0020code\u0020-\u0020init-test\n/
-        ),
-        // customize example.js - html-body
-        (
-            /\n<!--\u0020custom-html-start\u0020-->\\n\\\n[^`]*?\n<!--\u0020custom-html-end\u0020-->\\n\\\n/
-        ),
-        // customize build_ci - shBuildCiAfter
-        (
-            /\nshBuildCiAfter\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
-        ),
-        // customize build_ci - shBuildCiBefore
-        (
-            /\nshBuildCiBefore\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
-        )
-    ].forEach(function (rgx) {
-        opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-    });
-    // customize private-repository
-    if (process.env.npm_package_private) {
-        opt.dataTo = opt.dataTo.replace((
-            /\n\[!\[NPM\]\(https:\/\/nodei.co\/npm\/.*?\n/
-        ), "");
-        opt.dataTo = opt.dataTo.replace("$ npm install ", (
-            "$ git clone \\\n"
-            + process.env.npm_package_repository_url.replace(
-                "git+https://github.com/",
-                "git@github.com:"
-            ) + " \\\n--single-branch -b beta node_modules/"
-        ));
-    }
-    // customize version
-    [
-        "dataFrom", "dataTo"
-    ].forEach(function (elem) {
-        opt[elem] = opt[elem].replace((
-            /\n(####\u0020changelog\u0020|-\u0020npm\u0020publish\u0020)\d+?\.\d+?\.\d+?.*?\n/g
-        ), "\n$1" + opt.packageJson.version + "\n");
-    });
-    // customize example.js
-    if (
-        local.assetsDict["/index.html"].indexOf(
-            "<script src=\"assets.example.js\"></script>"
-        ) < 0
-    ) {
-        opt.dataTo = opt.dataTo.replace((
-            /\nif\u0020\(!local.isBrowser\)\u0020\{\n[\S\s]*?\n\}\(\)\);\n/g
-        ), "\nif (!local.isBrowser) {\n    return;\n}\n}());\n");
-    }
-    // customize comment
-    opt.dataFrom.replace((
-        /^(\u0020*?)(?:#\!\!\u0020|#\/\/\u0020|\/\/\!\!\u0020|<!--\u0020)(.*?)(?:\u0020-->)?$/gm
-    ), function (match0, match1, match2) {
-        opt.dataTo = opt.dataTo.replace(
-            "\n" + match1 + match2 + "\n",
-            "\n" + match0 + "\n"
-        );
-    });
-    // customize - user-defined
-    opt.customize(opt);
-    // customize assets.index.template.html
-    if (local.assetsDict["/assets.index.template.html"].indexOf(
-        "\"assets.utility2.template.html\""
-    ) < 0) {
-        opt.dataTo = opt.dataTo.replace((
-            /\n\/\*\u0020jslint\u0020ignore:start\u0020\*\/\nlocal.assetsDict\["\/assets.index.template.html"\]\u0020=\u0020'\\\n[\S\s]*?\n\/\*\u0020jslint\u0020ignore:end\u0020\*\/\n/
-        ), "\n");
-    }
-    // customize shDeployCustom
-    if (opt.dataFrom.indexOf("    shDeployCustom\n") >= 0) {
+            ));
+            return "";
+        });
+        tgtReplaceConditional(true, [
+            {
+                // customize name and description
+                merge: (
+                    /.*?\n.*?\n/
+                )
+            }, {
+                // customize cdn-download
+                merge: (
+                    /\n#\u0020cdn\u0020download\n[\S\s]*?\n\n\n/
+                )
+            }, {
+                // customize live-web-demo
+                merge: (
+                    /\n#\u0020live\u0020web\u0020demo\n[\S\s]*?\n\n\n/
+                )
+            }, {
+                // customize changelog
+                merge: (
+                    /\n####\u0020changelog\u0020[\S\s]*?\n\n\n/
+                )
+            }, {
+                // customize example.js - shared js\u002denv code - init-before
+                merge: (
+                    /\nglobalThis\.local\u0020=\u0020local;\n[^`]*?\n\/\*\u0020istanbul\u0020ignore\u0020next\u0020\*\/\n\/\/\u0020run\u0020browser\u0020js\u002denv\u0020code\u0020-\u0020init-test\n/
+                )
+            }, {
+                // customize example.js - html-body
+                merge: (
+                    /\n<!--\u0020custom-html-start\u0020-->\\n\\\n[^`]*?\n<!--\u0020custom-html-end\u0020-->\\n\\\n/
+                )
+            }, {
+                // customize build_ci - shBuildCiAfter
+                merge: (
+                    /\nshBuildCiAfter\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
+                )
+            }, {
+                // customize build_ci - shBuildCiBefore
+                merge: (
+                    /\nshBuildCiBefore\u0020\(\)\u0020\{\(set\u0020-e\n[\S\s]*?\n\)\}\n/
+                )
+            }
+        ]);
+        // customize private-repository
+        tgtReplaceConditional(process.env.npm_package_private, [
+            {
+                aa: (
+                    /\n\[!\[NPM\]\(https:\/\/nodei.co\/npm\/.*?\n/
+                ),
+                bb: ""
+            }, {
+                aa: "$ npm install ",
+                bb: (
+                    "$ git clone \\\n"
+                    + process.env.npm_package_repository_url.replace(
+                        "git+https://github.com/",
+                        "git@github.com:"
+                    ) + " \\\n--single-branch -b beta node_modules/"
+                )
+            }
+        ]);
+        // customize version
         [
-            // customize example.sh
-            (
-                /\n####\u0020changelog\u0020[\S\s]*?\n#\u0020quickstart\u0020example.js\n/
-            ), (
-                opt.dataFrom.indexOf("\"assets.utility2.template.html\"") < 0
-                && local.identity(
+            src, tgt
+        ] = [
+            src, tgt
+        ].map(function (elem) {
+            return elem.replace((
+                /\n(####\u0020changelog\u0020|-\u0020npm\u0020publish\u0020)\d+?\.\d+?\.\d+?.*?\n/g
+            ), "\n$1" + packageJson.version + "\n");
+        });
+        // customize example.js
+        tgtReplaceConditional(local.assetsDict[
+            "/index.html"
+        ].indexOf("<script src=\"assets.example.js\"></script>") < 0, [
+            {
+                aa: (
+                    /\nif\u0020\(!local.isBrowser\)\u0020\{\n[\S\s]*?\n\}\(\)\);\n/g
+                ),
+                bb: "\nif (!local.isBrowser) {\n    return;\n}\n}());\n"
+            }
+        ]);
+        // customize comment
+        src.replace((
+            /^(\u0020*?)(?:#\!\!\u0020|#\/\/\u0020|\/\/\!\!\u0020|<!--\u0020)(.*?)(?:\u0020-->)?$/gm
+        ), function (match0, match1, match2) {
+            tgt = tgt.replace(
+                "\n" + match1 + match2 + "\n",
+                "\n" + match0 + "\n"
+            );
+        });
+        // customize - user-defined
+        tgtReplaceConditional(true, customizeReadmeList);
+        // customize assets.index.template.html
+        tgtReplaceConditional(local.assetsDict[
+            "/assets.index.template.html"
+        ].indexOf("\"assets.utility2.template.html\"") < 0, [
+            {
+                aa: (
+                    /\n\/\*\u0020jslint\u0020ignore:start\u0020\*\/\nlocal.assetsDict\["\/assets.index.template.html"\]\u0020=\u0020'\\\n[\S\s]*?\n\/\*\u0020jslint\u0020ignore:end\u0020\*\/\n/
+                ),
+                bb: "\n"
+            }
+        ]);
+        // customize shDeployCustom
+        tgtReplaceConditional(src.indexOf("    shDeployCustom\n") >= 0, [
+            {
+                // customize example.sh
+                merge: (
+                    /\n####\u0020changelog\u0020[\S\s]*?\n#\u0020quickstart\u0020example.js\n/
+                )
+            }, {
+                // customize screenshot
+                merge: (
                     /\n#\u0020quickstart\u0020[\S\s]*?\n#\u0020extra\u0020screenshots\n/
                 )
-            )
-        ].forEach(function (rgx) {
-            opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-        });
-        // customize screenshot
-        opt.dataTo = opt.dataTo.replace((
-            /^1\.\u0020.*?screenshot\.(?:npmTest|testExampleJs|testExampleSh).*?\.png[\S\s]*?\n\n/gm
-        ), "");
-    }
-    // customize shNpmTestPublished
-    opt.dataTo = opt.dataTo.replace(
-        "$ npm install " + process.env.GITHUB_REPO + "#alpha",
-        "$ npm install " + process.env.npm_package_name
-    );
-    if (opt.dataFrom.indexOf("    shNpmTestPublished\n") < 0) {
-        opt.dataTo = opt.dataTo.replace(
-            "$ npm install " + process.env.npm_package_name,
-            "$ npm install " + process.env.GITHUB_REPO + "#alpha"
+            }, {
+                // customize screenshot
+                aa: (
+                    /^1\.\u0020.*?screenshot\.(?:npmTest|testExampleJs|testExampleSh).*?\.png[\S\s]*?\n\n/gm
+                ),
+                bb: ""
+            }
+        ]);
+        // customize shNpmTestPublished
+        tgt = tgt.replace(
+            "$ npm install " + process.env.GITHUB_REPO + "#alpha",
+            "$ npm install " + process.env.npm_package_name
         );
+        tgtReplaceConditional(src.indexOf("    shNpmTestPublished\n") < 0, [
+            {
+                aa: "$ npm install " + process.env.npm_package_name,
+                bb: "$ npm install " + process.env.GITHUB_REPO + "#alpha"
+            }, {
+                aa: (
+                    /\n.*?\bhttps:\/\/www.npmjs.com\/package\/.*?\n/
+                ),
+                bb: ""
+            }, {
+                aa: (
+                    /\n.*?npmPackageDependencyTree.*?\n/
+                ),
+                bb: ""
+            }
+        ]);
+        // customize shBuildCiAfter and shBuildCiBefore
         [
-            (
-                /\n.*?\bhttps:\/\/www.npmjs.com\/package\/.*?\n/
-            ), (
-                /\n.*?npmPackageDependencyTree.*?\n/
-            )
-        ].forEach(function (rgx) {
-            opt.dataTo = opt.dataTo.replace(rgx, "");
-        });
-    }
-    // customize shBuildCiAfter and shBuildCiBefore
-    [
-        [
-            "shDeployGithub", (
-                /.*?\/screenshot\.deployGithub.*?\n/g
-            )
-        ], [
-            "shDeployHeroku", (
-                /.*?\/screenshot\.deployHeroku.*?\n/g
-            )
-        ], [
-            "shReadmeTest example.js", (
-                /.*?\/screenshot\.testExampleJs.*?\n/g
-            )
-        ], [
-            "shReadmeTest example.sh", (
-                /.*?\/screenshot\.testExampleSh.*?\n/g
-            )
-        ]
-    ].forEach(function (elem) {
-        if (opt.dataFrom.indexOf("    " + elem[0] + "\n") >= 0) {
-            return;
-        }
-        // customize test-server
-        opt.dataTo = opt.dataTo.replace(
-            new RegExp(
-                "\\n\\| test-server-"
-                + elem[0].replace("shDeploy", "").toLowerCase()
-                + " : \\|.*?\\n"
-            ),
-            "\n"
-        );
-        // customize screenshot
-        opt.dataTo = opt.dataTo.replace(elem[1], "");
-    });
-    opt.dataTo = local.templateRenderMyApp(opt.dataTo);
-    // customize toc
-    opt.toc = "\n# table of contents\n";
-    opt.dataTo.replace((
-        /\n\n\n#\u0020(.*)/g
-    ), function (ignore, match1) {
-        if (match1 === "table of contents") {
-            return;
-        }
-        opt.toc += "1. [" + match1 + "](#" + match1.toLowerCase().replace((
-            /[^\u0020\-0-9A-Z_a-z]/g
-        ), "").replace((
-            /\u0020/g
-        ), "-") + ")\n";
-    });
-    opt.dataTo = opt.dataTo.replace("\n# table of contents\n", opt.toc);
-    // eslint - no-multiple-empty-lines
-    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
-    opt.dataTo = opt.dataTo.replace((
-        /\n{4,}/g
-    ), "\n\n\n");
-    // save README.md
-    result = opt.dataTo;
-    local.fsWriteFileWithMkdirpSync(
-        "README.md",
-        result,
-        "wrote file - README - {{pathname}}"
-    );
-    onError();
-    return result;
-};
-
-local.buildTest = function (opt, onError) {
-/*
- * this function will build test with given <opt>
- */
-    let result;
-    local.objectAssignDefault(opt, {
-        customize: local.nop,
-        dataFrom: require("fs").readFileSync("test.js", "utf8"),
-        dataTo: local.templateRenderMyApp(
-            local.assetsDict["/assets.test.template.js"]
-        )
-    });
-    // search-and-replace - customize dataTo
-    [
-        // customize shared js\u002denv code - function
-        (
-            /\n\}\(\)\);\n\n\n\/\/\u0020run\u0020shared\u0020js\u002denv\u0020code\u0020-\u0020function\n[\S\s]*?$/
-        )
-    ].forEach(function (rgx) {
-        opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);
-    });
-    // customize require("utility2")
-    [
-        "./assets.utility2.rollup.js",
-        "./lib.utility2.js"
-    ].forEach(function (file) {
-        if (require("fs").existsSync(file)) {
-            opt.dataTo = opt.dataTo.replace(
-                "require(\"utility2\")",
-                "require(\"" + file + "\")"
+            [
+                "shDeployGithub", (
+                    /.*?\/screenshot\.deployGithub.*?\n/g
+                )
+            ], [
+                "shDeployHeroku", (
+                    /.*?\/screenshot\.deployHeroku.*?\n/g
+                )
+            ], [
+                "shReadmeTest example.js", (
+                    /.*?\/screenshot\.testExampleJs.*?\n/g
+                )
+            ], [
+                "shReadmeTest example.sh", (
+                    /.*?\/screenshot\.testExampleSh.*?\n/g
+                )
+            ], [
+                // coverage-hack
+                "__zjqx1234__" + Math.random(), "__zjqx1234__" + Math.random()
+            ]
+        ].forEach(function ([
+            condition, rgxScreenshot
+        ]) {
+            if (src.indexOf("    " + condition + "\n") >= 0) {
+                return;
+            }
+            // customize test-server
+            tgt = tgt.replace(
+                new RegExp(
+                    "\\n\\| test-server-"
+                    + condition.replace("shDeploy", "").toLowerCase()
+                    + " : \\|.*?\\n"
+                ),
+                "\n"
             );
-        }
+            // customize screenshot
+            tgt = tgt.replace(rgxScreenshot, "");
+        });
+        tgt = local.templateRenderMyApp(tgt);
+        // customize toc
+        toc = "\n# table of contents\n";
+        tgt.replace((
+            /\n\n\n#\u0020(.*)/g
+        ), function (ignore, match1) {
+            if (match1 === "table of contents") {
+                return;
+            }
+            toc += "1. [" + match1 + "](#" + match1.toLowerCase().replace((
+                /[^\u0020\-0-9A-Z_a-z]/g
+            ), "").replace((
+                /\u0020/g
+            ), "-") + ")\n";
+        });
+        tgt = tgt.replace("\n# table of contents\n", toc);
+        // eslint - no-multiple-empty-lines
+        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md
+        tgt = tgt.replace((
+            /\n{4,}/g
+        ), "\n\n\n");
+        // write README.md
+        writeFile("README.md", tgt, resolve);
+    };
+    buildTest = function (resolve) {
+        src = fileDict["test.js"];
+        // render test.js
+        tgt = local.templateRenderMyApp(
+            local.assetsDict["/assets.test.template.js"]
+        );
+        // customize shared js\u002denv code - function
+        tgtReplaceConditional(true, [
+            {
+                merge: (
+                    /\n\}\(\)\);\n\n\n\/\/\u0020run\u0020shared\u0020js\u002denv\u0020code\u0020-\u0020function\n[\S\s]*?$/
+                )
+            }
+        ]);
+        // customize require("utility2")
+        Array.from([
+            "assets.utility2.rollup.js",
+            "lib.utility2.js"
+        ]).some(function (file) {
+            if (fileDict[file]) {
+                tgt = tgt.replace(
+                    "require(\"utility2\")",
+                    "require(\"./" + file + "\")"
+                );
+                return true;
+            }
+        });
+        // write test.js
+        writeFile("test.js", tgt, resolve);
+    };
+    // buildInit
+    Promise.resolve().then(function () {
+        fileDict = {};
+        promiseList = [];
+        // cleanup build-dir
+        promiseList.push(new Promise(function (resolve) {
+            require("child_process").spawn((
+                "for DIR in tmp/build/app/ tmp/build/app.standalone/;"
+                + "do rm -rf $DIR; mkdir -p $DIR; done"
+            ), {
+                shell: true,
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            }).on("exit", resolve);
+        }));
+        // init port
+        promiseList.push(new Promise(function (resolve) {
+            let recurse;
+            let server;
+            recurse = function (err) {
+                if (server) {
+                    server.close();
+                }
+                if (!err) {
+                    resolve();
+                    return;
+                }
+                port = Number(
+                    "0x" + require("crypto").randomBytes(2).toString("hex")
+                ) | 0x8000;
+                server = require("net").createServer().listen(port);
+                server.on("error", recurse).on("listening", recurse);
+            };
+            recurse(true);
+        }));
+        // read file
+        [
+            "README.md",
+            "lib." + process.env.npm_package_nameLib + ".js",
+            "package.json",
+            "test.js"
+        ].forEach(function (file) {
+            promiseList.push(new Promise(function (resolve) {
+                require("fs").readFile(file, "utf8", function (err, data) {
+                    fileDict[file] = data;
+                    resolve(err);
+                });
+            }));
+        });
+        // exists file
+        [
+            "assets.utility2.rollup.js",
+            "lib.utility2.js"
+        ].forEach(function (file) {
+            promiseList.push(new Promise(function (resolve) {
+                require("fs").access(file, function (notExists) {
+                    fileDict[file] = !notExists;
+                    resolve();
+                });
+            }));
+        });
+        return Promise.all(promiseList);
+    }).then(function (errList) {
+        errList.forEach(onErrorThrow);
+        promiseList = [];
+        promiseList.push(new Promise(buildReadme));
+        promiseList.push(new Promise(buildLib));
+        promiseList.push(new Promise(buildTest));
+        return Promise.all(promiseList);
+    }).then(function (errList) {
+        errList.forEach(onErrorThrow);
+        promiseList = [];
+        promiseList.push(new Promise(buildAppAssets));
+        promiseList.push(new Promise(buildAppStandalone));
+        return Promise.all(promiseList);
+    }).then(function (errList) {
+        errList.forEach(onErrorThrow);
+        onError();
     });
-    opt.customize(opt);
-    // save test.js
-    result = opt.dataTo;
-    local.fsWriteFileWithMkdirpSync(
-        "test.js",
-        result,
-        "wrote file - test - {{pathname}}"
-    );
-    onError();
-    return result;
-};
-
-local.childProcessEval = function (code, opt) {
-/*
- * this function will eval <code> in child-process
- */
-    let promise;
-    let reject;
-    let resolve;
-    promise = new Promise(function (aa, bb) {
-        reject = bb;
-        resolve = aa;
-    });
-    promise.child = require("child_process").spawn("node", [
-        "-e", (
-            "/*jslint node*/\n"
-            + "let data = \"\";\n"
-            + "process.stdin.on(\"readable\", function () {\n"
-            + "    let chunk;\n"
-            + "    while (true) {\n"
-            + "        chunk = process.stdin.read();\n"
-            + "        if (chunk === null) {\n"
-            + "            return;\n"
-            + "        }\n"
-            + "        data += chunk;\n"
-            + "    }\n"
-            + "}).setEncoding(\"utf8\");\n"
-            + "process.stdin.on(\"end\", function () {\n"
-            + "    require(\"vm\").runInThisContext(data);\n"
-            + "});\n"
-        )
-    ], Object.assign({
-        stdio: [
-            "pipe", 1, 2
-        ]
-    }, opt)).on("error", reject).on("exit", function (exitCode) {
-        if (!exitCode) {
-            resolve();
-            return;
-        }
-        reject(new Error("child-process - exitCode " + exitCode));
-    }).stdin.end(code);
-    return promise;
 };
 
 local.cliRun = function (opt) {
@@ -47688,25 +47784,19 @@ local.domFragmentRender = function (template, dict) {
 
 local.domQuerySelectorAllTagName = function (selector) {
 /*
- * this function will return all tagName that match <selector>
+ * this function will return list of tagName matching <selector>
  */
     let set;
+    try {
+        document.getElementById("undefined");
+    } catch (ignore) {
+        return [];
+    }
     set = new Set();
     document.querySelectorAll(selector).forEach(function (elem) {
         set.add(elem.tagName);
     });
     return Array.from(set).sort();
-};
-
-local.domSelectOptionValue = function (elem) {
-/*
- * this function will return <elem>.options[<elem>.selectedIndex].value
- */
-    if (typeof elem === "string") {
-        elem = document.querySelector(elem);
-    }
-    elem = elem && elem.options[elem.selectedIndex];
-    return (elem && elem.value) || "";
 };
 
 local.domStyleValidate = function () {
@@ -47716,7 +47806,7 @@ local.domStyleValidate = function () {
     let rgx;
     let tmp;
     try {
-        document.querySelector("#undefined");
+        document.getElementById("undefined");
     } catch (ignore) {
         return;
     }
@@ -47755,38 +47845,40 @@ local.eventListenerAdd = function (type, listener, opt = {}) {
 /*
  * this function will listen evt <type> with <listener>
  */
-    let isDone;
-    let listenerOnce;
-    listenerOnce = function listener2(msg) {
-        let ii;
-        ii = localEventListenerDict[type].length;
-        while (ii > 0) {
-            ii -= 1;
-            if (localEventListenerDict[type][ii] === listener2) {
-                localEventListenerDict[type].splice(ii, 1);
-            }
-        }
-        if (!isDone) {
-            isDone = true;
-            listener(msg);
-        }
+    localEventListenerId = (localEventListenerId + 1) | 0;
+    localEventListenerDict[localEventListenerId] = {
+        listener,
+        once: opt.once,
+        type
     };
-    localEventListenerDict[type] = localEventListenerDict[type] || [];
-    localEventListenerDict[type].push(
-        opt.once
-        ? listenerOnce
-        : listener
-    );
 };
 
 local.eventListenerEmit = function (type, msg) {
 /*
  * this function will emit evt <type> with <msg>
  */
-    Array.from(
-        localEventListenerDict[type] || []
-    ).forEach(function (listener) {
-        listener(msg);
+    Object.entries(localEventListenerDict).forEach(function ([
+        id, elem
+    ]) {
+        if (elem.type === type) {
+            if (elem.once) {
+                delete localEventListenerDict[id];
+            }
+            elem.listener(msg);
+        }
+    });
+};
+
+local.eventListenerRemove = function (listener) {
+/*
+ * this function will emit evt <type> with <msg>
+ */
+    Object.entries(localEventListenerDict).forEach(function ([
+        id, elem
+    ]) {
+        if (elem.listener === listener) {
+            delete localEventListenerDict[id];
+        }
     });
 };
 
@@ -47795,13 +47887,13 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
  * this function will sync-read <pathname> with given <type> and <dflt>
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require("path").resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -47814,62 +47906,22 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
     }
 };
 
-local.fsRmrfSync = function (pathname) {
-/*
- * this function will sync "rm -rf" <pathname>
- */
-    let child_process;
-    // do nothing if module does not exist
-    try {
-        child_process = require("child_process");
-    } catch (ignore) {
-        return;
-    }
-    pathname = require("path").resolve(pathname);
-    if (process.platform !== "win32") {
-        child_process.spawnSync("rm", [
-            "-rf", pathname
-        ], {
-            stdio: [
-                "ignore", 1, 2
-            ]
-        });
-        return;
-    }
-    try {
-        child_process.spawnSync("rd", [
-            "/s", "/q", pathname
-        ], {
-            stdio: [
-                "ignore", 1, 2
-            ]
-        });
-    } catch (ignore) {}
-};
-
-local.fsWriteFileWithMkdirp = function ({
-    data,
-    modeDebug,
-    modeUncaughtException,
-    pathname
-}, onError) {
+local.fsWriteFileWithMkdirp = function (pathname, data, onError) {
 /*
  * this function will async write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         onError();
     }
-    pathname = require("path").resolve(pathname);
     // write pathname
     fs.writeFile(pathname, data, function (err) {
         if (!err) {
-            if (modeDebug) {
-                console.error("fsWriteFileWithMkdirp - " + pathname);
-            }
+            console.error("fsWriteFileWithMkdirp - " + pathname);
             onError(undefined, true);
             return;
         }
@@ -47879,39 +47931,31 @@ local.fsWriteFileWithMkdirp = function ({
         }, function (ignore) {
             // re-write pathname
             fs.writeFile(pathname, data, function (err) {
-                if (!err) {
-                    if (modeDebug) {
-                        console.error("fsWriteFileWithMkdirp - " + pathname);
-                    }
-                    onError(undefined, true);
-                    return;
-                }
-                if (modeUncaughtException) {
+                if (err) {
                     throw err;
                 }
-                onError(err);
+                console.error("fsWriteFileWithMkdirp - " + pathname);
+                onError(undefined, true);
             });
         });
     });
 };
 
-local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+local.fsWriteFileWithMkdirpSync = function (pathname, data) {
 /*
  * this function will sync write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require("path").resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require("path").dirname(pathname), {
@@ -47919,12 +47963,9 @@ local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success && msg) {
-        console.error(msg.replace("{{pathname}}", pathname));
-    }
-    return success;
+    console.error("fsWriteFileWithMkdirpSync - " + pathname);
+    return true;
 };
 
 local.gotoNext = function (opt, onError) {
@@ -48120,7 +48161,8 @@ local.jslintAutofixLocalFunction = function (code, file) {
         "coalesce",
         "identity",
         "nop",
-        "objectAssignDefault"
+        "objectAssignDefault",
+        "onErrorThrow"
     ].forEach(function (key) {
         dictFnc[key] = true;
         dictProp[key] = true;
@@ -48238,7 +48280,7 @@ local.middlewareBodyRead = function (req, ignore, next) {
 
 local.middlewareError = function (err, req, res) {
 /*
- * this function will run middleware to handle errors
+ * this function will run middleware to handle <err>
  */
     // default - 404 Not Found
     if (!err) {
@@ -48499,16 +48541,6 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
         return sorted;
     };
     return objectDeepCopyWithKeysSorted(obj);
-};
-
-local.onErrorThrow = function (err) {
-/*
- * this function will if <err> exists, then throw it
- */
-    if (err) {
-        throw err;
-    }
-    return err;
 };
 
 local.onErrorWithStack = function (onError) {
@@ -48796,7 +48828,7 @@ local.requireReadme = function () {
         require("fs").readdir(".", function (ignore, fileList) {
             fileList.concat(__filename).forEach(function (file) {
                 require("fs").stat(file, function (err, data) {
-                    local.onErrorThrow(err);
+                    onErrorThrow(err);
                     if (!data.isFile()) {
                         return;
                     }
@@ -48825,18 +48857,17 @@ local.requireReadme = function () {
     // jslint process.cwd()
     require("child_process").spawn("node", [
         "-e", (
-            "require("
-            + JSON.stringify(__filename)
-            + ").jslint.jslintAndPrintDir("
-            + JSON.stringify(process.cwd())
-            + ", {autofix:true,conditional:true}, process.exit);"
+            "require(" + JSON.stringify(__filename)
+            + ").jslint.jslintAndPrintDir(" + JSON.stringify(process.cwd())
+            + ", {autofix:" + (!env.npm_config_mode_test)
+            + ",conditional:true});"
         )
     ], {
         env: Object.assign({}, env, {
             npm_config_mode_lib: "1"
         }),
         stdio: [
-            "ignore", "ignore", 2
+            "ignore", 1, 2
         ]
     });
     if (globalThis.utility2_rollup || env.npm_config_mode_start) {
@@ -48868,9 +48899,9 @@ local.requireReadme = function () {
     );
     local.fsReadFileOrDefaultSync("README.md", "utf8", "").replace((
         /\n```javascript(\n\/\*\nexample\.js\n[\S\s]*?\n)```\n/
-    ), function (ignore, match1, index, input) {
+    ), function (ignore, match1, ii, input) {
         // preserve lineno
-        code = input.slice(0, index).replace((
+        code = input.slice(0, ii).replace((
             /.+/g
         ), "") + "\n" + match1;
         return "";
@@ -49730,8 +49761,7 @@ local.testReportCreate = function (testReport) {
     // create test-report.html
     local.fsWriteFileWithMkdirpSync(
         "tmp/build/test-report.html",
-        local.testReportMerge(testReport),
-        "wrote file - test-report - {{pathname}}"
+        local.testReportMerge(testReport)
     );
     // create build.badge.svg
     local.fsWriteFileWithMkdirpSync(
@@ -49741,8 +49771,7 @@ local.testReportCreate = function (testReport) {
         ), (
             new Date().toISOString().slice(0, 19).replace("T", " ")
             + " - " + process.env.CI_BRANCH + " - " + process.env.CI_COMMIT_ID
-        )),
-        "wrote file - test-report - {{pathname}}"
+        ))
     );
     // create test-report.badge.svg
     local.fsWriteFileWithMkdirpSync(
@@ -49757,8 +49786,7 @@ local.testReportCreate = function (testReport) {
             testReport.testsFailed
             ? "d00"
             : "0d0"
-        )),
-        "wrote file - test-report - {{pathname}}"
+        ))
     );
     // if any test failed, then exit with non-zero exitCode
     console.error(
@@ -50089,7 +50117,12 @@ local.testRunDefault = function (opt) {
     // mock proces.exit
     if (!local.isBrowser) {
         processExit = process.exit;
-        process.exit = local.nop;
+        process.exit = function (exitCode) {
+            local.eventListenerEmit(
+                "utility2.testRunMock.process.exit",
+                exitCode | 0
+            );
+        };
     }
     // init modeTestCase
     local.modeTestCase = (
@@ -50263,8 +50296,7 @@ local.testRunDefault = function (opt) {
         delete testReport.coverage;
         local.fsWriteFileWithMkdirpSync(
             local.env.npm_config_dir_build + "/test-report.json",
-            JSON.stringify(testReport, undefined, 4),
-            "wrote file - test-report - {{pathname}}"
+            JSON.stringify(testReport, undefined, 4)
         );
         // restore console.log
         console.error = consoleError;
@@ -51142,6 +51174,14 @@ instruction\n\
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
+    };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
     };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
@@ -52715,6 +52755,14 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
     };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
+    };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -52943,10 +52991,9 @@ local.objectDeepCopyWithKeysSorted = function (obj) {\n\
 }());\n\
 \n\
 \n\
-/* istanbul ignore next */\n\
 // run shared js-env code - function\n\
-/* jslint ignore:start */\n\
 (function () {\n\
+/* jslint ignore:start */\n\
 /*\n\
 repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209\n\
 committed 2018-02-25T11:28:16Z\n\
@@ -52980,6 +53027,7 @@ THE SOFTWARE.\n\
 \n\
 */\n\
 \n\
+/* istanbul ignore next */\n\
 var CSSLint = (function(){\n\
   var module = module || {},\n\
       exports = exports || {};\n\
@@ -68675,8 +68723,8 @@ function whitage() {\n\
 \n\
 // The jslint function itself.\n\
 \n\
-// hack-jslint - jslint_export\n\
-local.jslint_export = Object.freeze(function (\n\
+// hack-jslint - jslint0\n\
+local.jslint0 = Object.freeze(function (\n\
     source = \"\",\n\
     option_object = empty(),\n\
     global_array = []\n\
@@ -68868,19 +68916,6 @@ local.jslint_export = Object.freeze(function (\n\
         }\n\
         return true;\n\
     });\n\
-    // expected_space_a_b: \"Expected one space between '{a}' and '{b}'.\",\n\
-    // unexpected_space_a_b: \"Unexpected space between '{a}' and '{b}'.\",\n\
-    source = lines_extra.map(function (element, ii) {\n\
-        return element.source_autofixed || lines[ii];\n\
-    }).join(\"\\n\").replace((\n\
-        /\\s+?\\u0000/g\n\
-    ), \"\\u0000\").replace((\n\
-        /(\\n\\u0020+)(.*?)\\n\\u0020*?(\\/\\/.*?)\\u0000/g\n\
-    ), \"$1$3$1$2\\u0000\").replace((\n\
-        /\\u0000expected_space_a_b\\u0000/g\n\
-    ), \" \").replace((\n\
-        /\\u0000unexpected_space_a_b\\u0000/g\n\
-    ), \"\");\n\
     // hack-jslint - debug warning\n\
     warnings.some(function (warning) {\n\
         if (!option.utility2) {\n\
@@ -68931,7 +68966,19 @@ local.jslint_export = Object.freeze(function (\n\
             );\n\
         }),\n\
         // hack-jslint - autofix\n\
-        source_autofixed: source\n\
+        // expected_space_a_b: \"Expected one space between '{a}' and '{b}'.\",\n\
+        // unexpected_space_a_b: \"Unexpected space between '{a}' and '{b}'.\",\n\
+        source_autofixed: lines_extra.map(function (element, ii) {\n\
+            return element.source_autofixed || lines[ii];\n\
+        }).join(\"\\n\").replace((\n\
+            /\\s+?\\u0000/g\n\
+        ), \"\\u0000\").replace((\n\
+            /(\\n\\u0020+)(.*?)\\n\\u0020*?(\\/\\/.*?)\\u0000/g\n\
+        ), \"$1$3$1$2\\u0000\").replace((\n\
+            /\\u0000expected_space_a_b\\u0000/g\n\
+        ), \" \").replace((\n\
+            /\\u0000unexpected_space_a_b\\u0000/g\n\
+        ), \"\")\n\
     };\n\
 });\n\
 \n\
@@ -68940,310 +68987,15 @@ local.jslint_export = Object.freeze(function (\n\
 file none\n\
 */\n\
 local.CSSLint = CSSLint;\n\
-}());\n\
 /* jslint ignore:end */\n\
 \n\
 \n\
-// run shared js-env code - function\n\
-(function () {\n\
-local.jslintAndPrint = function (code = \"\", file = \"undefined\", opt = {}) {\n\
-/*\n\
- * this function will jslint/csslint <code> and print any errors to stderr\n\
- */\n\
-    let ii;\n\
-    let tmp;\n\
-    if (!(opt && opt.gotoState)) {\n\
-        local.jslintResult = {\n\
-            gotoState: 0\n\
-        };\n\
-    }\n\
-    opt = Object.assign(local.jslintResult, opt);\n\
-    opt.gotoState += 1;\n\
-    switch (opt.gotoState) {\n\
-    // jslint - init\n\
-    case 1:\n\
-        // cleanup\n\
-        opt.errList = [];\n\
-        opt.errMsg = \"\";\n\
-        // preserve lineno\n\
-        if (opt.iiStart) {\n\
-            // optimization - efficiently count number of newlines\n\
-            // https://jsperf.com/regexp-counting-2/8\n\
-            opt.lineOffset |= 0;\n\
-            ii = 0;\n\
-            while (true) {\n\
-                ii = code.indexOf(\"\\n\", ii);\n\
-                if (ii === 0 || ii > opt.iiStart) {\n\
-                    break;\n\
-                }\n\
-                ii += 1;\n\
-                opt.lineOffset += 1;\n\
-            }\n\
-            code = code.slice(opt.iiStart, opt.iiEnd || code.length);\n\
-        }\n\
-        switch (opt.fileType0) {\n\
-        // de-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
-        case \".\\\\n\\\\\":\n\
-            // rgx - remove \\\\n\\\\\n\
-            code = code.replace((\n\
-                /\\\\n\\\\$|\\\\(.)/gm\n\
-            ), function (ignore, match1) {\n\
-                return match1 || \"\";\n\
-            });\n\
-            break;\n\
-        // de-embed-js - '\\n...\\n'\n\
-        case \".sh\":\n\
-            // rgx - convert '\"'\"' to '\n\
-            code = code.replace((\n\
-                /'\"'\"'/g\n\
-            ), \"'\");\n\
-            break;\n\
-        }\n\
-        // init\n\
-        opt = Object.assign(opt, {\n\
-            \".css\": (\n\
-                /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".html\": (\n\
-                /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".js\": (\n\
-                /^\\/\\*jslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".json\": (\n\
-                /^\\s*?(?:\\[|\\{)/\n\
-            ),\n\
-            \".md\": (\n\
-                /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
-            ),\n\
-            \".sh\": (\n\
-                /(^#\\u0020jslint\\u0020utility2:true$)/m\n\
-            ),\n\
-            code0: code,\n\
-            fileType: (\n\
-                /\\.\\w+?$|$/m\n\
-            ).exec(file)[0]\n\
-        });\n\
-        // jslint - .json\n\
-        if (opt.fileType === \".js\" && opt[\".json\"].test(code)) {\n\
-            opt.fileType = \".json\";\n\
-        }\n\
-        try {\n\
-            opt.conditionalPassed = opt[opt.fileType].exec(code);\n\
-        } catch (ignore) {}\n\
-        opt.utility2 = (\n\
-            opt.conditionalPassed && opt.conditionalPassed[1]\n\
-        ) || opt.autofix;\n\
-        if (\n\
-            opt.conditional\n\
-            && (!opt.conditionalPassed || opt.coverage)\n\
-        ) {\n\
-            break;\n\
-        }\n\
-        opt.gotoState = 10;\n\
-        break;\n\
-    // jslint - autofix\n\
-    case 11:\n\
-        code = local.jslintAutofix(code, file, opt);\n\
-        local.jslintResult = opt;\n\
-        break;\n\
-    // jslint - csslint and jslint\n\
-    case 12:\n\
-        // restore lineOffset\n\
-        code = \"\\n\".repeat(opt.lineOffset | 0) + code;\n\
-        switch (opt.fileType) {\n\
-        case \".css\":\n\
-            // csslint\n\
-            Object.assign(opt, local.CSSLint.verify(code));\n\
-            // init errList\n\
-            opt.errList = opt.messages.map(function (err) {\n\
-                err.column = err.col;\n\
-                err.message = (\n\
-                    err.type + \" - \" + err.rule.id + \" - \" + err.message\n\
-                    + \"\\n    \" + err.rule.desc\n\
-                );\n\
-                return err;\n\
-            });\n\
-            break;\n\
-        case \".html\":\n\
-        case \".md\":\n\
-        case \".sh\":\n\
-            break;\n\
-        default:\n\
-            // jslint - .js\n\
-            Object.assign(opt, local.jslint_export(code, opt));\n\
-            code = opt.source_autofixed || code;\n\
-            // init errList\n\
-            opt.errList = opt.warnings.filter(function (err) {\n\
-                return err && err.message;\n\
-            }).map(function (err) {\n\
-                err.column = err.column + 1;\n\
-                err.evidence = err.source;\n\
-                err.line = err.line + 1;\n\
-                // debug early_stop\n\
-                if (err.early_stop) {\n\
-                    err.message = (\n\
-                        \"[JSLint was unable to finish] - \"\n\
-                        + err.message\n\
-                    );\n\
-                }\n\
-                return err;\n\
-            });\n\
-        }\n\
-        break;\n\
-    // jslint - utility2\n\
-    case 13:\n\
-        local.jslintUtility2(code, file, opt);\n\
-        break;\n\
-    // jslint - print\n\
-    default:\n\
-        switch (Boolean(opt.fileType0) && opt.fileType0) {\n\
-        // re-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
-        case \".\\\\n\\\\\":\n\
-            code = code.trim();\n\
-            // rgx - escape \\ to \\\\\n\
-            code = code.replace((\n\
-                /\\\\/g\n\
-            ), \"\\\\\\\\\");\n\
-            // rgx - append \\n\\\n\
-            code = code.replace((\n\
-                /$/gm\n\
-            ), \"\\\\n\\\\\");\n\
-            // rgx - escape ' to \\'\n\
-            code = code.replace((\n\
-                /'/g\n\
-            ), \"\\\\'\");\n\
-            // rgx - escape js-env to js\\-env\n\
-            code = code.replace((\n\
-                /\\u0020js-env\\u0020/g\n\
-            ), \" js\\\\-env \");\n\
-            code += \"\\n\";\n\
-            break;\n\
-        // re-embed-js - '\\n...\\n'\n\
-        case \".sh\":\n\
-            // rgx - escape ' to '\"'\"'\n\
-            code = code.trim().replace((\n\
-                /'/g\n\
-            ), \"'\\\"'\\\"'\") + \"\\n\";\n\
-            break;\n\
-        case false:\n\
-            code = code.trimEnd() + \"\\n\";\n\
-            break;\n\
-        default:\n\
-            code = code.trim() + \"\\n\";\n\
-        }\n\
-        // autofix-save\n\
-        if (\n\
-            !local.isBrowser\n\
-            && opt.autofix\n\
-            && !opt.fileType0\n\
-            && !opt.stop\n\
-            && code !== opt.code0\n\
-            && require(\"fs\").existsSync(file)\n\
-        ) {\n\
-            require(\"fs\").writeFileSync(file, code);\n\
-            require(\"fs\").writeFileSync(file + \".autofix.old\", opt.code0);\n\
-            require(\"child_process\").spawnSync(\n\
-                \"diff\",\n\
-                [\n\
-                    \"-u\", file + \".autofix.old\", file\n\
-                ],\n\
-                {\n\
-                    stdio: [\n\
-                        \"ignore\", 2, \"ignore\"\n\
-                    ]\n\
-                }\n\
-            );\n\
-            require(\"fs\").unlinkSync(file + \".autofix.old\");\n\
-            console.error(\n\
-                \"\\u001b[1mjslint-autofix - modified and saved file \" + file\n\
-                + \"\\u001b[22m\"\n\
-            );\n\
-        }\n\
-        // print colorized errMsg to stderr\n\
-        // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99\n\
-        opt.errList.filter(function (warning) {\n\
-            return warning && warning.message;\n\
-        // print only first 10 warnings\n\
-        }).slice(0, 10).forEach(function (err, ii) {\n\
-            opt.errMsg = (\n\
-                opt.errMsg || \" \\u001b[1mjslint \" + file + \"\\u001b[22m\\n\"\n\
-            );\n\
-            opt.errMsg += (\n\
-                (\"  \" + String(ii + 1)).slice(-3)\n\
-                + \" \\u001b[31m\" + err.message + \"\\u001b[39m\"\n\
-                + \" \\u001b[90m\\/\\/ line \" + err.line + \", column \"\n\
-                + err.column\n\
-                + \"\\u001b[39m\\n\"\n\
-                + (\"    \" + String(err.evidence).trim()).slice(0, 80) + \"\\n\"\n\
-            );\n\
-            if (!ii && err.stack && err.a !== \"debug\\u0049nline\") {\n\
-                tmp = err.stack;\n\
-                Object.entries(err).forEach(function ([\n\
-                    key, val\n\
-                ]) {\n\
-                    if ((typeof val === \"object\" && val) || key === \"stack\") {\n\
-                        delete err[key];\n\
-                    }\n\
-                });\n\
-                opt.errMsg += (\n\
-                    JSON.stringify(err, undefined, 4) + \"\\n\" + tmp.trim() + \"\\n\"\n\
-                );\n\
-            }\n\
-        });\n\
-        opt.errMsg = opt.errMsg.trim();\n\
-        if (opt.errMsg) {\n\
-            // print err to stderr\n\
-            console.error(opt.errMsg);\n\
-        }\n\
-        opt.code = code;\n\
-        return code;\n\
-    }\n\
-    // recurse\n\
-    return local.jslintAndPrint(code, file, opt);\n\
-};\n\
+let jslintAutofix;\n\
+let jslintRecurse;\n\
+let jslintUtility2;\n\
+let stringGetLineAndCol;\n\
 \n\
-local.jslintAndPrintDir = async function (dir, opt) {\n\
-/*\n\
- * this function will jslint files in shallow <dir>\n\
- */\n\
-    let errCnt;\n\
-    errCnt = 0;\n\
-    await Promise.all((\n\
-        await require(\"fs\").promises.readdir(require(\"path\").resolve(dir))\n\
-    ).map(async function (file) {\n\
-        let data;\n\
-        let timeStart;\n\
-        timeStart = Date.now();\n\
-        file = require(\"path\").resolve(file);\n\
-        switch ((\n\
-            /\\.\\w+?$|$/m\n\
-        ).exec(file)[0]) {\n\
-        case \".css\":\n\
-        case \".html\":\n\
-        case \".js\":\n\
-        case \".json\":\n\
-        case \".md\":\n\
-        case \".sh\":\n\
-            if ((\n\
-                /\\b(?:assets\\.app\\.js|lock|min|raw|rollup)\\b/\n\
-            ).test(file)) {\n\
-                return;\n\
-            }\n\
-            // jslint file\n\
-            data = await require(\"fs\").promises.readFile(file, \"utf8\");\n\
-            local.jslintAndPrint(data, file, opt);\n\
-            errCnt += local.jslintResult.errList.length;\n\
-            console.error(\n\
-                \"jslint - \" + (Date.now() - timeStart) + \"ms - \" + file\n\
-            );\n\
-            break;\n\
-        }\n\
-    }));\n\
-    return Math.min(errCnt, 255);\n\
-};\n\
-\n\
-local.jslintAutofix = function (code, file, opt) {\n\
+jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {\n\
 /*\n\
  * this function will jslint-autofix <code>\n\
  */\n\
@@ -69252,53 +69004,47 @@ local.jslintAutofix = function (code, file, opt) {\n\
     let dataList;\n\
     let ignoreList;\n\
     let ii;\n\
+    let result;\n\
     let rgx1;\n\
     let rgx2;\n\
     let tmp;\n\
-    // autofix-all\n\
-    if (opt.autofix) {\n\
-        // autofix-all - normalize local-function\n\
-        if (\n\
-            globalThis.utility2\n\
-            && typeof globalThis.utility2.jslintAutofixLocalFunction\n\
-            === \"function\"\n\
-        ) {\n\
-            code = globalThis.utility2.jslintAutofixLocalFunction(code, file);\n\
-        }\n\
-        // autofix-all - remove trailing-whitespace\n\
-        code = code.replace((\n\
-            /\\u0020+$/gm\n\
-        ), \"\");\n\
-        // autofix-all - remove leading-whitespace before )]}\n\
-        code = code.replace((\n\
-            /\\n+?(\\n\\u0020*?[)\\]}])/g\n\
-        ), \"$1\");\n\
-        // autofix-all - eslint - no-multiple-empty-lines\n\
-        // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md\n\
-        code = code.replace((\n\
-            /\\n{4,}/g\n\
-        ), \"\\n\\n\\n\");\n\
-        // autofix-all - recurse <script>...</script>, <style>...</style>\n\
-        code = code.replace((\n\
-            /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\\\n\\\\\\n(?:^.*?\\\\n\\\\\\n)*?)(';$|<\\/script>\\\\n\\\\$|<\\/style>\\\\n\\\\$)/gm\n\
-        ), function (ignore, match1, match2, ii) {\n\
-            return local.jslintAndPrint(\n\
-                code,\n\
-                file + (\n\
-                    match2.indexOf(\"style\") > -1\n\
-                    ? \".<style>.css\"\n\
-                    : \".<script>.js\"\n\
-                ),\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: \".\\\\n\\\\\",\n\
-                    iiEnd: ii + match1.length,\n\
-                    iiStart: ii,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + match2;\n\
-        });\n\
+    // autofix-all - normalize local-function\n\
+    if (\n\
+        globalThis.utility2\n\
+        && typeof globalThis.utility2.jslintAutofixLocalFunction\n\
+        === \"function\"\n\
+    ) {\n\
+        code = globalThis.utility2.jslintAutofixLocalFunction(code, file);\n\
     }\n\
-    switch (opt.autofix && opt.fileType) {\n\
+    // autofix-all - remove trailing-whitespace\n\
+    code = code.replace((\n\
+        /\\u0020+$/gm\n\
+    ), \"\");\n\
+    // autofix-all - remove leading-whitespace before )]}\n\
+    code = code.replace((\n\
+        /\\n+?(\\n\\u0020*?[)\\]}])/g\n\
+    ), \"$1\");\n\
+    // autofix-all - eslint - no-multiple-empty-lines\n\
+    // https://github.com/eslint/eslint/blob/v7.2.0/docs/rules/no-multiple-empty-lines.md\n\
+    code = code.replace((\n\
+        /\\n{4,}/g\n\
+    ), \"\\n\\n\\n\");\n\
+    // autofix-all - recurse <script>...</script>, <style>...</style>\n\
+    code = code.replace((\n\
+        /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\\\n\\\\\\n(?:^.*?\\\\n\\\\\\n)*?)(';$|<\\/script>\\\\n\\\\$|<\\/style>\\\\n\\\\$)/gm\n\
+    ), function (ignore, match1, match2, ii) {\n\
+        return jslintRecurse(code, file + (\n\
+            match2.indexOf(\"style\") >= 0\n\
+            ? \".<style>.css\"\n\
+            : \".<script>.js\"\n\
+        ), opt, {\n\
+            fileType0: \".\\\\n\\\\\",\n\
+            iiEnd: ii + match1.length,\n\
+            iiLine,\n\
+            iiStart: ii\n\
+        }) + match2;\n\
+    });\n\
+    switch (fileType) {\n\
     case \".css\":\n\
         break;\n\
     case \".html\":\n\
@@ -69306,25 +69052,21 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /^(\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\n[\\S\\s]*?\\n)(<\\/(?:script|style)>)$/gm\n\
         ), function (ignore, match1, match2, ii) {\n\
-            return local.jslintAndPrint(\n\
-                code,\n\
-                file + (\n\
-                    match2.indexOf(\"style\") >= 0\n\
-                    ? \".<style>.css\"\n\
-                    : \".<script>.js\"\n\
-                ),\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: opt.fileType,\n\
-                    iiEnd: ii + match1.length,\n\
-                    iiStart: ii,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + match2;\n\
+            return jslintRecurse(code, file + (\n\
+                match2.indexOf(\"style\") >= 0\n\
+                ? \".<style>.css\"\n\
+                : \".<script>.js\"\n\
+            ), opt, {\n\
+                fileType0: fileType,\n\
+                iiEnd: ii + match1.length,\n\
+                iiLine,\n\
+                iiStart: ii\n\
+            }) + match2;\n\
         });\n\
         break;\n\
     case \".js\":\n\
     case \".json\":\n\
-        // autofix-js - demux code to [code, ignoreList]\n\
+        // autofix-js - de-mux code to [code, ignoreList]\n\
         ignoreList = [];\n\
         code = code.replace((\n\
             /^\\u0020*?\\/\\*\\u0020jslint\\u0020ignore:start\\u0020\\*\\/$[\\S\\s]*?^\\/\\*\\u0020jslint\\u0020ignore:end\\u0020\\*\\/$/gm\n\
@@ -69341,7 +69083,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
                 + match0.charCodeAt(0).toString(16)\n\
             ).slice(-4);\n\
         });\n\
-        // autofix-js - demux code2 to [code2, ignoreList]\n\
+        // autofix-js - de-mux code2 to [code2, ignoreList]\n\
         code2 = \"\";\n\
         dataList = [];\n\
         ii = 0;\n\
@@ -69354,7 +69096,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
             /(?:[^.]\\b(?:case|delete|in|instanceof|new|return|typeof|void|yield)|[!%&(*+,\\-\\/:;<=>?\\[\\^{|}~])[\\s\\u0028]*?\\/[^*\\/]/g\n\
         );\n\
         tmp = \"\";\n\
-        // autofix-js - demux shebang\n\
+        // autofix-js - de-mux shebang\n\
         code.replace((\n\
             /^#!.*/\n\
         ), function (match0) {\n\
@@ -69431,7 +69173,6 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /\\/_\\*\\//g\n\
         ), \"/_/\");\n\
-        opt.codeDemux = code;\n\
         // autofix-js - left-align comment //_\n\
         tmp = undefined;\n\
         code = code.split(\"\\n\").reverse().map(function (line) {\n\
@@ -69577,17 +69318,17 @@ local.jslintAutofix = function (code, file, opt) {\n\
                 /\\t/g\n\
             ), \"\\\\t\");\n\
         });\n\
-        // autofix-js - remux shebang\n\
+        // autofix-js - re-mux shebang\n\
         code = code.replace((\n\
             /^#!/\n\
         ), function () {\n\
             return dataList.shift().code;\n\
         });\n\
-        // autofix-js - remux [code, dataList] to code\n\
+        // autofix-js - re-mux [code, dataList] to code\n\
         code = code.replace((\n\
             /\"_\"|'_'|\\/\\*_\\*\\/|\\/\\/!!_|\\/\\/_|\\/_\\/|`_`/g\n\
         ), function (match0) {\n\
-            // autofix-js - defer remux rgx /_/\n\
+            // autofix-js - defer re-mux rgx /_/\n\
             if (match0 === \"/_/\") {\n\
                 dataList.push(dataList.shift());\n\
                 return \"/\\u0000/\";\n\
@@ -69599,14 +69340,14 @@ local.jslintAutofix = function (code, file, opt) {\n\
         while (true) {\n\
             ii += 1;\n\
             code0 = code;\n\
-            Object.assign(opt, local.jslint_export(code, opt));\n\
-            code = opt.source_autofixed;\n\
-            if (ii >= 10 || opt.stop || code0 === code) {\n\
+            result = local.jslint0(code, opt, globalList);\n\
+            code = result.source_autofixed;\n\
+            if (ii >= 10 || result.stop || code0 === code) {\n\
                 break;\n\
             }\n\
         }\n\
         // autofix-json - jsonStringifyOrdered\n\
-        if (opt.fileType === \".json\") {\n\
+        if (fileType === \".json\") {\n\
             code = JSON.stringify(\n\
                 local.objectDeepCopyWithKeysSorted(JSON.parse(code)),\n\
                 undefined,\n\
@@ -69614,7 +69355,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
             );\n\
             break;\n\
         }\n\
-        // autofix-js - remux - code, dataList./_/ to code\n\
+        // autofix-js - re-mux - code, dataList./_/ to code\n\
         code = code.replace((\n\
             /\\/\\u0000\\//g\n\
         ), function () {\n\
@@ -69626,7 +69367,7 @@ local.jslintAutofix = function (code, file, opt) {\n\
         ), function (match0) {\n\
             return match0.split(\"\\n\").slice(0, -1).sort().join(\"\\n\") + \"\\n\";\n\
         });\n\
-        // autofix-js - remux - code, ignoreList to code\n\
+        // autofix-js - re-mux - code, ignoreList to code\n\
         code = code.replace((\n\
             /^\\u0020*?\\/\\*\\u0020jslint\\u0020ignore:start:end\\u0020\\*\\/$/gm\n\
         ), function () {\n\
@@ -69638,16 +69379,14 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /^(```javascript\\n)([\\S\\s]*?\\n)```$/gm\n\
         ), function (ignore, match1, match2, ii) {\n\
-            return match1 + local.jslintAndPrint(\n\
-                code,\n\
-                file + \".<```javascript>.js\",\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: opt.fileType,\n\
-                    iiEnd: ii + match1.length + match2.length,\n\
-                    iiStart: ii + match1.length,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + \"```\";\n\
+            return match1 + jslintRecurse(code, (\n\
+                file + \".<```javascript>.js\"\n\
+            ), opt, {\n\
+                fileType0: fileType,\n\
+                iiEnd: ii + match1.length + match2.length,\n\
+                iiLine,\n\
+                iiStart: ii + match1.length\n\
+            }) + \"```\";\n\
         });\n\
         break;\n\
     case \".sh\":\n\
@@ -69655,43 +69394,273 @@ local.jslintAutofix = function (code, file, opt) {\n\
         code = code.replace((\n\
             /^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/\\n[\\S\\s]*?\\n'/gm\n\
         ), function (match0, ii) {\n\
-            return local.jslintAndPrint(\n\
-                code,\n\
-                file + \".<node -e>.js\",\n\
-                Object.assign({}, opt, {\n\
-                    fileType0: opt.fileType,\n\
-                    iiEnd: ii + match0.length - 1,\n\
-                    iiStart: ii,\n\
-                    gotoState: 0\n\
-                })\n\
-            ) + \"'\";\n\
+            return jslintRecurse(code, file + \".<node -e>.js\", opt, {\n\
+                fileType0: fileType,\n\
+                iiEnd: ii + match0.length - 1,\n\
+                iiLine,\n\
+                iiStart: ii\n\
+            }) + \"'\";\n\
         });\n\
         break;\n\
     }\n\
     return code;\n\
 };\n\
 \n\
-local.jslintGetColumnLine = function (code, ii) {\n\
+jslintRecurse = function (code, file, opt, {\n\
+    fileType0,\n\
+    iiEnd,\n\
+    iiLine = 0,\n\
+    iiStart = 0\n\
+}) {\n\
 /*\n\
- * this function will transform <code> and <ii> to {column, line, evidence}\n\
+ * this function will recursively jslint <code> for embedded code\n\
  */\n\
-    let column;\n\
-    let evidence;\n\
-    let line;\n\
-    evidence = code.slice(0, ii).split(\"\\n\");\n\
-    line = evidence.length - 1;\n\
-    column = evidence[line].length;\n\
-    evidence = evidence[line] + code.slice(ii, ii + 100).split(\"\\n\")[0];\n\
-    return {\n\
-        column,\n\
-        evidence,\n\
-        line\n\
+    let code0;\n\
+    let errList;\n\
+    let errMsg;\n\
+    let fileType;\n\
+    let globalList;\n\
+    let modeAutofix;\n\
+    let modeConditional;\n\
+    let modeCoverage;\n\
+    let result;\n\
+    let tmp;\n\
+    // init opt\n\
+    local.jslintResult = {};\n\
+    opt = Object.assign(local.jslintResult, opt, {\n\
+        errList: [],\n\
+        errMsg: \"\"\n\
+    });\n\
+    // init var\n\
+    errList = [];\n\
+    fileType = (\n\
+        /\\.\\w+?$|$/m\n\
+    ).exec(file)[0];\n\
+    globalList = opt.globalList;\n\
+    modeAutofix = opt.autofix;\n\
+    modeConditional = opt.conditional;\n\
+    modeCoverage = opt.coverage;\n\
+    result = {};\n\
+    // preserve lineno - save iiLine\n\
+    iiLine += stringGetLineAndCol(code, iiStart).line;\n\
+    // de-embed\n\
+    code = code.slice(iiStart, iiEnd || code.length);\n\
+    switch (fileType0) {\n\
+    // de-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
+    case \".\\\\n\\\\\":\n\
+        // rgx - remove \\\\n\\\\\n\
+        code = code.replace((\n\
+            /\\\\n\\\\$|\\\\(.)/gm\n\
+        ), function (ignore, match1) {\n\
+            return match1 || \"\";\n\
+        });\n\
+        break;\n\
+    // de-embed-js - '\\n...\\n'\n\
+    case \".sh\":\n\
+        // rgx - convert '\"'\"' to '\n\
+        code = code.replace((\n\
+            /'\"'\"'/g\n\
+        ), \"'\");\n\
+        break;\n\
+    }\n\
+    // init\n\
+    code0 = code;\n\
+    tmp = {\n\
+        \".css\": (\n\
+            /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".html\": (\n\
+            /^\\/\\*csslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".js\": (\n\
+            /^\\/\\*jslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".json\": (\n\
+            /^\\s*?(?:\\[|\\{)/\n\
+        ),\n\
+        \".md\": (\n\
+            /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
+        ),\n\
+        \".sh\": (\n\
+            /(^#\\u0020jslint\\u0020utility2:true$)/m\n\
+        )\n\
     };\n\
+    // jslint - .json\n\
+    if (fileType === \".js\" && tmp[\".json\"].test(code)) {\n\
+        fileType = \".json\";\n\
+    }\n\
+    // init mode-utility2\n\
+    tmp = tmp[fileType] && tmp[fileType].exec(code);\n\
+    opt.utility2 = Boolean((tmp && tmp[1]) || modeAutofix);\n\
+    // if not modeConditional, then do not jslint\n\
+    if ((modeConditional && !tmp) || modeCoverage) {\n\
+        return code;\n\
+    }\n\
+    // jslint - modeAutofix\n\
+    if (modeAutofix) {\n\
+        code = jslintAutofix(code, file, opt, {\n\
+            fileType,\n\
+            globalList,\n\
+            iiLine\n\
+        });\n\
+    }\n\
+    // preserve lineno - restore iiLine\n\
+    code = \"\\n\".repeat(iiLine) + code;\n\
+    switch (fileType) {\n\
+    // jslint - .css\n\
+    case \".css\":\n\
+        // call csslint\n\
+        result = local.CSSLint.verify(code);\n\
+        // init errList\n\
+        errList = result.messages.map(function (err) {\n\
+            err.column = err.col;\n\
+            err.message = (\n\
+                err.type + \" - \" + err.rule.id + \" - \" + err.message\n\
+                + \"\\n    \" + err.rule.desc\n\
+            );\n\
+            return err;\n\
+        });\n\
+        break;\n\
+    case \".html\":\n\
+    case \".md\":\n\
+    case \".sh\":\n\
+        break;\n\
+    // jslint - .js\n\
+    default:\n\
+        // call jslint\n\
+        result = local.jslint0(code, opt, globalList);\n\
+        code = result.source_autofixed || code;\n\
+        // init errList\n\
+        errList = result.warnings.filter(function (err) {\n\
+            return err && err.message;\n\
+        }).map(function (err) {\n\
+            err.column = err.column + 1;\n\
+            err.evidence = err.source;\n\
+            err.line = err.line + 1;\n\
+            // debug early_stop\n\
+            if (err.early_stop) {\n\
+                err.message = (\n\
+                    \"[JSLint was unable to finish] - \"\n\
+                    + err.message\n\
+                );\n\
+            }\n\
+            return err;\n\
+        });\n\
+    }\n\
+    if (opt.utility2) {\n\
+        jslintUtility2({\n\
+            code,\n\
+            errList,\n\
+            fileType\n\
+        });\n\
+    }\n\
+    // jslint - print\n\
+    switch (Boolean(fileType0) && fileType0) {\n\
+    // re-embed-js - '\\\\n\\\\\\n...\\\\n\\\\\\n'\n\
+    case \".\\\\n\\\\\":\n\
+        code = code.trim();\n\
+        // rgx - escape \\ to \\\\\n\
+        code = code.replace((\n\
+            /\\\\/g\n\
+        ), \"\\\\\\\\\");\n\
+        // rgx - append \\n\\\n\
+        code = code.replace((\n\
+            /$/gm\n\
+        ), \"\\\\n\\\\\");\n\
+        // rgx - escape ' to \\'\n\
+        code = code.replace((\n\
+            /'/g\n\
+        ), \"\\\\'\");\n\
+        // rgx - escape js-env to js\\-env\n\
+        code = code.replace((\n\
+            /\\u0020js\\u002denv\\u0020/g\n\
+        ), \" js\\\\\\u002denv \");\n\
+        code += \"\\n\";\n\
+        break;\n\
+    // re-embed-js - '\\n...\\n'\n\
+    case \".sh\":\n\
+        // rgx - escape ' to '\"'\"'\n\
+        code = code.trim().replace((\n\
+            /'/g\n\
+        ), \"'\\\"'\\\"'\") + \"\\n\";\n\
+        break;\n\
+    case false:\n\
+        code = code.trimEnd() + \"\\n\";\n\
+        break;\n\
+    default:\n\
+        code = code.trim() + \"\\n\";\n\
+    }\n\
+    // autofix-save\n\
+    if (\n\
+        !local.isBrowser\n\
+        && modeAutofix\n\
+        && !fileType0\n\
+        && !result.stop\n\
+        && code !== code0\n\
+        && require(\"fs\").existsSync(file)\n\
+    ) {\n\
+        require(\"fs\").writeFileSync(file, code);\n\
+        require(\"fs\").writeFileSync(file + \".autofix.old\", code0);\n\
+        require(\"child_process\").spawnSync(\n\
+            \"diff\",\n\
+            [\n\
+                \"-u\", file + \".autofix.old\", file\n\
+            ],\n\
+            {\n\
+                stdio: [\n\
+                    \"ignore\", 2, \"ignore\"\n\
+                ]\n\
+            }\n\
+        );\n\
+        require(\"fs\").unlinkSync(file + \".autofix.old\");\n\
+        console.error(\n\
+            \"\\u001b[1mjslint-autofix - modified and saved file \" + file\n\
+            + \"\\u001b[22m\"\n\
+        );\n\
+    }\n\
+    // print colorized errMsg to stderr\n\
+    // https://github.com/kaizhu256/JSLint/blob/cli/cli.js#L99\n\
+    errMsg = \"\";\n\
+    errList.filter(function (warning) {\n\
+        return warning && warning.message;\n\
+    // print only first 10 warnings\n\
+    }).slice(0, 10).forEach(function (err, ii) {\n\
+        errMsg = errMsg || \" \\u001b[1mjslint \" + file + \"\\u001b[22m\\n\";\n\
+        errMsg += (\n\
+            (\"  \" + String(ii + 1)).slice(-3)\n\
+            + \" \\u001b[31m\" + err.message + \"\\u001b[39m\"\n\
+            + \" \\u001b[90m\\/\\/ line \" + err.line + \", column \"\n\
+            + err.column\n\
+            + \"\\u001b[39m\\n\"\n\
+            + (\"    \" + String(err.evidence).trim()).slice(0, 80) + \"\\n\"\n\
+        );\n\
+        if (!ii && err.stack && err.a !== \"debug\\u0049nline\") {\n\
+            tmp = err.stack;\n\
+            Object.entries(err).forEach(function ([\n\
+                key, val\n\
+            ]) {\n\
+                if ((typeof val === \"object\" && val) || key === \"stack\") {\n\
+                    delete err[key];\n\
+                }\n\
+            });\n\
+            errMsg += (\n\
+                JSON.stringify(err, undefined, 4) + \"\\n\" + tmp.trim() + \"\\n\"\n\
+            );\n\
+        }\n\
+    });\n\
+    errMsg = errMsg.trim();\n\
+    if (errMsg) {\n\
+        // print err to stderr\n\
+        console.error(errMsg);\n\
+    }\n\
+    return Object.assign(local.jslintResult, opt, result, {\n\
+        code,\n\
+        errList,\n\
+        errMsg\n\
+    }).code;\n\
 };\n\
 \n\
-local.jslintResult = {};\n\
-\n\
-local.jslintUtility2 = function (code, ignore, opt) {\n\
+jslintUtility2 = function ({code, errList, fileType}) {\n\
 /*\n\
  * this function will jslint <code> with utiity2-specific rules\n\
  */\n\
@@ -69700,54 +69669,52 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
     let indent;\n\
     let previous;\n\
     // jslintUtility2 - all\n\
-    if (opt.utility2) {\n\
-        code2 = code;\n\
-        // ignore start to end\n\
-        code2 = code2.replace((\n\
-            /^\\/\\*\\u0020jslint\\u0020ignore:start\\u0020\\*\\/$[\\S\\s]+?^\\/\\*\\u0020jslint\\u0020ignore:end\\u0020\\*\\/$/gm\n\
-        ), function (match0) {\n\
-            // preserve lineno\n\
-            return match0.replace((\n\
-                /.+/g\n\
-            ), \"\");\n\
-        });\n\
-        // lint whitespace\n\
-        code2.replace((\n\
-            /^\\u0020+?(?:\\*|\\/\\/!!)|^\\u0020+|[\\r\\t]/gm\n\
-        ), function (match0, ii) {\n\
-            switch (match0.slice(-1)) {\n\
-            case \" \":\n\
-                if (match0.length % 4 === 0) {\n\
-                    return \"\";\n\
-                }\n\
-                err = {\n\
-                    message: \"non 4-space indent\"\n\
-                };\n\
-                break;\n\
-            case \"\\r\":\n\
-                err = {\n\
-                    message: \"unexpected \\\\r\"\n\
-                };\n\
-                break;\n\
-            case \"\\t\":\n\
-                err = {\n\
-                    message: \"unexpected \\\\t\"\n\
-                };\n\
-                break;\n\
-            default:\n\
+    code2 = code;\n\
+    // ignore start to end\n\
+    code2 = code2.replace((\n\
+        /^\\/\\*\\u0020jslint\\u0020ignore:start\\u0020\\*\\/$[\\S\\s]+?^\\/\\*\\u0020jslint\\u0020ignore:end\\u0020\\*\\/$/gm\n\
+    ), function (match0) {\n\
+        // preserve lineno\n\
+        return match0.replace((\n\
+            /.+/g\n\
+        ), \"\");\n\
+    });\n\
+    // lint whitespace\n\
+    code2.replace((\n\
+        /^\\u0020+?(?:\\*|\\/\\/!!)|^\\u0020+|[\\r\\t]/gm\n\
+    ), function (match0, ii) {\n\
+        switch (match0.slice(-1)) {\n\
+        case \" \":\n\
+            if (match0.length % 4 === 0) {\n\
                 return \"\";\n\
             }\n\
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-            opt.errList.push({\n\
-                column: err.column + 1,\n\
-                evidence: JSON.stringify(err.evidence),\n\
-                line: err.line + 1,\n\
-                message: err.message\n\
-            });\n\
+            err = {\n\
+                message: \"non 4-space indent\"\n\
+            };\n\
+            break;\n\
+        case \"\\r\":\n\
+            err = {\n\
+                message: \"unexpected \\\\r\"\n\
+            };\n\
+            break;\n\
+        case \"\\t\":\n\
+            err = {\n\
+                message: \"unexpected \\\\t\"\n\
+            };\n\
+            break;\n\
+        default:\n\
             return \"\";\n\
+        }\n\
+        Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+        errList.push({\n\
+            column: err.column + 1,\n\
+            evidence: JSON.stringify(err.evidence),\n\
+            line: err.line + 1,\n\
+            message: err.message\n\
         });\n\
-    }\n\
-    switch (opt.utility2 && opt.fileType) {\n\
+        return \"\";\n\
+    });\n\
+    switch (fileType) {\n\
     // jslintUtility2 - .css\n\
     case \".css\":\n\
         // ignore comment\n\
@@ -69760,7 +69727,7 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
             ), \"\");\n\
         });\n\
         code2.replace((\n\
-            /\\S\\u0020{2}|\\u0020,|^\\S.*?[,;{}]./gm\n\
+            /\\S\\u0020{2}|\\u0020,|^\\S.*?,.|[;{}]./gm\n\
         ), function (match0, ii) {\n\
             switch (match0.slice(-2)) {\n\
             case \"  \":\n\
@@ -69781,8 +69748,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                     message: \"unexpected multiline-statement\"\n\
                 };\n\
             }\n\
-            Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-            opt.errList.push({\n\
+            Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+            errList.push({\n\
                 column: err.column + err.colOffset,\n\
                 evidence: JSON.stringify(err.evidence),\n\
                 line: err.line + 1,\n\
@@ -69839,8 +69806,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 : undefined\n\
             );\n\
             if (err) {\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69874,8 +69841,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 err = {\n\
                     message: \"lines not sorted\\n\" + previous + \"\\n\" + match1\n\
                 };\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69910,8 +69877,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 previous = match1;\n\
             }\n\
             if (err) {\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69951,8 +69918,8 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
                 previous = match2;\n\
             }\n\
             if (err) {\n\
-                Object.assign(err, local.jslintGetColumnLine(code2, ii));\n\
-                opt.errList.push({\n\
+                Object.assign(err, stringGetLineAndCol(code2, ii));\n\
+                errList.push({\n\
                     column: err.column + 1,\n\
                     evidence: err.evidence,\n\
                     line: err.line + 1,\n\
@@ -69964,6 +69931,93 @@ local.jslintUtility2 = function (code, ignore, opt) {\n\
         break;\n\
     }\n\
 };\n\
+\n\
+stringGetLineAndCol = function (code, ii) {\n\
+/*\n\
+ * this function will get line and column from <code> at <ii>\n\
+ */\n\
+    let aa;\n\
+    let bb;\n\
+    let line;\n\
+    // https://jsperf.com/regexp-counting-2/8\n\
+    bb = 0;\n\
+    line = 0;\n\
+    while (true) {\n\
+        aa = bb;\n\
+        bb = code.indexOf(\"\\n\", bb) + 1;\n\
+        if (bb === 0 || ii < bb) {\n\
+            break;\n\
+        }\n\
+        line += 1;\n\
+    }\n\
+    return {\n\
+        column: ii - aa,\n\
+        evidence: code.slice(aa, Math.max((bb || code.length) - 1, 0)),\n\
+        line\n\
+    };\n\
+};\n\
+\n\
+local.jslintAndPrint = function (code, file = \"undefined\", opt = {}) {\n\
+/*\n\
+ * this function will jslint-autofix <code>\n\
+ */\n\
+    return jslintRecurse(code, file, opt, {});\n\
+};\n\
+\n\
+local.jslintAndPrintDir = function (dir, opt, onError) {\n\
+/*\n\
+ * this function will jslint files in <dir>\n\
+ */\n\
+    let errCnt;\n\
+    errCnt = 0;\n\
+    onError = onError || function (err) {\n\
+        process.exit(Math.min((err && err.message) | 0, 127));\n\
+    };\n\
+    dir = require(\"path\").resolve(dir) + require(\"path\").sep;\n\
+    require(\"fs\").readdir(dir, function (err, fileList) {\n\
+        local.onErrorThrow(err);\n\
+        Promise.all(fileList.map(function (file) {\n\
+            return new Promise(function (resolve) {\n\
+                let timeStart;\n\
+                timeStart = Date.now();\n\
+                file = dir + file;\n\
+                switch ((\n\
+                    /\\.\\w+?$|$/m\n\
+                ).exec(file)[0]) {\n\
+                case \".css\":\n\
+                case \".html\":\n\
+                case \".js\":\n\
+                case \".json\":\n\
+                case \".md\":\n\
+                case \".sh\":\n\
+                    if ((\n\
+                        /\\b(?:assets\\.app\\.js|lock|min|raw|rollup)\\b/\n\
+                    ).test(file)) {\n\
+                        resolve();\n\
+                        return;\n\
+                    }\n\
+                    // jslint file\n\
+                    require(\"fs\").readFile(file, \"utf8\", function (err, data) {\n\
+                        local.onErrorThrow(err);\n\
+                        local.jslintAndPrint(data, file, opt);\n\
+                        errCnt += local.jslintResult.errList.length;\n\
+                        console.error(\n\
+                            \"jslint - \" + (Date.now() - timeStart) + \"ms - \"\n\
+                            + file\n\
+                        );\n\
+                        resolve();\n\
+                    });\n\
+                    return;\n\
+                }\n\
+                resolve();\n\
+            });\n\
+        })).then(function () {\n\
+            onError(errCnt && new Error(errCnt));\n\
+        });\n\
+    });\n\
+};\n\
+\n\
+local.jslintResult = {};\n\
 }());\n\
 \n\
 \n\
@@ -70007,7 +70061,7 @@ local.cliDict.dir = function () {\n\
     local.jslintAndPrintDir(process.argv[3], {\n\
         autofix: process.argv.indexOf(\"--autofix\") >= 0,\n\
         conditional: process.argv.indexOf(\"--conditional\") >= 0\n\
-    }).then(process.exit);\n\
+    });\n\
 };\n\
 \n\
 // run the cli\n\
@@ -70178,6 +70232,14 @@ local.assetsDict["/assets.utility2.test.js"] = (
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
     };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
+    };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -70194,11 +70256,11 @@ local.assetsDict["/assets.utility2.test.js"] = (
 \n\
 \n\
 /* jslint utility2:true */\n\
-/* istanbul ignore next */\n\
 (function (local) {\n\
 \"use strict\";\n\
 \n\
 \n\
+/* istanbul ignore next */\n\
 // run shared js-env code - init-before\n\
 (function () {\n\
 // init local\n\
@@ -70214,8 +70276,10 @@ local.testRunDefault(local);\n\
 (function () {\n\
 let assertJsonEqual;\n\
 let assertOrThrow;\n\
+let onErrorThrow;\n\
 assertJsonEqual = local.assertJsonEqual;\n\
 assertOrThrow = local.assertOrThrow;\n\
+onErrorThrow = local.onErrorThrow;\n\
 local.testCase_ajax_cache = function (opt, onError) {\n\
 /*\n\
  * this function will test ajax's cache handling-behavior\n\
@@ -70299,8 +70363,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
             responseType: responseType.replace(\"blob\", \"arraybuffer\"),\n\
             url: \"/test.body\"\n\
         }, function (err, xhr) {\n\
-            // handle err\n\
-            assertOrThrow(!err, err);\n\
+            onErrorThrow(err);\n\
             // validate statusCode\n\
             assertJsonEqual(xhr.statusCode, 200);\n\
             // validate responseText\n\
@@ -70362,8 +70425,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
         modeDebug: true,\n\
         url: \"/test.echo\"\n\
     }, function (err, xhr) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate statusCode\n\
         assertJsonEqual(xhr.statusCode, 200);\n\
         // validate resHeaders\n\
@@ -70410,8 +70472,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
     local.ajax({\n\
         url: \"LICENSE\"\n\
     }, function (err, xhr) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate statusCode\n\
         assertJsonEqual(xhr.statusCode, 200);\n\
         // validate responseText\n\
@@ -70443,8 +70504,7 @@ local.testCase_ajax_default = function (opt, onError) {\n\
                     : local.serverLocalHost\n\
                 )\n\
             }, function (err, xhr) {\n\
-                // handle err\n\
-                assertOrThrow(!err, err);\n\
+                onErrorThrow(err);\n\
                 // validate statusCode\n\
                 assertJsonEqual(xhr.statusCode, 200);\n\
                 onParallel();\n\
@@ -70576,8 +70636,7 @@ local.testCase_blobRead_default = function (opt, onError) {\n\
         new Uint8Array(0),\n\
         local.stringHelloEmoji\n\
     ]), function (err, data) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate data\n\
         assertJsonEqual(\n\
             local.bufferToUtf8(data),\n\
@@ -70644,14 +70703,7 @@ local.testCase_buildApp_default = function (opt, onError) {\n\
 /*\n\
  * this function will test buildApp's default handling-behavior\n\
  */\n\
-    if (local.isBrowser) {\n\
-        onError(undefined, opt);\n\
-        return;\n\
-    }\n\
-    local.testCase_buildReadme_default(opt, local.onErrorThrow);\n\
-    local.testCase_buildLib_default(opt, local.onErrorThrow);\n\
-    local.testCase_buildTest_default(opt, local.onErrorThrow);\n\
-    local.buildApp({\n\
+    local._testCase_buildApp_default({\n\
         assetsList: [\n\
             {\n\
                 file: \"/assets.hello.txt\",\n\
@@ -70672,43 +70724,41 @@ local.testCase_buildApp_default = function (opt, onError) {\n\
                 file: \"/assets.utility2.rollup.js\",\n\
                 url: \"/assets.utility2.rollup.js\"\n\
             }\n\
+        ],\n\
+        customizeReadmeList: [\n\
+            {\n\
+                // customize quickstart-example-js-instruction\n\
+                merge: (\n\
+                    /#\\u0020quickstart\\u0020example.js[\\S\\s]*?\\n\\n\\n/\n\
+                )\n\
+            }, {\n\
+                // customize quickstart-example-js-script\n\
+                merge: (\n\
+                    /#unless\\u0020isRollup[\\S\\s]*?<script\\u0020src=\"assets\\.example\\.js\">/\n\
+                )\n\
+            }, {\n\
+                // customize quickstart-example-js-screenshot\n\
+                merge: (\n\
+                    /```[^`]*?\\n#\\u0020extra\\u0020screenshots/\n\
+                )\n\
+            }, {\n\
+                // customize build-script\n\
+                merge: (\n\
+                    /\\n#\\u0020internal\\u0020build\\u0020script\\n[\\S\\s]*?\\nshBuildCi\\n/\n\
+                )\n\
+            }, {\n\
+                // coverage-hack\n\
+                aa: \" \",\n\
+                bb: \" \"\n\
+            }, {\n\
+                // coverage-hack\n\
+                aa: \"__zjqx1234__\" + Math.random()\n\
+            }, {\n\
+                // coverage-hack\n\
+                merge: new RegExp(\"__zjqx1234__\" + Math.random())\n\
+            }\n\
         ]\n\
-    }, onError);\n\
-};\n\
-\n\
-local.testCase_buildReadme_default = function (opt, onError) {\n\
-/*\n\
- * this function will test buildReadme's default handling-behavior\n\
- */\n\
-    if (local.isBrowser) {\n\
-        onError(undefined, opt);\n\
-        return;\n\
-    }\n\
-    opt = {};\n\
-    opt.customize = function () {\n\
-        // search-and-replace - customize dataTo\n\
-        [\n\
-            // customize quickstart-example-js-instruction\n\
-            (\n\
-                /#\\u0020quickstart\\u0020example.js[\\S\\s]*?\\n\\n\\n/\n\
-            ),\n\
-            // customize quickstart-example-js-script\n\
-            (\n\
-                /#unless\\u0020isRollup[\\S\\s]*?<script\\u0020src=\"assets\\.example\\.js\">/\n\
-            ),\n\
-            // customize quickstart-example-js-screenshot\n\
-            (\n\
-                /```[^`]*?\\n#\\u0020extra\\u0020screenshots/\n\
-            ),\n\
-            // customize build-script\n\
-            (\n\
-                /\\n#\\u0020internal\\u0020build\\u0020script\\n[\\S\\s]*?\\nshBuildCi\\n/\n\
-            )\n\
-        ].forEach(function (rgx) {\n\
-            opt.dataTo = local.stringMerge(opt.dataTo, opt.dataFrom, rgx);\n\
-        });\n\
-    };\n\
-    local.buildReadme(opt, onError);\n\
+    }, onError, opt);\n\
 };\n\
 \n\
 local.testCase_buildXxx_default = function (opt, onError) {\n\
@@ -70718,28 +70768,17 @@ local.testCase_buildXxx_default = function (opt, onError) {\n\
     local.testMock([\n\
         [\n\
             local, {\n\
-                assetsDict: {\n\
-                    \"/\": \"\"\n\
-                },\n\
-                browserTest: local.nop,\n\
-                buildApidoc: local.nop,\n\
-                buildLib: local.nop,\n\
-                buildReadme: local.nop,\n\
-                buildTest: local.nop,\n\
-                fsWriteFileWithMkdirp: local.nop,\n\
-                testCase_buildReadme_default: local.nop,\n\
-                testCase_buildLib_default: local.nop,\n\
-                testCase_buildTest_default: local.nop\n\
+                //!! assetsDict: {\n\
+                    //!! \"/\": \"\"\n\
+                //!! },\n\
+                browserTest: local.nop\n\
+                //!! buildApidoc: local.nop,\n\
+                //!! fsWriteFileWithMkdirp: local.nop,\n\
             }\n\
         ]\n\
     ], function (onError) {\n\
-        local._testCase_buildApidoc_default({}, local.nop);\n\
-        local._testCase_buildApp_default({}, local.nop);\n\
-        local._testCase_buildLib_default({}, local.nop);\n\
-        local._testCase_buildReadme_default({}, local.nop);\n\
-        local._testCase_buildTest_default({}, local.nop);\n\
-        local._testCase_webpage_default({}, local.nop);\n\
-        local.assetsDict[\"/\"] = \"<script src=\\\"assets.test.js\\\"></script>\";\n\
+        //!! local._testCase_buildApidoc_default({}, local.nop);\n\
+        //!! local.assetsDict[\"/\"] = \"<script src=\\\"assets.test.js\\\"></script>\";\n\
         local._testCase_webpage_default({}, local.nop);\n\
         onError(undefined, opt);\n\
     }, onError);\n\
@@ -70893,6 +70932,24 @@ local.testCase_domFragmentRender_default = function (opt, onError) {\n\
     onError(undefined, opt);\n\
 };\n\
 \n\
+local.testCase_eventListenerXxx_default = function (opt, onError) {\n\
+/*\n\
+ * this function will test eventListenerXxx's default handling-behavior\n\
+ */\n\
+    let listener;\n\
+    listener = function (msg) {\n\
+        assertJsonEqual(msg, \"bb\");\n\
+    };\n\
+    local.eventListenerAdd(\"aa\", listener);\n\
+    local.eventListenerAdd(\"aa\", listener, {\n\
+        once: true\n\
+    });\n\
+    local.eventListenerEmit(\"aa\", \"bb\");\n\
+    local.eventListenerEmit(\"aa\", \"bb\");\n\
+    local.eventListenerRemove(listener);\n\
+    onError(undefined, opt);\n\
+};\n\
+\n\
 local.testCase_libUtility2Js_standalone = function (opt, onError) {\n\
 /*\n\
  * this function will test lib.utility2.js's standalone handling-behavior\n\
@@ -70902,14 +70959,12 @@ local.testCase_libUtility2Js_standalone = function (opt, onError) {\n\
         return;\n\
     }\n\
     require(\"fs\").readFile(\"lib.utility2.js\", \"utf8\", function (err, data) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         require(\"fs\").writeFile(\"tmp/lib.utility2.js\", data.replace(\n\
             \"/* istanbul instrument in package utility2 */\",\n\
             \"\"\n\
         ), function (err) {\n\
-            // handle err\n\
-            assertOrThrow(!err, err);\n\
+            onErrorThrow(err);\n\
             require(\"./tmp/lib.utility2.js\");\n\
         });\n\
         onError(undefined, opt);\n\
@@ -70969,8 +71024,7 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
         },\n\
         url: \"\"\n\
     }, function (err, xhr) {\n\
-        // handle err\n\
-        assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         // validate responseText\n\
         assertJsonEqual(xhr.responseText, local.stringHelloEmoji);\n\
         onParallel(undefined, opt, xhr);\n\
@@ -70988,19 +71042,6 @@ local.testCase_middlewareForwardProxy_default = function (opt, onError) {\n\
         onParallel(undefined, opt);\n\
     });\n\
     onParallel(undefined, opt);\n\
-};\n\
-\n\
-local.testCase_onErrorThrow_err = function (opt, onError) {\n\
-/*\n\
- * this function will test onErrorThrow's err handling-behavior\n\
- */\n\
-    local.tryCatchOnError(function () {\n\
-        local.onErrorThrow(new Error());\n\
-    }, function (err) {\n\
-        // handle err\n\
-        assertOrThrow(err, err);\n\
-        onError(undefined, opt);\n\
-    });\n\
 };\n\
 \n\
 local.testCase_onErrorWithStack_toString = function (opt, onError) {\n\
@@ -71043,7 +71084,7 @@ local.testCase_onParallelList_default = function (opt, onError) {\n\
         switch (opt.gotoState) {\n\
         case 1:\n\
             // test null-case handling-behavior\n\
-            local.onParallelList({}, local.onErrorThrow, opt.gotoNext);\n\
+            local.onParallelList({}, onErrorThrow, opt.gotoNext);\n\
             break;\n\
         case 2:\n\
             opt.list = [\n\
@@ -71248,11 +71289,10 @@ local.testCase_requireReadme_misc = function (opt, onError) {\n\
     ], function (onError) {\n\
         local.requireReadme();\n\
         onError(undefined, opt);\n\
-    }, local.onErrorThrow);\n\
+    }, onErrorThrow);\n\
     // test file-modified handling-behavior\n\
     require(\"fs\").utimes(__filename, new Date(), new Date(), function (err) {\n\
-        // handle err\n\
-        local.assertOrThrow(!err, err);\n\
+        onErrorThrow(err);\n\
         onError(undefined, opt);\n\
     });\n\
 };\n\
@@ -72042,6 +72082,14 @@ if (process.env.npm_config_runme) {\n\
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -72083,7 +72131,7 @@ utility2.env = utility2.env || {};
 Object.assign(utility2.assetsDict, state.assetsDict);
 Object.assign(utility2.env, state.env);
 }(
-{"assetsDict":{"/assets.example.html":"<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<!-- \"assets.utility2.template.html\" -->\n<title>istanbul-lite (0.0.1)</title>\n<style>\n/* jslint utility2:true */\n/*csslint\n*/\n/* csslint ignore:start */\n*,\n*:after,\n*:before {\n    box-sizing: border-box;\n}\n.uiAnimateSlide {\n    overflow-y: hidden;\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n}\n/* csslint ignore:end */\n@keyframes uiAnimateSpin {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\na {\n    overflow-wrap: break-word;\n}\nbody {\n    background: #f7f7f7;\n    font-family: Arial, Helvetica, sans-serif;\n    font-size: small;\n    margin: 0 40px;\n}\nbody > div,\nbody > input,\nbody > pre,\nbody > .button,\nbody > .textarea {\n    margin-bottom: 20px;\n    margin-top: 0;\n}\nbody > input,\nbody > .button {\n    width: 20rem;\n}\nbody > .readonly {\n    background: #ddd;\n}\nbody > .textarea {\n    height: 10rem;\n    resize: vertical;\n    width: 100%;\n}\ncode,\npre,\n.textarea {\n    font-family: Consolas, Menlo, monospace;\n    font-size: smaller;\n}\npre {\n    overflow-wrap: break-word;\n    white-space: pre-wrap;\n}\n.button {\n    background: #ddd;\n    border: 1px solid #999;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 2px 5px;\n    text-align: center;\n    text-decoration: none;\n}\n.button:hover {\n    background: #bbb;\n}\n.colorError {\n    color: #d00;\n}\n.textarea {\n    background: #fff;\n    border: 1px solid #999;\n    border-radius: 0;\n    cursor: auto;\n    overflow: auto;\n    padding: 2px;\n}\n.zeroPixel {\n    border: 0;\n    height: 0;\n    margin: 0;\n    padding: 0;\n    width: 0;\n}\n</style>\n</head>\n<body>\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\n<script>\n/* jslint utility2:true */\n// init domOnEventWindowOnloadTimeElapsed\n(function () {\n/*\n * this function will measure and print time-elapsed for window.onload\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\n        return;\n    }\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n    window.addEventListener(\"load\", function () {\n        setTimeout(function () {\n            window.domOnEventWindowOnloadTimeElapsed = (\n                Date.now()\n                - window.domOnEventWindowOnloadTimeElapsed\n            );\n            console.error(\n                \"domOnEventWindowOnloadTimeElapsed = \"\n                + window.domOnEventWindowOnloadTimeElapsed\n            );\n        }, 100);\n    });\n}());\n\n\n// init domOnEventAjaxProgressUpdate\n(function () {\n/*\n * this function will display incrementing ajax-progress-bar\n */\n    \"use strict\";\n    let opt;\n    let styleBar0;\n    let styleBar;\n    let styleModal0;\n    let styleModal;\n    let timeStart;\n    let timerInterval;\n    let timerTimeout;\n    let tmp;\n    let width;\n    try {\n        if (\n            window.domOnEventAjaxProgressUpdate\n            || !document.getElementById(\"domElementAjaxProgressBar1\").style\n        ) {\n            return;\n        }\n    } catch (ignore) {\n        return;\n    }\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n        gotoState = (gotoState | 0) + 1;\n        switch (gotoState) {\n        // ajaxProgress - show\n        case 1:\n            // init timerInterval and timerTimeout\n            if (!timerTimeout) {\n                timeStart = Date.now();\n                timerInterval = setInterval(opt, 2000, 1, onError);\n                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\n            }\n            // show ajaxProgressBar\n            if (width !== -1) {\n                styleBar.background = styleBar0.background;\n            }\n            setTimeout(opt, 50, gotoState, onError);\n            break;\n        // ajaxProgress - increment\n        case 2:\n            // show ajaxProgressBar\n            if (width === -1) {\n                break;\n            }\n            styleBar.background = styleBar0.background;\n            // reset ajaxProgress if it reaches end\n            if ((styleBar.width.slice(0, -1) | 0) > 95) {\n                width = 0;\n            }\n            // this algorithm will indefinitely increment ajaxProgress\n            // with successively smaller increments without reaching 100%\n            width += 1;\n            styleBar.width = Math.max(\n                100 - 75 * Math.exp(-0.125 * width),\n                styleBar.width.slice(0, -1) | 0\n            ) + \"%\";\n            // show ajaxProgressModal\n            styleModal.height = \"100%\";\n            styleModal.opacity = styleModal0.opacity;\n            if (!opt.cnt) {\n                setTimeout(opt, 0, gotoState, onError);\n            }\n            break;\n        // ajaxProgress - 100%\n        case 3:\n            width = -1;\n            styleBar.width = \"100%\";\n            setTimeout(opt, 1000, gotoState, onError);\n            break;\n        // ajaxProgress - hide\n        case 4:\n            // debug timeElapsed\n            tmp = Date.now();\n            console.error(\n                \"domOnEventAjaxProgressUpdate - timeElapsed - \"\n                + (tmp - timeStart)\n                + \" ms\"\n            );\n            // cleanup timerInterval and timerTimeout\n            timeStart = tmp;\n            clearInterval(timerInterval);\n            timerInterval = undefined;\n            clearTimeout(timerTimeout);\n            timerTimeout = undefined;\n            // hide ajaxProgressBar\n            styleBar.background = \"transparent\";\n            // hide ajaxProgressModal\n            styleModal.opacity = \"0\";\n            if (onError) {\n                onError();\n            }\n            setTimeout(opt, 250, gotoState);\n            break;\n        // ajaxProgress - reset\n        default:\n            opt.cnt = 0;\n            width = 0;\n            styleBar.width = \"0%\";\n            styleModal.height = \"0\";\n        }\n    };\n    opt = window.domOnEventAjaxProgressUpdate;\n    opt.end = function (onError) {\n        opt.cnt = 0;\n        window.domOnEventAjaxProgressUpdate(2, onError);\n    };\n    // init styleBar\n    styleBar = document.getElementById(\"domElementAjaxProgressBar1\").style;\n    styleBar0 = Object.assign({}, styleBar);\n    Object.entries({\n        background: \"#d00\",\n        height: \"2px\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"background 250ms, width 750ms\",\n        width: \"0%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\n    });\n    // init styleModal\n    styleModal = document.getElementById(\"domElementAjaxProgressModal1\") || {};\n    styleModal = styleModal.style || {};\n    styleModal0 = Object.assign({}, styleModal);\n    Object.entries({\n        height: \"0\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"opacity 125ms\",\n        width: \"100%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\n    });\n    // init state\n    width = 0;\n    opt.cnt = 0;\n    opt.timeout = 30000;\n    // init ajaxProgress\n    window.domOnEventAjaxProgressUpdate();\n}());\n\n\n// init domOnEventDelegateDict\n(function () {\n/*\n * this function will handle delegated dom-evt\n */\n    \"use strict\";\n    let debounce;\n    let timerTimeout;\n    debounce = function () {\n        return setTimeout(function () {\n            timerTimeout = undefined;\n        }, 30);\n    };\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventDelegateDict) {\n        return;\n    }\n    window.domOnEventDelegateDict = {};\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\n        if (\n            !evt.targetOnEvent\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\n            || evt.target.closest(\".disabled,.readonly\")\n        ) {\n            return;\n        }\n        // filter evt-change\n        switch (evt.type !== \"change\" && evt.target.type) {\n        case \"checkbox\":\n        case \"file\":\n        case \"select-one\":\n        case \"radio\":\n            return;\n        }\n        // filter evt-keyup\n        switch (evt.type) {\n        case \"keyup\":\n            if (!timerTimeout && (\n                evt.target.tagName === \"INPUT\"\n                || evt.target.tagName === \"TEXTAREA\"\n            )) {\n                timerTimeout = debounce();\n                if (evt.target.dataset.valueOld !== evt.target.value) {\n                    evt.target.dataset.valueOld = evt.target.value;\n                    break;\n                }\n            }\n            return;\n        }\n        switch (evt.targetOnEvent.tagName) {\n        case \"BUTTON\":\n        case \"FORM\":\n            evt.preventDefault();\n            break;\n        }\n        evt.stopPropagation();\n        // handle domOnEventClickTarget\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\n            document.querySelector(\n                evt.targetOnEvent.dataset.clickTarget\n            ).click();\n            return;\n        }\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n    };\n    // handle evt\n    [\n        \"change\",\n        \"click\",\n        \"keyup\",\n        \"submit\"\n    ].forEach(function (eventType) {\n        document.addEventListener(\n            eventType,\n            window.domOnEventDelegateDict.domOnEventDelegate\n        );\n    });\n}());\n\n\n// init domOnEventSelectAllWithinPre\n(function () {\n/*\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventSelectAllWithinPre) {\n        return;\n    }\n    window.domOnEventSelectAllWithinPre = function (evt) {\n        let range;\n        let selection;\n        if (\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\n            && evt.target.closest(\"pre\")\n        ) {\n            range = document.createRange();\n            range.selectNodeContents(evt.target.closest(\"pre\"));\n            selection = window.getSelection();\n            selection.removeAllRanges();\n            selection.addRange(range);\n            evt.preventDefault();\n        }\n    };\n    // handle evt\n    document.addEventListener(\n        \"keydown\",\n        window.domOnEventSelectAllWithinPre\n    );\n}());\n</script>\n<h1>\n<!-- utility2-comment\n<a\n    {{#if env.npm_package_homepage}}\n    href=\"{{env.npm_package_homepage}}\"\n    {{/if env.npm_package_homepage}}\n    target=\"_blank\"\n>\nutility2-comment -->\n    istanbul-lite (0.0.1)\n<!-- utility2-comment\n</a>\nutility2-comment -->\n</h1>\n<h3>the greatest app in the world!</h3>\n<!-- utility2-comment\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\nutility2-comment -->\n\n\n<!-- custom-html-start -->\n<label>edit or paste script below to instrument and cover</label>\n<textarea class=\"textarea\" data-onevent=\"domOnEventInputChange\" id=\"inputTextarea1\">\nif (true) {\n    console.log(\"hello\");\n} else {\n    console.log(\"bye\");\n}\nlet fibonacci = {\n    [Symbol.iterator]() {\n        let pre = 0, cur = 1;\n        return {\n            next() {\n                [pre, cur] = [cur, pre + cur];\n                return { done: false, value: cur }\n            }\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n</textarea>\n<label>instrumented-code</label>\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputTextarea1\" readonly></textarea>\n<label>stderr and stdout</label>\n<textarea class=\"readonly textarea\" id=\"outputStdout1\" readonly></textarea>\n<div id=\"htmlCoverageReport1\"></div>\n<script>\n/* jslint utility2:true */\nwindow.addEventListener(\"load\", function () {\n\"use strict\";\nlet local;\nlocal = window.utility2_istanbul;\nlocal.domOnEventInputChange = function (evt) {\n    switch (evt.type + \".\" + evt.target.id) {\n    case \"keyup.inputTextarea1\":\n        // try to cleanup __coverage__\n        try {\n            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\n        } catch (ignore) {}\n        // try to cover and eval #inputTextarea1\n        try {\n            document.querySelector(\n                \"#outputTextarea1\"\n            ).textContent = local.istanbul.instrumentSync(\n                document.querySelector(\"#inputTextarea1\").value,\n                \"/inputTextarea1.js\"\n            );\n            eval( // jslint ignore:line\n                document.querySelector(\"#outputTextarea1\").value\n            );\n            document.querySelector(\n                \"#htmlCoverageReport1\"\n            ).innerHTML = local.istanbul.coverageReportCreate({\n                coverage: globalThis.__coverage__\n            });\n        } catch (errCaught) {\n            console.error(errCaught);\n        }\n        break;\n    }\n};\n// handle evt\nlocal.domOnEventInputChange({\n    target: {\n        id: \"inputTextarea1\"\n    },\n    type: \"keyup\"\n});\n});\n</script>\n<!-- custom-html-end -->\n\n\n<!-- utility2-comment\n{{#if isRollup}}\n<script src=\"assets.app.js\"></script>\n{{#unless isRollup}}\n<script src=\"assets.utility2.rollup.js\"></script>\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\n<script src=\"utility2.state.init.js\"></script>\nutility2-comment -->\n<script src=\"assets.istanbul.js\"></script>\n<script src=\"assets.example.js\"></script>\n<script src=\"assets.test.js\"></script>\n<script>\nif (window.utility2_onReadyBefore) {\n    window.utility2_onReadyBefore();\n}\n</script>\n<!-- utility2-comment\n{{/if isRollup}}\nutility2-comment -->\n<div style=\"text-align: center;\">\n    [\n    this app was created with\n    <a\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\n    >utility2</a>\n    ]\n</div>\n</body>\n</html>\n","/assets.example.js":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\nexample.js\n\nthis script will run web-demo of istanbul-lite\n\ninstruction\n    1. save this script as example.js\n    2. run shell-command:\n        $ npm install istanbul-lite && \\\n            PORT=8081 node example.js\n    3. open browser to http://127.0.0.1:8081 and play with web-demo\n    4. edit this script to suit your needs\n*/\n\n\n/* istanbul instrument in package istanbul */\n// assets.utility2.header.js - start\n/* jslint utility2:true */\n/* istanbul ignore next */\n// run shared js-env code - init-local\n(function () {\n    \"use strict\";\n    let consoleError;\n    let local;\n    // init debugInline\n    if (!globalThis.debugInline) {\n        consoleError = console.error;\n        globalThis.debugInline = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\ndebugInline\");\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScripts === \"function\"\n    );\n    // init function\n    local.assertJsonEqual = function (aa, bb) {\n    /*\n     * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n     */\n        let objectDeepCopyWithKeysSorted;\n        objectDeepCopyWithKeysSorted = function (obj) {\n        /*\n         * this function will recursively deep-copy <obj> with keys sorted\n         */\n            let sorted;\n            if (typeof obj !== \"object\" || !obj) {\n                return obj;\n            }\n            // recursively deep-copy list with child-keys sorted\n            if (Array.isArray(obj)) {\n                return obj.map(objectDeepCopyWithKeysSorted);\n            }\n            // recursively deep-copy obj with keys sorted\n            sorted = {};\n            Object.keys(obj).sort().forEach(function (key) {\n                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n            });\n            return sorted;\n        };\n        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n        if (aa !== bb) {\n            throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n        }\n    };\n    local.assertOrThrow = function (passed, msg) {\n    /*\n     * this function will throw <msg> if <passed> is falsy\n     */\n        if (passed) {\n            return;\n        }\n        throw (\n            (\n                msg\n                && typeof msg.message === \"string\"\n                && typeof msg.stack === \"string\"\n            )\n            // if msg is err, then leave as is\n            ? msg\n            : new Error(\n                typeof msg === \"string\"\n                // if msg is string, then leave as is\n                ? msg\n                // else JSON.stringify(msg)\n                : JSON.stringify(msg, undefined, 4)\n            )\n        );\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== undefined && arg !== null && arg !== \"\") {\n                return arg;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n    /*\n     * this function will if items from <tgt> are null, undefined, or \"\",\n     * then overwrite them with items from <src>\n     */\n        let recurse;\n        recurse = function (tgt, src, depth) {\n            Object.entries(src).forEach(function ([\n                key, bb\n            ]) {\n                let aa;\n                aa = tgt[key];\n                if (aa === undefined || aa === null || aa === \"\") {\n                    tgt[key] = bb;\n                    return;\n                }\n                if (\n                    depth !== 0\n                    && typeof aa === \"object\" && aa && !Array.isArray(aa)\n                    && typeof bb === \"object\" && bb && !Array.isArray(bb)\n                ) {\n                    recurse(aa, bb, depth - 1);\n                }\n            });\n        };\n        recurse(tgt, src, depth | 0);\n        return tgt;\n    };\n    // bug-workaround - throw unhandledRejections in node-process\n    if (\n        typeof process === \"object\" && process\n        && typeof process.on === \"function\"\n        && process.unhandledRejections !== \"strict\"\n    ) {\n        process.unhandledRejections = \"strict\";\n        process.on(\"unhandledRejection\", function (err) {\n            throw err;\n        });\n    }\n}());\n// assets.utility2.header.js - end\n\n\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = (\n    globalThis.utility2_rollup\n    || globalThis.utility2_istanbul\n    || globalThis.utility2_moduleExports\n);\n// init exports\nglobalThis.local = local;\n}());\n\n\n/* istanbul ignore next */\n// run browser js-env code - init-test\n(function () {\nif (!local.isBrowser) {\n    return;\n}\n// log stderr and stdout to #outputStdout1\n[\"error\", \"log\"].forEach(function (key) {\n    let elem;\n    let fnc;\n    elem = document.querySelector(\"#outputStdout1\");\n    if (!elem) {\n        return;\n    }\n    fnc = console[key];\n    console[key] = function (...argList) {\n        fnc(...argList);\n        // append text to #outputStdout1\n        elem.textContent += argList.map(function (arg) {\n            return (\n                typeof arg === \"string\"\n                ? arg\n                : JSON.stringify(arg, undefined, 4)\n            );\n        }).join(\" \").replace((\n            /\\u001b\\[\\d*m/g\n        ), \"\") + \"\\n\";\n        // scroll textarea to bottom\n        elem.scrollTop = elem.scrollHeight;\n    };\n});\nlocal.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\nglobalThis.domOnEventDelegateDict = local;\n}());\n\n\n/* istanbul ignore next */\n// run node js-env code - init-test\n(function () {\nif (local.isBrowser) {\n    return;\n}\n// init exports\nmodule.exports = local;\n// init assetsDict\nlocal.assetsDict = local.assetsDict || {};\n/* jslint ignore:start */\nlocal.assetsDict[\"/assets.index.template.html\"] = '\\\n<!doctype html>\\n\\\n<html lang=\"en\">\\n\\\n<head>\\n\\\n<meta charset=\"utf-8\">\\n\\\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\\n\\\n<!-- \"assets.utility2.template.html\" -->\\n\\\n<title>{{env.npm_package_name}} ({{env.npm_package_version}})</title>\\n\\\n<style>\\n\\\n/* jslint utility2:true */\\n\\\n/*csslint\\n\\\n*/\\n\\\n/* csslint ignore:start */\\n\\\n*,\\n\\\n*:after,\\n\\\n*:before {\\n\\\n    box-sizing: border-box;\\n\\\n}\\n\\\n.uiAnimateSlide {\\n\\\n    overflow-y: hidden;\\n\\\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\\n\\\n}\\n\\\n/* csslint ignore:end */\\n\\\n@keyframes uiAnimateSpin {\\n\\\n0% {\\n\\\n    transform: rotate(0deg);\\n\\\n}\\n\\\n100% {\\n\\\n    transform: rotate(360deg);\\n\\\n}\\n\\\n}\\n\\\na {\\n\\\n    overflow-wrap: break-word;\\n\\\n}\\n\\\nbody {\\n\\\n    background: #f7f7f7;\\n\\\n    font-family: Arial, Helvetica, sans-serif;\\n\\\n    font-size: small;\\n\\\n    margin: 0 40px;\\n\\\n}\\n\\\nbody > div,\\n\\\nbody > input,\\n\\\nbody > pre,\\n\\\nbody > .button,\\n\\\nbody > .textarea {\\n\\\n    margin-bottom: 20px;\\n\\\n    margin-top: 0;\\n\\\n}\\n\\\nbody > input,\\n\\\nbody > .button {\\n\\\n    width: 20rem;\\n\\\n}\\n\\\nbody > .readonly {\\n\\\n    background: #ddd;\\n\\\n}\\n\\\nbody > .textarea {\\n\\\n    height: 10rem;\\n\\\n    resize: vertical;\\n\\\n    width: 100%;\\n\\\n}\\n\\\ncode,\\n\\\npre,\\n\\\n.textarea {\\n\\\n    font-family: Consolas, Menlo, monospace;\\n\\\n    font-size: smaller;\\n\\\n}\\n\\\npre {\\n\\\n    overflow-wrap: break-word;\\n\\\n    white-space: pre-wrap;\\n\\\n}\\n\\\n.button {\\n\\\n    background: #ddd;\\n\\\n    border: 1px solid #999;\\n\\\n    color: #000;\\n\\\n    cursor: pointer;\\n\\\n    display: inline-block;\\n\\\n    padding: 2px 5px;\\n\\\n    text-align: center;\\n\\\n    text-decoration: none;\\n\\\n}\\n\\\n.button:hover {\\n\\\n    background: #bbb;\\n\\\n}\\n\\\n.colorError {\\n\\\n    color: #d00;\\n\\\n}\\n\\\n.textarea {\\n\\\n    background: #fff;\\n\\\n    border: 1px solid #999;\\n\\\n    border-radius: 0;\\n\\\n    cursor: auto;\\n\\\n    overflow: auto;\\n\\\n    padding: 2px;\\n\\\n}\\n\\\n.zeroPixel {\\n\\\n    border: 0;\\n\\\n    height: 0;\\n\\\n    margin: 0;\\n\\\n    padding: 0;\\n\\\n    width: 0;\\n\\\n}\\n\\\n</style>\\n\\\n</head>\\n\\\n<body>\\n\\\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\\n\\\n<script>\\n\\\n/* jslint utility2:true */\\n\\\n// init domOnEventWindowOnloadTimeElapsed\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will measure and print time-elapsed for window.onload\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\\n\\\n    window.addEventListener(\"load\", function () {\\n\\\n        setTimeout(function () {\\n\\\n            window.domOnEventWindowOnloadTimeElapsed = (\\n\\\n                Date.now()\\n\\\n                - window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n            console.error(\\n\\\n                \"domOnEventWindowOnloadTimeElapsed = \"\\n\\\n                + window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n        }, 100);\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n// init domOnEventAjaxProgressUpdate\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will display incrementing ajax-progress-bar\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let opt;\\n\\\n    let styleBar0;\\n\\\n    let styleBar;\\n\\\n    let styleModal0;\\n\\\n    let styleModal;\\n\\\n    let timeStart;\\n\\\n    let timerInterval;\\n\\\n    let timerTimeout;\\n\\\n    let tmp;\\n\\\n    let width;\\n\\\n    try {\\n\\\n        if (\\n\\\n            window.domOnEventAjaxProgressUpdate\\n\\\n            || !document.getElementById(\"domElementAjaxProgressBar1\").style\\n\\\n        ) {\\n\\\n            return;\\n\\\n        }\\n\\\n    } catch (ignore) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\\n\\\n        gotoState = (gotoState | 0) + 1;\\n\\\n        switch (gotoState) {\\n\\\n        // ajaxProgress - show\\n\\\n        case 1:\\n\\\n            // init timerInterval and timerTimeout\\n\\\n            if (!timerTimeout) {\\n\\\n                timeStart = Date.now();\\n\\\n                timerInterval = setInterval(opt, 2000, 1, onError);\\n\\\n                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\\n\\\n            }\\n\\\n            // show ajaxProgressBar\\n\\\n            if (width !== -1) {\\n\\\n                styleBar.background = styleBar0.background;\\n\\\n            }\\n\\\n            setTimeout(opt, 50, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - increment\\n\\\n        case 2:\\n\\\n            // show ajaxProgressBar\\n\\\n            if (width === -1) {\\n\\\n                break;\\n\\\n            }\\n\\\n            styleBar.background = styleBar0.background;\\n\\\n            // reset ajaxProgress if it reaches end\\n\\\n            if ((styleBar.width.slice(0, -1) | 0) > 95) {\\n\\\n                width = 0;\\n\\\n            }\\n\\\n            // this algorithm will indefinitely increment ajaxProgress\\n\\\n            // with successively smaller increments without reaching 100%\\n\\\n            width += 1;\\n\\\n            styleBar.width = Math.max(\\n\\\n                100 - 75 * Math.exp(-0.125 * width),\\n\\\n                styleBar.width.slice(0, -1) | 0\\n\\\n            ) + \"%\";\\n\\\n            // show ajaxProgressModal\\n\\\n            styleModal.height = \"100%\";\\n\\\n            styleModal.opacity = styleModal0.opacity;\\n\\\n            if (!opt.cnt) {\\n\\\n                setTimeout(opt, 0, gotoState, onError);\\n\\\n            }\\n\\\n            break;\\n\\\n        // ajaxProgress - 100%\\n\\\n        case 3:\\n\\\n            width = -1;\\n\\\n            styleBar.width = \"100%\";\\n\\\n            setTimeout(opt, 1000, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - hide\\n\\\n        case 4:\\n\\\n            // debug timeElapsed\\n\\\n            tmp = Date.now();\\n\\\n            console.error(\\n\\\n                \"domOnEventAjaxProgressUpdate - timeElapsed - \"\\n\\\n                + (tmp - timeStart)\\n\\\n                + \" ms\"\\n\\\n            );\\n\\\n            // cleanup timerInterval and timerTimeout\\n\\\n            timeStart = tmp;\\n\\\n            clearInterval(timerInterval);\\n\\\n            timerInterval = undefined;\\n\\\n            clearTimeout(timerTimeout);\\n\\\n            timerTimeout = undefined;\\n\\\n            // hide ajaxProgressBar\\n\\\n            styleBar.background = \"transparent\";\\n\\\n            // hide ajaxProgressModal\\n\\\n            styleModal.opacity = \"0\";\\n\\\n            if (onError) {\\n\\\n                onError();\\n\\\n            }\\n\\\n            setTimeout(opt, 250, gotoState);\\n\\\n            break;\\n\\\n        // ajaxProgress - reset\\n\\\n        default:\\n\\\n            opt.cnt = 0;\\n\\\n            width = 0;\\n\\\n            styleBar.width = \"0%\";\\n\\\n            styleModal.height = \"0\";\\n\\\n        }\\n\\\n    };\\n\\\n    opt = window.domOnEventAjaxProgressUpdate;\\n\\\n    opt.end = function (onError) {\\n\\\n        opt.cnt = 0;\\n\\\n        window.domOnEventAjaxProgressUpdate(2, onError);\\n\\\n    };\\n\\\n    // init styleBar\\n\\\n    styleBar = document.getElementById(\"domElementAjaxProgressBar1\").style;\\n\\\n    styleBar0 = Object.assign({}, styleBar);\\n\\\n    Object.entries({\\n\\\n        background: \"#d00\",\\n\\\n        height: \"2px\",\\n\\\n        left: \"0\",\\n\\\n        margin: \"0\",\\n\\\n        padding: \"0\",\\n\\\n        position: \"fixed\",\\n\\\n        top: \"0\",\\n\\\n        transition: \"background 250ms, width 750ms\",\\n\\\n        width: \"0%\",\\n\\\n        \"z-index\": \"1\"\\n\\\n    }).forEach(function (entry) {\\n\\\n        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\\n\\\n    });\\n\\\n    // init styleModal\\n\\\n    styleModal = document.getElementById(\"domElementAjaxProgressModal1\") || {};\\n\\\n    styleModal = styleModal.style || {};\\n\\\n    styleModal0 = Object.assign({}, styleModal);\\n\\\n    Object.entries({\\n\\\n        height: \"0\",\\n\\\n        left: \"0\",\\n\\\n        margin: \"0\",\\n\\\n        padding: \"0\",\\n\\\n        position: \"fixed\",\\n\\\n        top: \"0\",\\n\\\n        transition: \"opacity 125ms\",\\n\\\n        width: \"100%\",\\n\\\n        \"z-index\": \"1\"\\n\\\n    }).forEach(function (entry) {\\n\\\n        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\\n\\\n    });\\n\\\n    // init state\\n\\\n    width = 0;\\n\\\n    opt.cnt = 0;\\n\\\n    opt.timeout = 30000;\\n\\\n    // init ajaxProgress\\n\\\n    window.domOnEventAjaxProgressUpdate();\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n// init domOnEventDelegateDict\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will handle delegated dom-evt\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let debounce;\\n\\\n    let timerTimeout;\\n\\\n    debounce = function () {\\n\\\n        return setTimeout(function () {\\n\\\n            timerTimeout = undefined;\\n\\\n        }, 30);\\n\\\n    };\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventDelegateDict) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventDelegateDict = {};\\n\\\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\\n\\\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\\n\\\n        if (\\n\\\n            !evt.targetOnEvent\\n\\\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\\n\\\n            || evt.target.closest(\".disabled,.readonly\")\\n\\\n        ) {\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-change\\n\\\n        switch (evt.type !== \"change\" && evt.target.type) {\\n\\\n        case \"checkbox\":\\n\\\n        case \"file\":\\n\\\n        case \"select-one\":\\n\\\n        case \"radio\":\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-keyup\\n\\\n        switch (evt.type) {\\n\\\n        case \"keyup\":\\n\\\n            if (!timerTimeout && (\\n\\\n                evt.target.tagName === \"INPUT\"\\n\\\n                || evt.target.tagName === \"TEXTAREA\"\\n\\\n            )) {\\n\\\n                timerTimeout = debounce();\\n\\\n                if (evt.target.dataset.valueOld !== evt.target.value) {\\n\\\n                    evt.target.dataset.valueOld = evt.target.value;\\n\\\n                    break;\\n\\\n                }\\n\\\n            }\\n\\\n            return;\\n\\\n        }\\n\\\n        switch (evt.targetOnEvent.tagName) {\\n\\\n        case \"BUTTON\":\\n\\\n        case \"FORM\":\\n\\\n            evt.preventDefault();\\n\\\n            break;\\n\\\n        }\\n\\\n        evt.stopPropagation();\\n\\\n        // handle domOnEventClickTarget\\n\\\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\\n\\\n            document.querySelector(\\n\\\n                evt.targetOnEvent.dataset.clickTarget\\n\\\n            ).click();\\n\\\n            return;\\n\\\n        }\\n\\\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    [\\n\\\n        \"change\",\\n\\\n        \"click\",\\n\\\n        \"keyup\",\\n\\\n        \"submit\"\\n\\\n    ].forEach(function (eventType) {\\n\\\n        document.addEventListener(\\n\\\n            eventType,\\n\\\n            window.domOnEventDelegateDict.domOnEventDelegate\\n\\\n        );\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n// init domOnEventSelectAllWithinPre\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\\n\\\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventSelectAllWithinPre) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventSelectAllWithinPre = function (evt) {\\n\\\n        let range;\\n\\\n        let selection;\\n\\\n        if (\\n\\\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\\n\\\n            && evt.target.closest(\"pre\")\\n\\\n        ) {\\n\\\n            range = document.createRange();\\n\\\n            range.selectNodeContents(evt.target.closest(\"pre\"));\\n\\\n            selection = window.getSelection();\\n\\\n            selection.removeAllRanges();\\n\\\n            selection.addRange(range);\\n\\\n            evt.preventDefault();\\n\\\n        }\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    document.addEventListener(\\n\\\n        \"keydown\",\\n\\\n        window.domOnEventSelectAllWithinPre\\n\\\n    );\\n\\\n}());\\n\\\n</script>\\n\\\n<h1>\\n\\\n<!-- utility2-comment\\n\\\n<a\\n\\\n    {{#if env.npm_package_homepage}}\\n\\\n    href=\"{{env.npm_package_homepage}}\"\\n\\\n    {{/if env.npm_package_homepage}}\\n\\\n    target=\"_blank\"\\n\\\n>\\n\\\nutility2-comment -->\\n\\\n    {{env.npm_package_name}} ({{env.npm_package_version}})\\n\\\n<!-- utility2-comment\\n\\\n</a>\\n\\\nutility2-comment -->\\n\\\n</h1>\\n\\\n<h3>{{env.npm_package_description}}</h3>\\n\\\n<!-- utility2-comment\\n\\\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\\n\\\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\\n\\\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\\n\\\nutility2-comment -->\\n\\\n\\n\\\n\\n\\\n<!-- custom-html-start -->\\n\\\n<label>edit or paste script below to instrument and cover</label>\\n\\\n<textarea class=\"textarea\" data-onevent=\"domOnEventInputChange\" id=\"inputTextarea1\">\\n\\\nif (true) {\\n\\\n    console.log(\"hello\");\\n\\\n} else {\\n\\\n    console.log(\"bye\");\\n\\\n}\\n\\\nlet fibonacci = {\\n\\\n    [Symbol.iterator]() {\\n\\\n        let pre = 0, cur = 1;\\n\\\n        return {\\n\\\n            next() {\\n\\\n                [pre, cur] = [cur, pre + cur];\\n\\\n                return { done: false, value: cur }\\n\\\n            }\\n\\\n        }\\n\\\n    }\\n\\\n}\\n\\\nfor (var n of fibonacci) {\\n\\\n    // truncate the sequence at 1000\\n\\\n    if (n > 1000)\\n\\\n        break;\\n\\\n    console.log(n);\\n\\\n}\\n\\\n</textarea>\\n\\\n<label>instrumented-code</label>\\n\\\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputTextarea1\" readonly></textarea>\\n\\\n<label>stderr and stdout</label>\\n\\\n<textarea class=\"readonly textarea\" id=\"outputStdout1\" readonly></textarea>\\n\\\n<div id=\"htmlCoverageReport1\"></div>\\n\\\n<script>\\n\\\n/* jslint utility2:true */\\n\\\nwindow.addEventListener(\"load\", function () {\\n\\\n\"use strict\";\\n\\\nlet local;\\n\\\nlocal = window.utility2_istanbul;\\n\\\nlocal.domOnEventInputChange = function (evt) {\\n\\\n    switch (evt.type + \".\" + evt.target.id) {\\n\\\n    case \"keyup.inputTextarea1\":\\n\\\n        // try to cleanup __coverage__\\n\\\n        try {\\n\\\n            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\\n\\\n        } catch (ignore) {}\\n\\\n        // try to cover and eval #inputTextarea1\\n\\\n        try {\\n\\\n            document.querySelector(\\n\\\n                \"#outputTextarea1\"\\n\\\n            ).textContent = local.istanbul.instrumentSync(\\n\\\n                document.querySelector(\"#inputTextarea1\").value,\\n\\\n                \"/inputTextarea1.js\"\\n\\\n            );\\n\\\n            eval( // jslint ignore:line\\n\\\n                document.querySelector(\"#outputTextarea1\").value\\n\\\n            );\\n\\\n            document.querySelector(\\n\\\n                \"#htmlCoverageReport1\"\\n\\\n            ).innerHTML = local.istanbul.coverageReportCreate({\\n\\\n                coverage: globalThis.__coverage__\\n\\\n            });\\n\\\n        } catch (errCaught) {\\n\\\n            console.error(errCaught);\\n\\\n        }\\n\\\n        break;\\n\\\n    }\\n\\\n};\\n\\\n// handle evt\\n\\\nlocal.domOnEventInputChange({\\n\\\n    target: {\\n\\\n        id: \"inputTextarea1\"\\n\\\n    },\\n\\\n    type: \"keyup\"\\n\\\n});\\n\\\n});\\n\\\n</script>\\n\\\n<!-- custom-html-end -->\\n\\\n\\n\\\n\\n\\\n<!-- utility2-comment\\n\\\n{{#if isRollup}}\\n\\\n<script src=\"assets.app.js\"></script>\\n\\\n{{#unless isRollup}}\\n\\\n<script src=\"assets.utility2.rollup.js\"></script>\\n\\\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\\n\\\n<script src=\"utility2.state.init.js\"></script>\\n\\\nutility2-comment -->\\n\\\n<script src=\"assets.istanbul.js\"></script>\\n\\\n<script src=\"assets.example.js\"></script>\\n\\\n<script src=\"assets.test.js\"></script>\\n\\\n<script>\\n\\\nif (window.utility2_onReadyBefore) {\\n\\\n    window.utility2_onReadyBefore();\\n\\\n}\\n\\\n</script>\\n\\\n<!-- utility2-comment\\n\\\n{{/if isRollup}}\\n\\\nutility2-comment -->\\n\\\n<div style=\"text-align: center;\">\\n\\\n    [\\n\\\n    this app was created with\\n\\\n    <a\\n\\\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\\n\\\n    >utility2</a>\\n\\\n    ]\\n\\\n</div>\\n\\\n</body>\\n\\\n</html>\\n\\\n';\n/* jslint ignore:end */\nlocal.assetsDict[\"/assets.istanbul.js\"] = (\n    local.assetsDict[\"/assets.istanbul.js\"]\n    || require(\"fs\").readFileSync(\n        require(\"path\").resolve(local.__dirname + \"/lib.istanbul.js\"),\n        \"utf8\"\n    ).replace((\n        /^#!\\//\n    ), \"// \")\n);\n/* validateLineSortedReset */\nlocal.assetsDict[\"/\"] = local.assetsDict[\n    \"/assets.index.template.html\"\n].replace((\n    /\\{\\{env\\.(\\w+?)\\}\\}/g\n), function (match0, match1) {\n    switch (match1) {\n    case \"npm_package_description\":\n        return \"the greatest app in the world!\";\n    case \"npm_package_name\":\n        return \"istanbul-lite\";\n    case \"npm_package_nameLib\":\n        return \"istanbul\";\n    case \"npm_package_version\":\n        return \"0.0.1\";\n    default:\n        return match0;\n    }\n});\nlocal.assetsDict[\"/assets.example.html\"] = local.assetsDict[\"/\"];\n// init cli\nif (module !== require.main || globalThis.utility2_rollup) {\n    return;\n}\nlocal.assetsDict[\"/assets.example.js\"] = (\n    local.assetsDict[\"/assets.example.js\"]\n    || require(\"fs\").readFileSync(__filename, \"utf8\")\n);\nlocal.assetsDict[\"/favicon.ico\"] = local.assetsDict[\"/favicon.ico\"] || \"\";\nlocal.assetsDict[\"/index.html\"] = local.assetsDict[\"/\"];\n// if $npm_config_timeout_exit exists,\n// then exit this process after $npm_config_timeout_exit ms\nif (Number(process.env.npm_config_timeout_exit)) {\n    setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));\n}\n// start server\nif (globalThis.utility2_serverHttp1) {\n    return;\n}\nprocess.env.PORT = process.env.PORT || \"8081\";\nconsole.error(\"http-server listening on port \" + process.env.PORT);\nrequire(\"http\").createServer(function (req, res) {\n    let data;\n    data = local.assetsDict[require(\"url\").parse(req.url).pathname];\n    if (data !== undefined) {\n        res.end(data);\n        return;\n    }\n    res.statusCode = 404;\n    res.end();\n}).listen(process.env.PORT);\n}());\n}());\n","/assets.test.js":"/* istanbul instrument in package istanbul */\n// assets.utility2.header.js - start\n/* jslint utility2:true */\n/* istanbul ignore next */\n// run shared js-env code - init-local\n(function () {\n    \"use strict\";\n    let consoleError;\n    let local;\n    // init debugInline\n    if (!globalThis.debugInline) {\n        consoleError = console.error;\n        globalThis.debugInline = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\ndebugInline\");\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScripts === \"function\"\n    );\n    // init function\n    local.assertJsonEqual = function (aa, bb) {\n    /*\n     * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n     */\n        let objectDeepCopyWithKeysSorted;\n        objectDeepCopyWithKeysSorted = function (obj) {\n        /*\n         * this function will recursively deep-copy <obj> with keys sorted\n         */\n            let sorted;\n            if (typeof obj !== \"object\" || !obj) {\n                return obj;\n            }\n            // recursively deep-copy list with child-keys sorted\n            if (Array.isArray(obj)) {\n                return obj.map(objectDeepCopyWithKeysSorted);\n            }\n            // recursively deep-copy obj with keys sorted\n            sorted = {};\n            Object.keys(obj).sort().forEach(function (key) {\n                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n            });\n            return sorted;\n        };\n        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n        if (aa !== bb) {\n            throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n        }\n    };\n    local.assertOrThrow = function (passed, msg) {\n    /*\n     * this function will throw <msg> if <passed> is falsy\n     */\n        if (passed) {\n            return;\n        }\n        throw (\n            (\n                msg\n                && typeof msg.message === \"string\"\n                && typeof msg.stack === \"string\"\n            )\n            // if msg is err, then leave as is\n            ? msg\n            : new Error(\n                typeof msg === \"string\"\n                // if msg is string, then leave as is\n                ? msg\n                // else JSON.stringify(msg)\n                : JSON.stringify(msg, undefined, 4)\n            )\n        );\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== undefined && arg !== null && arg !== \"\") {\n                return arg;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n    /*\n     * this function will if items from <tgt> are null, undefined, or \"\",\n     * then overwrite them with items from <src>\n     */\n        let recurse;\n        recurse = function (tgt, src, depth) {\n            Object.entries(src).forEach(function ([\n                key, bb\n            ]) {\n                let aa;\n                aa = tgt[key];\n                if (aa === undefined || aa === null || aa === \"\") {\n                    tgt[key] = bb;\n                    return;\n                }\n                if (\n                    depth !== 0\n                    && typeof aa === \"object\" && aa && !Array.isArray(aa)\n                    && typeof bb === \"object\" && bb && !Array.isArray(bb)\n                ) {\n                    recurse(aa, bb, depth - 1);\n                }\n            });\n        };\n        recurse(tgt, src, depth | 0);\n        return tgt;\n    };\n    // bug-workaround - throw unhandledRejections in node-process\n    if (\n        typeof process === \"object\" && process\n        && typeof process.on === \"function\"\n        && process.unhandledRejections !== \"strict\"\n    ) {\n        process.unhandledRejections = \"strict\";\n        process.on(\"unhandledRejection\", function (err) {\n            throw err;\n        });\n    }\n}());\n// assets.utility2.header.js - end\n\n\n/* jslint utility2:true */\n/* istanbul ignore next */\n(function (local) {\n\"use strict\";\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = globalThis.utility2 || require(\"utility2\");\nlocal = local.requireReadme();\nglobalThis.local = local;\n// init test\nlocal.testRunDefault(local);\n}());\n\n\n// run shared js-env code - function\n(function () {\nlocal.testCase_coverage_es6 = function (opt, onError) {\n/*\n * this function will test coverage's es6 handling-behavior\n */\n/* jslint ignore:start */\n// https://github.com/lukehoban/es6features/blob/9354b8f68f26bf1931d05251c7d4411808669c97/README.md\nvar echo = function (arg) {\n    return arg;\n}, tryCatch = function (fnc) {\n    try {\n        fnc();\n    } catch (errCaught) {\n        console.error(errCaught);\n    }\n};\n\n// hack-istanbul\ntryCatch(function () {\n    throw '';\n});\ntryCatch(function () {\nvar evens = [0, 2, 4, 6];\n// Expression bodies\nvar odds = evens.map(v => v + 1);\nvar nums = evens.map((v, i) => v + i);\nvar pairs = evens.map(v => ({even: v, odd: v + 1}));\n// Statement bodies\nnums.forEach(v => {\n    if (v % 5 === 0) {\n        var fives = [];\n        fives.push(v);\n    }\n});\n// Lexical this\nvar bob = {\n    _name: 'Bob',\n    _friends: ['John'],\n    printFriends() {\n        this._friends.forEach(f =>\n            console.log(this._name + ' knows ' + f));\n    }\n}\nbob.printFriends();\n});\ntryCatch(function () {\nvar THREE = { Matrix4: echo, Mesh: echo };\nTHREE.Mesh.prototype.update = echo;\nclass SkinnedMesh extends THREE.Mesh {\n    constructor(geometry, materials) {\n        super(geometry, materials);\n        this.idMatrix = SkinnedMesh.defaultMatrix();\n        this.bones = [];\n        this.boneMatrices = [];\n        //...\n    }\n    update(camera) {\n        //...\n        super.update();\n    }\n    get boneCount() {\n        return this.bones.length;\n    }\n    set matrixType(matrixType) {\n        this.idMatrix = SkinnedMesh[matrixType]();\n    }\n    static defaultMatrix() {\n        return new THREE.Matrix4();\n    }\n}\nvar aa = new SkinnedMesh();\naa.update();\nconsole.assert(aa.boneCount === 0);\naa.matrixType = 'defaultMatrix';\nconsole.assert(aa.matrixType === undefined);\n});\ntryCatch(function () {\nvar handler, theProtoObj;\nvar obj = {\n    // __proto__\n    __proto__: theProtoObj,\n    // Shorthand for ‘handler: handler’\n    handler,\n    // Methods\n    toString() {\n    // Super calls\n    return 'd ' + super.toString();\n    },\n    // Computed (dynamic) property names\n    [ 'prop_' + (() => 42)() ]: 42\n};\nconsole.assert(String(obj) === 'd [object Object]');\n});\ntryCatch(function () {\n// Basic literal string creation\n`In JavaScript '\\n' is a line-feed.`;\n// Multiline strings\n`In JavaScript this is\n    not legal.`;\n// String interpolation\nvar name = 'Bob', time = 'today';\n`Hello ${name}, how are you ${time}?`;\n// Construct an HTTP request prefix is used to interpret the replacements and construction\nvar POST = function () {\n    return myOnReadyStateChangeHandler;\n}, a, b, bar, credentials, foo, myOnReadyStateChangeHandler = echo;\nPOST`http://foo.org/bar?a=${a}&b=${b}\n    Content-Type: application/json\n    X-Credentials: ${credentials}\n    { 'foo': ${foo}, 'bar': ${bar}}`(myOnReadyStateChangeHandler);\n});\ntryCatch(function () {\nvar getASTNode = function () {\n    return { op: null, lhs: {}, rhs: {} };\n};\n// list matching\nvar [a, , b] = [1,2,3];\n// object matching\nvar { op: a, lhs: { op: b }, rhs: c } = getASTNode();\n// object matching shorthand\n// binds `op`, `lhs` and `rhs` in scope\nvar {op, lhs, rhs} = getASTNode();\n// Can be used in parameter position\nfunction g({name: x}) {\n    console.log(x);\n}\ng({name: 5});\n// Fail-soft destructuring\nvar [a] = [];\nconsole.assert(a === undefined);\n// Fail-soft destructuring with defaults\nvar [a = 1] = [];\nconsole.assert(a === 1);\n});\ntryCatch(function () {\nfunction f(x, y=12) {\n    // y is 12 if not passed (or passed as undefined)\n    return x + y;\n}\nconsole.assert(f(3) === 15);\n});\ntryCatch(function () {\nfunction f(x, ...y) {\n    // y is an Array\n    return x * y.length;\n}\nconsole.assert(f(3, 'hello', true) === 6);\n});\ntryCatch(function () {\nfunction f(x, y, z) {\n    return x + y + z;\n}\n// Pass each elem of array as argument\nconsole.assert(f(...[1,2,3]) === 6);\n});\ntryCatch(function () {\nfunction f() {\n    {\n        let x;\n        {\n            // okay, block scoped name\n            const x = 'sneaky';\n            // error, const\n            //// x = 'foo';\n        }\n        // error, already declared in block\n        //// let x = 'inner';\n    }\n}\nf();\n});\ntryCatch(function () {\nlet fibonacci = {\n    [Symbol.iterator]() {\n        let pre = 0, cur = 1;\n        return {\n            next() {\n                [pre, cur] = [cur, pre + cur];\n                return { done: false, value: cur }\n            }\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n});\n//// try {(function () {\n//// interface IteratorResult {\n    //// done: boolean;\n    //// value: any;\n//// }\n//// interface Iterator {\n    //// next(): IteratorResult;\n//// }\n//// interface Iterable {\n    //// [Symbol.iterator](): Iterator\n//// }\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\ntryCatch(function () {\nvar fibonacci = {\n    [Symbol.iterator]: function*() {\n        var pre = 0, cur = 1;\n        for (;;) {\n            var temp = pre;\n            pre = cur;\n            cur += temp;\n            yield cur;\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n});\n//// try {(function () {\n//// interface Generator extends Iterator {\n    //// next(value?: any): IteratorResult;\n    //// throw(exception: any);\n//// }\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\ntryCatch(function () {\n// same as ES5.1\nconsole.assert('\\ud842\\udfb7'.length === 2);\n// new RegExp behaviour, opt-in ‘u’\nconsole.assert('\\ud842\\udfb7'.match(/./u)[0].length === 2);\n// new form\n'\\u{20BB7}'=='\\ud842\\udfb7'=='\\uD842\\uDFB7'\n// new String ops\nconsole.assert('\\ud842\\udfb7'.codePointAt(0) === 0x20BB7);\n// for-of iterates code points\nfor(var c of '\\ud842\\udfb7') {\n    console.log(c);\n}\n});\n//// try {(function () {\n//// // lib/math.js\n//// export function sum(x, y) {\n    //// return x + y;\n//// }\n//// export var pi = 3.141593;\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // app.js\n//// import * as math from 'lib/math';\n//// alert('2π = ' + math.sum(math.pi, math.pi));\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // otherApp.js\n//// import {sum, pi} from 'lib/math';\n//// alert('2π = ' + sum(pi, pi));\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // lib/mathplusplus.js\n//// export * from 'lib/math';\n//// export var e = 2.71828182846;\n//// export default function(x) {\n    //// return Math.log(x);\n//// }\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // app.js\n//// import ln, {pi, e} from 'lib/mathplusplus';\n//// alert('2π = ' + ln(e)*pi*2);\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // Dynamic loading – ‘System’ is default loader\n//// System.import('lib/math').then(function(m) {\n    //// alert('2π = ' + m.sum(m.pi, m.pi));\n//// });\n//// // Create execution sandboxes – new Loaders\n//// var loader = new Loader({\n    //// global: fixup(window) // replace ‘console.log’\n//// });\n//// loader.eval('console.log('hello world!');');\n//// // Directly manipulate module cache\n//// System.get('jquery');\n//// System.set('jquery', Module({$: $})); // WARNING: not yet finalized\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\ntryCatch(function () {\n// Sets\nvar s = new Set();\ns.add('hello').add('goodbye').add('hello');\nconsole.assert(s.size === 2);\nconsole.assert(s.has('hello') === true);\n// Maps\nvar m = new Map();\nm.set('hello', 42);\nm.set(s, 34);\nconsole.assert(m.get(s) === 34);\n// Weak Maps\nvar wm = new WeakMap();\nwm.set(s, { extra: 42 });\nconsole.assert(wm.size === undefined);\n// Weak Sets\nvar ws = new WeakSet();\nws.add({ data: 42 });\n// Because the added object has no other references, it will not be held in the set\n});\ntryCatch(function () {\n// Proxying a normal object\nvar target = {};\nvar handler = {\n    get: function (receiver, name) {\n        return `Hello, ${name}!`;\n    }\n};\nvar p = new Proxy(target, handler);\nconsole.assert(p.world === 'Hello, world!');\n});\ntryCatch(function () {\n// Proxying a function object\nvar target = function () { return 'I am the target'; };\nvar handler = {\n    apply: function (receiver, ...args) {\n        return 'I am the proxy';\n    }\n};\nvar p = new Proxy(target, handler);\nconsole.assert(p() === 'I am the proxy');\nconsole.assert(target() === 'I am the target');\n});\ntryCatch(function () {\nvar handler =\n{\n    get: echo,\n    set: echo,\n    has: echo,\n    deleteProperty: echo,\n    apply: echo,\n    construct: echo,\n    getOwnPropertyDescriptor: echo,\n    defineProperty: echo,\n    getPrototypeOf: echo,\n    setPrototypeOf: echo,\n    enumerate: echo,\n    ownKeys: echo,\n    preventExtensions: echo,\n    isExtensible: echo\n}\n});\ntryCatch(function () {\nvar MyClass = (function() {\n    // module scoped symbol\n    var key = Symbol('key');\n    function MyClass(privateData) {\n        this[key] = privateData;\n    }\n    MyClass.prototype = {\n        doStuff: function() {\n            this[key];\n        }\n    };\n    return MyClass;\n})();\nvar c = new MyClass('hello')\nconsole.assert(c.doStuff() === undefined);\nconsole.assert(c.key === undefined);\n});\ntryCatch(function () {\n// Pseudo-code of Array2\nclass Array2 {\n    constructor(...args) { /* ... */ }\n    static [Symbol.create]() {\n        // Install special [[DefineOwnProperty]]\n        // to magically update 'length'\n    }\n}\n// User code of Array2 subclass\nclass MyArray extends Array2 {\n    constructor(...args) { super(...args); }\n}\n// Two-phase 'new':\n// 1) Call @@create to allocate object\n// 2) Invoke constructor on new instance\nvar arr = new MyArray();\narr[1] = 12;\nconsole.assert(arr.length === 2, arr.length);\nconsole.assert(MyArray.undefined() === undefined);\n});\ntryCatch(function () {\nNumber.EPSILON;\nNumber.isInteger(Infinity); // false\nNumber.isNaN('NaN'); // false\nMath.acosh(3); // 1.762747174039086\nMath.hypot(3, 4); // 5\nMath.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2); // 2\n'abcde'.includes('cd'); // true\n'abc'.repeat(3); // 'abcabcabc'\nif (typeof document === 'object' && document) {\n    Array.from(document.querySelectorAll('*')); // Returns a real Array\n}\nArray.of(1, 2, 3); // Similar to new Array(...), but without special one-arg behavior\n[0, 0, 0].fill(7, 1); // [0,7,7]\nconsole.assert([1, 2, 3].find(x => x === 3) === 3); // 3\nconsole.assert([1, 2, 3].findIndex(x => x === 2) === 1); // 1\n[1, 2, 3, 4, 5].copyWithin(3, 0); // [1, 2, 3, 1, 2]\n['a', 'b', 'c'].entries(); // iterator [0, 'a'], [1,'b'], [2,'c']\n['a', 'b', 'c'].keys(); // iterator 0, 1, 2\n//// ['a', 'b', 'c'].values(); // iterator 'a', 'b', 'c'\nvar Point = echo;\nObject.assign(Point, { origin: new Point(0,0) });\n});\ntryCatch(function () {\nconsole.assert(0b111110111 === 503); // true\nconsole.assert(0o767 === 503); // true\n});\ntryCatch(function () {\nfunction timeout(duration = 0) {\n    return new Promise((resolve, reject) => {\n        setTimeout(resolve, duration);\n    })\n}\nvar p = timeout(1000).then(() => {\n    return timeout(2000);\n}).then(() => {\n    throw new Error('hmm');\n}).catch(err => {\n    return Promise.all([timeout(100), timeout(200)]);\n})\n});\ntryCatch(function () {\n// No sample yet\n});\ntryCatch(function () {\nfunction factorial(n, acc = 1) {\n    //// 'use strict';\n    if (n <= 1) return acc;\n    return factorial(n - 1, n * acc);\n}\n// Stack overflow in most implementations today,\n// but safe on arbitrary inputs in ES6\nfactorial(100)\n});\n/* jslint ignore:end */\n    onError(undefined, opt);\n};\n\nlocal.testCase_istanbulCoverageMerge_default = function (opt, onError) {\n/*\n * this function will test istanbulCoverageMerge's default handling-behavior\n */\n    if (local.isBrowser) {\n        onError(undefined, opt);\n        return;\n    }\n    opt = {};\n    opt.data = local.istanbul.instrumentSync(\n        \"(function () {\\nreturn arg \"\n        + \"? __coverage__ \"\n        + \": __coverage__;\\n}());\",\n        \"/test\"\n    );\n    local.arg = 0;\n    // init opt.coverage1\n    opt.coverage1 = require(\"vm\").runInNewContext(opt.data, {\n        arg: 0\n    });\n/* jslint ignore:start */\n// validate opt.coverage1\nlocal.assertJsonEqual(opt.coverage1,\n{\"/test\":{\"b\":{\"1\":[0,1]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":1},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":1,\"2\":1},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n// test merge-create handling-behavior\nopt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);\n// validate opt.coverage1\nlocal.assertJsonEqual(opt.coverage1,\n{\"/test\":{\"b\":{\"1\":[0,1]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":1},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":1,\"2\":1},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n// init opt.coverage2\nopt.coverage2 = require(\"vm\").runInNewContext(opt.data, { arg: 1 });\n// validate opt.coverage2\nlocal.assertJsonEqual(opt.coverage2,\n{\"/test\":{\"b\":{\"1\":[1,0]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":1},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":1,\"2\":1},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n// test merge-update handling-behavior\nlocal.istanbul.coverageMerge(opt.coverage1, opt.coverage2);\n// validate merged opt.coverage1\nlocal.assertJsonEqual(opt.coverage1,\n{\"/test\":{\"b\":{\"1\":[1,1]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":2},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":2,\"2\":2},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n/* jslint ignore:end */\n    onError(undefined, opt);\n};\n\nlocal.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {\n/*\n * this function will test\n * istanbulCoverageReportCreate's default handling-behavior\n */\n    // test null handling-behavior\n    local.istanbul.coverageReportCreate();\n    local.env.npm_config_mode_coverage_merge = \"\";\n    local.testMock([\n        [\n            local.istanbul, {\n                coverageMerge: local.nop\n            }\n        ],\n        // test $npm_config_mode_coverage_merge handling-behavior\n        [\n            local.env, {\n                npm_config_mode_coverage_merge: \"1\"\n            }\n        ]\n    ], function (onError) {\n        // cleanup old coverage\n        if (!local.isBrowser) {\n            local.fsRmrfSync(\"tmp/build/coverage.html/aa\");\n        }\n        // test path handling-behavior\n        [\n            \"/\", local.__dirname\n        ].forEach(function (dir) {\n            [\n                \"zz.js\",\n                \"aa/zz.js\",\n                \"aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js\"\n            ].forEach(function (file) {\n                // cover file\n                eval(local.istanbul.instrumentSync( // jslint ignore:line\n                    // test skip handling-behavior\n                    \"null\",\n                    dir + \"/\" + file\n                ));\n            });\n        });\n        // create report with covered path\n        local.istanbul.coverageReportCreate({\n            coverage: globalThis.__coverage__\n        });\n        // test file-content handling-behavior\n        [\n            // test no content handling-behavior\n            \"\",\n            // test uncovereed-code handling-behavior\n            \"null && null && null\",\n            // test trailing-whitespace handling-behavior\n            \"null \",\n            // test skip handling-behavior\n            \"/* istanbul ignore next */\\nnull && null\"\n        ].forEach(function (content) {\n            // cleanup\n            local.tryCatchOnError(function () {\n                Object.keys(globalThis.__coverage__).forEach(function (file) {\n                    if (file.indexOf(\"zz.js\") >= 0) {\n                        globalThis.__coverage__[file] = null;\n                    }\n                });\n            }, local.nop);\n            // cover path\n            eval( // jslint ignore:line\n                local.istanbul.instrumentSync(content, \"zz.js\")\n            );\n            // create report with covered content\n            local.istanbul.coverageReportCreate({\n                coverage: globalThis.__coverage__\n            });\n        });\n        // cleanup\n        Object.keys(globalThis.__coverage__).forEach(function (file) {\n            if (file.indexOf(\"zz.js\") >= 0) {\n                globalThis.__coverage__[file] = null;\n            }\n        });\n        onError(undefined, opt);\n    }, onError);\n};\n\nlocal.testCase_istanbulInstrumentInPackage_default = function (opt, onError) {\n/*\n * this function will test istanbulInstrumentInPackage's\n * default handling-behavior\n */\n    opt.data = local.istanbul.instrumentInPackage(\"\", \"/test.js\");\n    local.assertJsonEqual(opt.data, \"\");\n    opt.data = local.istanbul.instrumentInPackage(\n        \"/* istanbul instrument in package istanbul */\\n;\",\n        \"/test.js\"\n    );\n    onError(undefined, opt);\n};\n\nlocal.testCase_istanbulInstrumentSync_default = function (opt, onError) {\n/*\n * this function will test istanbulInstrumentSync's default handling-behavior\n */\n    opt = {};\n    opt.data = local.istanbul.instrumentSync(\"1\", \"/test.js\");\n    // validate data\n    local.assertOrThrow(opt.data.indexOf(\".s['1']++;1;\\n\") >= 0, opt);\n    onError(undefined, opt);\n};\n}());\n}());\n","/index.rollup.html":"<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<!-- \"assets.utility2.template.html\" -->\n<title>istanbul-lite (2020.6.9)</title>\n<style>\n/* jslint utility2:true */\n/*csslint\n*/\n/* csslint ignore:start */\n*,\n*:after,\n*:before {\n    box-sizing: border-box;\n}\n.uiAnimateSlide {\n    overflow-y: hidden;\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n}\n/* csslint ignore:end */\n@keyframes uiAnimateSpin {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\na {\n    overflow-wrap: break-word;\n}\nbody {\n    background: #f7f7f7;\n    font-family: Arial, Helvetica, sans-serif;\n    font-size: small;\n    margin: 0 40px;\n}\nbody > div,\nbody > input,\nbody > pre,\nbody > .button,\nbody > .textarea {\n    margin-bottom: 20px;\n    margin-top: 0;\n}\nbody > input,\nbody > .button {\n    width: 20rem;\n}\nbody > .readonly {\n    background: #ddd;\n}\nbody > .textarea {\n    height: 10rem;\n    resize: vertical;\n    width: 100%;\n}\ncode,\npre,\n.textarea {\n    font-family: Consolas, Menlo, monospace;\n    font-size: smaller;\n}\npre {\n    overflow-wrap: break-word;\n    white-space: pre-wrap;\n}\n.button {\n    background: #ddd;\n    border: 1px solid #999;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 2px 5px;\n    text-align: center;\n    text-decoration: none;\n}\n.button:hover {\n    background: #bbb;\n}\n.colorError {\n    color: #d00;\n}\n.textarea {\n    background: #fff;\n    border: 1px solid #999;\n    border-radius: 0;\n    cursor: auto;\n    overflow: auto;\n    padding: 2px;\n}\n.zeroPixel {\n    border: 0;\n    height: 0;\n    margin: 0;\n    padding: 0;\n    width: 0;\n}\n</style>\n</head>\n<body>\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\n<script>\n/* jslint utility2:true */\n// init domOnEventWindowOnloadTimeElapsed\n(function () {\n/*\n * this function will measure and print time-elapsed for window.onload\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\n        return;\n    }\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n    window.addEventListener(\"load\", function () {\n        setTimeout(function () {\n            window.domOnEventWindowOnloadTimeElapsed = (\n                Date.now()\n                - window.domOnEventWindowOnloadTimeElapsed\n            );\n            console.error(\n                \"domOnEventWindowOnloadTimeElapsed = \"\n                + window.domOnEventWindowOnloadTimeElapsed\n            );\n        }, 100);\n    });\n}());\n\n\n// init domOnEventAjaxProgressUpdate\n(function () {\n/*\n * this function will display incrementing ajax-progress-bar\n */\n    \"use strict\";\n    let opt;\n    let styleBar0;\n    let styleBar;\n    let styleModal0;\n    let styleModal;\n    let timeStart;\n    let timerInterval;\n    let timerTimeout;\n    let tmp;\n    let width;\n    try {\n        if (\n            window.domOnEventAjaxProgressUpdate\n            || !document.getElementById(\"domElementAjaxProgressBar1\").style\n        ) {\n            return;\n        }\n    } catch (ignore) {\n        return;\n    }\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n        gotoState = (gotoState | 0) + 1;\n        switch (gotoState) {\n        // ajaxProgress - show\n        case 1:\n            // init timerInterval and timerTimeout\n            if (!timerTimeout) {\n                timeStart = Date.now();\n                timerInterval = setInterval(opt, 2000, 1, onError);\n                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\n            }\n            // show ajaxProgressBar\n            if (width !== -1) {\n                styleBar.background = styleBar0.background;\n            }\n            setTimeout(opt, 50, gotoState, onError);\n            break;\n        // ajaxProgress - increment\n        case 2:\n            // show ajaxProgressBar\n            if (width === -1) {\n                break;\n            }\n            styleBar.background = styleBar0.background;\n            // reset ajaxProgress if it reaches end\n            if ((styleBar.width.slice(0, -1) | 0) > 95) {\n                width = 0;\n            }\n            // this algorithm will indefinitely increment ajaxProgress\n            // with successively smaller increments without reaching 100%\n            width += 1;\n            styleBar.width = Math.max(\n                100 - 75 * Math.exp(-0.125 * width),\n                styleBar.width.slice(0, -1) | 0\n            ) + \"%\";\n            // show ajaxProgressModal\n            styleModal.height = \"100%\";\n            styleModal.opacity = styleModal0.opacity;\n            if (!opt.cnt) {\n                setTimeout(opt, 0, gotoState, onError);\n            }\n            break;\n        // ajaxProgress - 100%\n        case 3:\n            width = -1;\n            styleBar.width = \"100%\";\n            setTimeout(opt, 1000, gotoState, onError);\n            break;\n        // ajaxProgress - hide\n        case 4:\n            // debug timeElapsed\n            tmp = Date.now();\n            console.error(\n                \"domOnEventAjaxProgressUpdate - timeElapsed - \"\n                + (tmp - timeStart)\n                + \" ms\"\n            );\n            // cleanup timerInterval and timerTimeout\n            timeStart = tmp;\n            clearInterval(timerInterval);\n            timerInterval = undefined;\n            clearTimeout(timerTimeout);\n            timerTimeout = undefined;\n            // hide ajaxProgressBar\n            styleBar.background = \"transparent\";\n            // hide ajaxProgressModal\n            styleModal.opacity = \"0\";\n            if (onError) {\n                onError();\n            }\n            setTimeout(opt, 250, gotoState);\n            break;\n        // ajaxProgress - reset\n        default:\n            opt.cnt = 0;\n            width = 0;\n            styleBar.width = \"0%\";\n            styleModal.height = \"0\";\n        }\n    };\n    opt = window.domOnEventAjaxProgressUpdate;\n    opt.end = function (onError) {\n        opt.cnt = 0;\n        window.domOnEventAjaxProgressUpdate(2, onError);\n    };\n    // init styleBar\n    styleBar = document.getElementById(\"domElementAjaxProgressBar1\").style;\n    styleBar0 = Object.assign({}, styleBar);\n    Object.entries({\n        background: \"#d00\",\n        height: \"2px\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"background 250ms, width 750ms\",\n        width: \"0%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\n    });\n    // init styleModal\n    styleModal = document.getElementById(\"domElementAjaxProgressModal1\") || {};\n    styleModal = styleModal.style || {};\n    styleModal0 = Object.assign({}, styleModal);\n    Object.entries({\n        height: \"0\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"opacity 125ms\",\n        width: \"100%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\n    });\n    // init state\n    width = 0;\n    opt.cnt = 0;\n    opt.timeout = 30000;\n    // init ajaxProgress\n    window.domOnEventAjaxProgressUpdate();\n}());\n\n\n// init domOnEventDelegateDict\n(function () {\n/*\n * this function will handle delegated dom-evt\n */\n    \"use strict\";\n    let debounce;\n    let timerTimeout;\n    debounce = function () {\n        return setTimeout(function () {\n            timerTimeout = undefined;\n        }, 30);\n    };\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventDelegateDict) {\n        return;\n    }\n    window.domOnEventDelegateDict = {};\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\n        if (\n            !evt.targetOnEvent\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\n            || evt.target.closest(\".disabled,.readonly\")\n        ) {\n            return;\n        }\n        // filter evt-change\n        switch (evt.type !== \"change\" && evt.target.type) {\n        case \"checkbox\":\n        case \"file\":\n        case \"select-one\":\n        case \"radio\":\n            return;\n        }\n        // filter evt-keyup\n        switch (evt.type) {\n        case \"keyup\":\n            if (!timerTimeout && (\n                evt.target.tagName === \"INPUT\"\n                || evt.target.tagName === \"TEXTAREA\"\n            )) {\n                timerTimeout = debounce();\n                if (evt.target.dataset.valueOld !== evt.target.value) {\n                    evt.target.dataset.valueOld = evt.target.value;\n                    break;\n                }\n            }\n            return;\n        }\n        switch (evt.targetOnEvent.tagName) {\n        case \"BUTTON\":\n        case \"FORM\":\n            evt.preventDefault();\n            break;\n        }\n        evt.stopPropagation();\n        // handle domOnEventClickTarget\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\n            document.querySelector(\n                evt.targetOnEvent.dataset.clickTarget\n            ).click();\n            return;\n        }\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n    };\n    // handle evt\n    [\n        \"change\",\n        \"click\",\n        \"keyup\",\n        \"submit\"\n    ].forEach(function (eventType) {\n        document.addEventListener(\n            eventType,\n            window.domOnEventDelegateDict.domOnEventDelegate\n        );\n    });\n}());\n\n\n// init domOnEventSelectAllWithinPre\n(function () {\n/*\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventSelectAllWithinPre) {\n        return;\n    }\n    window.domOnEventSelectAllWithinPre = function (evt) {\n        let range;\n        let selection;\n        if (\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\n            && evt.target.closest(\"pre\")\n        ) {\n            range = document.createRange();\n            range.selectNodeContents(evt.target.closest(\"pre\"));\n            selection = window.getSelection();\n            selection.removeAllRanges();\n            selection.addRange(range);\n            evt.preventDefault();\n        }\n    };\n    // handle evt\n    document.addEventListener(\n        \"keydown\",\n        window.domOnEventSelectAllWithinPre\n    );\n}());\n</script>\n<h1>\n\n<a\n    \n    href=\"https://github.com/kaizhu256/node-istanbul-lite\"\n    \n    target=\"_blank\"\n>\n\n    istanbul-lite (2020.6.9)\n\n</a>\n\n</h1>\n<h3>this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo</h3>\n\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\n\n\n\n<!-- custom-html-start -->\n<label>edit or paste script below to instrument and cover</label>\n<textarea class=\"textarea\" data-onevent=\"domOnEventInputChange\" id=\"inputTextarea1\">\nif (true) {\n    console.log(\"hello\");\n} else {\n    console.log(\"bye\");\n}\nlet fibonacci = {\n    [Symbol.iterator]() {\n        let pre = 0, cur = 1;\n        return {\n            next() {\n                [pre, cur] = [cur, pre + cur];\n                return { done: false, value: cur }\n            }\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n</textarea>\n<label>instrumented-code</label>\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputTextarea1\" readonly></textarea>\n<label>stderr and stdout</label>\n<textarea class=\"readonly textarea\" id=\"outputStdout1\" readonly></textarea>\n<div id=\"htmlCoverageReport1\"></div>\n<script>\n/* jslint utility2:true */\nwindow.addEventListener(\"load\", function () {\n\"use strict\";\nlet local;\nlocal = window.utility2_istanbul;\nlocal.domOnEventInputChange = function (evt) {\n    switch (evt.type + \".\" + evt.target.id) {\n    case \"keyup.inputTextarea1\":\n        // try to cleanup __coverage__\n        try {\n            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\n        } catch (ignore) {}\n        // try to cover and eval #inputTextarea1\n        try {\n            document.querySelector(\n                \"#outputTextarea1\"\n            ).textContent = local.istanbul.instrumentSync(\n                document.querySelector(\"#inputTextarea1\").value,\n                \"/inputTextarea1.js\"\n            );\n            eval( // jslint ignore:line\n                document.querySelector(\"#outputTextarea1\").value\n            );\n            document.querySelector(\n                \"#htmlCoverageReport1\"\n            ).innerHTML = local.istanbul.coverageReportCreate({\n                coverage: globalThis.__coverage__\n            });\n        } catch (errCaught) {\n            console.error(errCaught);\n        }\n        break;\n    }\n};\n// handle evt\nlocal.domOnEventInputChange({\n    target: {\n        id: \"inputTextarea1\"\n    },\n    type: \"keyup\"\n});\n});\n</script>\n<!-- custom-html-end -->\n\n\n\n\n<script src=\"assets.app.js\"></script>\n\n\n<div style=\"text-align: center;\">\n    [\n    this app was created with\n    <a\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\n    >utility2</a>\n    ]\n</div>\n</body>\n</html>\n"},"env":{"NODE_ENV":"test","npm_package_description":"this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo","npm_package_homepage":"https://github.com/kaizhu256/node-istanbul-lite","npm_package_name":"istanbul-lite","npm_package_nameLib":"istanbul","npm_package_version":"2020.6.9"},"init":"(function (state) {\nlet utility2 = globalThis.utility2;\nutility2.assetsDict = utility2.assetsDict || {};\nutility2.env = utility2.env || {};\nObject.assign(utility2.assetsDict, state.assetsDict);\nObject.assign(utility2.env, state.env);\n}({}));\n"}
+{"assetsDict":{"/assets.example.html":"<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<!-- \"assets.utility2.template.html\" -->\n<title>istanbul-lite (0.0.1)</title>\n<style>\n/* jslint utility2:true */\n/*csslint\n*/\n/* csslint ignore:start */\n*,\n*:after,\n*:before {\n    box-sizing: border-box;\n}\n.uiAnimateSlide {\n    overflow-y: hidden;\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n}\n/* csslint ignore:end */\n@keyframes uiAnimateSpin {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\na {\n    overflow-wrap: break-word;\n}\nbody {\n    background: #f7f7f7;\n    font-family: Arial, Helvetica, sans-serif;\n    font-size: small;\n    margin: 0 40px;\n}\nbody > div,\nbody > input,\nbody > pre,\nbody > .button,\nbody > .textarea {\n    margin-bottom: 20px;\n    margin-top: 0;\n}\nbody > input,\nbody > .button {\n    width: 20rem;\n}\nbody > .readonly {\n    background: #ddd;\n}\nbody > .textarea {\n    height: 10rem;\n    resize: vertical;\n    width: 100%;\n}\ncode,\npre,\n.textarea {\n    font-family: Consolas, Menlo, monospace;\n    font-size: smaller;\n}\npre {\n    overflow-wrap: break-word;\n    white-space: pre-wrap;\n}\n.button {\n    background: #ddd;\n    border: 1px solid #999;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 2px 5px;\n    text-align: center;\n    text-decoration: none;\n}\n.button:hover {\n    background: #bbb;\n}\n.colorError {\n    color: #d00;\n}\n.textarea {\n    background: #fff;\n    border: 1px solid #999;\n    border-radius: 0;\n    cursor: auto;\n    overflow: auto;\n    padding: 2px;\n}\n.zeroPixel {\n    border: 0;\n    height: 0;\n    margin: 0;\n    padding: 0;\n    width: 0;\n}\n</style>\n</head>\n<body>\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\n<script>\n/* jslint utility2:true */\n// init domOnEventWindowOnloadTimeElapsed\n(function () {\n/*\n * this function will measure and print time-elapsed for window.onload\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\n        return;\n    }\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n    window.addEventListener(\"load\", function () {\n        setTimeout(function () {\n            window.domOnEventWindowOnloadTimeElapsed = (\n                Date.now()\n                - window.domOnEventWindowOnloadTimeElapsed\n            );\n            console.error(\n                \"domOnEventWindowOnloadTimeElapsed = \"\n                + window.domOnEventWindowOnloadTimeElapsed\n            );\n        }, 100);\n    });\n}());\n\n\n// init domOnEventAjaxProgressUpdate\n(function () {\n/*\n * this function will display incrementing ajax-progress-bar\n */\n    \"use strict\";\n    let opt;\n    let styleBar0;\n    let styleBar;\n    let styleModal0;\n    let styleModal;\n    let timeStart;\n    let timerInterval;\n    let timerTimeout;\n    let tmp;\n    let width;\n    try {\n        if (\n            window.domOnEventAjaxProgressUpdate\n            || !document.getElementById(\"domElementAjaxProgressBar1\").style\n        ) {\n            return;\n        }\n    } catch (ignore) {\n        return;\n    }\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n        gotoState = (gotoState | 0) + 1;\n        switch (gotoState) {\n        // ajaxProgress - show\n        case 1:\n            // init timerInterval and timerTimeout\n            if (!timerTimeout) {\n                timeStart = Date.now();\n                timerInterval = setInterval(opt, 2000, 1, onError);\n                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\n            }\n            // show ajaxProgressBar\n            if (width !== -1) {\n                styleBar.background = styleBar0.background;\n            }\n            setTimeout(opt, 50, gotoState, onError);\n            break;\n        // ajaxProgress - increment\n        case 2:\n            // show ajaxProgressBar\n            if (width === -1) {\n                break;\n            }\n            styleBar.background = styleBar0.background;\n            // reset ajaxProgress if it reaches end\n            if ((styleBar.width.slice(0, -1) | 0) > 95) {\n                width = 0;\n            }\n            // this algorithm will indefinitely increment ajaxProgress\n            // with successively smaller increments without reaching 100%\n            width += 1;\n            styleBar.width = Math.max(\n                100 - 75 * Math.exp(-0.125 * width),\n                styleBar.width.slice(0, -1) | 0\n            ) + \"%\";\n            // show ajaxProgressModal\n            styleModal.height = \"100%\";\n            styleModal.opacity = styleModal0.opacity;\n            if (!opt.cnt) {\n                setTimeout(opt, 0, gotoState, onError);\n            }\n            break;\n        // ajaxProgress - 100%\n        case 3:\n            width = -1;\n            styleBar.width = \"100%\";\n            setTimeout(opt, 1000, gotoState, onError);\n            break;\n        // ajaxProgress - hide\n        case 4:\n            // debug timeElapsed\n            tmp = Date.now();\n            console.error(\n                \"domOnEventAjaxProgressUpdate - timeElapsed - \"\n                + (tmp - timeStart)\n                + \" ms\"\n            );\n            // cleanup timerInterval and timerTimeout\n            timeStart = tmp;\n            clearInterval(timerInterval);\n            timerInterval = undefined;\n            clearTimeout(timerTimeout);\n            timerTimeout = undefined;\n            // hide ajaxProgressBar\n            styleBar.background = \"transparent\";\n            // hide ajaxProgressModal\n            styleModal.opacity = \"0\";\n            if (onError) {\n                onError();\n            }\n            setTimeout(opt, 250, gotoState);\n            break;\n        // ajaxProgress - reset\n        default:\n            opt.cnt = 0;\n            width = 0;\n            styleBar.width = \"0%\";\n            styleModal.height = \"0\";\n        }\n    };\n    opt = window.domOnEventAjaxProgressUpdate;\n    opt.end = function (onError) {\n        opt.cnt = 0;\n        window.domOnEventAjaxProgressUpdate(2, onError);\n    };\n    // init styleBar\n    styleBar = document.getElementById(\"domElementAjaxProgressBar1\").style;\n    styleBar0 = Object.assign({}, styleBar);\n    Object.entries({\n        background: \"#d00\",\n        height: \"2px\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"background 250ms, width 750ms\",\n        width: \"0%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\n    });\n    // init styleModal\n    styleModal = document.getElementById(\"domElementAjaxProgressModal1\") || {};\n    styleModal = styleModal.style || {};\n    styleModal0 = Object.assign({}, styleModal);\n    Object.entries({\n        height: \"0\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"opacity 125ms\",\n        width: \"100%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\n    });\n    // init state\n    width = 0;\n    opt.cnt = 0;\n    opt.timeout = 30000;\n    // init ajaxProgress\n    window.domOnEventAjaxProgressUpdate();\n}());\n\n\n// init domOnEventDelegateDict\n(function () {\n/*\n * this function will handle delegated dom-evt\n */\n    \"use strict\";\n    let debounce;\n    let timerTimeout;\n    debounce = function () {\n        return setTimeout(function () {\n            timerTimeout = undefined;\n        }, 30);\n    };\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventDelegateDict) {\n        return;\n    }\n    window.domOnEventDelegateDict = {};\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\n        if (\n            !evt.targetOnEvent\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\n            || evt.target.closest(\".disabled,.readonly\")\n        ) {\n            return;\n        }\n        // filter evt-change\n        switch (evt.type !== \"change\" && evt.target.type) {\n        case \"checkbox\":\n        case \"file\":\n        case \"select-one\":\n        case \"radio\":\n            return;\n        }\n        // filter evt-keyup\n        switch (evt.type) {\n        case \"keyup\":\n            if (!timerTimeout && (\n                evt.target.tagName === \"INPUT\"\n                || evt.target.tagName === \"TEXTAREA\"\n            )) {\n                timerTimeout = debounce();\n                if (evt.target.dataset.valueOld !== evt.target.value) {\n                    evt.target.dataset.valueOld = evt.target.value;\n                    break;\n                }\n            }\n            return;\n        }\n        switch (evt.targetOnEvent.tagName) {\n        case \"BUTTON\":\n        case \"FORM\":\n            evt.preventDefault();\n            break;\n        }\n        evt.stopPropagation();\n        // handle domOnEventClickTarget\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\n            document.querySelector(\n                evt.targetOnEvent.dataset.clickTarget\n            ).click();\n            return;\n        }\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n    };\n    // handle evt\n    [\n        \"change\",\n        \"click\",\n        \"keyup\",\n        \"submit\"\n    ].forEach(function (eventType) {\n        document.addEventListener(\n            eventType,\n            window.domOnEventDelegateDict.domOnEventDelegate\n        );\n    });\n}());\n\n\n// init domOnEventSelectAllWithinPre\n(function () {\n/*\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventSelectAllWithinPre) {\n        return;\n    }\n    window.domOnEventSelectAllWithinPre = function (evt) {\n        let range;\n        let selection;\n        if (\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\n            && evt.target.closest(\"pre\")\n        ) {\n            range = document.createRange();\n            range.selectNodeContents(evt.target.closest(\"pre\"));\n            selection = window.getSelection();\n            selection.removeAllRanges();\n            selection.addRange(range);\n            evt.preventDefault();\n        }\n    };\n    // handle evt\n    document.addEventListener(\n        \"keydown\",\n        window.domOnEventSelectAllWithinPre\n    );\n}());\n</script>\n<h1>\n<!-- utility2-comment\n<a\n    {{#if env.npm_package_homepage}}\n    href=\"{{env.npm_package_homepage}}\"\n    {{/if env.npm_package_homepage}}\n    target=\"_blank\"\n>\nutility2-comment -->\n    istanbul-lite (0.0.1)\n<!-- utility2-comment\n</a>\nutility2-comment -->\n</h1>\n<h3>the greatest app in the world!</h3>\n<!-- utility2-comment\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\nutility2-comment -->\n\n\n<!-- custom-html-start -->\n<label>edit or paste script below to instrument and cover</label>\n<textarea class=\"textarea\" data-onevent=\"domOnEventInputChange\" id=\"inputTextarea1\">\nif (true) {\n    console.log(\"hello\");\n} else {\n    console.log(\"bye\");\n}\nlet fibonacci = {\n    [Symbol.iterator]() {\n        let pre = 0, cur = 1;\n        return {\n            next() {\n                [pre, cur] = [cur, pre + cur];\n                return { done: false, value: cur }\n            }\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n</textarea>\n<label>instrumented-code</label>\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputTextarea1\" readonly></textarea>\n<label>stderr and stdout</label>\n<textarea class=\"readonly textarea\" id=\"outputStdout1\" readonly></textarea>\n<div id=\"htmlCoverageReport1\"></div>\n<script>\n/* jslint utility2:true */\nwindow.addEventListener(\"load\", function () {\n\"use strict\";\nlet local;\nlocal = window.utility2_istanbul;\nlocal.domOnEventInputChange = function (evt) {\n    switch (evt.type + \".\" + evt.target.id) {\n    case \"keyup.inputTextarea1\":\n        // try to cleanup __coverage__\n        try {\n            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\n        } catch (ignore) {}\n        // try to cover and eval #inputTextarea1\n        try {\n            document.querySelector(\n                \"#outputTextarea1\"\n            ).textContent = local.istanbul.instrumentSync(\n                document.querySelector(\"#inputTextarea1\").value,\n                \"/inputTextarea1.js\"\n            );\n            eval( // jslint ignore:line\n                document.querySelector(\"#outputTextarea1\").value\n            );\n            document.querySelector(\n                \"#htmlCoverageReport1\"\n            ).innerHTML = local.istanbul.coverageReportCreate({\n                coverage: globalThis.__coverage__\n            });\n        } catch (errCaught) {\n            console.error(errCaught);\n        }\n        break;\n    }\n};\n// handle evt\nlocal.domOnEventInputChange({\n    target: {\n        id: \"inputTextarea1\"\n    },\n    type: \"keyup\"\n});\n});\n</script>\n<!-- custom-html-end -->\n\n\n<!-- utility2-comment\n{{#if isRollup}}\n<script src=\"assets.app.js\"></script>\n{{#unless isRollup}}\n<script src=\"assets.utility2.rollup.js\"></script>\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\n<script src=\"utility2.state.init.js\"></script>\nutility2-comment -->\n<script src=\"assets.istanbul.js\"></script>\n<script src=\"assets.example.js\"></script>\n<script src=\"assets.test.js\"></script>\n<script>\nif (window.utility2_onReadyBefore) {\n    window.utility2_onReadyBefore();\n}\n</script>\n<!-- utility2-comment\n{{/if isRollup}}\nutility2-comment -->\n<div style=\"text-align: center;\">\n    [\n    this app was created with\n    <a\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\n    >utility2</a>\n    ]\n</div>\n</body>\n</html>\n","/assets.example.js":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\nexample.js\n\nthis script will run web-demo of istanbul-lite\n\ninstruction\n    1. save this script as example.js\n    2. run shell-command:\n        $ npm install istanbul-lite && \\\n            PORT=8081 node example.js\n    3. open browser to http://127.0.0.1:8081 and play with web-demo\n    4. edit this script to suit your needs\n*/\n\n\n/* istanbul instrument in package istanbul */\n// assets.utility2.header.js - start\n/* jslint utility2:true */\n/* istanbul ignore next */\n// run shared js-env code - init-local\n(function () {\n    \"use strict\";\n    let consoleError;\n    let local;\n    // init debugInline\n    if (!globalThis.debugInline) {\n        consoleError = console.error;\n        globalThis.debugInline = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\ndebugInline\");\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScripts === \"function\"\n    );\n    // init function\n    local.assertJsonEqual = function (aa, bb) {\n    /*\n     * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n     */\n        let objectDeepCopyWithKeysSorted;\n        objectDeepCopyWithKeysSorted = function (obj) {\n        /*\n         * this function will recursively deep-copy <obj> with keys sorted\n         */\n            let sorted;\n            if (typeof obj !== \"object\" || !obj) {\n                return obj;\n            }\n            // recursively deep-copy list with child-keys sorted\n            if (Array.isArray(obj)) {\n                return obj.map(objectDeepCopyWithKeysSorted);\n            }\n            // recursively deep-copy obj with keys sorted\n            sorted = {};\n            Object.keys(obj).sort().forEach(function (key) {\n                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n            });\n            return sorted;\n        };\n        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n        if (aa !== bb) {\n            throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n        }\n    };\n    local.assertOrThrow = function (passed, msg) {\n    /*\n     * this function will throw <msg> if <passed> is falsy\n     */\n        if (passed) {\n            return;\n        }\n        throw (\n            (\n                msg\n                && typeof msg.message === \"string\"\n                && typeof msg.stack === \"string\"\n            )\n            // if msg is err, then leave as is\n            ? msg\n            : new Error(\n                typeof msg === \"string\"\n                // if msg is string, then leave as is\n                ? msg\n                // else JSON.stringify(msg)\n                : JSON.stringify(msg, undefined, 4)\n            )\n        );\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== undefined && arg !== null && arg !== \"\") {\n                return arg;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n    /*\n     * this function will if items from <tgt> are null, undefined, or \"\",\n     * then overwrite them with items from <src>\n     */\n        let recurse;\n        recurse = function (tgt, src, depth) {\n            Object.entries(src).forEach(function ([\n                key, bb\n            ]) {\n                let aa;\n                aa = tgt[key];\n                if (aa === undefined || aa === null || aa === \"\") {\n                    tgt[key] = bb;\n                    return;\n                }\n                if (\n                    depth !== 0\n                    && typeof aa === \"object\" && aa && !Array.isArray(aa)\n                    && typeof bb === \"object\" && bb && !Array.isArray(bb)\n                ) {\n                    recurse(aa, bb, depth - 1);\n                }\n            });\n        };\n        recurse(tgt, src, depth | 0);\n        return tgt;\n    };\n    local.onErrorThrow = function (err) {\n    /*\n     * this function will throw <err> if exists\n     */\n        if (err) {\n            throw err;\n        }\n    };\n    // bug-workaround - throw unhandledRejections in node-process\n    if (\n        typeof process === \"object\" && process\n        && typeof process.on === \"function\"\n        && process.unhandledRejections !== \"strict\"\n    ) {\n        process.unhandledRejections = \"strict\";\n        process.on(\"unhandledRejection\", function (err) {\n            throw err;\n        });\n    }\n}());\n// assets.utility2.header.js - end\n\n\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = (\n    globalThis.utility2_rollup\n    || globalThis.utility2_istanbul\n    || globalThis.utility2_moduleExports\n);\n// init exports\nglobalThis.local = local;\n}());\n\n\n/* istanbul ignore next */\n// run browser js-env code - init-test\n(function () {\nif (!local.isBrowser) {\n    return;\n}\n// log stderr and stdout to #outputStdout1\n[\"error\", \"log\"].forEach(function (key) {\n    let elem;\n    let fnc;\n    elem = document.querySelector(\"#outputStdout1\");\n    if (!elem) {\n        return;\n    }\n    fnc = console[key];\n    console[key] = function (...argList) {\n        fnc(...argList);\n        // append text to #outputStdout1\n        elem.textContent += argList.map(function (arg) {\n            return (\n                typeof arg === \"string\"\n                ? arg\n                : JSON.stringify(arg, undefined, 4)\n            );\n        }).join(\" \").replace((\n            /\\u001b\\[\\d*m/g\n        ), \"\") + \"\\n\";\n        // scroll textarea to bottom\n        elem.scrollTop = elem.scrollHeight;\n    };\n});\nlocal.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\nglobalThis.domOnEventDelegateDict = local;\n}());\n\n\n/* istanbul ignore next */\n// run node js-env code - init-test\n(function () {\nif (local.isBrowser) {\n    return;\n}\n// init exports\nmodule.exports = local;\n// init assetsDict\nlocal.assetsDict = local.assetsDict || {};\n/* jslint ignore:start */\nlocal.assetsDict[\"/assets.index.template.html\"] = '\\\n<!doctype html>\\n\\\n<html lang=\"en\">\\n\\\n<head>\\n\\\n<meta charset=\"utf-8\">\\n\\\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\\n\\\n<!-- \"assets.utility2.template.html\" -->\\n\\\n<title>{{env.npm_package_name}} ({{env.npm_package_version}})</title>\\n\\\n<style>\\n\\\n/* jslint utility2:true */\\n\\\n/*csslint\\n\\\n*/\\n\\\n/* csslint ignore:start */\\n\\\n*,\\n\\\n*:after,\\n\\\n*:before {\\n\\\n    box-sizing: border-box;\\n\\\n}\\n\\\n.uiAnimateSlide {\\n\\\n    overflow-y: hidden;\\n\\\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\\n\\\n}\\n\\\n/* csslint ignore:end */\\n\\\n@keyframes uiAnimateSpin {\\n\\\n0% {\\n\\\n    transform: rotate(0deg);\\n\\\n}\\n\\\n100% {\\n\\\n    transform: rotate(360deg);\\n\\\n}\\n\\\n}\\n\\\na {\\n\\\n    overflow-wrap: break-word;\\n\\\n}\\n\\\nbody {\\n\\\n    background: #f7f7f7;\\n\\\n    font-family: Arial, Helvetica, sans-serif;\\n\\\n    font-size: small;\\n\\\n    margin: 0 40px;\\n\\\n}\\n\\\nbody > div,\\n\\\nbody > input,\\n\\\nbody > pre,\\n\\\nbody > .button,\\n\\\nbody > .textarea {\\n\\\n    margin-bottom: 20px;\\n\\\n    margin-top: 0;\\n\\\n}\\n\\\nbody > input,\\n\\\nbody > .button {\\n\\\n    width: 20rem;\\n\\\n}\\n\\\nbody > .readonly {\\n\\\n    background: #ddd;\\n\\\n}\\n\\\nbody > .textarea {\\n\\\n    height: 10rem;\\n\\\n    resize: vertical;\\n\\\n    width: 100%;\\n\\\n}\\n\\\ncode,\\n\\\npre,\\n\\\n.textarea {\\n\\\n    font-family: Consolas, Menlo, monospace;\\n\\\n    font-size: smaller;\\n\\\n}\\n\\\npre {\\n\\\n    overflow-wrap: break-word;\\n\\\n    white-space: pre-wrap;\\n\\\n}\\n\\\n.button {\\n\\\n    background: #ddd;\\n\\\n    border: 1px solid #999;\\n\\\n    color: #000;\\n\\\n    cursor: pointer;\\n\\\n    display: inline-block;\\n\\\n    padding: 2px 5px;\\n\\\n    text-align: center;\\n\\\n    text-decoration: none;\\n\\\n}\\n\\\n.button:hover {\\n\\\n    background: #bbb;\\n\\\n}\\n\\\n.colorError {\\n\\\n    color: #d00;\\n\\\n}\\n\\\n.textarea {\\n\\\n    background: #fff;\\n\\\n    border: 1px solid #999;\\n\\\n    border-radius: 0;\\n\\\n    cursor: auto;\\n\\\n    overflow: auto;\\n\\\n    padding: 2px;\\n\\\n}\\n\\\n.zeroPixel {\\n\\\n    border: 0;\\n\\\n    height: 0;\\n\\\n    margin: 0;\\n\\\n    padding: 0;\\n\\\n    width: 0;\\n\\\n}\\n\\\n</style>\\n\\\n</head>\\n\\\n<body>\\n\\\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\\n\\\n<script>\\n\\\n/* jslint utility2:true */\\n\\\n// init domOnEventWindowOnloadTimeElapsed\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will measure and print time-elapsed for window.onload\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\\n\\\n    window.addEventListener(\"load\", function () {\\n\\\n        setTimeout(function () {\\n\\\n            window.domOnEventWindowOnloadTimeElapsed = (\\n\\\n                Date.now()\\n\\\n                - window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n            console.error(\\n\\\n                \"domOnEventWindowOnloadTimeElapsed = \"\\n\\\n                + window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n        }, 100);\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n// init domOnEventAjaxProgressUpdate\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will display incrementing ajax-progress-bar\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let opt;\\n\\\n    let styleBar0;\\n\\\n    let styleBar;\\n\\\n    let styleModal0;\\n\\\n    let styleModal;\\n\\\n    let timeStart;\\n\\\n    let timerInterval;\\n\\\n    let timerTimeout;\\n\\\n    let tmp;\\n\\\n    let width;\\n\\\n    try {\\n\\\n        if (\\n\\\n            window.domOnEventAjaxProgressUpdate\\n\\\n            || !document.getElementById(\"domElementAjaxProgressBar1\").style\\n\\\n        ) {\\n\\\n            return;\\n\\\n        }\\n\\\n    } catch (ignore) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\\n\\\n        gotoState = (gotoState | 0) + 1;\\n\\\n        switch (gotoState) {\\n\\\n        // ajaxProgress - show\\n\\\n        case 1:\\n\\\n            // init timerInterval and timerTimeout\\n\\\n            if (!timerTimeout) {\\n\\\n                timeStart = Date.now();\\n\\\n                timerInterval = setInterval(opt, 2000, 1, onError);\\n\\\n                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\\n\\\n            }\\n\\\n            // show ajaxProgressBar\\n\\\n            if (width !== -1) {\\n\\\n                styleBar.background = styleBar0.background;\\n\\\n            }\\n\\\n            setTimeout(opt, 50, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - increment\\n\\\n        case 2:\\n\\\n            // show ajaxProgressBar\\n\\\n            if (width === -1) {\\n\\\n                break;\\n\\\n            }\\n\\\n            styleBar.background = styleBar0.background;\\n\\\n            // reset ajaxProgress if it reaches end\\n\\\n            if ((styleBar.width.slice(0, -1) | 0) > 95) {\\n\\\n                width = 0;\\n\\\n            }\\n\\\n            // this algorithm will indefinitely increment ajaxProgress\\n\\\n            // with successively smaller increments without reaching 100%\\n\\\n            width += 1;\\n\\\n            styleBar.width = Math.max(\\n\\\n                100 - 75 * Math.exp(-0.125 * width),\\n\\\n                styleBar.width.slice(0, -1) | 0\\n\\\n            ) + \"%\";\\n\\\n            // show ajaxProgressModal\\n\\\n            styleModal.height = \"100%\";\\n\\\n            styleModal.opacity = styleModal0.opacity;\\n\\\n            if (!opt.cnt) {\\n\\\n                setTimeout(opt, 0, gotoState, onError);\\n\\\n            }\\n\\\n            break;\\n\\\n        // ajaxProgress - 100%\\n\\\n        case 3:\\n\\\n            width = -1;\\n\\\n            styleBar.width = \"100%\";\\n\\\n            setTimeout(opt, 1000, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - hide\\n\\\n        case 4:\\n\\\n            // debug timeElapsed\\n\\\n            tmp = Date.now();\\n\\\n            console.error(\\n\\\n                \"domOnEventAjaxProgressUpdate - timeElapsed - \"\\n\\\n                + (tmp - timeStart)\\n\\\n                + \" ms\"\\n\\\n            );\\n\\\n            // cleanup timerInterval and timerTimeout\\n\\\n            timeStart = tmp;\\n\\\n            clearInterval(timerInterval);\\n\\\n            timerInterval = undefined;\\n\\\n            clearTimeout(timerTimeout);\\n\\\n            timerTimeout = undefined;\\n\\\n            // hide ajaxProgressBar\\n\\\n            styleBar.background = \"transparent\";\\n\\\n            // hide ajaxProgressModal\\n\\\n            styleModal.opacity = \"0\";\\n\\\n            if (onError) {\\n\\\n                onError();\\n\\\n            }\\n\\\n            setTimeout(opt, 250, gotoState);\\n\\\n            break;\\n\\\n        // ajaxProgress - reset\\n\\\n        default:\\n\\\n            opt.cnt = 0;\\n\\\n            width = 0;\\n\\\n            styleBar.width = \"0%\";\\n\\\n            styleModal.height = \"0\";\\n\\\n        }\\n\\\n    };\\n\\\n    opt = window.domOnEventAjaxProgressUpdate;\\n\\\n    opt.end = function (onError) {\\n\\\n        opt.cnt = 0;\\n\\\n        window.domOnEventAjaxProgressUpdate(2, onError);\\n\\\n    };\\n\\\n    // init styleBar\\n\\\n    styleBar = document.getElementById(\"domElementAjaxProgressBar1\").style;\\n\\\n    styleBar0 = Object.assign({}, styleBar);\\n\\\n    Object.entries({\\n\\\n        background: \"#d00\",\\n\\\n        height: \"2px\",\\n\\\n        left: \"0\",\\n\\\n        margin: \"0\",\\n\\\n        padding: \"0\",\\n\\\n        position: \"fixed\",\\n\\\n        top: \"0\",\\n\\\n        transition: \"background 250ms, width 750ms\",\\n\\\n        width: \"0%\",\\n\\\n        \"z-index\": \"1\"\\n\\\n    }).forEach(function (entry) {\\n\\\n        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\\n\\\n    });\\n\\\n    // init styleModal\\n\\\n    styleModal = document.getElementById(\"domElementAjaxProgressModal1\") || {};\\n\\\n    styleModal = styleModal.style || {};\\n\\\n    styleModal0 = Object.assign({}, styleModal);\\n\\\n    Object.entries({\\n\\\n        height: \"0\",\\n\\\n        left: \"0\",\\n\\\n        margin: \"0\",\\n\\\n        padding: \"0\",\\n\\\n        position: \"fixed\",\\n\\\n        top: \"0\",\\n\\\n        transition: \"opacity 125ms\",\\n\\\n        width: \"100%\",\\n\\\n        \"z-index\": \"1\"\\n\\\n    }).forEach(function (entry) {\\n\\\n        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\\n\\\n    });\\n\\\n    // init state\\n\\\n    width = 0;\\n\\\n    opt.cnt = 0;\\n\\\n    opt.timeout = 30000;\\n\\\n    // init ajaxProgress\\n\\\n    window.domOnEventAjaxProgressUpdate();\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n// init domOnEventDelegateDict\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will handle delegated dom-evt\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let debounce;\\n\\\n    let timerTimeout;\\n\\\n    debounce = function () {\\n\\\n        return setTimeout(function () {\\n\\\n            timerTimeout = undefined;\\n\\\n        }, 30);\\n\\\n    };\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventDelegateDict) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventDelegateDict = {};\\n\\\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\\n\\\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\\n\\\n        if (\\n\\\n            !evt.targetOnEvent\\n\\\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\\n\\\n            || evt.target.closest(\".disabled,.readonly\")\\n\\\n        ) {\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-change\\n\\\n        switch (evt.type !== \"change\" && evt.target.type) {\\n\\\n        case \"checkbox\":\\n\\\n        case \"file\":\\n\\\n        case \"select-one\":\\n\\\n        case \"radio\":\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-keyup\\n\\\n        switch (evt.type) {\\n\\\n        case \"keyup\":\\n\\\n            if (!timerTimeout && (\\n\\\n                evt.target.tagName === \"INPUT\"\\n\\\n                || evt.target.tagName === \"TEXTAREA\"\\n\\\n            )) {\\n\\\n                timerTimeout = debounce();\\n\\\n                if (evt.target.dataset.valueOld !== evt.target.value) {\\n\\\n                    evt.target.dataset.valueOld = evt.target.value;\\n\\\n                    break;\\n\\\n                }\\n\\\n            }\\n\\\n            return;\\n\\\n        }\\n\\\n        switch (evt.targetOnEvent.tagName) {\\n\\\n        case \"BUTTON\":\\n\\\n        case \"FORM\":\\n\\\n            evt.preventDefault();\\n\\\n            break;\\n\\\n        }\\n\\\n        evt.stopPropagation();\\n\\\n        // handle domOnEventClickTarget\\n\\\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\\n\\\n            document.querySelector(\\n\\\n                evt.targetOnEvent.dataset.clickTarget\\n\\\n            ).click();\\n\\\n            return;\\n\\\n        }\\n\\\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    [\\n\\\n        \"change\",\\n\\\n        \"click\",\\n\\\n        \"keyup\",\\n\\\n        \"submit\"\\n\\\n    ].forEach(function (eventType) {\\n\\\n        document.addEventListener(\\n\\\n            eventType,\\n\\\n            window.domOnEventDelegateDict.domOnEventDelegate\\n\\\n        );\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n// init domOnEventSelectAllWithinPre\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\\n\\\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventSelectAllWithinPre) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventSelectAllWithinPre = function (evt) {\\n\\\n        let range;\\n\\\n        let selection;\\n\\\n        if (\\n\\\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\\n\\\n            && evt.target.closest(\"pre\")\\n\\\n        ) {\\n\\\n            range = document.createRange();\\n\\\n            range.selectNodeContents(evt.target.closest(\"pre\"));\\n\\\n            selection = window.getSelection();\\n\\\n            selection.removeAllRanges();\\n\\\n            selection.addRange(range);\\n\\\n            evt.preventDefault();\\n\\\n        }\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    document.addEventListener(\\n\\\n        \"keydown\",\\n\\\n        window.domOnEventSelectAllWithinPre\\n\\\n    );\\n\\\n}());\\n\\\n</script>\\n\\\n<h1>\\n\\\n<!-- utility2-comment\\n\\\n<a\\n\\\n    {{#if env.npm_package_homepage}}\\n\\\n    href=\"{{env.npm_package_homepage}}\"\\n\\\n    {{/if env.npm_package_homepage}}\\n\\\n    target=\"_blank\"\\n\\\n>\\n\\\nutility2-comment -->\\n\\\n    {{env.npm_package_name}} ({{env.npm_package_version}})\\n\\\n<!-- utility2-comment\\n\\\n</a>\\n\\\nutility2-comment -->\\n\\\n</h1>\\n\\\n<h3>{{env.npm_package_description}}</h3>\\n\\\n<!-- utility2-comment\\n\\\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\\n\\\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\\n\\\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\\n\\\nutility2-comment -->\\n\\\n\\n\\\n\\n\\\n<!-- custom-html-start -->\\n\\\n<label>edit or paste script below to instrument and cover</label>\\n\\\n<textarea class=\"textarea\" data-onevent=\"domOnEventInputChange\" id=\"inputTextarea1\">\\n\\\nif (true) {\\n\\\n    console.log(\"hello\");\\n\\\n} else {\\n\\\n    console.log(\"bye\");\\n\\\n}\\n\\\nlet fibonacci = {\\n\\\n    [Symbol.iterator]() {\\n\\\n        let pre = 0, cur = 1;\\n\\\n        return {\\n\\\n            next() {\\n\\\n                [pre, cur] = [cur, pre + cur];\\n\\\n                return { done: false, value: cur }\\n\\\n            }\\n\\\n        }\\n\\\n    }\\n\\\n}\\n\\\nfor (var n of fibonacci) {\\n\\\n    // truncate the sequence at 1000\\n\\\n    if (n > 1000)\\n\\\n        break;\\n\\\n    console.log(n);\\n\\\n}\\n\\\n</textarea>\\n\\\n<label>instrumented-code</label>\\n\\\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputTextarea1\" readonly></textarea>\\n\\\n<label>stderr and stdout</label>\\n\\\n<textarea class=\"readonly textarea\" id=\"outputStdout1\" readonly></textarea>\\n\\\n<div id=\"htmlCoverageReport1\"></div>\\n\\\n<script>\\n\\\n/* jslint utility2:true */\\n\\\nwindow.addEventListener(\"load\", function () {\\n\\\n\"use strict\";\\n\\\nlet local;\\n\\\nlocal = window.utility2_istanbul;\\n\\\nlocal.domOnEventInputChange = function (evt) {\\n\\\n    switch (evt.type + \".\" + evt.target.id) {\\n\\\n    case \"keyup.inputTextarea1\":\\n\\\n        // try to cleanup __coverage__\\n\\\n        try {\\n\\\n            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\\n\\\n        } catch (ignore) {}\\n\\\n        // try to cover and eval #inputTextarea1\\n\\\n        try {\\n\\\n            document.querySelector(\\n\\\n                \"#outputTextarea1\"\\n\\\n            ).textContent = local.istanbul.instrumentSync(\\n\\\n                document.querySelector(\"#inputTextarea1\").value,\\n\\\n                \"/inputTextarea1.js\"\\n\\\n            );\\n\\\n            eval( // jslint ignore:line\\n\\\n                document.querySelector(\"#outputTextarea1\").value\\n\\\n            );\\n\\\n            document.querySelector(\\n\\\n                \"#htmlCoverageReport1\"\\n\\\n            ).innerHTML = local.istanbul.coverageReportCreate({\\n\\\n                coverage: globalThis.__coverage__\\n\\\n            });\\n\\\n        } catch (errCaught) {\\n\\\n            console.error(errCaught);\\n\\\n        }\\n\\\n        break;\\n\\\n    }\\n\\\n};\\n\\\n// handle evt\\n\\\nlocal.domOnEventInputChange({\\n\\\n    target: {\\n\\\n        id: \"inputTextarea1\"\\n\\\n    },\\n\\\n    type: \"keyup\"\\n\\\n});\\n\\\n});\\n\\\n</script>\\n\\\n<!-- custom-html-end -->\\n\\\n\\n\\\n\\n\\\n<!-- utility2-comment\\n\\\n{{#if isRollup}}\\n\\\n<script src=\"assets.app.js\"></script>\\n\\\n{{#unless isRollup}}\\n\\\n<script src=\"assets.utility2.rollup.js\"></script>\\n\\\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\\n\\\n<script src=\"utility2.state.init.js\"></script>\\n\\\nutility2-comment -->\\n\\\n<script src=\"assets.istanbul.js\"></script>\\n\\\n<script src=\"assets.example.js\"></script>\\n\\\n<script src=\"assets.test.js\"></script>\\n\\\n<script>\\n\\\nif (window.utility2_onReadyBefore) {\\n\\\n    window.utility2_onReadyBefore();\\n\\\n}\\n\\\n</script>\\n\\\n<!-- utility2-comment\\n\\\n{{/if isRollup}}\\n\\\nutility2-comment -->\\n\\\n<div style=\"text-align: center;\">\\n\\\n    [\\n\\\n    this app was created with\\n\\\n    <a\\n\\\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\\n\\\n    >utility2</a>\\n\\\n    ]\\n\\\n</div>\\n\\\n</body>\\n\\\n</html>\\n\\\n';\n/* jslint ignore:end */\nlocal.assetsDict[\"/assets.istanbul.js\"] = (\n    local.assetsDict[\"/assets.istanbul.js\"]\n    || require(\"fs\").readFileSync(\n        require(\"path\").resolve(local.__dirname + \"/lib.istanbul.js\"),\n        \"utf8\"\n    ).replace((\n        /^#!\\//\n    ), \"// \")\n);\n/* validateLineSortedReset */\nlocal.assetsDict[\"/\"] = local.assetsDict[\n    \"/assets.index.template.html\"\n].replace((\n    /\\{\\{env\\.(\\w+?)\\}\\}/g\n), function (match0, match1) {\n    switch (match1) {\n    case \"npm_package_description\":\n        return \"the greatest app in the world!\";\n    case \"npm_package_name\":\n        return \"istanbul-lite\";\n    case \"npm_package_nameLib\":\n        return \"istanbul\";\n    case \"npm_package_version\":\n        return \"0.0.1\";\n    default:\n        return match0;\n    }\n});\nlocal.assetsDict[\"/assets.example.html\"] = local.assetsDict[\"/\"];\n// init cli\nif (module !== require.main || globalThis.utility2_rollup) {\n    return;\n}\nlocal.assetsDict[\"/assets.example.js\"] = (\n    local.assetsDict[\"/assets.example.js\"]\n    || require(\"fs\").readFileSync(__filename, \"utf8\")\n);\nlocal.assetsDict[\"/favicon.ico\"] = local.assetsDict[\"/favicon.ico\"] || \"\";\nlocal.assetsDict[\"/index.html\"] = local.assetsDict[\"/\"];\n// if $npm_config_timeout_exit exists,\n// then exit this process after $npm_config_timeout_exit ms\nif (Number(process.env.npm_config_timeout_exit)) {\n    setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));\n}\n// start server\nif (globalThis.utility2_serverHttp1) {\n    return;\n}\nprocess.env.PORT = process.env.PORT || \"8081\";\nconsole.error(\"http-server listening on port \" + process.env.PORT);\nrequire(\"http\").createServer(function (req, res) {\n    let data;\n    data = local.assetsDict[require(\"url\").parse(req.url).pathname];\n    if (data !== undefined) {\n        res.end(data);\n        return;\n    }\n    res.statusCode = 404;\n    res.end();\n}).listen(process.env.PORT);\n}());\n}());\n","/assets.test.js":"/* istanbul instrument in package istanbul */\n// assets.utility2.header.js - start\n/* jslint utility2:true */\n/* istanbul ignore next */\n// run shared js-env code - init-local\n(function () {\n    \"use strict\";\n    let consoleError;\n    let local;\n    // init debugInline\n    if (!globalThis.debugInline) {\n        consoleError = console.error;\n        globalThis.debugInline = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\ndebugInline\");\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScripts === \"function\"\n    );\n    // init function\n    local.assertJsonEqual = function (aa, bb) {\n    /*\n     * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n     */\n        let objectDeepCopyWithKeysSorted;\n        objectDeepCopyWithKeysSorted = function (obj) {\n        /*\n         * this function will recursively deep-copy <obj> with keys sorted\n         */\n            let sorted;\n            if (typeof obj !== \"object\" || !obj) {\n                return obj;\n            }\n            // recursively deep-copy list with child-keys sorted\n            if (Array.isArray(obj)) {\n                return obj.map(objectDeepCopyWithKeysSorted);\n            }\n            // recursively deep-copy obj with keys sorted\n            sorted = {};\n            Object.keys(obj).sort().forEach(function (key) {\n                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n            });\n            return sorted;\n        };\n        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n        if (aa !== bb) {\n            throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n        }\n    };\n    local.assertOrThrow = function (passed, msg) {\n    /*\n     * this function will throw <msg> if <passed> is falsy\n     */\n        if (passed) {\n            return;\n        }\n        throw (\n            (\n                msg\n                && typeof msg.message === \"string\"\n                && typeof msg.stack === \"string\"\n            )\n            // if msg is err, then leave as is\n            ? msg\n            : new Error(\n                typeof msg === \"string\"\n                // if msg is string, then leave as is\n                ? msg\n                // else JSON.stringify(msg)\n                : JSON.stringify(msg, undefined, 4)\n            )\n        );\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== undefined && arg !== null && arg !== \"\") {\n                return arg;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n    /*\n     * this function will if items from <tgt> are null, undefined, or \"\",\n     * then overwrite them with items from <src>\n     */\n        let recurse;\n        recurse = function (tgt, src, depth) {\n            Object.entries(src).forEach(function ([\n                key, bb\n            ]) {\n                let aa;\n                aa = tgt[key];\n                if (aa === undefined || aa === null || aa === \"\") {\n                    tgt[key] = bb;\n                    return;\n                }\n                if (\n                    depth !== 0\n                    && typeof aa === \"object\" && aa && !Array.isArray(aa)\n                    && typeof bb === \"object\" && bb && !Array.isArray(bb)\n                ) {\n                    recurse(aa, bb, depth - 1);\n                }\n            });\n        };\n        recurse(tgt, src, depth | 0);\n        return tgt;\n    };\n    local.onErrorThrow = function (err) {\n    /*\n     * this function will throw <err> if exists\n     */\n        if (err) {\n            throw err;\n        }\n    };\n    // bug-workaround - throw unhandledRejections in node-process\n    if (\n        typeof process === \"object\" && process\n        && typeof process.on === \"function\"\n        && process.unhandledRejections !== \"strict\"\n    ) {\n        process.unhandledRejections = \"strict\";\n        process.on(\"unhandledRejection\", function (err) {\n            throw err;\n        });\n    }\n}());\n// assets.utility2.header.js - end\n\n\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n/* istanbul ignore next */\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = globalThis.utility2 || require(\"utility2\");\nlocal = local.requireReadme();\nglobalThis.local = local;\n// init test\nlocal.testRunDefault(local);\n}());\n\n\n// run shared js-env code - function\n(function () {\nlocal.testCase_coverage_es6 = function (opt, onError) {\n/*\n * this function will test coverage's es6 handling-behavior\n */\n/* jslint ignore:start */\n// https://github.com/lukehoban/es6features/blob/9354b8f68f26bf1931d05251c7d4411808669c97/README.md\nvar echo = function (arg) {\n    return arg;\n}, tryCatch = function (fnc) {\n    try {\n        fnc();\n    } catch (errCaught) {\n        console.error(errCaught);\n    }\n};\n\n// hack-istanbul\ntryCatch(function () {\n    throw '';\n});\ntryCatch(function () {\nvar evens = [0, 2, 4, 6];\n// Expression bodies\nvar odds = evens.map(v => v + 1);\nvar nums = evens.map((v, i) => v + i);\nvar pairs = evens.map(v => ({even: v, odd: v + 1}));\n// Statement bodies\nnums.forEach(v => {\n    if (v % 5 === 0) {\n        var fives = [];\n        fives.push(v);\n    }\n});\n// Lexical this\nvar bob = {\n    _name: 'Bob',\n    _friends: ['John'],\n    printFriends() {\n        this._friends.forEach(f =>\n            console.log(this._name + ' knows ' + f));\n    }\n}\nbob.printFriends();\n});\ntryCatch(function () {\nvar THREE = { Matrix4: echo, Mesh: echo };\nTHREE.Mesh.prototype.update = echo;\nclass SkinnedMesh extends THREE.Mesh {\n    constructor(geometry, materials) {\n        super(geometry, materials);\n        this.idMatrix = SkinnedMesh.defaultMatrix();\n        this.bones = [];\n        this.boneMatrices = [];\n        //...\n    }\n    update(camera) {\n        //...\n        super.update();\n    }\n    get boneCount() {\n        return this.bones.length;\n    }\n    set matrixType(matrixType) {\n        this.idMatrix = SkinnedMesh[matrixType]();\n    }\n    static defaultMatrix() {\n        return new THREE.Matrix4();\n    }\n}\nvar aa = new SkinnedMesh();\naa.update();\nconsole.assert(aa.boneCount === 0);\naa.matrixType = 'defaultMatrix';\nconsole.assert(aa.matrixType === undefined);\n});\ntryCatch(function () {\nvar handler, theProtoObj;\nvar obj = {\n    // __proto__\n    __proto__: theProtoObj,\n    // Shorthand for ‘handler: handler’\n    handler,\n    // Methods\n    toString() {\n    // Super calls\n    return 'd ' + super.toString();\n    },\n    // Computed (dynamic) property names\n    [ 'prop_' + (() => 42)() ]: 42\n};\nconsole.assert(String(obj) === 'd [object Object]');\n});\ntryCatch(function () {\n// Basic literal string creation\n`In JavaScript '\\n' is a line-feed.`;\n// Multiline strings\n`In JavaScript this is\n    not legal.`;\n// String interpolation\nvar name = 'Bob', time = 'today';\n`Hello ${name}, how are you ${time}?`;\n// Construct an HTTP request prefix is used to interpret the replacements and construction\nvar POST = function () {\n    return myOnReadyStateChangeHandler;\n}, a, b, bar, credentials, foo, myOnReadyStateChangeHandler = echo;\nPOST`http://foo.org/bar?a=${a}&b=${b}\n    Content-Type: application/json\n    X-Credentials: ${credentials}\n    { 'foo': ${foo}, 'bar': ${bar}}`(myOnReadyStateChangeHandler);\n});\ntryCatch(function () {\nvar getASTNode = function () {\n    return { op: null, lhs: {}, rhs: {} };\n};\n// list matching\nvar [a, , b] = [1,2,3];\n// object matching\nvar { op: a, lhs: { op: b }, rhs: c } = getASTNode();\n// object matching shorthand\n// binds `op`, `lhs` and `rhs` in scope\nvar {op, lhs, rhs} = getASTNode();\n// Can be used in parameter position\nfunction g({name: x}) {\n    console.log(x);\n}\ng({name: 5});\n// Fail-soft destructuring\nvar [a] = [];\nconsole.assert(a === undefined);\n// Fail-soft destructuring with defaults\nvar [a = 1] = [];\nconsole.assert(a === 1);\n});\ntryCatch(function () {\nfunction f(x, y=12) {\n    // y is 12 if not passed (or passed as undefined)\n    return x + y;\n}\nconsole.assert(f(3) === 15);\n});\ntryCatch(function () {\nfunction f(x, ...y) {\n    // y is an Array\n    return x * y.length;\n}\nconsole.assert(f(3, 'hello', true) === 6);\n});\ntryCatch(function () {\nfunction f(x, y, z) {\n    return x + y + z;\n}\n// Pass each elem of array as argument\nconsole.assert(f(...[1,2,3]) === 6);\n});\ntryCatch(function () {\nfunction f() {\n    {\n        let x;\n        {\n            // okay, block scoped name\n            const x = 'sneaky';\n            // error, const\n            //// x = 'foo';\n        }\n        // error, already declared in block\n        //// let x = 'inner';\n    }\n}\nf();\n});\ntryCatch(function () {\nlet fibonacci = {\n    [Symbol.iterator]() {\n        let pre = 0, cur = 1;\n        return {\n            next() {\n                [pre, cur] = [cur, pre + cur];\n                return { done: false, value: cur }\n            }\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n});\n//// try {(function () {\n//// interface IteratorResult {\n    //// done: boolean;\n    //// value: any;\n//// }\n//// interface Iterator {\n    //// next(): IteratorResult;\n//// }\n//// interface Iterable {\n    //// [Symbol.iterator](): Iterator\n//// }\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\ntryCatch(function () {\nvar fibonacci = {\n    [Symbol.iterator]: function*() {\n        var pre = 0, cur = 1;\n        for (;;) {\n            var temp = pre;\n            pre = cur;\n            cur += temp;\n            yield cur;\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n});\n//// try {(function () {\n//// interface Generator extends Iterator {\n    //// next(value?: any): IteratorResult;\n    //// throw(exception: any);\n//// }\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\ntryCatch(function () {\n// same as ES5.1\nconsole.assert('\\ud842\\udfb7'.length === 2);\n// new RegExp behaviour, opt-in ‘u’\nconsole.assert('\\ud842\\udfb7'.match(/./u)[0].length === 2);\n// new form\n'\\u{20BB7}'=='\\ud842\\udfb7'=='\\uD842\\uDFB7'\n// new String ops\nconsole.assert('\\ud842\\udfb7'.codePointAt(0) === 0x20BB7);\n// for-of iterates code points\nfor(var c of '\\ud842\\udfb7') {\n    console.log(c);\n}\n});\n//// try {(function () {\n//// // lib/math.js\n//// export function sum(x, y) {\n    //// return x + y;\n//// }\n//// export var pi = 3.141593;\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // app.js\n//// import * as math from 'lib/math';\n//// alert('2π = ' + math.sum(math.pi, math.pi));\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // otherApp.js\n//// import {sum, pi} from 'lib/math';\n//// alert('2π = ' + sum(pi, pi));\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // lib/mathplusplus.js\n//// export * from 'lib/math';\n//// export var e = 2.71828182846;\n//// export default function(x) {\n    //// return Math.log(x);\n//// }\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // app.js\n//// import ln, {pi, e} from 'lib/mathplusplus';\n//// alert('2π = ' + ln(e)*pi*2);\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\n//// try {(function () {\n//// // Dynamic loading – ‘System’ is default loader\n//// System.import('lib/math').then(function(m) {\n    //// alert('2π = ' + m.sum(m.pi, m.pi));\n//// });\n//// // Create execution sandboxes – new Loaders\n//// var loader = new Loader({\n    //// global: fixup(window) // replace ‘console.log’\n//// });\n//// loader.eval('console.log('hello world!');');\n//// // Directly manipulate module cache\n//// System.get('jquery');\n//// System.set('jquery', Module({$: $})); // WARNING: not yet finalized\n//// }())} catch (errCaught) {\n    //// console.log(errCaught);\n//// }\ntryCatch(function () {\n// Sets\nvar s = new Set();\ns.add('hello').add('goodbye').add('hello');\nconsole.assert(s.size === 2);\nconsole.assert(s.has('hello') === true);\n// Maps\nvar m = new Map();\nm.set('hello', 42);\nm.set(s, 34);\nconsole.assert(m.get(s) === 34);\n// Weak Maps\nvar wm = new WeakMap();\nwm.set(s, { extra: 42 });\nconsole.assert(wm.size === undefined);\n// Weak Sets\nvar ws = new WeakSet();\nws.add({ data: 42 });\n// Because the added object has no other references, it will not be held in the set\n});\ntryCatch(function () {\n// Proxying a normal object\nvar target = {};\nvar handler = {\n    get: function (receiver, name) {\n        return `Hello, ${name}!`;\n    }\n};\nvar p = new Proxy(target, handler);\nconsole.assert(p.world === 'Hello, world!');\n});\ntryCatch(function () {\n// Proxying a function object\nvar target = function () { return 'I am the target'; };\nvar handler = {\n    apply: function (receiver, ...args) {\n        return 'I am the proxy';\n    }\n};\nvar p = new Proxy(target, handler);\nconsole.assert(p() === 'I am the proxy');\nconsole.assert(target() === 'I am the target');\n});\ntryCatch(function () {\nvar handler =\n{\n    get: echo,\n    set: echo,\n    has: echo,\n    deleteProperty: echo,\n    apply: echo,\n    construct: echo,\n    getOwnPropertyDescriptor: echo,\n    defineProperty: echo,\n    getPrototypeOf: echo,\n    setPrototypeOf: echo,\n    enumerate: echo,\n    ownKeys: echo,\n    preventExtensions: echo,\n    isExtensible: echo\n}\n});\ntryCatch(function () {\nvar MyClass = (function() {\n    // module scoped symbol\n    var key = Symbol('key');\n    function MyClass(privateData) {\n        this[key] = privateData;\n    }\n    MyClass.prototype = {\n        doStuff: function() {\n            this[key];\n        }\n    };\n    return MyClass;\n})();\nvar c = new MyClass('hello')\nconsole.assert(c.doStuff() === undefined);\nconsole.assert(c.key === undefined);\n});\ntryCatch(function () {\n// Pseudo-code of Array2\nclass Array2 {\n    constructor(...args) { /* ... */ }\n    static [Symbol.create]() {\n        // Install special [[DefineOwnProperty]]\n        // to magically update 'length'\n    }\n}\n// User code of Array2 subclass\nclass MyArray extends Array2 {\n    constructor(...args) { super(...args); }\n}\n// Two-phase 'new':\n// 1) Call @@create to allocate object\n// 2) Invoke constructor on new instance\nvar arr = new MyArray();\narr[1] = 12;\nconsole.assert(arr.length === 2, arr.length);\nconsole.assert(MyArray.undefined() === undefined);\n});\ntryCatch(function () {\nNumber.EPSILON;\nNumber.isInteger(Infinity); // false\nNumber.isNaN('NaN'); // false\nMath.acosh(3); // 1.762747174039086\nMath.hypot(3, 4); // 5\nMath.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2); // 2\n'abcde'.includes('cd'); // true\n'abc'.repeat(3); // 'abcabcabc'\nif (typeof document === 'object' && document) {\n    Array.from(document.querySelectorAll('*')); // Returns a real Array\n}\nArray.of(1, 2, 3); // Similar to new Array(...), but without special one-arg behavior\n[0, 0, 0].fill(7, 1); // [0,7,7]\nconsole.assert([1, 2, 3].find(x => x === 3) === 3); // 3\nconsole.assert([1, 2, 3].findIndex(x => x === 2) === 1); // 1\n[1, 2, 3, 4, 5].copyWithin(3, 0); // [1, 2, 3, 1, 2]\n['a', 'b', 'c'].entries(); // iterator [0, 'a'], [1,'b'], [2,'c']\n['a', 'b', 'c'].keys(); // iterator 0, 1, 2\n//// ['a', 'b', 'c'].values(); // iterator 'a', 'b', 'c'\nvar Point = echo;\nObject.assign(Point, { origin: new Point(0,0) });\n});\ntryCatch(function () {\nconsole.assert(0b111110111 === 503); // true\nconsole.assert(0o767 === 503); // true\n});\ntryCatch(function () {\nfunction timeout(duration = 0) {\n    return new Promise((resolve, reject) => {\n        setTimeout(resolve, duration);\n    })\n}\nvar p = timeout(1000).then(() => {\n    return timeout(2000);\n}).then(() => {\n    throw new Error('hmm');\n}).catch(err => {\n    return Promise.all([timeout(100), timeout(200)]);\n})\n});\ntryCatch(function () {\n// No sample yet\n});\ntryCatch(function () {\nfunction factorial(n, acc = 1) {\n    //// 'use strict';\n    if (n <= 1) return acc;\n    return factorial(n - 1, n * acc);\n}\n// Stack overflow in most implementations today,\n// but safe on arbitrary inputs in ES6\nfactorial(100)\n});\n/* jslint ignore:end */\n    onError(undefined, opt);\n};\n\nlocal.testCase_istanbulCoverageMerge_default = function (opt, onError) {\n/*\n * this function will test istanbulCoverageMerge's default handling-behavior\n */\n    if (local.isBrowser) {\n        onError(undefined, opt);\n        return;\n    }\n    opt = {};\n    opt.data = local.istanbul.instrumentSync(\n        \"(function () {\\nreturn arg \"\n        + \"? __coverage__ \"\n        + \": __coverage__;\\n}());\",\n        \"/test\"\n    );\n    local.arg = 0;\n    // init opt.coverage1\n    opt.coverage1 = require(\"vm\").runInNewContext(opt.data, {\n        arg: 0\n    });\n/* jslint ignore:start */\n// validate opt.coverage1\nlocal.assertJsonEqual(opt.coverage1,\n{\"/test\":{\"b\":{\"1\":[0,1]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":1},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":1,\"2\":1},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n// test merge-create handling-behavior\nopt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);\n// validate opt.coverage1\nlocal.assertJsonEqual(opt.coverage1,\n{\"/test\":{\"b\":{\"1\":[0,1]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":1},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":1,\"2\":1},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n// init opt.coverage2\nopt.coverage2 = require(\"vm\").runInNewContext(opt.data, { arg: 1 });\n// validate opt.coverage2\nlocal.assertJsonEqual(opt.coverage2,\n{\"/test\":{\"b\":{\"1\":[1,0]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":1},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":1,\"2\":1},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n// test merge-update handling-behavior\nlocal.istanbul.coverageMerge(opt.coverage1, opt.coverage2);\n// validate merged opt.coverage1\nlocal.assertJsonEqual(opt.coverage1,\n{\"/test\":{\"b\":{\"1\":[1,1]},\"branchMap\":{\"1\":{\"line\":2,\"locations\":[{\"end\":{\"column\":25,\"line\":2},\"start\":{\"column\":13,\"line\":2}},{\"end\":{\"column\":40,\"line\":2},\"start\":{\"column\":28,\"line\":2}}],\"type\":\"cond-expr\"}},\"code\":[\"(function () {\",\"return arg ? __coverage__ : __coverage__;\",\"}());\"],\"f\":{\"1\":2},\"fnMap\":{\"1\":{\"line\":1,\"loc\":{\"end\":{\"column\":13,\"line\":1},\"start\":{\"column\":1,\"line\":1}},\"name\":\"(anonymous_1)\"}},\"path\":\"/test\",\"s\":{\"1\":2,\"2\":2},\"statementMap\":{\"1\":{\"end\":{\"column\":5,\"line\":3},\"start\":{\"column\":0,\"line\":1}},\"2\":{\"end\":{\"column\":41,\"line\":2},\"start\":{\"column\":0,\"line\":2}}}}}\n);\n/* jslint ignore:end */\n    onError(undefined, opt);\n};\n\nlocal.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {\n/*\n * this function will test\n * istanbulCoverageReportCreate's default handling-behavior\n */\n    // test null handling-behavior\n    local.istanbul.coverageReportCreate();\n    local.env.npm_config_mode_coverage_merge = \"\";\n    local.testMock([\n        [\n            local.istanbul, {\n                coverageMerge: local.nop\n            }\n        ],\n        // test $npm_config_mode_coverage_merge handling-behavior\n        [\n            local.env, {\n                npm_config_mode_coverage_merge: \"1\"\n            }\n        ]\n    ], function (onError) {\n        // cleanup old coverage\n        if (!local.isBrowser) {\n            require(\"child_process\").spawnSync(\"rm\", [\n                \"-rf\", \"tmp/build/coverage.html/aa\"\n            ], {\n                stdio: [\n                    \"ignore\", 1, 2\n                ]\n            });\n        }\n        // test path handling-behavior\n        [\n            \"/\", local.__dirname\n        ].forEach(function (dir) {\n            [\n                \"zz.js\",\n                \"aa/zz.js\",\n                \"aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js\"\n            ].forEach(function (file) {\n                // cover file\n                eval(local.istanbul.instrumentSync( // jslint ignore:line\n                    // test skip handling-behavior\n                    \"null\",\n                    dir + \"/\" + file\n                ));\n            });\n        });\n        // create report with covered path\n        local.istanbul.coverageReportCreate({\n            coverage: globalThis.__coverage__\n        });\n        // test file-content handling-behavior\n        [\n            // test no content handling-behavior\n            \"\",\n            // test uncovereed-code handling-behavior\n            \"null && null && null\",\n            // test trailing-whitespace handling-behavior\n            \"null \",\n            // test skip handling-behavior\n            \"/* istanbul ignore next */\\nnull && null\"\n        ].forEach(function (content) {\n            // cleanup\n            local.tryCatchOnError(function () {\n                Object.keys(globalThis.__coverage__).forEach(function (file) {\n                    if (file.indexOf(\"zz.js\") >= 0) {\n                        globalThis.__coverage__[file] = null;\n                    }\n                });\n            }, local.nop);\n            // cover path\n            eval( // jslint ignore:line\n                local.istanbul.instrumentSync(content, \"zz.js\")\n            );\n            // create report with covered content\n            local.istanbul.coverageReportCreate({\n                coverage: globalThis.__coverage__\n            });\n        });\n        // cleanup\n        Object.keys(globalThis.__coverage__).forEach(function (file) {\n            if (file.indexOf(\"zz.js\") >= 0) {\n                globalThis.__coverage__[file] = null;\n            }\n        });\n        onError(undefined, opt);\n    }, onError);\n};\n\nlocal.testCase_istanbulInstrumentInPackage_default = function (opt, onError) {\n/*\n * this function will test istanbulInstrumentInPackage's\n * default handling-behavior\n */\n    opt.data = local.istanbul.instrumentInPackage(\"\", \"/test.js\");\n    local.assertJsonEqual(opt.data, \"\");\n    opt.data = local.istanbul.instrumentInPackage(\n        \"/* istanbul instrument in package istanbul */\\n;\",\n        \"/test.js\"\n    );\n    onError(undefined, opt);\n};\n\nlocal.testCase_istanbulInstrumentSync_default = function (opt, onError) {\n/*\n * this function will test istanbulInstrumentSync's default handling-behavior\n */\n    opt = {};\n    opt.data = local.istanbul.instrumentSync(\"1\", \"/test.js\");\n    // validate data\n    local.assertOrThrow(opt.data.indexOf(\".s['1']++;1;\\n\") >= 0, opt);\n    onError(undefined, opt);\n};\n}());\n}());\n","/index.rollup.html":"<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<!-- \"assets.utility2.template.html\" -->\n<title>istanbul-lite (2020.6.9)</title>\n<style>\n/* jslint utility2:true */\n/*csslint\n*/\n/* csslint ignore:start */\n*,\n*:after,\n*:before {\n    box-sizing: border-box;\n}\n.uiAnimateSlide {\n    overflow-y: hidden;\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n}\n/* csslint ignore:end */\n@keyframes uiAnimateSpin {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\na {\n    overflow-wrap: break-word;\n}\nbody {\n    background: #f7f7f7;\n    font-family: Arial, Helvetica, sans-serif;\n    font-size: small;\n    margin: 0 40px;\n}\nbody > div,\nbody > input,\nbody > pre,\nbody > .button,\nbody > .textarea {\n    margin-bottom: 20px;\n    margin-top: 0;\n}\nbody > input,\nbody > .button {\n    width: 20rem;\n}\nbody > .readonly {\n    background: #ddd;\n}\nbody > .textarea {\n    height: 10rem;\n    resize: vertical;\n    width: 100%;\n}\ncode,\npre,\n.textarea {\n    font-family: Consolas, Menlo, monospace;\n    font-size: smaller;\n}\npre {\n    overflow-wrap: break-word;\n    white-space: pre-wrap;\n}\n.button {\n    background: #ddd;\n    border: 1px solid #999;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 2px 5px;\n    text-align: center;\n    text-decoration: none;\n}\n.button:hover {\n    background: #bbb;\n}\n.colorError {\n    color: #d00;\n}\n.textarea {\n    background: #fff;\n    border: 1px solid #999;\n    border-radius: 0;\n    cursor: auto;\n    overflow: auto;\n    padding: 2px;\n}\n.zeroPixel {\n    border: 0;\n    height: 0;\n    margin: 0;\n    padding: 0;\n    width: 0;\n}\n</style>\n</head>\n<body>\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\n<script>\n/* jslint utility2:true */\n// init domOnEventWindowOnloadTimeElapsed\n(function () {\n/*\n * this function will measure and print time-elapsed for window.onload\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\n        return;\n    }\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n    window.addEventListener(\"load\", function () {\n        setTimeout(function () {\n            window.domOnEventWindowOnloadTimeElapsed = (\n                Date.now()\n                - window.domOnEventWindowOnloadTimeElapsed\n            );\n            console.error(\n                \"domOnEventWindowOnloadTimeElapsed = \"\n                + window.domOnEventWindowOnloadTimeElapsed\n            );\n        }, 100);\n    });\n}());\n\n\n// init domOnEventAjaxProgressUpdate\n(function () {\n/*\n * this function will display incrementing ajax-progress-bar\n */\n    \"use strict\";\n    let opt;\n    let styleBar0;\n    let styleBar;\n    let styleModal0;\n    let styleModal;\n    let timeStart;\n    let timerInterval;\n    let timerTimeout;\n    let tmp;\n    let width;\n    try {\n        if (\n            window.domOnEventAjaxProgressUpdate\n            || !document.getElementById(\"domElementAjaxProgressBar1\").style\n        ) {\n            return;\n        }\n    } catch (ignore) {\n        return;\n    }\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n        gotoState = (gotoState | 0) + 1;\n        switch (gotoState) {\n        // ajaxProgress - show\n        case 1:\n            // init timerInterval and timerTimeout\n            if (!timerTimeout) {\n                timeStart = Date.now();\n                timerInterval = setInterval(opt, 2000, 1, onError);\n                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);\n            }\n            // show ajaxProgressBar\n            if (width !== -1) {\n                styleBar.background = styleBar0.background;\n            }\n            setTimeout(opt, 50, gotoState, onError);\n            break;\n        // ajaxProgress - increment\n        case 2:\n            // show ajaxProgressBar\n            if (width === -1) {\n                break;\n            }\n            styleBar.background = styleBar0.background;\n            // reset ajaxProgress if it reaches end\n            if ((styleBar.width.slice(0, -1) | 0) > 95) {\n                width = 0;\n            }\n            // this algorithm will indefinitely increment ajaxProgress\n            // with successively smaller increments without reaching 100%\n            width += 1;\n            styleBar.width = Math.max(\n                100 - 75 * Math.exp(-0.125 * width),\n                styleBar.width.slice(0, -1) | 0\n            ) + \"%\";\n            // show ajaxProgressModal\n            styleModal.height = \"100%\";\n            styleModal.opacity = styleModal0.opacity;\n            if (!opt.cnt) {\n                setTimeout(opt, 0, gotoState, onError);\n            }\n            break;\n        // ajaxProgress - 100%\n        case 3:\n            width = -1;\n            styleBar.width = \"100%\";\n            setTimeout(opt, 1000, gotoState, onError);\n            break;\n        // ajaxProgress - hide\n        case 4:\n            // debug timeElapsed\n            tmp = Date.now();\n            console.error(\n                \"domOnEventAjaxProgressUpdate - timeElapsed - \"\n                + (tmp - timeStart)\n                + \" ms\"\n            );\n            // cleanup timerInterval and timerTimeout\n            timeStart = tmp;\n            clearInterval(timerInterval);\n            timerInterval = undefined;\n            clearTimeout(timerTimeout);\n            timerTimeout = undefined;\n            // hide ajaxProgressBar\n            styleBar.background = \"transparent\";\n            // hide ajaxProgressModal\n            styleModal.opacity = \"0\";\n            if (onError) {\n                onError();\n            }\n            setTimeout(opt, 250, gotoState);\n            break;\n        // ajaxProgress - reset\n        default:\n            opt.cnt = 0;\n            width = 0;\n            styleBar.width = \"0%\";\n            styleModal.height = \"0\";\n        }\n    };\n    opt = window.domOnEventAjaxProgressUpdate;\n    opt.end = function (onError) {\n        opt.cnt = 0;\n        window.domOnEventAjaxProgressUpdate(2, onError);\n    };\n    // init styleBar\n    styleBar = document.getElementById(\"domElementAjaxProgressBar1\").style;\n    styleBar0 = Object.assign({}, styleBar);\n    Object.entries({\n        background: \"#d00\",\n        height: \"2px\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"background 250ms, width 750ms\",\n        width: \"0%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];\n    });\n    // init styleModal\n    styleModal = document.getElementById(\"domElementAjaxProgressModal1\") || {};\n    styleModal = styleModal.style || {};\n    styleModal0 = Object.assign({}, styleModal);\n    Object.entries({\n        height: \"0\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"opacity 125ms\",\n        width: \"100%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];\n    });\n    // init state\n    width = 0;\n    opt.cnt = 0;\n    opt.timeout = 30000;\n    // init ajaxProgress\n    window.domOnEventAjaxProgressUpdate();\n}());\n\n\n// init domOnEventDelegateDict\n(function () {\n/*\n * this function will handle delegated dom-evt\n */\n    \"use strict\";\n    let debounce;\n    let timerTimeout;\n    debounce = function () {\n        return setTimeout(function () {\n            timerTimeout = undefined;\n        }, 30);\n    };\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventDelegateDict) {\n        return;\n    }\n    window.domOnEventDelegateDict = {};\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\n        if (\n            !evt.targetOnEvent\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\n            || evt.target.closest(\".disabled,.readonly\")\n        ) {\n            return;\n        }\n        // filter evt-change\n        switch (evt.type !== \"change\" && evt.target.type) {\n        case \"checkbox\":\n        case \"file\":\n        case \"select-one\":\n        case \"radio\":\n            return;\n        }\n        // filter evt-keyup\n        switch (evt.type) {\n        case \"keyup\":\n            if (!timerTimeout && (\n                evt.target.tagName === \"INPUT\"\n                || evt.target.tagName === \"TEXTAREA\"\n            )) {\n                timerTimeout = debounce();\n                if (evt.target.dataset.valueOld !== evt.target.value) {\n                    evt.target.dataset.valueOld = evt.target.value;\n                    break;\n                }\n            }\n            return;\n        }\n        switch (evt.targetOnEvent.tagName) {\n        case \"BUTTON\":\n        case \"FORM\":\n            evt.preventDefault();\n            break;\n        }\n        evt.stopPropagation();\n        // handle domOnEventClickTarget\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\n            document.querySelector(\n                evt.targetOnEvent.dataset.clickTarget\n            ).click();\n            return;\n        }\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n    };\n    // handle evt\n    [\n        \"change\",\n        \"click\",\n        \"keyup\",\n        \"submit\"\n    ].forEach(function (eventType) {\n        document.addEventListener(\n            eventType,\n            window.domOnEventDelegateDict.domOnEventDelegate\n        );\n    });\n}());\n\n\n// init domOnEventSelectAllWithinPre\n(function () {\n/*\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventSelectAllWithinPre) {\n        return;\n    }\n    window.domOnEventSelectAllWithinPre = function (evt) {\n        let range;\n        let selection;\n        if (\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\n            && evt.target.closest(\"pre\")\n        ) {\n            range = document.createRange();\n            range.selectNodeContents(evt.target.closest(\"pre\"));\n            selection = window.getSelection();\n            selection.removeAllRanges();\n            selection.addRange(range);\n            evt.preventDefault();\n        }\n    };\n    // handle evt\n    document.addEventListener(\n        \"keydown\",\n        window.domOnEventSelectAllWithinPre\n    );\n}());\n</script>\n<h1>\n\n<a\n    \n    href=\"https://github.com/kaizhu256/node-istanbul-lite\"\n    \n    target=\"_blank\"\n>\n\n    istanbul-lite (2020.6.9)\n\n</a>\n\n</h1>\n<h3>this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo</h3>\n\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\n\n\n\n<!-- custom-html-start -->\n<label>edit or paste script below to instrument and cover</label>\n<textarea class=\"textarea\" data-onevent=\"domOnEventInputChange\" id=\"inputTextarea1\">\nif (true) {\n    console.log(\"hello\");\n} else {\n    console.log(\"bye\");\n}\nlet fibonacci = {\n    [Symbol.iterator]() {\n        let pre = 0, cur = 1;\n        return {\n            next() {\n                [pre, cur] = [cur, pre + cur];\n                return { done: false, value: cur }\n            }\n        }\n    }\n}\nfor (var n of fibonacci) {\n    // truncate the sequence at 1000\n    if (n > 1000)\n        break;\n    console.log(n);\n}\n</textarea>\n<label>instrumented-code</label>\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputTextarea1\" readonly></textarea>\n<label>stderr and stdout</label>\n<textarea class=\"readonly textarea\" id=\"outputStdout1\" readonly></textarea>\n<div id=\"htmlCoverageReport1\"></div>\n<script>\n/* jslint utility2:true */\nwindow.addEventListener(\"load\", function () {\n\"use strict\";\nlet local;\nlocal = window.utility2_istanbul;\nlocal.domOnEventInputChange = function (evt) {\n    switch (evt.type + \".\" + evt.target.id) {\n    case \"keyup.inputTextarea1\":\n        // try to cleanup __coverage__\n        try {\n            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\n        } catch (ignore) {}\n        // try to cover and eval #inputTextarea1\n        try {\n            document.querySelector(\n                \"#outputTextarea1\"\n            ).textContent = local.istanbul.instrumentSync(\n                document.querySelector(\"#inputTextarea1\").value,\n                \"/inputTextarea1.js\"\n            );\n            eval( // jslint ignore:line\n                document.querySelector(\"#outputTextarea1\").value\n            );\n            document.querySelector(\n                \"#htmlCoverageReport1\"\n            ).innerHTML = local.istanbul.coverageReportCreate({\n                coverage: globalThis.__coverage__\n            });\n        } catch (errCaught) {\n            console.error(errCaught);\n        }\n        break;\n    }\n};\n// handle evt\nlocal.domOnEventInputChange({\n    target: {\n        id: \"inputTextarea1\"\n    },\n    type: \"keyup\"\n});\n});\n</script>\n<!-- custom-html-end -->\n\n\n\n\n<script src=\"assets.app.js\"></script>\n\n\n<div style=\"text-align: center;\">\n    [\n    this app was created with\n    <a\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\n    >utility2</a>\n    ]\n</div>\n</body>\n</html>\n"},"env":{"NODE_ENV":"test","npm_package_description":"this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo","npm_package_homepage":"https://github.com/kaizhu256/node-istanbul-lite","npm_package_name":"istanbul-lite","npm_package_nameLib":"istanbul","npm_package_version":"2020.6.9"},"init":"(function (state) {\nlet utility2 = globalThis.utility2;\nutility2.assetsDict = utility2.assetsDict || {};\nutility2.env = utility2.env || {};\nObject.assign(utility2.assetsDict, state.assetsDict);\nObject.assign(utility2.env, state.env);\n}({}));\n"}
 ));
 
 /* jslint ignore:end */
@@ -72268,6 +72316,14 @@ local.assetsDict["/assets.istanbul.js"] = (
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
+    };\n\
+    local.onErrorThrow = function (err) {\n\
+    /*\n\
+     * this function will throw <err> if exists\n\
+     */\n\
+        if (err) {\n\
+            throw err;\n\
+        }\n\
     };\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
@@ -72473,13 +72529,13 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {\n\
  * this function will sync-read <pathname> with given <type> and <dflt>\n\
  */\n\
     let fs;\n\
-    // do nothing if module does not exist\n\
+    // do nothing if module not exists\n\
     try {\n\
         fs = require(\"fs\");\n\
+        pathname = require(\"path\").resolve(pathname);\n\
     } catch (ignore) {\n\
         return dflt;\n\
     }\n\
-    pathname = require(\"path\").resolve(pathname);\n\
     // try to read pathname\n\
     try {\n\
         return (\n\
@@ -72492,23 +72548,21 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {\n\
     }\n\
 };\n\
 \n\
-local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {\n\
+local.fsWriteFileWithMkdirpSync = function (pathname, data) {\n\
 /*\n\
  * this function will sync write <data> to <pathname> with \"mkdir -p\"\n\
  */\n\
     let fs;\n\
-    let success;\n\
-    // do nothing if module does not exist\n\
+    // do nothing if module not exists\n\
     try {\n\
         fs = require(\"fs\");\n\
+        pathname = require(\"path\").resolve(pathname);\n\
     } catch (ignore) {\n\
         return;\n\
     }\n\
-    pathname = require(\"path\").resolve(pathname);\n\
     // try to write pathname\n\
     try {\n\
         fs.writeFileSync(pathname, data);\n\
-        success = true;\n\
     } catch (ignore) {\n\
         // mkdir -p\n\
         fs.mkdirSync(require(\"path\").dirname(pathname), {\n\
@@ -72516,12 +72570,9 @@ local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {\n\
         });\n\
         // re-write pathname\n\
         fs.writeFileSync(pathname, data);\n\
-        success = true;\n\
     }\n\
-    if (success && msg) {\n\
-        console.error(msg.replace(\"{{pathname}}\", pathname));\n\
-    }\n\
-    return success;\n\
+    console.error(\"fsWriteFileWithMkdirpSync - \" + pathname);\n\
+    return true;\n\
 };\n\
 \n\
 local.templateRender = function (template, dict, opt = {}, ii = 0) {\n\
@@ -82936,11 +82987,7 @@ fileWrite = function (file, data) {\n\
 /*\n\
  * this function will write <data> to <file>\n\
  */\n\
-    local.fsWriteFileWithMkdirpSync(\n\
-        file,\n\
-        data,\n\
-        \"wrote file - coverage-report - {{pathname}}\"\n\
-    );\n\
+    local.fsWriteFileWithMkdirpSync(file, data);\n\
 };\n\
 reportHtmlWrite = function (node, dirCoverage, coverage) {\n\
 /*\n\
@@ -83851,10 +83898,11 @@ local.instrumentSync = function (code, file) {\n\
     // 1. normalize <file>\n\
     file = path.resolve(file);\n\
     // 2. save <code> to __coverageInclude__[<file>] for future html-report\n\
-    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};\n\
-    globalThis.__coverageInclude__[file] = 1;\n\
     // 3. return instrumented-code\n\
-    return new local.Instrumenter({\n\
+    return (\n\
+        \"globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};\"\n\
+        + \"globalThis.__coverageInclude__[\" + JSON.stringify(file) + \"] = 1;\\n\"\n\
+    ) + new local.Instrumenter({\n\
         embedSource: true,\n\
         esModules: true,\n\
         noAutoWrap: true\n\
@@ -83899,15 +83947,12 @@ local.cliDict.cover = function () {\n\
     moduleExtensionsJs = tmp._extensions[\".js\"];\n\
     tmp._extensions[\".js\"] = function (module, file) {\n\
         if (typeof file === \"string\" && (\n\
-            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (\n\
-                file.indexOf(process.cwd() + require(\"path\").sep) === 0\n\
-                && (\n\
-                    process.env.npm_config_mode_coverage === \"node_modules\"\n\
-                    || file.indexOf(\n\
-                        require(\"path\").resolve(\"node_modules\")\n\
-                        + require(\"path\").sep\n\
-                    ) !== 0\n\
-                )\n\
+            file.indexOf(process.cwd() + require(\"path\").sep) === 0 && (\n\
+                process.env.npm_config_mode_coverage === \"node_modules\"\n\
+                || file.indexOf(\n\
+                    require(\"path\").resolve(\"node_modules\")\n\
+                    + require(\"path\").sep\n\
+                ) !== 0\n\
             )\n\
         )) {\n\
             module._compile(local.instrumentInPackage(\n\
@@ -84144,6 +84189,14 @@ if (module === require.main && !globalThis.utility2_rollup) {\n\
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -84348,13 +84401,13 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
  * this function will sync-read <pathname> with given <type> and <dflt>
  */
     let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require("path").resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -84367,23 +84420,21 @@ local.fsReadFileOrDefaultSync = function (pathname, type, dflt) {
     }
 };
 
-local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+local.fsWriteFileWithMkdirpSync = function (pathname, data) {
 /*
  * this function will sync write <data> to <pathname> with "mkdir -p"
  */
     let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require("fs");
+        pathname = require("path").resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require("path").resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require("path").dirname(pathname), {
@@ -84391,12 +84442,9 @@ local.fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success && msg) {
-        console.error(msg.replace("{{pathname}}", pathname));
-    }
-    return success;
+    console.error("fsWriteFileWithMkdirpSync - " + pathname);
+    return true;
 };
 
 local.templateRender = function (template, dict, opt = {}, ii = 0) {
@@ -94811,11 +94859,7 @@ fileWrite = function (file, data) {
 /*
  * this function will write <data> to <file>
  */
-    local.fsWriteFileWithMkdirpSync(
-        file,
-        data,
-        "wrote file - coverage-report - {{pathname}}"
-    );
+    local.fsWriteFileWithMkdirpSync(file, data);
 };
 reportHtmlWrite = function (node, dirCoverage, coverage) {
 /*
@@ -95726,10 +95770,11 @@ local.instrumentSync = function (code, file) {
     // 1. normalize <file>
     file = path.resolve(file);
     // 2. save <code> to __coverageInclude__[<file>] for future html-report
-    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};
-    globalThis.__coverageInclude__[file] = 1;
     // 3. return instrumented-code
-    return new local.Instrumenter({
+    return (
+        "globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};"
+        + "globalThis.__coverageInclude__[" + JSON.stringify(file) + "] = 1;\n"
+    ) + new local.Instrumenter({
         embedSource: true,
         esModules: true,
         noAutoWrap: true
@@ -95774,15 +95819,12 @@ local.cliDict.cover = function () {
     moduleExtensionsJs = tmp._extensions[".js"];
     tmp._extensions[".js"] = function (module, file) {
         if (typeof file === "string" && (
-            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (
-                file.indexOf(process.cwd() + require("path").sep) === 0
-                && (
-                    process.env.npm_config_mode_coverage === "node_modules"
-                    || file.indexOf(
-                        require("path").resolve("node_modules")
-                        + require("path").sep
-                    ) !== 0
-                )
+            file.indexOf(process.cwd() + require("path").sep) === 0 && (
+                process.env.npm_config_mode_coverage === "node_modules"
+                || file.indexOf(
+                    require("path").resolve("node_modules")
+                    + require("path").sep
+                ) !== 0
             )
         )) {
             module._compile(local.instrumentInPackage(
@@ -96032,6 +96074,14 @@ instruction
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
@@ -96866,6 +96916,14 @@ require("http").createServer(function (req, res) {
         recurse(tgt, src, depth | 0);
         return tgt;
     };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    };
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -96882,11 +96940,11 @@ require("http").createServer(function (req, res) {
 
 
 /* jslint utility2:true */
-/* istanbul ignore next */
 (function (local) {
 "use strict";
 
 
+/* istanbul ignore next */
 // run shared js-env code - init-before
 (function () {
 // init local
@@ -97429,7 +97487,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
     ], function (onError) {
         // cleanup old coverage
         if (!local.isBrowser) {
-            local.fsRmrfSync("tmp/build/coverage.html/aa");
+            require("child_process").spawnSync("rm", [
+                "-rf", "tmp/build/coverage.html/aa"
+            ], {
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            });
         }
         // test path handling-behavior
         [

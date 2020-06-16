@@ -92,10 +92,6 @@
 
 
 
-
-
-
-
 /*
 example.js
 
@@ -258,6 +254,14 @@ instruction
         };
         recurse(tgt, src, depth | 0);
         return tgt;
+    };
+    local.onErrorThrow = function (err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
     };
     // bug-workaround - throw unhandledRejections in node-process
     if (
