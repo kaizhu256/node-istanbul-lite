@@ -1,8 +1,8 @@
 // usr/bin/env node
 /*
- * lib.jslint.js (2020.6.9)
+ * lib.jslint.js (2020.7.9)
  * https://github.com/kaizhu256/node-jslint-lite
- * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo
+ * this zero-dependency package will provide browser-compatible versions of jslint (v2020.7.2) and csslint (v2018.2.25), with working web-demo
  *
  */
 
@@ -11141,16 +11141,16 @@ return CSSLint;
 
 
 /*
-repo https://github.com/douglascrockford/JSLint/tree/6cc432230093a1779ef0df3388b4f062778b9d9b
-committed 2020-07-01T12:28:54Z
+repo https://github.com/douglascrockford/JSLint/tree/118167e967b4ebfc08759fdd1ab2d87f5a27cc37
+committed 2020-07-02T15:21:03Z
 */
 
 
 /*
-file https://github.com/douglascrockford/JSLint/blob/6cc432230093a1779ef0df3388b4f062778b9d9b/jslint.js
+file https://github.com/douglascrockford/JSLint/blob/118167e967b4ebfc08759fdd1ab2d87f5a27cc37/jslint.js
 */
 // jslint.js
-// 2020-07-01
+// 2020-07-02
 // Copyright (c) 2015 Douglas Crockford  (www.JSLint.com)
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -11617,8 +11617,6 @@ function artifact(the_token) {
     );
 }
 
-// hack-jslint - remove deadcode
-/*
 function artifact_line(the_token) {
 
 // Return the fudged line number of an artifact.
@@ -11628,7 +11626,6 @@ function artifact_line(the_token) {
     }
     return the_token.line + fudge;
 }
-*/
 
 function artifact_column(the_token) {
 
@@ -12066,8 +12063,6 @@ function tokenize(source) {
                     typeof allowed === "boolean"
                     || typeof allowed === "object"
                 ) {
-                    // hack-jslint - remove deadcode
-                    /*
                     if (
                         value === ""
                         || value === "true"
@@ -12082,18 +12077,6 @@ function tokenize(source) {
                     } else {
                         warn("bad_option_a", the_comment, name + ":" + value);
                     }
-                    */
-                    if (
-                        value === "true"
-                        || value === undefined
-                    ) {
-                        option[name] = true;
-                        if (Array.isArray(allowed)) {
-                            populate(allowed, declared_globals, false);
-                        }
-                    } else {
-                        option[name] = false;
-                    }
                 } else {
                     warn("bad_option_a", the_comment, name);
                 }
@@ -12102,10 +12085,7 @@ function tokenize(source) {
                     tenure = empty();
                 }
                 tenure[name] = true;
-            // hack-jslint - remove deadcode
-            // } else if (the_comment.directive === "global") {
-            // the_comment.directive === "global"
-            } else {
+            } else if (the_comment.directive === "global") {
                 if (value) {
                     warn("bad_option_a", the_comment, name + ":" + value);
                 }
@@ -12887,9 +12867,7 @@ function advance(id, match) {
                 next_token,
                 id,
                 artifact(match),
-                // hack-jslint - remove deadcode
-                // artifact_line(match),
-                match.line + fudge,
+                artifact_line(match),
                 artifact(next_token)
             )
         );
@@ -12995,9 +12973,8 @@ function json_value() {
         negative.arity = "unary";
         advance("-");
         advance("(number)");
-        // jslint-hack lint negative-number
         if (!rx_JSON_number.test(token.value)) {
-            warn("unexpected_a");
+            warn("unexpected_a", token);
         }
         negative.expression = token;
         return negative;
@@ -15139,8 +15116,7 @@ function walk_statement(thing) {
 }
 
 function lookup(thing) {
-    // hack-jslint - for-loop
-    if (thing && thing.arity === "variable") {
+    if (thing.arity === "variable") {
 
 // Look up the variable in the current context.
 
@@ -15188,9 +15164,8 @@ function lookup(thing) {
             the_variable.dead
             && (
                 the_variable.calls === undefined
-                || the_variable.calls[
-                    functionage.name && functionage.name.id
-                ] === undefined
+                || functionage.name === undefined
+                || the_variable.calls[functionage.name.id] === undefined
             )
         ) {
             warn("out_of_scope_a", thing);
@@ -15206,12 +15181,9 @@ function subactivate(name) {
 }
 
 function preaction_function(thing) {
-    // hack-jslint - remove deadcode
-    /*
     if (thing.arity === "statement" && blockage.body !== true) {
         warn("unexpected_a", thing);
     }
-    */
     stack.push(functionage);
     block_stack.push(blockage);
     functionage = thing;
@@ -15370,8 +15342,6 @@ preaction("statement", "{", function (thing) {
     thing.live = [];
 });
 preaction("statement", "for", function (thing) {
-    // hack-jslint - remove deadcode
-    /*
     if (thing.name !== undefined) {
         const the_variable = lookup(thing.name);
         if (the_variable !== undefined) {
@@ -15379,14 +15349,6 @@ preaction("statement", "for", function (thing) {
             if (!the_variable.writable) {
                 warn("bad_assignment_a", thing.name);
             }
-        }
-    }
-    */
-    const the_variable = lookup(thing.name);
-    if (the_variable !== undefined) {
-        the_variable.init = true;
-        if (!the_variable.writable) {
-            warn("bad_assignment_a", thing.name);
         }
     }
     walk_statement(thing.initial);
@@ -16425,7 +16387,7 @@ local.jslint0 = Object.freeze(function (
     });
     return {
         directives,
-        edition: "2020-07-01",
+        edition: "2020-07-02",
         exports,
         froms,
         functions,
@@ -16453,7 +16415,6 @@ local.jslint0 = Object.freeze(function (
             ) || (a.line - b.line);
         }),
         // hack-jslint - autofix
-        source,
         source_autofixed: lines_extra.map(function (element, ii) {
             return element.source_autofixed || lines[ii];
         }).join("\n")

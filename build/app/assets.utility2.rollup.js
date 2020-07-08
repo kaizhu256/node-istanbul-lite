@@ -13381,9 +13381,9 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.jslint.js */
 // usr/bin/env node
 /*
- * lib.jslint.js (2020.6.9)
+ * lib.jslint.js (2020.7.9)
  * https://github.com/kaizhu256/node-jslint-lite
- * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo
+ * this zero-dependency package will provide browser-compatible versions of jslint (v2020.7.2) and csslint (v2018.2.25), with working web-demo
  *
  */
 
@@ -24522,16 +24522,16 @@ return CSSLint;
 
 
 /*
-repo https://github.com/douglascrockford/JSLint/tree/6cc432230093a1779ef0df3388b4f062778b9d9b
-committed 2020-07-01T12:28:54Z
+repo https://github.com/douglascrockford/JSLint/tree/118167e967b4ebfc08759fdd1ab2d87f5a27cc37
+committed 2020-07-02T15:21:03Z
 */
 
 
 /*
-file https://github.com/douglascrockford/JSLint/blob/6cc432230093a1779ef0df3388b4f062778b9d9b/jslint.js
+file https://github.com/douglascrockford/JSLint/blob/118167e967b4ebfc08759fdd1ab2d87f5a27cc37/jslint.js
 */
 // jslint.js
-// 2020-07-01
+// 2020-07-02
 // Copyright (c) 2015 Douglas Crockford  (www.JSLint.com)
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24998,8 +24998,6 @@ function artifact(the_token) {
     );
 }
 
-// hack-jslint - remove deadcode
-/*
 function artifact_line(the_token) {
 
 // Return the fudged line number of an artifact.
@@ -25009,7 +25007,6 @@ function artifact_line(the_token) {
     }
     return the_token.line + fudge;
 }
-*/
 
 function artifact_column(the_token) {
 
@@ -25447,8 +25444,6 @@ function tokenize(source) {
                     typeof allowed === "boolean"
                     || typeof allowed === "object"
                 ) {
-                    // hack-jslint - remove deadcode
-                    /*
                     if (
                         value === ""
                         || value === "true"
@@ -25463,18 +25458,6 @@ function tokenize(source) {
                     } else {
                         warn("bad_option_a", the_comment, name + ":" + value);
                     }
-                    */
-                    if (
-                        value === "true"
-                        || value === undefined
-                    ) {
-                        option[name] = true;
-                        if (Array.isArray(allowed)) {
-                            populate(allowed, declared_globals, false);
-                        }
-                    } else {
-                        option[name] = false;
-                    }
                 } else {
                     warn("bad_option_a", the_comment, name);
                 }
@@ -25483,10 +25466,7 @@ function tokenize(source) {
                     tenure = empty();
                 }
                 tenure[name] = true;
-            // hack-jslint - remove deadcode
-            // } else if (the_comment.directive === "global") {
-            // the_comment.directive === "global"
-            } else {
+            } else if (the_comment.directive === "global") {
                 if (value) {
                     warn("bad_option_a", the_comment, name + ":" + value);
                 }
@@ -26268,9 +26248,7 @@ function advance(id, match) {
                 next_token,
                 id,
                 artifact(match),
-                // hack-jslint - remove deadcode
-                // artifact_line(match),
-                match.line + fudge,
+                artifact_line(match),
                 artifact(next_token)
             )
         );
@@ -26376,9 +26354,8 @@ function json_value() {
         negative.arity = "unary";
         advance("-");
         advance("(number)");
-        // jslint-hack lint negative-number
         if (!rx_JSON_number.test(token.value)) {
-            warn("unexpected_a");
+            warn("unexpected_a", token);
         }
         negative.expression = token;
         return negative;
@@ -28520,8 +28497,7 @@ function walk_statement(thing) {
 }
 
 function lookup(thing) {
-    // hack-jslint - for-loop
-    if (thing && thing.arity === "variable") {
+    if (thing.arity === "variable") {
 
 // Look up the variable in the current context.
 
@@ -28569,9 +28545,8 @@ function lookup(thing) {
             the_variable.dead
             && (
                 the_variable.calls === undefined
-                || the_variable.calls[
-                    functionage.name && functionage.name.id
-                ] === undefined
+                || functionage.name === undefined
+                || the_variable.calls[functionage.name.id] === undefined
             )
         ) {
             warn("out_of_scope_a", thing);
@@ -28587,12 +28562,9 @@ function subactivate(name) {
 }
 
 function preaction_function(thing) {
-    // hack-jslint - remove deadcode
-    /*
     if (thing.arity === "statement" && blockage.body !== true) {
         warn("unexpected_a", thing);
     }
-    */
     stack.push(functionage);
     block_stack.push(blockage);
     functionage = thing;
@@ -28751,8 +28723,6 @@ preaction("statement", "{", function (thing) {
     thing.live = [];
 });
 preaction("statement", "for", function (thing) {
-    // hack-jslint - remove deadcode
-    /*
     if (thing.name !== undefined) {
         const the_variable = lookup(thing.name);
         if (the_variable !== undefined) {
@@ -28760,14 +28730,6 @@ preaction("statement", "for", function (thing) {
             if (!the_variable.writable) {
                 warn("bad_assignment_a", thing.name);
             }
-        }
-    }
-    */
-    const the_variable = lookup(thing.name);
-    if (the_variable !== undefined) {
-        the_variable.init = true;
-        if (!the_variable.writable) {
-            warn("bad_assignment_a", thing.name);
         }
     }
     walk_statement(thing.initial);
@@ -29806,7 +29768,7 @@ local.jslint0 = Object.freeze(function (
     });
     return {
         directives,
-        edition: "2020-07-01",
+        edition: "2020-07-02",
         exports,
         froms,
         functions,
@@ -29834,7 +29796,6 @@ local.jslint0 = Object.freeze(function (
             ) || (a.line - b.line);
         }),
         // hack-jslint - autofix
-        source,
         source_autofixed: lines_extra.map(function (element, ii) {
             return element.source_autofixed || lines[ii];
         }).join("\n")
@@ -44044,7 +44005,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.6.14)
+ * lib.utility2.js (2020.7.8)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -52392,9 +52353,9 @@ local.domOnEventInputChange({\n\
 local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 "// usr/bin/env node\n\
 /*\n\
- * lib.jslint.js (2020.6.9)\n\
+ * lib.jslint.js (2020.7.9)\n\
  * https://github.com/kaizhu256/node-jslint-lite\n\
- * this zero-dependency package will provide browser-compatible versions of jslint (v2020.3.28) and csslint (v2018.2.25), with working web-demo\n\
+ * this zero-dependency package will provide browser-compatible versions of jslint (v2020.7.2) and csslint (v2018.2.25), with working web-demo\n\
  *\n\
  */\n\
 \n\
@@ -63533,16 +63494,16 @@ return CSSLint;\n\
 \n\
 \n\
 /*\n\
-repo https://github.com/douglascrockford/JSLint/tree/6cc432230093a1779ef0df3388b4f062778b9d9b\n\
-committed 2020-07-01T12:28:54Z\n\
+repo https://github.com/douglascrockford/JSLint/tree/118167e967b4ebfc08759fdd1ab2d87f5a27cc37\n\
+committed 2020-07-02T15:21:03Z\n\
 */\n\
 \n\
 \n\
 /*\n\
-file https://github.com/douglascrockford/JSLint/blob/6cc432230093a1779ef0df3388b4f062778b9d9b/jslint.js\n\
+file https://github.com/douglascrockford/JSLint/blob/118167e967b4ebfc08759fdd1ab2d87f5a27cc37/jslint.js\n\
 */\n\
 // jslint.js\n\
-// 2020-07-01\n\
+// 2020-07-02\n\
 // Copyright (c) 2015 Douglas Crockford  (www.JSLint.com)\n\
 \n\
 // Permission is hereby granted, free of charge, to any person obtaining a copy\n\
@@ -64009,8 +63970,6 @@ function artifact(the_token) {\n\
     );\n\
 }\n\
 \n\
-// hack-jslint - remove deadcode\n\
-/*\n\
 function artifact_line(the_token) {\n\
 \n\
 // Return the fudged line number of an artifact.\n\
@@ -64020,7 +63979,6 @@ function artifact_line(the_token) {\n\
     }\n\
     return the_token.line + fudge;\n\
 }\n\
-*/\n\
 \n\
 function artifact_column(the_token) {\n\
 \n\
@@ -64458,8 +64416,6 @@ function tokenize(source) {\n\
                     typeof allowed === \"boolean\"\n\
                     || typeof allowed === \"object\"\n\
                 ) {\n\
-                    // hack-jslint - remove deadcode\n\
-                    /*\n\
                     if (\n\
                         value === \"\"\n\
                         || value === \"true\"\n\
@@ -64474,18 +64430,6 @@ function tokenize(source) {\n\
                     } else {\n\
                         warn(\"bad_option_a\", the_comment, name + \":\" + value);\n\
                     }\n\
-                    */\n\
-                    if (\n\
-                        value === \"true\"\n\
-                        || value === undefined\n\
-                    ) {\n\
-                        option[name] = true;\n\
-                        if (Array.isArray(allowed)) {\n\
-                            populate(allowed, declared_globals, false);\n\
-                        }\n\
-                    } else {\n\
-                        option[name] = false;\n\
-                    }\n\
                 } else {\n\
                     warn(\"bad_option_a\", the_comment, name);\n\
                 }\n\
@@ -64494,10 +64438,7 @@ function tokenize(source) {\n\
                     tenure = empty();\n\
                 }\n\
                 tenure[name] = true;\n\
-            // hack-jslint - remove deadcode\n\
-            // } else if (the_comment.directive === \"global\") {\n\
-            // the_comment.directive === \"global\"\n\
-            } else {\n\
+            } else if (the_comment.directive === \"global\") {\n\
                 if (value) {\n\
                     warn(\"bad_option_a\", the_comment, name + \":\" + value);\n\
                 }\n\
@@ -65279,9 +65220,7 @@ function advance(id, match) {\n\
                 next_token,\n\
                 id,\n\
                 artifact(match),\n\
-                // hack-jslint - remove deadcode\n\
-                // artifact_line(match),\n\
-                match.line + fudge,\n\
+                artifact_line(match),\n\
                 artifact(next_token)\n\
             )\n\
         );\n\
@@ -65387,9 +65326,8 @@ function json_value() {\n\
         negative.arity = \"unary\";\n\
         advance(\"-\");\n\
         advance(\"(number)\");\n\
-        // jslint-hack lint negative-number\n\
         if (!rx_JSON_number.test(token.value)) {\n\
-            warn(\"unexpected_a\");\n\
+            warn(\"unexpected_a\", token);\n\
         }\n\
         negative.expression = token;\n\
         return negative;\n\
@@ -67531,8 +67469,7 @@ function walk_statement(thing) {\n\
 }\n\
 \n\
 function lookup(thing) {\n\
-    // hack-jslint - for-loop\n\
-    if (thing && thing.arity === \"variable\") {\n\
+    if (thing.arity === \"variable\") {\n\
 \n\
 // Look up the variable in the current context.\n\
 \n\
@@ -67580,9 +67517,8 @@ function lookup(thing) {\n\
             the_variable.dead\n\
             && (\n\
                 the_variable.calls === undefined\n\
-                || the_variable.calls[\n\
-                    functionage.name && functionage.name.id\n\
-                ] === undefined\n\
+                || functionage.name === undefined\n\
+                || the_variable.calls[functionage.name.id] === undefined\n\
             )\n\
         ) {\n\
             warn(\"out_of_scope_a\", thing);\n\
@@ -67598,12 +67534,9 @@ function subactivate(name) {\n\
 }\n\
 \n\
 function preaction_function(thing) {\n\
-    // hack-jslint - remove deadcode\n\
-    /*\n\
     if (thing.arity === \"statement\" && blockage.body !== true) {\n\
         warn(\"unexpected_a\", thing);\n\
     }\n\
-    */\n\
     stack.push(functionage);\n\
     block_stack.push(blockage);\n\
     functionage = thing;\n\
@@ -67762,8 +67695,6 @@ preaction(\"statement\", \"{\", function (thing) {\n\
     thing.live = [];\n\
 });\n\
 preaction(\"statement\", \"for\", function (thing) {\n\
-    // hack-jslint - remove deadcode\n\
-    /*\n\
     if (thing.name !== undefined) {\n\
         const the_variable = lookup(thing.name);\n\
         if (the_variable !== undefined) {\n\
@@ -67771,14 +67702,6 @@ preaction(\"statement\", \"for\", function (thing) {\n\
             if (!the_variable.writable) {\n\
                 warn(\"bad_assignment_a\", thing.name);\n\
             }\n\
-        }\n\
-    }\n\
-    */\n\
-    const the_variable = lookup(thing.name);\n\
-    if (the_variable !== undefined) {\n\
-        the_variable.init = true;\n\
-        if (!the_variable.writable) {\n\
-            warn(\"bad_assignment_a\", thing.name);\n\
         }\n\
     }\n\
     walk_statement(thing.initial);\n\
@@ -68817,7 +68740,7 @@ local.jslint0 = Object.freeze(function (\n\
     });\n\
     return {\n\
         directives,\n\
-        edition: \"2020-07-01\",\n\
+        edition: \"2020-07-02\",\n\
         exports,\n\
         froms,\n\
         functions,\n\
@@ -68845,7 +68768,6 @@ local.jslint0 = Object.freeze(function (\n\
             ) || (a.line - b.line);\n\
         }),\n\
         // hack-jslint - autofix\n\
-        source,\n\
         source_autofixed: lines_extra.map(function (element, ii) {\n\
             return element.source_autofixed || lines[ii];\n\
         }).join(\"\\n\")\n\
