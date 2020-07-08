@@ -1,0 +1,2980 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    overflow-wrap: break-word;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/kaizhu256/node-istanbul-lite"
+
+    >istanbul-lite (2020.5.32)</a>
+</h1>
+<h4>this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.istanbul-lite">module istanbul-lite</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>Instrumenter
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.assertOrThrow">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>assertOrThrow
+            <span class="apidocSignatureSpan">(passed, msg)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.cliRun">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>cliRun
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.coalesce">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>coalesce
+            <span class="apidocSignatureSpan">(...argList)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.coverageMerge">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>coverageMerge
+            <span class="apidocSignatureSpan">(coverage1 = {}, coverage2 = {})</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.coverageReportCreate">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>coverageReportCreate
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.fsReadFileOrDefaultSync">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>fsReadFileOrDefaultSync
+            <span class="apidocSignatureSpan">(pathname, type, dflt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>fsWriteFileWithMkdirpSync
+            <span class="apidocSignatureSpan">(pathname, data, msg)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.identity">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>identity
+            <span class="apidocSignatureSpan">(val)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.instrumentInPackage">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>instrumentInPackage
+            <span class="apidocSignatureSpan">(code, file)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.instrumentSync">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>instrumentSync
+            <span class="apidocSignatureSpan">(code, file)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.nop">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>nop
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.objectAssignDefault">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>objectAssignDefault
+            <span class="apidocSignatureSpan">(tgt = {}, src = {}, depth = 0)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.templateRender">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>templateRender
+            <span class="apidocSignatureSpan">(template, dict, opt = {}, ii = 0)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">number <span class="apidocSignatureSpan">istanbul-lite.</span>timeExit</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">istanbul-lite.</span>Instrumenter.prototype</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">istanbul-lite.</span>cliDict</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">istanbul-lite.</span>istanbul</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">istanbul-lite.</span>local</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">istanbul-lite.</span>__dirname</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">istanbul-lite.</span>templateCoverageBadgeSvg</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">istanbul-lite.</span>templateCoverageReport</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.istanbul-lite.Instrumenter">module istanbul-lite.Instrumenter</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.Instrumenter">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>Instrumenter
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.istanbul-lite.Instrumenter.prototype">module istanbul-lite.Instrumenter.prototype</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.arrowBlockConverter">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>arrowBlockConverter
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.branchIncrementExprAst">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>branchIncrementExprAst
+            <span class="apidocSignatureSpan">(varName, branchIndex, down)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.branchLocationFor">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>branchLocationFor
+            <span class="apidocSignatureSpan">(name, index)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.branchName">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>branchName
+            <span class="apidocSignatureSpan">(type, startLine, pathLocations)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.conditionalBranchInjector">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>conditionalBranchInjector
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.convertToBlock">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>convertToBlock
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverExport">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverExport
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverFunction">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverFunction
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverMetaProperty">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverMetaProperty
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverStatement">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverStatement
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.endIgnore">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>endIgnore
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.extractCurrentHint">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>extractCurrentHint
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.filterHints">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>filterHints
+            <span class="apidocSignatureSpan">(comments)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.findLeaves">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>findLeaves
+            <span class="apidocSignatureSpan">(node, accumulator, parent, property)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.fixColumnPositions">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>fixColumnPositions
+            <span class="apidocSignatureSpan">(coverState)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.functionName">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>functionName
+            <span class="apidocSignatureSpan">(node, line, location)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.getPreamble">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>getPreamble
+            <span class="apidocSignatureSpan">(sourceCode, emitUseStrict)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.ifBlockConverter">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>ifBlockConverter
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.ifBranchInjector">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>ifBranchInjector
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.instrument">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>instrument
+            <span class="apidocSignatureSpan">(code, filename, callback)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.instrumentASTSync">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>instrumentASTSync
+            <span class="apidocSignatureSpan">(program, filename, originalCode)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.instrumentSync">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>instrumentSync
+            <span class="apidocSignatureSpan">(code, filename)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.isUseStrictExpression">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>isUseStrictExpression
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.lastFileCoverage">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>lastFileCoverage
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.lastSourceMap">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>lastSourceMap
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.locationsForNodes">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>locationsForNodes
+            <span class="apidocSignatureSpan">(nodes)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.logicalExpressionBranchInjector">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>logicalExpressionBranchInjector
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.loopBlockConverter">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>loopBlockConverter
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeAddSkip">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>maybeAddSkip
+            <span class="apidocSignatureSpan">(branchLocation)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeAddType">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>maybeAddType
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeSkipNode">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>maybeSkipNode
+            <span class="apidocSignatureSpan">(node, type)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.paranoidHandlerCheck">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>paranoidHandlerCheck
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.skipInit">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>skipInit
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.skipLeft">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>skipLeft
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.splice">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>splice
+            <span class="apidocSignatureSpan">(statements, node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.startIgnore">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>startIgnore
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.statementName">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>statementName
+            <span class="apidocSignatureSpan">(location, initValue)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.switchBranchInjector">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>switchBranchInjector
+            <span class="apidocSignatureSpan">(node, walker)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.switchCaseInjector">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>switchCaseInjector
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.withBlockConverter">
+            function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>withBlockConverter
+            <span class="apidocSignatureSpan">(node)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.istanbul-lite.cliDict">module istanbul-lite.cliDict</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.cliDict.cover">
+            function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>cover
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.cliDict.instrument">
+            function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>instrument
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.cliDict.report">
+            function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>report
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.cliDict.test">
+            function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>test
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.istanbul-lite" id="apidoc.module.istanbul-lite">module istanbul-lite</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter" id="apidoc.elem.istanbul-lite.Instrumenter">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>Instrumenter
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Instrumenter(options) {
+    this.opts = options || {
+        debug: false,
+        walkDebug: false,
+        coverageVariable: &apos;__coverage__&apos;,
+        codeGenerationOptions: undefined,
+        noAutoWrap: false,
+        noCompact: false,
+        embedSource: false,
+        preserveComments: false,
+        esModules: false
+    };
+
+    if (this.opts.esModules &amp;&amp; !this.opts.noAutoWrap) {
+        this.opts.noAutoWrap = true;
+        if (this.opts.debug) {
+            console.log(&apos;Setting noAutoWrap to true as required by esModules&apos;);
+        }
+    }
+
+    this.walker = new Walker({
+        ArrowFunctionExpression: [ this.arrowBlockConverter ],
+        ExpressionStatement: this.coverStatement,
+        ExportNamedDeclaration: this.coverExport,
+        BreakStatement: this.coverStatement,
+        ContinueStatement: this.coverStatement,
+        DebuggerStatement: this.coverStatement,
+        ReturnStatement: this.coverStatement,
+        ThrowStatement: this.coverStatement,
+        TryStatement: [ this.paranoidHandlerCheck, this.coverStatement],
+        VariableDeclaration: this.coverStatement,
+        IfStatement: [ this.ifBlockConverter, this.coverStatement, this.ifBranchInjector ],
+        ForStatement: [ this.skipInit, this.loopBlockConverter, this.coverStatement ],
+        ForInStatement: [ this.skipLeft, this.loopBlockConverter, this.coverStatement ],
+        ForOfStatement: [ this.skipLeft, this.loopBlockConverter, this.coverStatement ],
+        WhileStatement: [ this.loopBlockConverter, this.coverStatement ],
+        DoWhileStatement: [ this.loopBlockConverter, this.coverStatement ],
+        SwitchStatement: [ this.coverStatement, this.switchBranchInjector ],
+        SwitchCase: [ this.switchCaseInjector ],
+        WithStatement: [ this.withBlockConverter, this.coverStatement ],
+        FunctionDeclaration: [ this.coverFunction, this.coverStatement ],
+        FunctionExpression: this.coverFunction,
+        LabeledStatement: this.coverStatement,
+        ConditionalExpression: this.conditionalBranchInjector,
+        LogicalExpression: this.logicalExpressionBranchInjector,
+        ObjectExpression: this.maybeAddType,
+        MetaProperty: this.coverMetaProperty,
+    }, this.extractCurrentHint, this, this.opts.walkDebug);
+
+    //unit testing purposes only
+    if (this.opts.backdoor &amp;&amp; this.opts.backdoor.omitTrackerSuffix) {
+        this.omitTrackerSuffix = true;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.assertOrThrow" id="apidoc.elem.istanbul-lite.assertOrThrow">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>assertOrThrow
+        <span class="apidocSignatureSpan">(passed, msg)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">assertOrThrow = function (passed, msg) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will throw err.&lt;msg&gt; if &lt;passed&gt; is falsy
+ */
+</span>    if (passed) {
+        return;
+    }
+    throw (
+        (
+            msg
+            &amp;&amp; typeof msg.message === &quot;string&quot;
+            &amp;&amp; typeof msg.stack === &quot;string&quot;
+        )
+        // if msg is err, then leave as is
+        ? msg
+        : new Error(
+            typeof msg === &quot;string&quot;
+            // if msg is a string, then leave as is
+            ? msg
+            // else JSON.stringify msg
+            : JSON.stringify(msg, undefined, 4)
+        )
+    );
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+        argList: local.coalesce(commandList[ii][1], &quot;&quot;).trim(),
+        command: [
+            key
+        ],
+        description: commandList[ii][2]
+    };
+} catch (ignore) {
+    local.<span class="apidocCodeKeywordSpan">assertOrThrow</span>(undefined, new Error(
+        &quot;cliRun - cannot parse comment in COMMAND &quot;
+        + key
+        + &quot;:\nnew RegExp(&quot;
+        + JSON.stringify(opt.rgxComment.source)
+        + &quot;).exec(&quot; + JSON.stringify(str).replace((
+            /\\\\/g
+        ), &quot;\u0000&quot;).replace((
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.cliRun" id="apidoc.elem.istanbul-lite.cliRun">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>cliRun
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">cliRun = function (opt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will run cli with given &lt;opt&gt;
+ */
+</span>    local.cliDict._eval = local.cliDict._eval || function () {
+    /*
+     * &lt;code&gt;
+     * will eval &lt;code&gt;
+     */
+        globalThis.local = local;
+        local.vm.runInThisContext(process.argv[3]);
+    };
+    local.cliDict._help = local.cliDict._help || function () {
+    /*
+     *
+     * will print help
+     */
+        let commandList;
+        let file;
+        let packageJson;
+        let str;
+        let strDict;
+        commandList = [
+            {
+                argList: &quot;&lt;arg2&gt;  ...&quot;,
+                description: &quot;usage:&quot;,
+                command: [
+                    &quot;&lt;arg1&gt;&quot;
+                ]
+            }, {
+                argList: &quot;&apos;console.log(\&quot;hello world\&quot;)&apos;&quot;,
+                description: &quot;example:&quot;,
+                command: [
+                    &quot;--eval&quot;
+                ]
+            }
+        ];
+        file = __filename.replace((
+            /.*\//
+        ), &quot;&quot;);
+        opt = Object.assign({}, opt);
+        packageJson = require(&quot;./package.json&quot;);
+        // validate comment
+        opt.rgxComment = opt.rgxComment || (
+            /\)\u0020\{\n(?:|\u0020{4})\/\*\n(?:\u0020|\u0020{5})\*((?:\u0020&lt;[^&gt;]*?&gt;|\u0020\.\.\.)*?)\n(?:\u0020|\u0020{5})\*\u0020
+(will\u0020.*?\S)\n(?:\u0020|\u0020{5})\*\/\n(?:\u0020{4}|\u0020{8})\S/
+        );
+        strDict = {};
+        Object.keys(local.cliDict).sort().forEach(function (key, ii) {
+            if (key[0] === &quot;_&quot; &amp;&amp; key !== &quot;_default&quot;) {
+                return;
+            }
+            str = String(local.cliDict[key]);
+            if (key === &quot;_default&quot;) {
+                key = &quot;&quot;;
+            }
+            strDict[str] = strDict[str] || (ii + 2);
+            ii = strDict[str];
+            if (commandList[ii]) {
+                commandList[ii].command.push(key);
+                return;
+            }
+            try {
+                commandList[ii] = opt.rgxComment.exec(str);
+                commandList[ii] = {
+                    argList: local.coalesce(commandList[ii][1], &quot;&quot;).trim(),
+                    command: [
+                        key
+                    ],
+                    description: commandList[ii][2]
+                };
+            } catch (ignore) {
+                local.assertOrThrow(undefined, new Error(
+                    &quot;cliRun - cannot parse comment in COMMAND &quot;
+                    + key
+                    + &quot;:\nnew RegExp(&quot;
+                    + JSON.stringify(opt.rgxComment.source)
+                    + &quot;).exec(&quot; + JSON.stringify(str).replace((
+                        /\\\\/g
+                    ), &quot;\u0000&quot;).replace((
+                        /\\n/g
+                    ), &quot;\\n\\\n&quot;).replace((
+                        /\u0000/g
+                    ), &quot;\\\\&quot;) + &quot;);&quot;
+                ));
+            }
+        });
+        str = &quot;&quot;;
+        str += packageJson.name + &quot; (&quot; + packageJson.version + &quot;)\n\n&quot;;
+        str += commandList.filter(function (elem) {
+            return elem;
+        }).map(function (elem, ii) {
+            elem.command = elem.command.filter(function (elem) {
+                return elem;
+            });
+            switch (ii) {
+            case 0:
+            case 1:
+                elem.argList = [
+                    elem.argList
+                ];
+                break;
+            default:
+                elem.argList = elem.argList.split(&quot; &quot;);
+                elem.description = (
+                    &quot;# COMMAND &quot;
+                    + (elem.command[0] || &quot;&lt;none&gt;&quot;) + &quot;\n# &quot;
+                    + elem.description
+                );
+            }
+            return (
+                elem.description + &quot;\n  &quot; + file
+                + &quot;  &quo...</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.coalesce" id="apidoc.elem.istanbul-lite.coalesce">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>coalesce
+        <span class="apidocSignatureSpan">(...argList)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">coalesce = function (...argList) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will coalesce null, undefined, or &quot;&quot; in &lt;argList&gt;
+ */
+</span>    let arg;
+    let ii;
+    ii = 0;
+    while (ii &lt; argList.length) {
+        arg = argList[ii];
+        if (!(arg === undefined || arg === null || arg === &quot;&quot;)) {
+            break;
+        }
+        ii += 1;
+    }
+    return arg;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+if (commandList[ii]) {
+    commandList[ii].command.push(key);
+    return;
+}
+try {
+    commandList[ii] = opt.rgxComment.exec(str);
+    commandList[ii] = {
+        argList: local.<span class="apidocCodeKeywordSpan">coalesce</span>(commandList[ii][1], &quot;&quot;).trim(),
+        command: [
+            key
+        ],
+        description: commandList[ii][2]
+    };
+} catch (ignore) {
+    local.assertOrThrow(undefined, new Error(
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.coverageMerge" id="apidoc.elem.istanbul-lite.coverageMerge">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>coverageMerge
+        <span class="apidocSignatureSpan">(coverage1 = {}, coverage2 = {})</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">coverageMerge = function (coverage1 = {}, coverage2 = {}) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will inplace-merge &lt;coverage2&gt; into &lt;coverage1&gt;
+ */
+</span>    let dict1;
+    let dict2;
+    Object.keys(coverage2).forEach(function (file) {
+        // if coverage1[file] is undefined, then override it
+        if (!coverage1[file]) {
+            coverage1[file] = coverage2[file];
+            return;
+        }
+        // merge coverage2 into coverage1
+        [
+            &quot;b&quot;, &quot;f&quot;, &quot;s&quot;
+        ].forEach(function (key) {
+            dict1 = coverage1[file][key];
+            dict2 = coverage2[file][key];
+            switch (key) {
+            // increment coverage for branch lines
+            case &quot;b&quot;:
+                Object.keys(dict2).forEach(function (key) {
+                    dict2[key].forEach(function (cnt, ii) {
+                        dict1[key][ii] += cnt;
+                    });
+                });
+                break;
+            // increment coverage for function and statement lines
+            case &quot;f&quot;:
+            case &quot;s&quot;:
+                Object.keys(dict2).forEach(function (key) {
+                    dict1[key] += dict2[key];
+                });
+                break;
+            }
+        });
+    });
+    return coverage1;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+    });
+/* jslint ignore:start */
+// validate opt.coverage1
+local.assertJsonEqual(opt.coverage1,
+{&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
+quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
+;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
+;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
+;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
+&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
+&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
+;line&quot;:2}}}}}
+);
+// test merge-create handling-behavior
+opt.coverage1 = local.istanbul.<span class="apidocCodeKeywordSpan">coverageMerge</span>({}, opt.coverage1);
+// validate opt.coverage1
+local.assertJsonEqual(opt.coverage1,
+{&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
+quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
+;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
+;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
+;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
+&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
+&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
+;line&quot;:2}}}}}
+);
+// init opt.coverage2
+opt.coverage2 = local.vm.runInNewContext(opt.data, { arg: 1 });
+// validate opt.coverage2
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.coverageReportCreate" id="apidoc.elem.istanbul-lite.coverageReportCreate">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>coverageReportCreate
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">coverageReportCreate = function (opt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will
+    // 1. merge previous &lt;dirCoverage&gt;/coverage.json into &lt;opt&gt;.coverage
+    // 2. convert &lt;opt&gt;.coverage to &lt;summaryDict&gt;
+    // 3. convert &lt;summaryDict&gt; to &lt;nodeRoot&gt;
+    // 4. convert &lt;nodeRoot&gt; to text-report &lt;dirCoverage&gt;/coverage.txt
+    // 5. convert &lt;nodeRoot&gt; to html-report &lt;dirCoverage&gt;/\*
+    // 6. return coverage-report in html-format as single document
+ */
+</span>    let coverageInclude;
+    let dirCoverage;
+    let filePrefix;
+    let filesUnderRoot;
+    let htmlAll;
+    let nodeChildAdd;
+    let nodeCreate;
+    let nodeDict;
+    let nodeNormalize;
+    let nodeRoot;
+    let summaryDict;
+    let tmp;
+    let tmpChildren;
+    if (!(opt &amp;&amp; opt.coverage)) {
+        return &quot;&quot;;
+    }
+    // init function
+    nodeChildAdd = function (node, child) {
+    /*
+     * this function will add &lt;child&gt; to &lt;node&gt;
+     */
+        node.children.push(child);
+        child.parent = node;
+    };
+    nodeCreate = function (pathname) {
+    /*
+     * this function will create a tree-node
+     */
+        return {
+            children: [],
+            pathname,
+            metrics: {
+                branches: {
+                    total: 0,
+                    covered: 0,
+                    skipped: 0,
+                    pct: &quot;Unknown&quot;
+                },
+                functions: {
+                    total: 0,
+                    covered: 0,
+                    skipped: 0,
+                    pct: &quot;Unknown&quot;
+                },
+                lines: {
+                    total: 0,
+                    covered: 0,
+                    skipped: 0,
+                    pct: &quot;Unknown&quot;
+                },
+                statements: {
+                    total: 0,
+                    covered: 0,
+                    skipped: 0,
+                    pct: &quot;Unknown&quot;
+                }
+            },
+            name: pathname
+        };
+    };
+    nodeNormalize = function (node, level, filePrefix, parent) {
+    /*
+     * this function will recursively normalize &lt;node&gt; and its children
+     */
+        let metric;
+        // init name
+        if (node.name.indexOf(filePrefix) === 0) {
+            node.name = node.name.slice(filePrefix.length);
+        }
+        if (node.name[0] === path.sep) {
+            node.name = node.name.slice(1);
+        }
+        // init relativeName
+        node.relativeName = (
+            parent
+            ? (
+                parent.name !== &quot;__root__/&quot;
+                ? node.name.slice(parent.name.length)
+                : node.name
+            )
+            : node.name.slice(filePrefix.length)
+        );
+        // init nameOrAllFiles
+        node.nameOrAllFiles = node.name || &quot;All files&quot;;
+        // init relativeNameOrAllFiles
+        node.relativeNameOrAllFiles = node.relativeName || &quot;All files&quot;;
+        // init href
+        node.href = node.relativeName.split(path.sep).join(&quot;/&quot;) + (
+            node.isFile
+            ? &quot;.html&quot;
+            : &quot;index.html&quot;
+        );
+        // recurse
+        node.children.forEach(function (child) {
+            nodeNormalize(child, level + 1, filePrefix, node);
+        });
+        // sort children by name
+        node.children.sort(function (aa, bb) {
+            return (
+                aa.name &gt; bb.name
+                ? 1
+                : -1
+            );
+        });
+        // init metrics
+        if (!node.isFile) {
+            node.children.forEach(function (child) {
+                [
+                    &quot;lines&quot;, &quot;statements&quot;, &quot;branches&quot;, &quot;functions&quot;
+                ].forEach(function (key) {
+                    metric = node.metrics[key];
+                    metric.total += child.metrics[key].total;
+                    metric.covered += child.metrics[key].covered;
+                    metric.skipped += child.metrics[key].skipped;...</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+            &quot;/inputTextarea1.js&quot;\n\
+        );\n\
+        eval( // jslint ignore:line\n\
+            document.querySelector(&quot;#outputTextarea1&quot;).value\n\
+        );\n\
+        document.querySelector(\n\
+            &quot;#htmlCoverageReport1&quot;\n\
+        ).innerHTML = local.istanbul.<span class="apidocCodeKeywordSpan">coverageReportCreate</span>({\n\
+            coverage: globalThis.__coverage__\n\
+        });\n\
+    } catch (errCaught) {\n\
+        console.error(errCaught);\n\
+    }\n\
+    break;\n\
+}\n\
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.fsReadFileOrDefaultSync" id="apidoc.elem.istanbul-lite.fsReadFileOrDefaultSync">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>fsReadFileOrDefaultSync
+        <span class="apidocSignatureSpan">(pathname, type, dflt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">fsReadFileOrDefaultSync = function (pathname, type, dflt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will sync-read &lt;pathname&gt; with given &lt;type&gt; and &lt;dflt&gt;
+ */
+</span>    let fs;
+    // do nothing if module does not exist
+    try {
+        fs = require(&quot;fs&quot;);
+    } catch (ignore) {
+        return dflt;
+    }
+    pathname = require(&quot;path&quot;).resolve(pathname);
+    // try to read pathname
+    try {
+        return (
+            type === &quot;json&quot;
+            ? JSON.parse(fs.readFileSync(pathname, &quot;utf8&quot;))
+            : fs.readFileSync(pathname, type)
+        );
+    } catch (ignore) {
+        return dflt;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync" id="apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>fsWriteFileWithMkdirpSync
+        <span class="apidocSignatureSpan">(pathname, data, msg)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will sync write &lt;data&gt; to &lt;pathname&gt; with &quot;mkdir -p&quot;
+ */
+</span>    let fs;
+    let success;
+    // do nothing if module does not exist
+    try {
+        fs = require(&quot;fs&quot;);
+    } catch (ignore) {
+        return;
+    }
+    pathname = require(&quot;path&quot;).resolve(pathname);
+    // try to write pathname
+    try {
+        fs.writeFileSync(pathname, data);
+        success = true;
+    } catch (ignore) {
+        // mkdir -p
+        fs.mkdirSync(require(&quot;path&quot;).dirname(pathname), {
+            recursive: true
+        });
+        // re-write pathname
+        fs.writeFileSync(pathname, data);
+        success = true;
+    }
+    if (success &amp;&amp; msg) {
+        console.error(msg.replace(&quot;{{pathname}}&quot;, pathname));
+    }
+    return success;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.identity" id="apidoc.elem.istanbul-lite.identity">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>identity
+        <span class="apidocSignatureSpan">(val)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">identity = function (val) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will return &lt;val&gt;
+ */
+</span>    return val;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+local.cliDict.help = local.cliDict.help || local.cliDict._help;
+local.cliDict._interactive = local.cliDict._interactive || function () {
+/*
+ *
+ * will start interactive-mode
+ */
+    globalThis.local = local;
+    local.<span class="apidocCodeKeywordSpan">identity</span>(local.replStart || require(&quot;repl&quot;).start)({
+        useGlobal: true
+    });
+};
+local.cliDict[&quot;--interactive&quot;] = (
+    local.cliDict[&quot;--interactive&quot;]
+    || local.cliDict._interactive
+);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.instrumentInPackage" id="apidoc.elem.istanbul-lite.instrumentInPackage">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>instrumentInPackage
+        <span class="apidocSignatureSpan">(code, file)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">instrumentInPackage = function (code, file) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will instrument &lt;code&gt;
+ * if macro /\* istanbul instrument in package $npm_package_nameLib *\/
+ * exists in &lt;code&gt;
+ */
+</span>    return (
+        (
+            process.env.npm_config_mode_coverage
+            &amp;&amp; code.indexOf(&quot;/* istanbul ignore all */\n&quot;) &lt; 0 &amp;&amp; (
+                process.env.npm_config_mode_coverage === &quot;all&quot;
+                || process.env.npm_config_mode_coverage === &quot;node_modules&quot;
+                || code.indexOf(
+                    &quot;/* istanbul instrument in package &quot;
+                    + process.env.npm_package_nameLib + &quot; */\n&quot;
+                ) &gt;= 0
+                || code.indexOf(
+                    &quot;/* istanbul instrument in package &quot;
+                    + process.env.npm_config_mode_coverage + &quot; */\n&quot;
+                ) &gt;= 0
+            )
+        )
+        ? local.instrumentSync(code, file)
+        : code
+    );
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+};
+
+local.testCase_istanbulInstrumentInPackage_default = function (opt, onError) {
+/*
+ * this function will test istanbulInstrumentInPackage&apos;s
+ * default handling-behavior
+ */
+    opt.data = local.istanbul.<span class="apidocCodeKeywordSpan">instrumentInPackage</span>(&quot;&quot;, &quot;/test.js&quot;);
+    local.assertJsonEqual(opt.data, &quot;&quot;);
+    opt.data = local.istanbul.instrumentInPackage(
+        &quot;/* istanbul instrument in package istanbul */\n;&quot;,
+        &quot;/test.js&quot;
+    );
+    onError(undefined, opt);
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.instrumentSync" id="apidoc.elem.istanbul-lite.instrumentSync">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>instrumentSync
+        <span class="apidocSignatureSpan">(code, file)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">instrumentSync = function (code, file) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will
+    // 1. normalize &lt;file&gt;
+    // 2. save &lt;code&gt; to __coverageInclude__[&lt;file&gt;] for future html-report
+    // 3. return instrumented-code
+ */
+</span>    // 1. normalize &lt;file&gt;
+    file = path.resolve(file);
+    // 2. save &lt;code&gt; to __coverageInclude__[&lt;file&gt;] for future html-report
+    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};
+    globalThis.__coverageInclude__[file] = 1;
+    // 3. return instrumented-code
+    return new local.Instrumenter({
+        embedSource: true,
+        esModules: true,
+        noAutoWrap: true
+    }).instrumentSync(code, file).trimStart();
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+try {\n\
+    delete globalThis.__coverage__[&quot;/inputTextarea1.js&quot;];\n\
+} catch (ignore) {}\n\
+// try to cover and eval #inputTextarea1\n\
+try {\n\
+    document.querySelector(\n\
+        &quot;#outputTextarea1&quot;\n\
+    ).textContent = local.istanbul.<span class="apidocCodeKeywordSpan">instrumentSync</span>(\n\
+        document.querySelector(&quot;#inputTextarea1&quot;).value,\n\
+        &quot;/inputTextarea1.js&quot;\n\
+    );\n\
+    eval( // jslint ignore:line\n\
+        document.querySelector(&quot;#outputTextarea1&quot;).value\n\
+    );\n\
+    document.querySelector(\n\
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.nop" id="apidoc.elem.istanbul-lite.nop">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>nop
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">nop = function () {
+<span class="apidocCodeCommentSpan">/*
+ * this function will do nothing
+ */
+</span>    return;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.objectAssignDefault" id="apidoc.elem.istanbul-lite.objectAssignDefault">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>objectAssignDefault
+        <span class="apidocSignatureSpan">(tgt = {}, src = {}, depth = 0)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will if items from &lt;tgt&gt; are null, undefined, or &quot;&quot;,
+ * then overwrite them with items from &lt;src&gt;
+ */
+</span>    let recurse;
+    recurse = function (tgt, src, depth) {
+        Object.entries(src).forEach(function ([
+            key, bb
+        ]) {
+            let aa;
+            aa = tgt[key];
+            if (aa === undefined || aa === null || aa === &quot;&quot;) {
+                tgt[key] = bb;
+                return;
+            }
+            if (
+                depth !== 0
+                &amp;&amp; typeof aa === &quot;object&quot; &amp;&amp; aa &amp;&amp; !Array.isArray(aa)
+                &amp;&amp; typeof bb === &quot;object&quot; &amp;&amp; bb &amp;&amp; !Array.isArray(bb)
+            ) {
+                recurse(aa, bb, depth - 1);
+            }
+        });
+    };
+    recurse(tgt, src, depth | 0);
+    return tgt;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+        }).join(&quot; &quot;).replace((
+            /\u001b\[\d*m/g
+        ), &quot;&quot;) + &quot;\n&quot;;
+        // scroll textarea to bottom
+        elem.scrollTop = elem.scrollHeight;
+    };
+});
+local.<span class="apidocCodeKeywordSpan">objectAssignDefault</span>(local, globalThis.domOnEventDelegateDict);
+globalThis.domOnEventDelegateDict = local;
+}());
+
+
+
+// run node js-env code - init-test
+/* istanbul ignore next */
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.templateRender" id="apidoc.elem.istanbul-lite.templateRender">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>templateRender
+        <span class="apidocSignatureSpan">(template, dict, opt = {}, ii = 0)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">templateRender = function (template, dict, opt = {}, ii = 0) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will render &lt;template&gt; with given &lt;dict&gt;
+ */
+</span>    let argList;
+    let getVal;
+    let match;
+    let renderPartial;
+    let rgx;
+    let skip;
+    let val;
+    if (dict === null || dict === undefined) {
+        dict = {};
+    }
+    getVal = function (key) {
+        argList = key.split(&quot; &quot;);
+        val = dict;
+        if (argList[0] === &quot;#this/&quot;) {
+            return val;
+        }
+        if (argList[0] === &quot;#ii/&quot;) {
+            return ii;
+        }
+        // iteratively lookup nested val in dict
+        argList[0].split(&quot;.&quot;).forEach(function (key) {
+            val = val &amp;&amp; val[key];
+        });
+        return val;
+    };
+    renderPartial = function (match0, helper, key, partial) {
+        switch (helper) {
+        case &quot;each&quot;:
+        case &quot;eachTrimEndComma&quot;:
+            val = getVal(key);
+            val = (
+                Array.isArray(val)
+                ? val.map(function (dict, ii) {
+                    // recurse with partial
+                    return local.templateRender(partial, dict, opt, ii);
+                }).join(&quot;&quot;)
+                : &quot;&quot;
+            );
+            // remove trailing-comma from last elem
+            if (helper === &quot;eachTrimEndComma&quot;) {
+                val = val.trimEnd().replace((
+                    /,$/
+                ), &quot;&quot;);
+            }
+            return val;
+        case &quot;if&quot;:
+            partial = partial.split(&quot;{{#unless &quot; + key + &quot;}}&quot;);
+            partial = (
+                getVal(key)
+                ? partial[0]
+                // handle &quot;unless&quot; case
+                : partial.slice(1).join(&quot;{{#unless &quot; + key + &quot;}}&quot;)
+            );
+            // recurse with partial
+            return local.templateRender(partial, dict, opt);
+        case &quot;unless&quot;:
+            return (
+                getVal(key)
+                ? &quot;&quot;
+                // recurse with partial
+                : local.templateRender(partial, dict, opt)
+            );
+        default:
+            // recurse with partial
+            return match0[0] + local.templateRender(match0.slice(1), dict, opt);
+        }
+    };
+    // render partials
+    rgx = (
+        /\{\{#(\w+)\u0020([^}]+?)\}\}/g
+    );
+    template = template || &quot;&quot;;
+    match = rgx.exec(template);
+    while (match) {
+        rgx.lastIndex += 1 - match[0].length;
+        template = template.replace(
+            new RegExp(
+                &quot;\\{\\{#(&quot; + match[1] + &quot;) (&quot; + match[2]
+                + &quot;)\\}\\}([\\S\\s]*?)\\{\\{/&quot; + match[1] + &quot; &quot; + match[2]
+                + &quot;\\}\\}&quot;
+            ),
+            renderPartial
+        );
+        match = rgx.exec(template);
+    }
+    // search for keys in template
+    return template.replace((
+        /\{\{[^}]+?\}\}/g
+    ), function (match0) {
+        let markdownToHtml;
+        let notHtmlSafe;
+        notHtmlSafe = opt.notHtmlSafe;
+        try {
+            val = getVal(match0.slice(2, -2));
+            if (val === undefined) {
+                return match0;
+            }
+            argList.slice(1).forEach(function (fmt, ii, list) {
+                switch (fmt) {
+                case &quot;*&quot;:
+                case &quot;+&quot;:
+                case &quot;-&quot;:
+                case &quot;/&quot;:
+                    skip = ii + 1;
+                    val = String(
+                        fmt === &quot;*&quot;
+                        ? Number(val) * Number(list[skip])
+                        : fmt === &quot;+&quot;
+                        ? Number(val) + Number(list[skip])
+                        : fmt === &quot;-&quot;
+                        ? Number(val) - Number(list[skip])
+                        : Number(val) / Number(list[skip])
+                    );
+                    break;
+                case &quot;a...</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+case &quot;each&quot;:
+case &quot;eachTrimEndComma&quot;:
+    val = getVal(key);
+    val = (
+        Array.isArray(val)
+        ? val.map(function (dict, ii) {
+            // recurse with partial
+            return local.<span class="apidocCodeKeywordSpan">templateRender</span>(partial, dict, opt, ii);
+        }).join(&quot;&quot;)
+        : &quot;&quot;
+    );
+    // remove trailing-comma from last elem
+    if (helper === &quot;eachTrimEndComma&quot;) {
+        val = val.trimEnd().replace((
+            /,$/
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.istanbul-lite.Instrumenter" id="apidoc.module.istanbul-lite.Instrumenter">module istanbul-lite.Instrumenter</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.Instrumenter" id="apidoc.elem.istanbul-lite.Instrumenter.Instrumenter">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>Instrumenter
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Instrumenter(options) {
+    this.opts = options || {
+        debug: false,
+        walkDebug: false,
+        coverageVariable: &apos;__coverage__&apos;,
+        codeGenerationOptions: undefined,
+        noAutoWrap: false,
+        noCompact: false,
+        embedSource: false,
+        preserveComments: false,
+        esModules: false
+    };
+
+    if (this.opts.esModules &amp;&amp; !this.opts.noAutoWrap) {
+        this.opts.noAutoWrap = true;
+        if (this.opts.debug) {
+            console.log(&apos;Setting noAutoWrap to true as required by esModules&apos;);
+        }
+    }
+
+    this.walker = new Walker({
+        ArrowFunctionExpression: [ this.arrowBlockConverter ],
+        ExpressionStatement: this.coverStatement,
+        ExportNamedDeclaration: this.coverExport,
+        BreakStatement: this.coverStatement,
+        ContinueStatement: this.coverStatement,
+        DebuggerStatement: this.coverStatement,
+        ReturnStatement: this.coverStatement,
+        ThrowStatement: this.coverStatement,
+        TryStatement: [ this.paranoidHandlerCheck, this.coverStatement],
+        VariableDeclaration: this.coverStatement,
+        IfStatement: [ this.ifBlockConverter, this.coverStatement, this.ifBranchInjector ],
+        ForStatement: [ this.skipInit, this.loopBlockConverter, this.coverStatement ],
+        ForInStatement: [ this.skipLeft, this.loopBlockConverter, this.coverStatement ],
+        ForOfStatement: [ this.skipLeft, this.loopBlockConverter, this.coverStatement ],
+        WhileStatement: [ this.loopBlockConverter, this.coverStatement ],
+        DoWhileStatement: [ this.loopBlockConverter, this.coverStatement ],
+        SwitchStatement: [ this.coverStatement, this.switchBranchInjector ],
+        SwitchCase: [ this.switchCaseInjector ],
+        WithStatement: [ this.withBlockConverter, this.coverStatement ],
+        FunctionDeclaration: [ this.coverFunction, this.coverStatement ],
+        FunctionExpression: this.coverFunction,
+        LabeledStatement: this.coverStatement,
+        ConditionalExpression: this.conditionalBranchInjector,
+        LogicalExpression: this.logicalExpressionBranchInjector,
+        ObjectExpression: this.maybeAddType,
+        MetaProperty: this.coverMetaProperty,
+    }, this.extractCurrentHint, this, this.opts.walkDebug);
+
+    //unit testing purposes only
+    if (this.opts.backdoor &amp;&amp; this.opts.backdoor.omitTrackerSuffix) {
+        this.omitTrackerSuffix = true;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.istanbul-lite.Instrumenter.prototype" id="apidoc.module.istanbul-lite.Instrumenter.prototype">module istanbul-lite.Instrumenter.prototype</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.arrowBlockConverter" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.arrowBlockConverter">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>arrowBlockConverter
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">arrowBlockConverter = function (node) {
+    var retStatement;
+    if (node.expression) { // turn expression nodes into a block with a return statement
+        retStatement = astgen.returnStatement(node.body);
+        // ensure the generated return statement is covered
+        retStatement.loc = node.body.loc;
+        node.body = this.convertToBlock(retStatement);
+        node.expression = false;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.branchIncrementExprAst" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.branchIncrementExprAst">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>branchIncrementExprAst
+        <span class="apidocSignatureSpan">(varName, branchIndex, down)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">branchIncrementExprAst = function (varName, branchIndex, down) {
+    var ret = astgen.postIncrement(
+        astgen.subscript(
+            astgen.subscript(
+                astgen.dot(astgen.variable(this.currentState.trackerVar), astgen.variable(&apos;b&apos;)),
+                astgen.stringLiteral(varName)
+            ),
+            astgen.numericLiteral(branchIndex)
+        ),
+        down
+    );
+    return ret;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.branchLocationFor" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.branchLocationFor">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>branchLocationFor
+        <span class="apidocSignatureSpan">(name, index)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">branchLocationFor = function (name, index) {
+    return this.coverState.branchMap[name].locations[index];
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.branchName" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.branchName">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>branchName
+        <span class="apidocSignatureSpan">(type, startLine, pathLocations)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">branchName = function (type, startLine, pathLocations) {
+    var bName,
+        paths = [],
+        locations = [],
+        i,
+        ignoring = !!this.currentState.ignoring;
+    this.currentState.branch += 1;
+    bName = this.currentState.branch;
+    for (i = 0; i &lt; pathLocations.length; i += 1) {
+        pathLocations[i].skip = pathLocations[i].skip || ignoring || undefined;
+        locations.push(pathLocations[i]);
+        paths.push(0);
+    }
+    this.coverState.b[bName] = paths;
+    this.coverState.branchMap[bName] = { line: startLine, type: type, locations: locations };
+    return bName;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.conditionalBranchInjector" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.conditionalBranchInjector">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>conditionalBranchInjector
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">conditionalBranchInjector = function (node, walker) {
+    var bName = this.branchName(&apos;cond-expr&apos;, walker.startLineForNode(node), this.locationsForNodes([ node.consequent, node.alternate
+ ])),
+        ast1 = this.branchIncrementExprAst(bName, 0),
+        ast2 = this.branchIncrementExprAst(bName, 1);
+
+    node.consequent.preprocessor = this.maybeAddSkip(this.branchLocationFor(bName, 0));
+    node.alternate.preprocessor = this.maybeAddSkip(this.branchLocationFor(bName, 1));
+    node.consequent = astgen.sequence(ast1, node.consequent);
+    node.alternate = astgen.sequence(ast2, node.alternate);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.convertToBlock" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.convertToBlock">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>convertToBlock
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">convertToBlock = function (node) {
+    if (!node) {
+        return { type: &apos;BlockStatement&apos;, body: [] };
+    } else if (node.type === &apos;BlockStatement&apos;) {
+        return node;
+    } else {
+        return { type: &apos;BlockStatement&apos;, body: [ node ] };
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverExport" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.coverExport">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverExport
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">coverExport = function (node, walker) {
+    var sName, incrStatementCount;
+
+    if ( !node.declaration || !node.declaration.declarations ) { return; }
+
+    this.maybeSkipNode(node, &apos;next&apos;);
+
+    sName = this.statementName(node.declaration.loc);
+    incrStatementCount = astgen.statement(
+        astgen.postIncrement(
+            astgen.subscript(
+                astgen.dot(astgen.variable(this.currentState.trackerVar), astgen.variable(&apos;s&apos;)),
+                astgen.stringLiteral(sName)
+            )
+        )
+    );
+
+    this.splice(incrStatementCount, node, walker);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverFunction" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.coverFunction">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverFunction
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">coverFunction = function (node, walker) {
+    var id,
+        body = node.body,
+        blockBody = body.body,
+        popped;
+
+    this.maybeSkipNode(node, &apos;next&apos;);
+
+    id = this.functionName(node, walker.startLineForNode(node), {
+        start: node.loc.start,
+        end: { line: node.body.loc.start.line, column: node.body.loc.start.column }
+    });
+
+    if (blockBody.length &gt; 0 &amp;&amp; this.isUseStrictExpression(blockBody[0])) {
+        popped = blockBody.shift();
+    }
+    blockBody.unshift(
+        astgen.statement(
+            astgen.postIncrement(
+                astgen.subscript(
+                    astgen.dot(astgen.variable(this.currentState.trackerVar), astgen.variable(&apos;f&apos;)),
+                    astgen.stringLiteral(id)
+                )
+            )
+        )
+    );
+    if (popped) {
+        blockBody.unshift(popped);
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverMetaProperty" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.coverMetaProperty">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverMetaProperty
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function(node) {
+   node.skipSelf = true;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.coverStatement" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.coverStatement">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>coverStatement
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">coverStatement = function (node, walker) {
+    var sName,
+        incrStatementCount,
+        parent,
+        grandParent;
+
+    this.maybeSkipNode(node, &apos;next&apos;);
+
+    if (this.isUseStrictExpression(node)) {
+        grandParent = walker.ancestor(2);
+<span class="apidocCodeCommentSpan">        /* istanbul ignore else: difficult to test */
+</span>        if (grandParent) {
+            if ((grandParent.node.type === SYNTAX.FunctionExpression.name ||
+                grandParent.node.type === SYNTAX.FunctionDeclaration.name)  &amp;&amp;
+                walker.parent().node.body[0] === node) {
+                return;
+            }
+        }
+    }
+
+    if (node.type === SYNTAX.FunctionDeclaration.name) {
+        // Called for the side-effect of setting the function&apos;s statement count to 1.
+        this.statementName(node.loc, 1);
+    } else {
+        // We let `coverExport` handle ExportNamedDeclarations.
+        parent = walker.parent();
+        if (parent &amp;&amp; parent.node.type === SYNTAX.ExportNamedDeclaration.name) {
+            return;
+        }
+
+        sName = this.statementName(node.loc);
+
+        incrStatementCount = astgen.statement(
+            astgen.postIncrement(
+                astgen.subscript(
+                    astgen.dot(astgen.variable(this.currentState.trackerVar), astgen.variable(&apos;s&apos;)),
+                    astgen.stringLiteral(sName)
+                )
+            )
+        );
+
+        this.splice(incrStatementCount, node, walker);
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.endIgnore" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.endIgnore">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>endIgnore
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">endIgnore = function () {
+    this.currentState.ignoring -= 1;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.extractCurrentHint" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.extractCurrentHint">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>extractCurrentHint
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">extractCurrentHint = function (node) {
+    if (!node.range) { return; }
+    var i = this.currentState.lastHintPosition + 1,
+        hints = this.currentState.hints,
+        nodeStart = node.range[0],
+        hint;
+    this.currentState.currentHint = null;
+    // hack-coverage - allow top-level istanbul-ignore-next
+    if (node.type === &quot;Program&quot;) { return; }
+    while (i &lt; hints.length) {
+        hint = hints[i];
+        if (hint.end &lt; nodeStart) {
+            this.currentState.currentHint = hint;
+            this.currentState.lastHintPosition = i;
+            i += 1;
+        } else {
+            break;
+        }
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.filterHints" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.filterHints">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>filterHints
+        <span class="apidocSignatureSpan">(comments)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">filterHints = function (comments) {
+    var ret = [],
+        i,
+        comment,
+        groups;
+    if (!(comments &amp;&amp; isArray(comments))) {
+        return ret;
+    }
+    for (i = 0; i &lt; comments.length; i += 1) {
+        comment = comments[i];
+<span class="apidocCodeCommentSpan">        /* istanbul ignore else: paranoid check */
+</span>        if (comment &amp;&amp; comment.value &amp;&amp; comment.range &amp;&amp; isArray(comment.range)) {
+            groups = String(comment.value).match(COMMENT_RE);
+            if (groups) {
+                ret.push({ type: groups[1], start: comment.range[0], end: comment.range[1] });
+            }
+        }
+    }
+    return ret;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.findLeaves" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.findLeaves">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>findLeaves
+        <span class="apidocSignatureSpan">(node, accumulator, parent, property)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">findLeaves = function (node, accumulator, parent, property) {
+    if (node.type === SYNTAX.LogicalExpression.name) {
+        this.findLeaves(node.left, accumulator, node, &apos;left&apos;);
+        this.findLeaves(node.right, accumulator, node, &apos;right&apos;);
+    } else {
+        accumulator.push({ node: node, parent: parent, property: property });
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.fixColumnPositions" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.fixColumnPositions">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>fixColumnPositions
+        <span class="apidocSignatureSpan">(coverState)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">fixColumnPositions = function (coverState) {
+    var offset = LEADER_WRAP.length,
+        fixer = function (loc) {
+            if (loc.start.line === 1) {
+                loc.start.column -= offset;
+            }
+            if (loc.end.line === 1) {
+                loc.end.column -= offset;
+            }
+        },
+        k,
+        obj,
+        i,
+        locations;
+
+    obj = coverState.statementMap;
+    for (k in obj) {
+<span class="apidocCodeCommentSpan">        /* istanbul ignore else: has own property */
+</span>        if (obj.hasOwnProperty(k)) { fixer(obj[k]); }
+    }
+    obj = coverState.fnMap;
+    for (k in obj) {
+        /* istanbul ignore else: has own property */
+        if (obj.hasOwnProperty(k)) { fixer(obj[k].loc); }
+    }
+    obj = coverState.branchMap;
+    for (k in obj) {
+        /* istanbul ignore else: has own property */
+        if (obj.hasOwnProperty(k)) {
+            locations = obj[k].locations;
+            for (i = 0; i &lt; locations.length; i += 1) {
+                fixer(locations[i]);
+            }
+        }
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.functionName" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.functionName">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>functionName
+        <span class="apidocSignatureSpan">(node, line, location)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">functionName = function (node, line, location) {
+    this.currentState.func += 1;
+    var id = this.currentState.func,
+        ignoring = !!this.currentState.ignoring,
+        name = node.id ? node.id.name : &apos;(anonymous_&apos; + id + &apos;)&apos;,
+        clone = function (attr) {
+            var obj = location[attr] || /* istanbul ignore next */ {};
+            return { line: obj.line, column: obj.column };
+        };
+    this.coverState.fnMap[id] = {
+        name: name, line: line,
+        loc: {
+            start: clone(&apos;start&apos;),
+            end: clone(&apos;end&apos;)
+        },
+        skip: ignoring || undefined
+    };
+    this.coverState.f[id] = 0;
+    return id;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.getPreamble" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.getPreamble">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>getPreamble
+        <span class="apidocSignatureSpan">(sourceCode, emitUseStrict)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">getPreamble = function (sourceCode, emitUseStrict) {
+    var varName = this.opts.coverageVariable || &apos;__coverage__&apos;,
+        file = this.coverState.path.replace(/\\/g, &apos;\\\\&apos;),
+        tracker = this.currentState.trackerVar,
+        coverState,
+        strictLine = emitUseStrict ? &apos;&quot;use strict&quot;;&apos; : &apos;&apos;,
+        // return replacements using the function to ensure that the replacement is
+        // treated like a dumb string and not as a string with RE replacement patterns
+        replacer = function (s) {
+            return function () { return s; };
+        },
+        code;
+    if (!this.opts.noAutoWrap) {
+        this.fixColumnPositions(this.coverState);
+    }
+    if (this.opts.embedSource) {
+        this.coverState.code = sourceCode.split(/(?:\r?\n)|\r/);
+    }
+    coverState = this.opts.debug ? JSON.stringify(this.coverState, undefined, 4) : JSON.stringify(this.coverState);
+    code = [
+        &quot;%STRICT%&quot;,
+        &quot;var %VAR% = (Function(&apos;return this&apos;))();&quot;,
+        &quot;if (!%VAR%.%GLOBAL%) { %VAR%.%GLOBAL% = {}; }&quot;,
+        &quot;%VAR% = %VAR%.%GLOBAL%;&quot;,
+        &quot;if (!(%VAR%[&apos;%FILE%&apos;])) {&quot;,
+        &quot;   %VAR%[&apos;%FILE%&apos;] = %OBJECT%;&quot;,
+        &quot;}&quot;,
+        &quot;%VAR% = %VAR%[&apos;%FILE%&apos;];&quot;
+    ].join(&quot;\n&quot;)
+        .replace(/%STRICT%/g, replacer(strictLine))
+        .replace(/%VAR%/g, replacer(tracker))
+        .replace(/%GLOBAL%/g, replacer(varName))
+        .replace(/%FILE%/g, replacer(file))
+        .replace(/%OBJECT%/g, replacer(coverState));
+    return code;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.ifBlockConverter" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.ifBlockConverter">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>ifBlockConverter
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">ifBlockConverter = function (node) {
+    node.consequent = this.convertToBlock(node.consequent);
+    node.alternate = this.convertToBlock(node.alternate);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.ifBranchInjector" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.ifBranchInjector">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>ifBranchInjector
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">ifBranchInjector = function (node, walker) {
+    var alreadyIgnoring = !!this.currentState.ignoring,
+        hint = this.currentState.currentHint,
+        ignoreThen = !alreadyIgnoring &amp;&amp; hint &amp;&amp; hint.type === &apos;if&apos;,
+        ignoreElse = !alreadyIgnoring &amp;&amp; hint &amp;&amp; hint.type === &apos;else&apos;,
+        line = node.loc.start.line,
+        col = node.loc.start.column,
+        makeLoc = function () { return  { line: line, column: col }; },
+        bName = this.branchName(&apos;if&apos;, walker.startLineForNode(node), [
+            { start: makeLoc(), end: makeLoc(), skip: ignoreThen || undefined },
+            { start: makeLoc(), end: makeLoc(), skip: ignoreElse || undefined }
+        ]),
+        thenBody = node.consequent.body,
+        elseBody = node.alternate.body,
+        child;
+    thenBody.unshift(astgen.statement(this.branchIncrementExprAst(bName, 0)));
+    elseBody.unshift(astgen.statement(this.branchIncrementExprAst(bName, 1)));
+    if (ignoreThen) { child = node.consequent; child.preprocessor = this.startIgnore; child.postprocessor = this.endIgnore; }
+    if (ignoreElse) { child = node.alternate; child.preprocessor = this.startIgnore; child.postprocessor = this.endIgnore; }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.instrument" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.instrument">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>instrument
+        <span class="apidocSignatureSpan">(code, filename, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">instrument = function (code, filename, callback) {
+
+    if (!callback &amp;&amp; typeof filename === &apos;function&apos;) {
+        callback = filename;
+        filename = null;
+    }
+    try {
+        callback(null, this.instrumentSync(code, filename));
+    } catch (ex) {
+        callback(ex);
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.instrumentASTSync" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.instrumentASTSync">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>instrumentASTSync
+        <span class="apidocSignatureSpan">(program, filename, originalCode)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">instrumentASTSync = function (program, filename, originalCode) {
+    var usingStrict = false,
+        codegenOptions,
+        generated,
+        preamble,
+        lineCount,
+        i;
+    filename = filename || String(new Date().getTime()) + &apos;.js&apos;;
+    this.sourceMap = null;
+    this.coverState = {
+        path: filename,
+        s: {},
+        b: {},
+        f: {},
+        fnMap: {},
+        statementMap: {},
+        branchMap: {}
+    };
+    this.currentState = {
+        trackerVar: generateTrackerVar(filename, this.omitTrackerSuffix),
+        func: 0,
+        branch: 0,
+        variable: 0,
+        statement: 0,
+        hints: this.filterHints(program.comments),
+        currentHint: null,
+        lastHintPosition: -1,
+        ignoring: 0
+    };
+    if (program.body &amp;&amp; program.body.length &gt; 0 &amp;&amp; this.isUseStrictExpression(program.body[0])) {
+        //nuke it
+        program.body.shift();
+        //and add it back at code generation time
+        usingStrict = true;
+    }
+    this.walker.startWalk(program);
+    codegenOptions = this.opts.codeGenerationOptions || { format: { compact: !this.opts.noCompact }};
+    codegenOptions.comment = this.opts.preserveComments;
+    //console.log(JSON.stringify(program, undefined, 2));
+
+    generated = ESPGEN.generate(program, codegenOptions);
+    preamble = this.getPreamble(originalCode || &apos;&apos;, usingStrict);
+
+    if (generated.map &amp;&amp; generated.code) {
+        lineCount = preamble.split(/\r\n|\r|\n/).length;
+        // offset all the generated line numbers by the number of lines in the preamble
+        for (i = 0; i &lt; generated.map._mappings._array.length; i += 1) {
+            generated.map._mappings._array[i].generatedLine += lineCount;
+        }
+        this.sourceMap = generated.map;
+        generated = generated.code;
+    }
+
+    return preamble + &apos;\n&apos; + generated + &apos;\n&apos;;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.instrumentSync" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.instrumentSync">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>instrumentSync
+        <span class="apidocSignatureSpan">(code, filename)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">instrumentSync = function (code, filename) {
+    var program;
+
+    //protect from users accidentally passing in a Buffer object instead
+    if (typeof code !== &apos;string&apos;) { throw new Error(&apos;Code must be string&apos;); }
+    if (code.charAt(0) === &apos;#&apos;) { //shebang, &apos;comment&apos; it out, won&apos;t affect syntax tree locations for things we care about
+        code = &apos;//&apos; + code;
+    }
+    if (!this.opts.noAutoWrap) {
+        code = LEADER_WRAP + code + TRAILER_WRAP;
+    }
+    try {
+        // hack-coverage - acorn opt
+        let opt = {
+            locations: true,
+            onComment: [],
+            onToken: this.opts.preserveComments,
+            ranges: true,
+            sourceType: this.opts.esModules ? &apos;module&apos; : &apos;script&apos;
+        };
+        program = ESP.parse(code, opt);
+        program.comments = opt.onComment
+    } catch (e) {
+        console.log(&apos;Failed to parse file: &apos; + filename);
+        throw e;
+    }
+    if (this.opts.preserveComments) {
+        program = ESPGEN.attachComments(program, program.comments, program.tokens);
+    }
+    if (!this.opts.noAutoWrap) {
+        program = {
+            type: SYNTAX.Program.name,
+            body: program.body[0].expression.callee.body.body,
+            comments: program.comments
+        };
+    }
+    return this.instrumentASTSync(program, filename, code);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+try {\n\
+    delete globalThis.__coverage__[&quot;/inputTextarea1.js&quot;];\n\
+} catch (ignore) {}\n\
+// try to cover and eval #inputTextarea1\n\
+try {\n\
+    document.querySelector(\n\
+        &quot;#outputTextarea1&quot;\n\
+    ).textContent = local.istanbul.<span class="apidocCodeKeywordSpan">instrumentSync</span>(\n\
+        document.querySelector(&quot;#inputTextarea1&quot;).value,\n\
+        &quot;/inputTextarea1.js&quot;\n\
+    );\n\
+    eval( // jslint ignore:line\n\
+        document.querySelector(&quot;#outputTextarea1&quot;).value\n\
+    );\n\
+    document.querySelector(\n\
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.isUseStrictExpression" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.isUseStrictExpression">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>isUseStrictExpression
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">isUseStrictExpression = function (node) {
+    return node &amp;&amp; node.type === SYNTAX.ExpressionStatement.name &amp;&amp;
+        node.expression  &amp;&amp; node.expression.type === SYNTAX.Literal.name &amp;&amp;
+        node.expression.value === &apos;use strict&apos;;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.lastFileCoverage" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.lastFileCoverage">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>lastFileCoverage
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">lastFileCoverage = function () {
+    return this.coverState;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.lastSourceMap" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.lastSourceMap">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>lastSourceMap
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">lastSourceMap = function () {
+    return this.sourceMap;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.locationsForNodes" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.locationsForNodes">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>locationsForNodes
+        <span class="apidocSignatureSpan">(nodes)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">locationsForNodes = function (nodes) {
+    var ret = [],
+        i;
+    for (i = 0; i &lt; nodes.length; i += 1) {
+        ret.push(nodes[i].loc);
+    }
+    return ret;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.logicalExpressionBranchInjector" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.logicalExpressionBranchInjector">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>logicalExpressionBranchInjector
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">logicalExpressionBranchInjector = function (node, walker) {
+    var parent = walker.parent(),
+        leaves = [],
+        bName,
+        tuple,
+        i;
+
+    this.maybeSkipNode(node, &apos;next&apos;);
+
+    if (parent &amp;&amp; parent.node.type === SYNTAX.LogicalExpression.name) {
+        //already covered
+        return;
+    }
+
+    this.findLeaves(node, leaves);
+    bName = this.branchName(&apos;binary-expr&apos;,
+        walker.startLineForNode(node),
+        this.locationsForNodes(leaves.map(function (item) { return item.node; }))
+    );
+    for (i = 0; i &lt; leaves.length; i += 1) {
+        tuple = leaves[i];
+        tuple.parent[tuple.property] = astgen.sequence(this.branchIncrementExprAst(bName, i), tuple.node);
+        tuple.node.preprocessor = this.maybeAddSkip(this.branchLocationFor(bName, i));
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.loopBlockConverter" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.loopBlockConverter">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>loopBlockConverter
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">loopBlockConverter = function (node) {
+    node.body = this.convertToBlock(node.body);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeAddSkip" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeAddSkip">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>maybeAddSkip
+        <span class="apidocSignatureSpan">(branchLocation)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">maybeAddSkip = function (branchLocation) {
+    return function (node) {
+        var alreadyIgnoring = !!this.currentState.ignoring,
+            hint = this.currentState.currentHint,
+            ignoreThis = !alreadyIgnoring &amp;&amp; hint &amp;&amp; hint.type === &apos;next&apos;;
+        if (ignoreThis) {
+            this.startIgnore();
+            node.postprocessor = this.endIgnore;
+        }
+        if (ignoreThis || alreadyIgnoring) {
+            branchLocation.skip = true;
+        }
+    };
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeAddType" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeAddType">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>maybeAddType
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">maybeAddType = function (node) {
+    var props = node.properties,
+        i,
+        child;
+    for (i = 0; i &lt; props.length; i += 1) {
+        child = props[i];
+        if (!child.type) {
+            child.type = SYNTAX.Property.name;
+        }
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeSkipNode" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.maybeSkipNode">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>maybeSkipNode
+        <span class="apidocSignatureSpan">(node, type)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">maybeSkipNode = function (node, type) {
+    var alreadyIgnoring = !!this.currentState.ignoring,
+        hint = this.currentState.currentHint,
+        ignoreThis = !alreadyIgnoring &amp;&amp; hint &amp;&amp; hint.type === type;
+
+    if (ignoreThis) {
+        this.startIgnore();
+        node.postprocessor = this.endIgnore;
+        return true;
+    }
+    return false;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.paranoidHandlerCheck" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.paranoidHandlerCheck">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>paranoidHandlerCheck
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">paranoidHandlerCheck = function (node) {
+    // if someone is using an older esprima on the browser
+    // convert handlers array to single handler attribute
+    // containing its first element
+<span class="apidocCodeCommentSpan">    /* istanbul ignore next */
+</span>    if (!node.handler &amp;&amp; node.handlers) {
+        node.handler = node.handlers[0];
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.skipInit" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.skipInit">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>skipInit
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">skipInit = function (node) {
+    if (node.init) {
+        node.init.skipWalk = true;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.skipLeft" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.skipLeft">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>skipLeft
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">skipLeft = function (node) {
+    node.left.skipWalk = true;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.splice" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.splice">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>splice
+        <span class="apidocSignatureSpan">(statements, node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">splice = function (statements, node, walker) {
+    var targetNode = walker.isLabeled() ? walker.parent().node : node;
+    targetNode.prepend = targetNode.prepend || [];
+    pushAll(targetNode.prepend, statements);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+
+Reference.prototype.replace = function replace(node) {
+    this.parent[this.key] = node;
+};
+
+Reference.prototype.remove = function remove() {
+    if (isArray(this.parent)) {
+        this.parent.<span class="apidocCodeKeywordSpan">splice</span>(this.key, 1);
+        return true;
+    } else {
+        this.replace(null);
+        return false;
+    }
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.startIgnore" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.startIgnore">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>startIgnore
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">startIgnore = function () {
+    this.currentState.ignoring += 1;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.statementName" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.statementName">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>statementName
+        <span class="apidocSignatureSpan">(location, initValue)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">statementName = function (location, initValue) {
+    var sName,
+        ignoring = !!this.currentState.ignoring;
+
+    location.skip = ignoring || undefined;
+    initValue = initValue || 0;
+    this.currentState.statement += 1;
+    sName = this.currentState.statement;
+    this.coverState.statementMap[sName] = location;
+    this.coverState.s[sName] = initValue;
+    return sName;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.switchBranchInjector" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.switchBranchInjector">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>switchBranchInjector
+        <span class="apidocSignatureSpan">(node, walker)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">switchBranchInjector = function (node, walker) {
+    var cases = node.cases,
+        bName,
+        i;
+
+    if (!(cases &amp;&amp; cases.length &gt; 0)) {
+        return;
+    }
+    bName = this.branchName(&apos;switch&apos;, walker.startLineForNode(node), this.locationsForNodes(cases));
+    for (i = 0; i &lt; cases.length; i += 1) {
+        cases[i].branchLocation = this.branchLocationFor(bName, i);
+        cases[i].consequent.unshift(astgen.statement(this.branchIncrementExprAst(bName, i)));
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.switchCaseInjector" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.switchCaseInjector">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>switchCaseInjector
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">switchCaseInjector = function (node) {
+    var location = node.branchLocation;
+    delete node.branchLocation;
+    if (this.maybeSkipNode(node, &apos;next&apos;)) {
+        location.skip = true;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.Instrumenter.prototype.withBlockConverter" id="apidoc.elem.istanbul-lite.Instrumenter.prototype.withBlockConverter">
+        function <span class="apidocSignatureSpan">istanbul-lite.Instrumenter.prototype.</span>withBlockConverter
+        <span class="apidocSignatureSpan">(node)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">withBlockConverter = function (node) {
+    node.body = this.convertToBlock(node.body);
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.istanbul-lite.cliDict" id="apidoc.module.istanbul-lite.cliDict">module istanbul-lite.cliDict</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.cliDict.cover" id="apidoc.elem.istanbul-lite.cliDict.cover">
+        function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>cover
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">cover = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;script&gt;
+ * will run and cover &lt;script&gt;
+ */
+</span>    let moduleExtensionsJs;
+    let tmp;
+    try {
+        tmp = JSON.parse(local.fs.readFileSync(&quot;package.json&quot;, &quot;utf8&quot;));
+        process.env.npm_package_nameLib = (
+            process.env.npm_package_nameLib
+            || tmp.nameLib
+            || tmp.name.replace((
+                /-/g
+            ), &quot;_&quot;)
+        );
+    } catch (ignore) {}
+    process.env.npm_config_mode_coverage = (
+        process.env.npm_config_mode_coverage
+        || process.env.npm_package_nameLib
+        || &quot;all&quot;
+    );
+    // add coverage hook to require
+    tmp = require(&quot;module&quot;);
+    moduleExtensionsJs = tmp._extensions[&quot;.js&quot;];
+    tmp._extensions[&quot;.js&quot;] = function (module, file) {
+        if (typeof file === &quot;string&quot; &amp;&amp; (
+            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (
+                file.indexOf(process.cwd() + local.path.sep) === 0
+                &amp;&amp; (
+                    process.env.npm_config_mode_coverage === &quot;node_modules&quot;
+                    || file.indexOf(
+                        local.path.resolve(&quot;node_modules&quot;) + local.path.sep
+                    ) !== 0
+                )
+            )
+        )) {
+            module._compile(local.instrumentInPackage(
+                local.fs.readFileSync(file, &quot;utf8&quot;),
+                file
+            ), file);
+            return;
+        }
+        moduleExtensionsJs(module, file);
+    };
+    // init process.argv
+    process.argv.splice(1, 2);
+    process.argv[1] = local.path.resolve(process.argv[1]);
+    console.error(&quot;\nistanbul - covering $ &quot; + process.argv.join(&quot; &quot;));
+    // create coverage on exit
+    process.on(&quot;exit&quot;, function () {
+        local.coverageReportCreate({
+            coverage: globalThis.__coverage__
+        });
+    });
+    // re-init cli
+    tmp.runMain();
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.cliDict.instrument" id="apidoc.elem.istanbul-lite.cliDict.instrument">
+        function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>instrument
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">instrument = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;script&gt;
+ * will instrument &lt;script&gt; and print result to stdout
+ */
+</span>    process.argv[3] = local.path.resolve(process.argv[3]);
+    process.stdout.write(local.instrumentSync(
+        local.fs.readFileSync(process.argv[3], &quot;utf8&quot;),
+        process.argv[3]
+    ));
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.cliDict.report" id="apidoc.elem.istanbul-lite.cliDict.report">
+        function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>report
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">report = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;coverageJson&gt;
+ * will create coverage-report from file &lt;coverageJson&gt;
+ */
+</span>    process.argv[3] = local.path.resolve(process.argv[3]);
+    globalThis.__coverage__ = JSON.parse(
+        local.fs.readFileSync(process.argv[3])
+    );
+    globalThis.__coverageInclude__ = {};
+    Object.keys(globalThis.__coverage__).forEach(function (file) {
+        globalThis.__coverageInclude__[file] = 1;
+    });
+    local.coverageReportCreate({
+        coverage: globalThis.__coverage__
+    });
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.cliDict.test" id="apidoc.elem.istanbul-lite.cliDict.test">
+        function <span class="apidocSignatureSpan">istanbul-lite.cliDict.</span>test
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">test = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;script&gt;
+ * will run and cover &lt;script&gt; if env-var $npm_config_mode_coverage is set
+ */
+</span>    if (process.env.npm_config_mode_coverage) {
+        process.argv[2] = &quot;cover&quot;;
+        // re-init cli
+        local.cliDict[process.argv[2]]();
+        return;
+    }
+    // restart node with __filename removed from process.argv
+    process.argv.splice(1, 2);
+    process.argv[1] = local.path.resolve(process.argv[1]);
+    // re-init cli
+    require(&quot;module&quot;).runMain();
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+// Test whether a given character code starts an identifier.
+
+function isIdentifierStart(code, astral) {
+  if (code &lt; 65) { return code === 36 }
+  if (code &lt; 91) { return true }
+  if (code &lt; 97) { return code === 95 }
+  if (code &lt; 123) { return true }
+  if (code &lt;= 0xffff) { return code &gt;= 0xaa &amp;&amp; nonASCIIidentifierStart.<span class="apidocCodeKeywordSpan">test</span
+>(String.fromCharCode(code)) }
+  if (astral === false) { return false }
+  return isInAstralSet(code, astralIdentifierStartCodes)
+}
+
+// Test whether a given character is part of an identifier.
+
+function isIdentifierChar(code, astral) {
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>

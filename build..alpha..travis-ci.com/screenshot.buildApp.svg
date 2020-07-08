@@ -1,0 +1,152 @@
+<svg height="1374" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="1374" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26"></tspan>
+
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApp]\x1b[0m - 2020-06-07T08:50:22.838Z - npm-testing /home/travis/build\</tspan>
+<tspan x="10" y="58">/kaizhu256/node-istanbul-lite</tspan>
+
+<tspan x="10" y="74"></tspan>
+
+<tspan x="10" y="90"></tspan>
+
+<tspan x="10" y="106">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/tmp/buil\</tspan>
+<tspan x="10" y="122">d/test-report.json</tspan>
+
+<tspan x="10" y="138">&gt; http-server listening on port 43989</tspan>
+
+<tspan x="10" y="154">wrote file - package.json - /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
+
+<tspan x="10" y="170">wrote file - README - /home/travis/build/kaizhu256/node-istanbul-lite/README.md</tspan>
+
+<tspan x="10" y="186">wrote file - lib - /home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</tspan>
+
+<tspan x="10" y="202">wrote file - test - /home/travis/build/kaizhu256/node-istanbul-lite/test.js</tspan>
+
+<tspan x="10" y="218"></tspan>
+
+<tspan x="10" y="234">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/tmp/buil\</tspan>
+<tspan x="10" y="250">d/test-report.json</tspan>
+
+<tspan x="10" y="266">jslint - 6ms - /home/travis/build/kaizhu256/node-istanbul-lite/npm_scripts.sh</tspan>
+
+<tspan x="10" y="282">jslint - 16ms - /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
+
+<tspan x="10" y="298">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.istanbul\</tspan>
+<tspan x="10" y="314">.html</tspan>
+
+<tspan x="10" y="330">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.example.\</tspan>
+<tspan x="10" y="346">html</tspan>
+
+<tspan x="10" y="362">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/index.html</tspan>
+
+<tspan x="10" y="378">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/index.rollup.ht\</tspan>
+<tspan x="10" y="394">ml</tspan>
+
+<tspan x="10" y="410">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.example.\</tspan>
+<tspan x="10" y="426">js</tspan>
+
+<tspan x="10" y="442">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.test.js</tspan>
+
+<tspan x="10" y="458">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.utility2\</tspan>
+<tspan x="10" y="474">.html</tspan>
+
+<tspan x="10" y="490">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/LICENSE</tspan>
+
+<tspan x="10" y="506">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/jsonp.utility2.\</tspan>
+<tspan x="10" y="522">stateInit</tspan>
+
+<tspan x="10" y="538">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.istanbul\</tspan>
+<tspan x="10" y="554">.js</tspan>
+
+<tspan x="10" y="570">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.utility2\</tspan>
+<tspan x="10" y="586">.rollup.js</tspan>
+
+<tspan x="10" y="602">wrote file - app - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.app.js</tspan>
+
+<tspan x="10" y="618">jslint - 107ms - /home/travis/build/kaizhu256/node-istanbul-lite/test.js</tspan>
+
+<tspan x="10" y="634">jslint - 5ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.example.html</tspan>
+
+<tspan x="10" y="650">jslint - 7ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.istanbul.htm\</tspan>
+<tspan x="10" y="666">l</tspan>
+
+<tspan x="10" y="682">jslint - 7ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/index.html</tspan>
+
+<tspan x="10" y="698">jslint - 36ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.example.js</tspan>
+
+<tspan x="10" y="714">jslint - 74ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.test.js</tspan>
+
+<tspan x="10" y="730">jslint - 74ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.utility2.ht\</tspan>
+<tspan x="10" y="746">ml</tspan>
+
+<tspan x="10" y="762">jslint - 398ms - /home/travis/build/kaizhu256/node-istanbul-lite/README.md</tspan>
+
+<tspan x="10" y="778">jslint - 286ms - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/app/assets.istanbul.j\</tspan>
+<tspan x="10" y="794">s</tspan>
+
+<tspan x="10" y="810">wrote file - assets.app.js - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/buildApp/assets\</tspan>
+<tspan x="10" y="826">.app.js</tspan>
+
+<tspan x="10" y="842">&gt; http-server listening on port 33413</tspan>
+
+<tspan x="10" y="858">jslint - 917ms - /home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</tspan>
+
+<tspan x="10" y="874">testRunDefault - 5794 ms - testCase pending - testCase_buildApp_default ...</tspan>
+
+<tspan x="10" y="890">testRunDefault - 9581 ms - [node test-case 1 of 1 passed] - testCase_buildApp_default</tspan>
+
+<tspan x="10" y="906">wrote file - test-report - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/test-report\</tspan>
+<tspan x="10" y="922">.json</tspan>
+
+<tspan x="10" y="938"></tspan>
+
+<tspan x="10" y="954">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/tmp/buil\</tspan>
+<tspan x="10" y="970">d/test-report.json</tspan>
+
+<tspan x="10" y="986"></tspan>
+
+<tspan x="10" y="1002">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="1018">| test-report - buildApidoc - node - linux v14.4.0 - 2020-06-07T08:50:19.137Z</tspan>
+
+<tspan x="10" y="1034">|    9582 ms            0 failed        1 passed      |</tspan>
+
+<tspan x="10" y="1050">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="1066">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="1082">L, like Gecko) HeadlessChrome/83.0.4103.97 Safari/537.36 - 2020-06-07T08:50:12.363Z</tspan>
+
+<tspan x="10" y="1098">|     383 ms            0 failed        6 passed      |</tspan>
+
+<tspan x="10" y="1114">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="1130">| test-report - npmTest - node - linux v14.4.0 - 2020-06-07T08:50:08.349Z</tspan>
+
+<tspan x="10" y="1146">|    7341 ms            0 failed       12 passed      |</tspan>
+
+<tspan x="10" y="1162">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="1178"></tspan>
+
+<tspan x="10" y="1194">wrote file - test-report - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/test-report\</tspan>
+<tspan x="10" y="1210">.html</tspan>
+
+<tspan x="10" y="1226">wrote file - test-report - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/build.badge\</tspan>
+<tspan x="10" y="1242">.svg</tspan>
+
+<tspan x="10" y="1258">wrote file - test-report - /home/travis/build/kaizhu256/node-istanbul-lite/tmp/build/test-report\</tspan>
+<tspan x="10" y="1274">.badge.svg</tspan>
+
+<tspan x="10" y="1290"></tspan>
+
+<tspan x="10" y="1306">buildApp - 0 failed tests</tspan>
+
+<tspan x="10" y="1322"></tspan>
+
+<tspan x="10" y="1338"></tspan>
+
+<tspan x="10" y="1354">\x1b[35m[MODE_BUILD=buildApp]\x1b[0m - 2020-06-07T08:50:28.995Z - EXIT_CODE - 0</tspan>
+
+</text>
+</svg>
