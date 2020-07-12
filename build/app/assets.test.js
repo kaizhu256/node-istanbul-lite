@@ -215,9 +215,9 @@ var echo = function (arg) {
     }
 };
 
-// hack-istanbul
+// hack-coverage
 tryCatch(function () {
-    throw '';
+    throw undefined;
 });
 tryCatch(function () {
 var evens = [0, 2, 4, 6];

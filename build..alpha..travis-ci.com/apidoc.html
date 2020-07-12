@@ -1503,7 +1503,22 @@ try {\n\
  */
 </span>    return;
 }</pre></li>
-    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+    local.isBrowser
+    ? {
+        env: {},
+        stdout: {}
+    }
+    : globalThis.process
+);
+local.<span class="apidocCodeKeywordSpan">nop</span>(escodegen, esprima, estraverse, esutils);
+
+
+/*
+repo https://github.com/acornjs/acorn/tree/6.3.0
+committed 2019-08-12T09:40:59Z
+*/
+...</pre></li>
     </ul>
 
 
@@ -2131,7 +2146,7 @@ case &quot;eachTrimEndComma&quot;:
         nodeStart = node.range[0],
         hint;
     this.currentState.currentHint = null;
-    // hack-coverage - allow top-level istanbul-ignore-next
+    // hack-istanbul - allow top-level istanbul-ignore-next
     if (node.type === &quot;Program&quot;) { return; }
     while (i &lt; hints.length) {
         hint = hints[i];
@@ -2487,7 +2502,7 @@ case &quot;eachTrimEndComma&quot;:
         code = LEADER_WRAP + code + TRAILER_WRAP;
     }
     try {
-        // hack-coverage - acorn opt
+        // hack-istanbul - inline acorn-opt
         let opt = {
             locations: true,
             onComment: [],
