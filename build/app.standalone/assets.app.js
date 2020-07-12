@@ -2402,13 +2402,13 @@ local.nop(escodegen, esprima, estraverse, esutils);
 
 
 /*
-repo https://github.com/acornjs/acorn/tree/6.3.0
-committed 2019-08-12T09:40:59Z
+repo https://github.com/acornjs/acorn/tree/6.4.1
+committed 2020-03-09T10:38:41Z
 */
 
 
 /*
-file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
+file https://github.com/acornjs/acorn/blob/6.4.1/acorn/dist/acorn.js
 */
 // hack-istanbul - inline-require
 /* istanbul ignore next */
@@ -5622,7 +5622,8 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
     if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {
       return c
     }
-    return (c << 10) + s.charCodeAt(i + 1) - 0x35FDC00
+    var next = s.charCodeAt(i + 1);
+    return next >= 0xDC00 && next <= 0xDFFF ? (c << 10) + next - 0x35FDC00 : c
   };
 
   RegExpValidationState.prototype.nextIndex = function nextIndex (i) {
@@ -5631,8 +5632,9 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
     if (i >= l) {
       return l
     }
-    var c = s.charCodeAt(i);
-    if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {
+    var c = s.charCodeAt(i), next;
+    if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l ||
+        (next = s.charCodeAt(i + 1)) < 0xDC00 || next > 0xDFFF) {
       return i + 1
     }
     return i + 2
@@ -7328,7 +7330,29 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
 
   // Acorn is a tiny, fast JavaScript parser written in JavaScript.
 
-  var version = "6.3.0";
+  var version = "6.4.0";
+
+  Parser.acorn = {
+    Parser: Parser,
+    version: version,
+    defaultOptions: defaultOptions,
+    Position: Position,
+    SourceLocation: SourceLocation,
+    getLineInfo: getLineInfo,
+    Node: Node,
+    TokenType: TokenType,
+    tokTypes: types,
+    keywordTypes: keywords$1,
+    TokContext: TokContext,
+    tokContexts: types$1,
+    isIdentifierChar: isIdentifierChar,
+    isIdentifierStart: isIdentifierStart,
+    Token: Token,
+    isNewLine: isNewLine,
+    lineBreak: lineBreak,
+    lineBreakG: lineBreakG,
+    nonASCIIwhitespace: nonASCIIwhitespace
+  };
 
   // The main exported interface (under `self.acorn` when in the
   // browser) is a `parse` function that takes a code string and
@@ -11041,7 +11065,6 @@ committed 2016-08-21T19:53:22Z
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 */
 // hack-istanbul - inline-require
-/* istanbul ignore next */
 (function () { let module, window; module = undefined; window = local;
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -72861,13 +72884,13 @@ local.nop(escodegen, esprima, estraverse, esutils);\n\
 \n\
 \n\
 /*\n\
-repo https://github.com/acornjs/acorn/tree/6.3.0\n\
-committed 2019-08-12T09:40:59Z\n\
+repo https://github.com/acornjs/acorn/tree/6.4.1\n\
+committed 2020-03-09T10:38:41Z\n\
 */\n\
 \n\
 \n\
 /*\n\
-file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js\n\
+file https://github.com/acornjs/acorn/blob/6.4.1/acorn/dist/acorn.js\n\
 */\n\
 // hack-istanbul - inline-require\n\
 /* istanbul ignore next */\n\
@@ -76081,7 +76104,8 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js\n\
     if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {\n\
       return c\n\
     }\n\
-    return (c << 10) + s.charCodeAt(i + 1) - 0x35FDC00\n\
+    var next = s.charCodeAt(i + 1);\n\
+    return next >= 0xDC00 && next <= 0xDFFF ? (c << 10) + next - 0x35FDC00 : c\n\
   };\n\
 \n\
   RegExpValidationState.prototype.nextIndex = function nextIndex (i) {\n\
@@ -76090,8 +76114,9 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js\n\
     if (i >= l) {\n\
       return l\n\
     }\n\
-    var c = s.charCodeAt(i);\n\
-    if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {\n\
+    var c = s.charCodeAt(i), next;\n\
+    if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l ||\n\
+        (next = s.charCodeAt(i + 1)) < 0xDC00 || next > 0xDFFF) {\n\
       return i + 1\n\
     }\n\
     return i + 2\n\
@@ -77787,7 +77812,29 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js\n\
 \n\
   // Acorn is a tiny, fast JavaScript parser written in JavaScript.\n\
 \n\
-  var version = \"6.3.0\";\n\
+  var version = \"6.4.0\";\n\
+\n\
+  Parser.acorn = {\n\
+    Parser: Parser,\n\
+    version: version,\n\
+    defaultOptions: defaultOptions,\n\
+    Position: Position,\n\
+    SourceLocation: SourceLocation,\n\
+    getLineInfo: getLineInfo,\n\
+    Node: Node,\n\
+    TokenType: TokenType,\n\
+    tokTypes: types,\n\
+    keywordTypes: keywords$1,\n\
+    TokContext: TokContext,\n\
+    tokContexts: types$1,\n\
+    isIdentifierChar: isIdentifierChar,\n\
+    isIdentifierStart: isIdentifierStart,\n\
+    Token: Token,\n\
+    isNewLine: isNewLine,\n\
+    lineBreak: lineBreak,\n\
+    lineBreakG: lineBreakG,\n\
+    nonASCIIwhitespace: nonASCIIwhitespace\n\
+  };\n\
 \n\
   // The main exported interface (under `self.acorn` when in the\n\
   // browser) is a `parse` function that takes a code string and\n\
@@ -81500,7 +81547,6 @@ committed 2016-08-21T19:53:22Z\n\
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js\n\
 */\n\
 // hack-istanbul - inline-require\n\
-/* istanbul ignore next */\n\
 (function () { let module, window; module = undefined; window = local;\n\
 /*\n\
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.\n\
@@ -84726,13 +84772,13 @@ local.nop(escodegen, esprima, estraverse, esutils);
 
 
 /*
-repo https://github.com/acornjs/acorn/tree/6.3.0
-committed 2019-08-12T09:40:59Z
+repo https://github.com/acornjs/acorn/tree/6.4.1
+committed 2020-03-09T10:38:41Z
 */
 
 
 /*
-file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
+file https://github.com/acornjs/acorn/blob/6.4.1/acorn/dist/acorn.js
 */
 // hack-istanbul - inline-require
 /* istanbul ignore next */
@@ -87946,7 +87992,8 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
     if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {
       return c
     }
-    return (c << 10) + s.charCodeAt(i + 1) - 0x35FDC00
+    var next = s.charCodeAt(i + 1);
+    return next >= 0xDC00 && next <= 0xDFFF ? (c << 10) + next - 0x35FDC00 : c
   };
 
   RegExpValidationState.prototype.nextIndex = function nextIndex (i) {
@@ -87955,8 +88002,9 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
     if (i >= l) {
       return l
     }
-    var c = s.charCodeAt(i);
-    if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {
+    var c = s.charCodeAt(i), next;
+    if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l ||
+        (next = s.charCodeAt(i + 1)) < 0xDC00 || next > 0xDFFF) {
       return i + 1
     }
     return i + 2
@@ -89652,7 +89700,29 @@ file https://github.com/acornjs/acorn/blob/6.3.0/acorn/dist/acorn.js
 
   // Acorn is a tiny, fast JavaScript parser written in JavaScript.
 
-  var version = "6.3.0";
+  var version = "6.4.0";
+
+  Parser.acorn = {
+    Parser: Parser,
+    version: version,
+    defaultOptions: defaultOptions,
+    Position: Position,
+    SourceLocation: SourceLocation,
+    getLineInfo: getLineInfo,
+    Node: Node,
+    TokenType: TokenType,
+    tokTypes: types,
+    keywordTypes: keywords$1,
+    TokContext: TokContext,
+    tokContexts: types$1,
+    isIdentifierChar: isIdentifierChar,
+    isIdentifierStart: isIdentifierStart,
+    Token: Token,
+    isNewLine: isNewLine,
+    lineBreak: lineBreak,
+    lineBreakG: lineBreakG,
+    nonASCIIwhitespace: nonASCIIwhitespace
+  };
 
   // The main exported interface (under `self.acorn` when in the
   // browser) is a `parse` function that takes a code string and
@@ -93365,7 +93435,6 @@ committed 2016-08-21T19:53:22Z
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 */
 // hack-istanbul - inline-require
-/* istanbul ignore next */
 (function () { let module, window; module = undefined; window = local;
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
