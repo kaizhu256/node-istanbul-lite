@@ -13150,6 +13150,7 @@ local.coverageReportCreate = function (opt) {
         }
     });
     // 3. convert <summaryDict> to <nodeRoot>
+    filePrefix = filePrefix || [];
     tmp = filePrefix.join(path.sep) + path.sep;
     nodeRoot = nodeCreate(tmp);
     nodeDict = {};
