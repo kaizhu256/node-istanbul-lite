@@ -13035,7 +13035,7 @@ local.coverageReportCreate = function (opt) {
         });
     };
     // 1. merge previous <dirCoverage>/coverage.json into <opt>.coverage
-    dirCoverage = path.resolve("tmp/build/coverage");
+    dirCoverage = path.resolve(".tmp/build/coverage");
     coverageInclude = opt.coverageInclude || globalThis.__coverageInclude__;
     if (!local.isBrowser && process.env.npm_config_mode_coverage_merge) {
         console.error(
@@ -45219,7 +45219,7 @@ the greatest app in the world!\n\
 #### api doc\n\
 - [https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/apidoc.html](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/apidoc.html)\n\
 \n\
-[![apidoc](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/apidoc.html)\n\
+[![apidoc](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/apidoc.html)\n\
 \n\
 #### cli help\n\
 ![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.npmPackageCliHelp.svg)\n\
@@ -45271,14 +45271,14 @@ PORT=8081 node ./assets.app.js\n\
 \n\
 \n\
 # extra screenshots\n\
-1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)\n\
-[![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)\n\
+1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)\n\
+[![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)\n\
 \n\
-1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)\n\
-[![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)\n\
+1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png)\n\
+[![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png)\n\
 \n\
-1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)\n\
-[![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)\n\
+1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png)\n\
+[![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png)\n\
 \n\
 1. [https://kaizhu256.github.io/node-my-app-lite/build/screenshot.deployGithub.browser.%252Fnode-my-app-lite%252Fbuild%252Fapp.png](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.deployGithub.browser.%252Fnode-my-app-lite%252Fbuild%252Fapp.png)\n\
 [![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.deployGithub.browser.%252Fnode-my-app-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.deployGithub.browser.%252Fnode-my-app-lite%252Fbuild%252Fapp.png)\n\
@@ -45889,7 +45889,7 @@ local._testCase_buildApidoc_default = function (opt, onError) {
     // coverage-hack
     require2();
     // save apidoc.html
-    local.fsWriteFileWithMkdirp("tmp/build/apidoc.html", local.apidocCreate(
+    local.fsWriteFileWithMkdirp(".tmp/build/apidoc.html", local.apidocCreate(
         Object.assign({
             blacklistDict: local,
             modeNop: (
@@ -46808,7 +46808,7 @@ local.buildApp = function ({
                     "http://127.0.0.1:" + process.env.PORT + elem.url
                 ), function (res) {
                     let file;
-                    file = "tmp/build/app/" + (elem.file || elem.url);
+                    file = ".tmp/build/app/" + (elem.file || elem.url);
                     res.pipe(require("fs").createWriteStream(
                         file
                     ).on("close", function () {
@@ -46824,7 +46824,7 @@ local.buildApp = function ({
             require("child_process").spawn("node", [
                 "assets.utility2.lib.jslint.js", "dir", ".", "--conditional"
             ], {
-                cwd: "tmp/build/app",
+                cwd: ".tmp/build/app",
                 stdio: [
                     "ignore", 1, 2
                 ]
@@ -46834,13 +46834,13 @@ local.buildApp = function ({
     buildAppStandalone = function (resolve) {
         // write assets.app.js
         writeFile((
-            "tmp/build/app.standalone/assets.app.js"
+            ".tmp/build/app.standalone/assets.app.js"
         ), local.assetsDict["/assets.app.js"], function () {
             // test-file assets.app.js
             require("child_process").spawn("node", [
                 "assets.app.js"
             ], {
-                cwd: "tmp/build/app.standalone",
+                cwd: ".tmp/build/app.standalone",
                 env: {
                     PATH: process.env.PATH,
                     PORT: port,
@@ -47207,7 +47207,7 @@ local.buildApp = function ({
         // cleanup build-dir
         promiseList.push(new Promise(function (resolve) {
             require("child_process").spawn((
-                "for DIR in tmp/build/app/ tmp/build/app.standalone/;"
+                "for DIR in .tmp/build/app/ .tmp/build/app.standalone/;"
                 + "do rm -rf $DIR; mkdir -p $DIR; done"
             ), {
                 shell: true,
@@ -49606,12 +49606,12 @@ local.testReportCreate = function (testReport) {
     );
     // create test-report.html
     local.fsWriteFileWithMkdirpSync(
-        "tmp/build/test-report.html",
+        ".tmp/build/test-report.html",
         local.testReportMerge(testReport)
     );
     // create build.badge.svg
     local.fsWriteFileWithMkdirpSync(
-        "tmp/build/build.badge.svg",
+        ".tmp/build/build.badge.svg",
         local.assetsDict["/assets.buildBadge.template.svg"].replace((
             /0000-00-00\u002000:00:00\u0020UTC\u0020-\u0020master\u0020-\u0020aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/g
         ), (
@@ -49621,7 +49621,7 @@ local.testReportCreate = function (testReport) {
     );
     // create test-report.badge.svg
     local.fsWriteFileWithMkdirpSync(
-        "tmp/build/test-report.badge.svg",
+        ".tmp/build/test-report.badge.svg",
         local.assetsDict["/assets.testReportBadge.template.svg"].replace((
             // edit number of tests failed
             /999/g
@@ -50628,8 +50628,8 @@ local.http = require("http");
 local.Module = require("module");
 // init env
 local.objectAssignDefault(process.env, {
-    npm_config_dir_build: require("path").resolve("tmp/build"),
-    npm_config_dir_tmp: require("path").resolve("tmp")
+    npm_config_dir_build: require("path").resolve(".tmp/build"),
+    npm_config_dir_tmp: require("path").resolve(".tmp")
 });
 // merge previous test-report
 if (process.env.npm_config_file_test_report_merge) {
@@ -50868,8 +50868,8 @@ instruction\n\
             PORT=8081 \\\n\
             npm_config_mode_coverage=utility2 \\\n\
             node_modules/.bin/utility2 test example.js\n\
-    3. view test-report in ./tmp/build/test-report.html\n\
-    4. view coverage in ./tmp/build/coverage/index.html\n\
+    3. view test-report in .tmp/build/test-report.html\n\
+    4. view coverage in .tmp/build/coverage/index.html\n\
 */\n\
 \n\
 \n\
@@ -70796,12 +70796,12 @@ local.testCase_libUtility2Js_standalone = function (opt, onError) {\n\
     }\n\
     require(\"fs\").readFile(\"lib.utility2.js\", \"utf8\", function (err, data) {\n\
         onErrorThrow(err);\n\
-        require(\"fs\").writeFile(\"tmp/lib.utility2.js\", data.replace(\n\
+        require(\"fs\").writeFile(\".tmp/lib.utility2.js\", data.replace(\n\
             \"/* istanbul instrument in package utility2 */\",\n\
             \"\"\n\
         ), function (err) {\n\
             onErrorThrow(err);\n\
-            require(\"./tmp/lib.utility2.js\");\n\
+            require(\"./.tmp/lib.utility2.js\");\n\
         });\n\
         onError(undefined, opt);\n\
     });\n\
