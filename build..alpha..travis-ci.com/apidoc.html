@@ -752,7 +752,7 @@
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">assertJsonEqual = function (aa, bb) {
+    <li>description and source-code<pre class="apidocCodePre">function assertJsonEqual(aa, bb) {
 <span class="apidocCodeCommentSpan">/*
  * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
  */
@@ -828,7 +828,7 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">assertOrThrow = function (passed, msg) {
+    <li>description and source-code<pre class="apidocCodePre">function assertOrThrow(passed, msg) {
 <span class="apidocCodeCommentSpan">/*
  * this function will throw &lt;msg&gt; if &lt;passed&gt; is falsy
  */
@@ -1006,7 +1006,7 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">coalesce = function (...argList) {
+    <li>description and source-code<pre class="apidocCodePre">function coalesce(...argList) {
 <span class="apidocCodeCommentSpan">/*
  * this function will coalesce null, undefined, or &quot;&quot; in &lt;argList&gt;
  */
@@ -1148,7 +1148,6 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
 </span>    let coverageInclude;
     let dirCoverage;
     let filePrefix;
-    let filesUnderRoot;
     let htmlAll;
     let nodeChildAdd;
     let nodeCreate;
@@ -1157,7 +1156,6 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
     let nodeRoot;
     let summaryDict;
     let tmp;
-    let tmpChildren;
     if (!(opt &amp;&amp; opt.coverage)) {
         return &quot;&quot;;
     }
@@ -1258,7 +1256,10 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
                     metric = node.metrics[key];
                     metric.total += child.metrics[key].total;
                     metric.covered += child.metrics[key].covered;
-                    metric.skipped += child.metrics[key].skipped;...</pre></li>
+                    metric.skipped += child.metrics[key].skipped;
+                });
+            });
+        }...</pre></li>
     <li>example use<pre class="apidocCodePre">...
             &quot;/inputTextarea1.js&quot;\n\
         );\n\
@@ -1360,7 +1361,7 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">identity = function (val) {
+    <li>description and source-code<pre class="apidocCodePre">function identity(val) {
 <span class="apidocCodeCommentSpan">/*
  * this function will return &lt;val&gt;
  */
@@ -1496,7 +1497,7 @@ try {\n\
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">nop = function () {
+    <li>description and source-code<pre class="apidocCodePre">function nop() {
 <span class="apidocCodeCommentSpan">/*
  * this function will do nothing
  */
@@ -1514,7 +1515,7 @@ try {\n\
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    <li>description and source-code<pre class="apidocCodePre">function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
 <span class="apidocCodeCommentSpan">/*
  * this function will if items from &lt;tgt&gt; are null, undefined, or &quot;&quot;,
  * then overwrite them with items from &lt;src&gt;
@@ -1570,7 +1571,7 @@ globalThis.domOnEventDelegateDict = local;
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">onErrorThrow = function (err) {
+    <li>description and source-code<pre class="apidocCodePre">function onErrorThrow(err) {
 <span class="apidocCodeCommentSpan">/*
  * this function will throw &lt;err&gt; if exists
  */

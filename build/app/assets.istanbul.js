@@ -15,6 +15,8 @@
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -30,22 +32,18 @@
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -74,8 +72,8 @@
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -98,8 +96,8 @@
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -114,20 +112,20 @@
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -154,15 +152,15 @@
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -174,6 +172,19 @@
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -11334,7 +11345,6 @@ local.coverageReportCreate = function (opt) {
     let coverageInclude;
     let dirCoverage;
     let filePrefix;
-    let filesUnderRoot;
     let htmlAll;
     let nodeChildAdd;
     let nodeCreate;
@@ -11343,7 +11353,6 @@ local.coverageReportCreate = function (opt) {
     let nodeRoot;
     let summaryDict;
     let tmp;
-    let tmpChildren;
     if (!(opt && opt.coverage)) {
         return "";
     }
@@ -11473,7 +11482,7 @@ local.coverageReportCreate = function (opt) {
         });
     };
     // 1. merge previous <dirCoverage>/coverage.json into <opt>.coverage
-    dirCoverage = path.resolve("tmp/build/coverage.html");
+    dirCoverage = path.resolve("tmp/build/coverage");
     coverageInclude = opt.coverageInclude || globalThis.__coverageInclude__;
     if (!local.isBrowser && process.env.npm_config_mode_coverage_merge) {
         console.error(
@@ -11618,7 +11627,6 @@ local.coverageReportCreate = function (opt) {
     nodeRoot = nodeCreate(tmp);
     nodeDict = {};
     nodeDict[tmp] = nodeRoot;
-    filesUnderRoot = false;
     Object.entries(summaryDict).forEach(function ([
         key,
         metrics
@@ -11641,26 +11649,7 @@ local.coverageReportCreate = function (opt) {
             nodeDict[parentPath] = parent;
         }
         nodeChildAdd(parent, node);
-        if (parent === nodeRoot) {
-            filesUnderRoot = true;
-        }
     });
-    if (filesUnderRoot && filePrefix.length > 0) {
-        //start at one level above
-        filePrefix.pop();
-        tmp = nodeRoot;
-        tmpChildren = tmp.children;
-        tmp.children = [];
-        nodeRoot = nodeCreate(filePrefix.join(path.sep) + path.sep);
-        nodeChildAdd(nodeRoot, tmp);
-        tmpChildren.forEach(function (child) {
-            nodeChildAdd((
-                child.isFile
-                ? tmp
-                : nodeRoot
-            ), child);
-        });
-    }
     nodeNormalize(nodeRoot, 0, filePrefix.join(path.sep) + path.sep);
     // 4. convert <nodeRoot> to text-report <dirCoverage>/coverage.txt
     reportTextWrite(nodeRoot, dirCoverage);
