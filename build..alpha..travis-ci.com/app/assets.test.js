@@ -388,7 +388,7 @@ for (var n of fibonacci) {
     console.log(n);
 }
 });
-//// try {(function () {
+//// tryCatch(function () {
 //// interface IteratorResult {
     //// done: boolean;
     //// value: any;
@@ -399,9 +399,7 @@ for (var n of fibonacci) {
 //// interface Iterable {
     //// [Symbol.iterator](): Iterator
 //// }
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
+//// });
 tryCatch(function () {
 var fibonacci = {
     [Symbol.iterator]: function*() {
@@ -421,14 +419,12 @@ for (var n of fibonacci) {
     console.log(n);
 }
 });
-//// try {(function () {
+//// tryCatch(function () {
 //// interface Generator extends Iterator {
     //// next(value?: any): IteratorResult;
     //// throw(exception: any);
 //// }
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
+//// });
 tryCatch(function () {
 // same as ES5.1
 console.assert('\ud842\udfb7'.length === 2);
@@ -443,62 +439,50 @@ for(var c of '\ud842\udfb7') {
     console.log(c);
 }
 });
-//// try {(function () {
+//// tryCatch(function () {
 //// // lib/math.js
 //// export function sum(x, y) {
     //// return x + y;
 //// }
 //// export var pi = 3.141593;
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // app.js
 //// import * as math from 'lib/math';
 //// alert('2π = ' + math.sum(math.pi, math.pi));
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // otherApp.js
 //// import {sum, pi} from 'lib/math';
 //// alert('2π = ' + sum(pi, pi));
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // lib/mathplusplus.js
 //// export * from 'lib/math';
 //// export var e = 2.71828182846;
 //// export default function(x) {
     //// return Math.log(x);
 //// }
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // app.js
 //// import ln, {pi, e} from 'lib/mathplusplus';
 //// alert('2π = ' + ln(e)*pi*2);
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
-//// // Dynamic loading – ‘System’ is default loader
-//// System.import('lib/math').then(function(m) {
-    //// alert('2π = ' + m.sum(m.pi, m.pi));
 //// });
-//// // Create execution sandboxes – new Loaders
-//// var loader = new Loader({
-    //// global: fixup(window) // replace ‘console.log’
-//// });
-//// loader.eval('console.log('hello world!');');
-//// // Directly manipulate module cache
-//// System.get('jquery');
-//// System.set('jquery', Module({$: $})); // WARNING: not yet finalized
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
+tryCatch(function () {
+// Dynamic loading – ‘System’ is default loader
+System.import('lib/math').then(function(m) {
+    alert('2π = ' + m.sum(m.pi, m.pi));
+});
+// Create execution sandboxes – new Loaders
+var loader = new Loader({
+    global: fixup(window) // replace ‘console.log’
+});
+loader.eval("console.log('hello world!');");
+// Directly manipulate module cache
+System.get('jquery');
+System.set('jquery', Module({$: $})); // WARNING: not yet finalized
+});
 tryCatch(function () {
 // Sets
 var s = new Set();
@@ -619,7 +603,7 @@ console.assert([1, 2, 3].findIndex(x => x === 2) === 1); // 1
 [1, 2, 3, 4, 5].copyWithin(3, 0); // [1, 2, 3, 1, 2]
 ['a', 'b', 'c'].entries(); // iterator [0, 'a'], [1,'b'], [2,'c']
 ['a', 'b', 'c'].keys(); // iterator 0, 1, 2
-//// ['a', 'b', 'c'].values(); // iterator 'a', 'b', 'c'
+['a', 'b', 'c'].values(); // iterator 'a', 'b', 'c'
 var Point = echo;
 Object.assign(Point, { origin: new Point(0,0) });
 });
@@ -723,6 +707,12 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         [
             local.env, {
                 npm_config_mode_coverage_merge: "1"
+            }
+        ],
+        // test term-color handling-behavior
+        [
+            (typeof process === "object" && process && process.stdout) || {}, {
+                isTTY: true
             }
         ]
     ], function (onError) {
