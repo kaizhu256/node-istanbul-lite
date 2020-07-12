@@ -301,20 +301,20 @@
             Functions: 13
         </td>
         <td>
-            91.74%<br>
-            (311 / 339)
+            92.01%<br>
+            (311 / 338)
         </td>
         <td>
             86.08%<br>
             (68 / 79)
         </td>
         <td>
-            92.77%<br>
-            (77 / 83)
+            93.9%<br>
+            (77 / 82)
         </td>
         <td>
-            91.57%<br>
-            (304 / 332)
+            91.84%<br>
+            (304 / 331)
         </td>
     </tbody>
     </table>
@@ -1143,7 +1143,6 @@
 <a href="#l818" id="l818">818</a>
 <a href="#l819" id="l819">819</a>
 <a href="#l820" id="l820">820</a>
-<a href="#l821" id="l821">821</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1909,11 +1908,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2721,7 +2719,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         });
         // test file-content handling-behavior
 <span class="cstat-no" title="statement not covered">        [</span>
-            // test no content handling-behavior
+            // test no-content handling-behavior
             "",
             // test uncovered-code handling-behavior
             "undefined &amp;&amp; undefined &amp;&amp; undefined",
@@ -2729,16 +2727,15 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             "undefined ",
             // test skip handling-behavior
             "/* istanbul ignore next */\nundefined &amp;&amp; undefined",
+            // test metric-score-medium handling-behavior
             "1\n&amp;&amp;1\n&amp;&amp;0\n&amp;&amp;0"
         ].forEach(<span class="fstat-no" title="function not covered">function (content) {</span>
             // cleanup
-<span class="cstat-no" title="statement not covered">            local.tryCatchOnError(<span class="fstat-no" title="function not covered">function () {</span></span>
-<span class="cstat-no" title="statement not covered">                Object.keys(globalThis.__coverage__).forEach(<span class="fstat-no" title="function not covered">function (file) {</span></span>
-<span class="cstat-no" title="statement not covered">                    if (file.indexOf("zz.js") &gt;= 0) {</span>
-<span class="cstat-no" title="statement not covered">                        delete globalThis.__coverage__[file];</span>
-                    }
-                });
-            }, local.nop);
+<span class="cstat-no" title="statement not covered">            Object.keys(globalThis.__coverage__).forEach(<span class="fstat-no" title="function not covered">function (file) {</span></span>
+<span class="cstat-no" title="statement not covered">                if (file.indexOf("zz.js") &gt;= 0) {</span>
+<span class="cstat-no" title="statement not covered">                    delete globalThis.__coverage__[file];</span>
+                }
+            });
             // cover path
 <span class="cstat-no" title="statement not covered">            eval( // jslint ignore:line</span>
                 local.istanbul.instrumentSync(content, "zz.js")
