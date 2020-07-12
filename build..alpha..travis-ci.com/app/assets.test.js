@@ -652,9 +652,11 @@ local.testCase_istanbulCoverageMerge_default = function (opt, onError) {
     }
     opt = {};
     opt.data = local.istanbul.instrumentSync(
-        "(function () {\nreturn arg "
-        + "? __coverage__ "
-        + ": __coverage__;\n}());",
+        "(function () {\n"
+        + "return arg\n"
+        + "? __coverage__\n"
+        + ": __coverage__;\n"
+        + "}());\n",
         "/test"
     );
     local.arg = 0;
@@ -665,25 +667,25 @@ local.testCase_istanbulCoverageMerge_default = function (opt, onError) {
 /* jslint ignore:start */
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
-{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 // test merge-create handling-behavior
 opt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
-{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 // init opt.coverage2
 opt.coverage2 = require("vm").runInNewContext(opt.data, { arg: 1 });
 // validate opt.coverage2
 local.assertJsonEqual(opt.coverage2,
-{"/test":{"b":{"1":[1,0]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[1,0]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 // test merge-update handling-behavior
 local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
 // validate merged opt.coverage1
 local.assertJsonEqual(opt.coverage1,
-{"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 /* jslint ignore:end */
     onError(undefined, opt);

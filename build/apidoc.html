@@ -792,30 +792,30 @@
 // validate opt.coverage1
 local.<span class="apidocCodeKeywordSpan">assertJsonEqual</span>(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 );
 // test merge-create handling-behavior
 opt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 ...</pre></li>
     </ul>
 
@@ -1095,30 +1095,30 @@ try {
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 );
 // test merge-create handling-behavior
 opt.coverage1 = local.istanbul.<span class="apidocCodeKeywordSpan">coverageMerge</span>({}, opt.coverage1);
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 );
 // init opt.coverage2
 opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
