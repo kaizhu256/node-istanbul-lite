@@ -301,20 +301,20 @@
             Functions: 13
         </td>
         <td>
-            90.46%<br>
-            (313 / 346)
+            91.74%<br>
+            (311 / 339)
         </td>
         <td>
             86.08%<br>
             (68 / 79)
         </td>
         <td>
-            91.76%<br>
-            (78 / 85)
+            92.77%<br>
+            (77 / 83)
         </td>
         <td>
-            90.27%<br>
-            (306 / 339)
+            91.57%<br>
+            (304 / 332)
         </td>
     </tbody>
     </table>
@@ -1143,6 +1143,7 @@
 <a href="#l818" id="l818">818</a>
 <a href="#l819" id="l819">819</a>
 <a href="#l820" id="l820">820</a>
+<a href="#l821" id="l821">821</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1354,10 +1355,10 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">6</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">25</span>
-<span class="cline-any cline-yes">25</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">24</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1615,19 +1616,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1897,6 +1898,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2437,20 +2439,20 @@ for(var c of '\ud842\udfb7') {
 //// import ln, {pi, e} from 'lib/mathplusplus';
 //// alert('2π = ' + ln(e)*pi*2);
 //// });
-tryCatch(function () {
-// Dynamic loading – ‘System’ is default loader
-System.import('lib/math').then(<span class="fstat-no" title="function not covered">function(m) {</span>
-<span class="cstat-no" title="statement not covered">    alert('2π = ' + m.sum(m.pi, m.pi));</span>
-});
-// Create execution sandboxes – new Loaders
-<span class="cstat-no" title="statement not covered">var loader = new Loader({</span>
-    global: fixup(window) // replace ‘console.log’
-});
-<span class="cstat-no" title="statement not covered">loader.eval("console.log('hello world!');");</span>
-// Directly manipulate module cache
-<span class="cstat-no" title="statement not covered">System.get('jquery');</span>
-<span class="cstat-no" title="statement not covered">System.set('jquery', Module({$: $})); </span>// WARNING: not yet finalized
-});
+//// tryCatch(function () {
+//// // Dynamic loading – ‘System’ is default loader
+//// System.import('lib/math').then(function(m) {
+    //// alert('2π = ' + m.sum(m.pi, m.pi));
+//// });
+//// // Create execution sandboxes – new Loaders
+//// var loader = new Loader({
+    //// global: fixup(window) // replace ‘console.log’
+//// });
+//// loader.eval("console.log('hello world!');");
+//// // Directly manipulate module cache
+//// System.get('jquery');
+//// System.set('jquery', Module({$: $})); // WARNING: not yet finalized
+//// });
 tryCatch(function () {
 // Sets
 var s = new Set();
@@ -2726,7 +2728,8 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             // test trailing-whitespace handling-behavior
             "undefined ",
             // test skip handling-behavior
-            "/* istanbul ignore next */\nundefined &amp;&amp; undefined"
+            "/* istanbul ignore next */\nundefined &amp;&amp; undefined",
+            "1\n&amp;&amp;1\n&amp;&amp;0\n&amp;&amp;0"
         ].forEach(<span class="fstat-no" title="function not covered">function (content) {</span>
             // cleanup
 <span class="cstat-no" title="statement not covered">            local.tryCatchOnError(<span class="fstat-no" title="function not covered">function () {</span></span>
