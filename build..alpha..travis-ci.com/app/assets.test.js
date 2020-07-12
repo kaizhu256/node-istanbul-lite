@@ -710,7 +710,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
  * this function will test
  * istanbulCoverageReportCreate's default handling-behavior
  */
-    // test null handling-behavior
+    // test null-case handling-behavior
     local.istanbul.coverageReportCreate();
     local.env.npm_config_mode_coverage_merge = "";
     local.testMock([
@@ -748,7 +748,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
                 // cover file
                 eval(local.istanbul.instrumentSync( // jslint ignore:line
                     // test skip handling-behavior
-                    "null",
+                    "undefined",
                     dir + "/" + file
                 ));
             });
@@ -761,18 +761,18 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         [
             // test no content handling-behavior
             "",
-            // test uncovereed-code handling-behavior
-            "null && null && null",
+            // test uncovered-code handling-behavior
+            "undefined && undefined && undefined",
             // test trailing-whitespace handling-behavior
-            "null ",
+            "undefined ",
             // test skip handling-behavior
-            "/* istanbul ignore next */\nnull && null"
+            "/* istanbul ignore next */\nundefined && undefined"
         ].forEach(function (content) {
             // cleanup
             local.tryCatchOnError(function () {
                 Object.keys(globalThis.__coverage__).forEach(function (file) {
                     if (file.indexOf("zz.js") >= 0) {
-                        globalThis.__coverage__[file] = null;
+                        delete globalThis.__coverage__[file];
                     }
                 });
             }, local.nop);
@@ -788,12 +788,12 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         // cleanup
         Object.keys(globalThis.__coverage__).forEach(function (file) {
             if (file.indexOf("zz.js") >= 0) {
-                globalThis.__coverage__[file] = null;
+                delete globalThis.__coverage__[file];
             }
         });
         onError(undefined, opt);
     }, onError);
-    // report subdir
+    // test path handling-behavior
     if (!local.isBrowser) {
         require("./test1/test1.js");
         require("./test1/test2/test2.js");
