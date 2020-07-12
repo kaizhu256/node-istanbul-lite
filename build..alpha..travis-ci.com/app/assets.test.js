@@ -751,7 +751,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         });
         // test file-content handling-behavior
         [
-            // test no content handling-behavior
+            // test no-content handling-behavior
             "",
             // test uncovered-code handling-behavior
             "undefined && undefined && undefined",
@@ -759,16 +759,15 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             "undefined ",
             // test skip handling-behavior
             "/* istanbul ignore next */\nundefined && undefined",
+            // test metric-score-medium handling-behavior
             "1\n&&1\n&&0\n&&0"
         ].forEach(function (content) {
             // cleanup
-            local.tryCatchOnError(function () {
-                Object.keys(globalThis.__coverage__).forEach(function (file) {
-                    if (file.indexOf("zz.js") >= 0) {
-                        delete globalThis.__coverage__[file];
-                    }
-                });
-            }, local.nop);
+            Object.keys(globalThis.__coverage__).forEach(function (file) {
+                if (file.indexOf("zz.js") >= 0) {
+                    delete globalThis.__coverage__[file];
+                }
+            });
             // cover path
             eval( // jslint ignore:line
                 local.istanbul.instrumentSync(content, "zz.js")
