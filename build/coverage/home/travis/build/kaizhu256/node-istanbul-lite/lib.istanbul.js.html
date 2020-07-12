@@ -35716,7 +35716,7 @@ local.coverageReportCreate = function (opt) {
     // write coverage.badge.svg
 <span class="cstat-no" title="statement not covered">    tmp = nodeRoot.metrics.lines.pct;</span>
 <span class="cstat-no" title="statement not covered">    fileWrite(</span>
-        path.dirname(dirCoverage) + "/coverage.badge.svg",
+        dirCoverage + "/coverage.badge.svg",
         // edit coverage badge percent
         // edit coverage badge color
         local.templateCoverageBadgeSvg.replace((

@@ -11668,7 +11668,7 @@ local.coverageReportCreate = function (opt) {
     // write coverage.badge.svg
     tmp = nodeRoot.metrics.lines.pct;
     fileWrite(
-        path.dirname(dirCoverage) + "/coverage.badge.svg",
+        dirCoverage + "/coverage.badge.svg",
         // edit coverage badge percent
         // edit coverage badge color
         local.templateCoverageBadgeSvg.replace((
