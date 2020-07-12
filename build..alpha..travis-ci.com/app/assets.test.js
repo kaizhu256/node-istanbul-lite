@@ -469,20 +469,20 @@ for(var c of '\ud842\udfb7') {
 //// import ln, {pi, e} from 'lib/mathplusplus';
 //// alert('2π = ' + ln(e)*pi*2);
 //// });
-tryCatch(function () {
-// Dynamic loading – ‘System’ is default loader
-System.import('lib/math').then(function(m) {
-    alert('2π = ' + m.sum(m.pi, m.pi));
-});
-// Create execution sandboxes – new Loaders
-var loader = new Loader({
-    global: fixup(window) // replace ‘console.log’
-});
-loader.eval("console.log('hello world!');");
-// Directly manipulate module cache
-System.get('jquery');
-System.set('jquery', Module({$: $})); // WARNING: not yet finalized
-});
+//// tryCatch(function () {
+//// // Dynamic loading – ‘System’ is default loader
+//// System.import('lib/math').then(function(m) {
+    //// alert('2π = ' + m.sum(m.pi, m.pi));
+//// });
+//// // Create execution sandboxes – new Loaders
+//// var loader = new Loader({
+    //// global: fixup(window) // replace ‘console.log’
+//// });
+//// loader.eval("console.log('hello world!');");
+//// // Directly manipulate module cache
+//// System.get('jquery');
+//// System.set('jquery', Module({$: $})); // WARNING: not yet finalized
+//// });
 tryCatch(function () {
 // Sets
 var s = new Set();
@@ -758,7 +758,8 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             // test trailing-whitespace handling-behavior
             "undefined ",
             // test skip handling-behavior
-            "/* istanbul ignore next */\nundefined && undefined"
+            "/* istanbul ignore next */\nundefined && undefined",
+            "1\n&&1\n&&0\n&&0"
         ].forEach(function (content) {
             // cleanup
             local.tryCatchOnError(function () {
