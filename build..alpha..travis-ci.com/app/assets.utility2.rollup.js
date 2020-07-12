@@ -14,6 +14,8 @@
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -29,22 +31,18 @@
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -73,8 +71,8 @@
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -97,8 +95,8 @@
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -113,20 +111,20 @@
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -153,15 +151,15 @@
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -173,6 +171,19 @@
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -210,6 +221,8 @@
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -225,22 +238,18 @@
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -269,8 +278,8 @@
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -293,8 +302,8 @@
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -309,20 +318,20 @@
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -349,15 +358,15 @@
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -369,6 +378,19 @@
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -1520,6 +1542,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -1535,22 +1559,18 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -1579,8 +1599,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -1603,8 +1623,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -1619,20 +1639,20 @@ if (module === require.main && !globalThis.utility2_rollup) {
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -1659,15 +1679,15 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -1679,6 +1699,19 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -12839,7 +12872,6 @@ local.coverageReportCreate = function (opt) {
     let coverageInclude;
     let dirCoverage;
     let filePrefix;
-    let filesUnderRoot;
     let htmlAll;
     let nodeChildAdd;
     let nodeCreate;
@@ -12848,7 +12880,6 @@ local.coverageReportCreate = function (opt) {
     let nodeRoot;
     let summaryDict;
     let tmp;
-    let tmpChildren;
     if (!(opt && opt.coverage)) {
         return "";
     }
@@ -12978,7 +13009,7 @@ local.coverageReportCreate = function (opt) {
         });
     };
     // 1. merge previous <dirCoverage>/coverage.json into <opt>.coverage
-    dirCoverage = path.resolve("tmp/build/coverage.html");
+    dirCoverage = path.resolve("tmp/build/coverage");
     coverageInclude = opt.coverageInclude || globalThis.__coverageInclude__;
     if (!local.isBrowser && process.env.npm_config_mode_coverage_merge) {
         console.error(
@@ -13123,7 +13154,6 @@ local.coverageReportCreate = function (opt) {
     nodeRoot = nodeCreate(tmp);
     nodeDict = {};
     nodeDict[tmp] = nodeRoot;
-    filesUnderRoot = false;
     Object.entries(summaryDict).forEach(function ([
         key,
         metrics
@@ -13146,26 +13176,7 @@ local.coverageReportCreate = function (opt) {
             nodeDict[parentPath] = parent;
         }
         nodeChildAdd(parent, node);
-        if (parent === nodeRoot) {
-            filesUnderRoot = true;
-        }
     });
-    if (filesUnderRoot && filePrefix.length > 0) {
-        //start at one level above
-        filePrefix.pop();
-        tmp = nodeRoot;
-        tmpChildren = tmp.children;
-        tmp.children = [];
-        nodeRoot = nodeCreate(filePrefix.join(path.sep) + path.sep);
-        nodeChildAdd(nodeRoot, tmp);
-        tmpChildren.forEach(function (child) {
-            nodeChildAdd((
-                child.isFile
-                ? tmp
-                : nodeRoot
-            ), child);
-        });
-    }
     nodeNormalize(nodeRoot, 0, filePrefix.join(path.sep) + path.sep);
     // 4. convert <nodeRoot> to text-report <dirCoverage>/coverage.txt
     reportTextWrite(nodeRoot, dirCoverage);
@@ -13396,6 +13407,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -13411,22 +13424,18 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -13455,8 +13464,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -13479,8 +13488,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -13495,20 +13504,20 @@ if (module === require.main && !globalThis.utility2_rollup) {
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -13535,15 +13544,15 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -13555,6 +13564,19 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -30824,6 +30846,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -30839,22 +30863,18 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -30883,8 +30903,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -30907,8 +30927,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -30923,20 +30943,20 @@ if (module === require.main && !globalThis.utility2_rollup) {
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -30963,15 +30983,15 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -30983,6 +31003,19 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -31244,6 +31277,8 @@ if (local.isBrowser) {
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -31259,22 +31294,18 @@ if (local.isBrowser) {
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -31303,8 +31334,8 @@ if (local.isBrowser) {
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -31327,8 +31358,8 @@ if (local.isBrowser) {
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -31343,20 +31374,20 @@ if (local.isBrowser) {
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -31383,15 +31414,15 @@ if (local.isBrowser) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -31403,6 +31434,19 @@ if (local.isBrowser) {
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -44020,6 +44064,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
 (function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
@@ -44035,22 +44081,18 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -44079,8 +44121,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -44103,8 +44145,8 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -44119,20 +44161,20 @@ if (module === require.main && !globalThis.utility2_rollup) {
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -44159,15 +44201,15 @@ if (module === require.main && !globalThis.utility2_rollup) {
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
-    local.onErrorThrow = function (err) {
+    }
+    function onErrorThrow(err) {
     /*
      * this function will throw <err> if exists
      */
         if (err) {
             throw err;
         }
-    };
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -44179,6 +44221,19 @@ if (module === require.main && !globalThis.utility2_rollup) {
             throw err;
         });
     }
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -44245,6 +44300,8 @@ local.assetsDict["/assets.utility2.header.js"] = '\
 (function () {\n\
     "use strict";\n\
     let consoleError;\n\
+    let isBrowser;\n\
+    let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
@@ -44260,22 +44317,18 @@ local.assetsDict["/assets.utility2.header.js"] = '\
             return argList[0];\n\
         };\n\
     }\n\
-    // init local\n\
-    local = {};\n\
-    local.local = local;\n\
-    globalThis.globalLocal = local;\n\
     // init isBrowser\n\
-    local.isBrowser = (\n\
+    isBrowser = (\n\
         typeof globalThis.XMLHttpRequest === "function"\n\
         && globalThis.navigator\n\
         && typeof globalThis.navigator.userAgent === "string"\n\
     );\n\
     // init isWebWorker\n\
-    local.isWebWorker = (\n\
-        local.isBrowser && typeof globalThis.importScripts === "function"\n\
+    isWebWorker = (\n\
+        isBrowser && typeof globalThis.importScripts === "function"\n\
     );\n\
     // init function\n\
-    local.assertJsonEqual = function (aa, bb) {\n\
+    function assertJsonEqual(aa, bb) {\n\
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
@@ -44304,8 +44357,8 @@ local.assetsDict["/assets.utility2.header.js"] = '\
         if (aa !== bb) {\n\
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));\n\
         }\n\
-    };\n\
-    local.assertOrThrow = function (passed, msg) {\n\
+    }\n\
+    function assertOrThrow(passed, msg) {\n\
     /*\n\
      * this function will throw <msg> if <passed> is falsy\n\
      */\n\
@@ -44328,8 +44381,8 @@ local.assetsDict["/assets.utility2.header.js"] = '\
                 : JSON.stringify(msg, undefined, 4)\n\
             )\n\
         );\n\
-    };\n\
-    local.coalesce = function (...argList) {\n\
+    }\n\
+    function coalesce(...argList) {\n\
     /*\n\
      * this function will coalesce null, undefined, or "" in <argList>\n\
      */\n\
@@ -44344,20 +44397,20 @@ local.assetsDict["/assets.utility2.header.js"] = '\
             ii += 1;\n\
         }\n\
         return arg;\n\
-    };\n\
-    local.identity = function (val) {\n\
+    }\n\
+    function identity(val) {\n\
     /*\n\
      * this function will return <val>\n\
      */\n\
         return val;\n\
-    };\n\
-    local.nop = function () {\n\
+    }\n\
+    function nop() {\n\
     /*\n\
      * this function will do nothing\n\
      */\n\
         return;\n\
-    };\n\
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n\
+    }\n\
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {\n\
     /*\n\
      * this function will if items from <tgt> are null, undefined, or "",\n\
      * then overwrite them with items from <src>\n\
@@ -44384,15 +44437,15 @@ local.assetsDict["/assets.utility2.header.js"] = '\
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
-    };\n\
-    local.onErrorThrow = function (err) {\n\
+    }\n\
+    function onErrorThrow(err) {\n\
     /*\n\
      * this function will throw <err> if exists\n\
      */\n\
         if (err) {\n\
             throw err;\n\
         }\n\
-    };\n\
+    }\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === "object" && process\n\
@@ -44404,6 +44457,19 @@ local.assetsDict["/assets.utility2.header.js"] = '\
             throw err;\n\
         });\n\
     }\n\
+    // init local\n\
+    local = {};\n\
+    local.local = local;\n\
+    globalThis.globalLocal = local;\n\
+    local.assertJsonEqual = assertJsonEqual;\n\
+    local.assertOrThrow = assertOrThrow;\n\
+    local.coalesce = coalesce;\n\
+    local.identity = identity;\n\
+    local.isBrowser = isBrowser;\n\
+    local.isWebWorker = isWebWorker;\n\
+    local.nop = nop;\n\
+    local.objectAssignDefault = objectAssignDefault;\n\
+    local.onErrorThrow = onErrorThrow;\n\
 }());\n\
 // assets.utility2.header.js - end\n\
 '
@@ -45096,7 +45162,7 @@ the greatest app in the world!\n\
 [![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.deployGithub.browser.%252Fnode-my-app-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app)\n\
 \n\
 \n\
-[![travis-ci.com build-status](https://api.travis-ci.com/kaizhu256/node-my-app-lite.svg)](https://travis-ci.com/kaizhu256/node-my-app-lite) [![coverage](https://kaizhu256.github.io/node-my-app-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build/coverage.html/index.html)\n\
+[![travis-ci.com build-status](https://api.travis-ci.com/kaizhu256/node-my-app-lite.svg)](https://travis-ci.com/kaizhu256/node-my-app-lite) [![coverage](https://kaizhu256.github.io/node-my-app-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build/coverage/index.html)\n\
 \n\
 [![NPM](https://nodei.co/npm/my-app-lite.png?downloads=true)](https://www.npmjs.com/package/my-app-lite)\n\
 \n\
@@ -45107,7 +45173,7 @@ the greatest app in the world!\n\
 | test-server-github : | [![github.com test-server](https://kaizhu256.github.io/node-my-app-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/app) | [![github.com test-server](https://kaizhu256.github.io/node-my-app-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/app) | [![github.com test-server](https://kaizhu256.github.io/node-my-app-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/app)|\n\
 | test-server-heroku : | [![heroku.com test-server](https://kaizhu256.github.io/node-my-app-lite/heroku-logo.75x25.png)](https://h1-my-app-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-my-app-lite/heroku-logo.75x25.png)](https://h1-my-app-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-my-app-lite/heroku-logo.75x25.png)](https://h1-my-app-alpha.herokuapp.com)|\n\
 | test-report : | [![test-report](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/test-report.html) | [![test-report](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/test-report.html) | [![test-report](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/test-report.html)|\n\
-| coverage : | [![coverage](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/coverage.html/index.html)|\n\
+| coverage : | [![coverage](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..master..travis-ci.com/coverage/index.html) | [![coverage](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..beta..travis-ci.com/coverage/index.html) | [![coverage](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-my-app-lite/build..alpha..travis-ci.com/coverage/index.html)|\n\
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-my-app-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-my-app-lite/tree/gh-pages/build..master..travis-ci.com) | [![build-artifacts](https://kaizhu256.github.io/node-my-app-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-my-app-lite/tree/gh-pages/build..beta..travis-ci.com) | [![build-artifacts](https://kaizhu256.github.io/node-my-app-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-my-app-lite/tree/gh-pages/build..alpha..travis-ci.com)|\n\
 \n\
 [![npmPackageListing](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.npmPackageListing.svg)](https://github.com/kaizhu256/node-my-app-lite)\n\
@@ -50776,7 +50842,7 @@ instruction\n\
             npm_config_mode_coverage=utility2 \\\n\
             node_modules/.bin/utility2 test example.js\n\
     3. view test-report in ./tmp/build/test-report.html\n\
-    4. view coverage in ./tmp/build/coverage.html/index.html\n\
+    4. view coverage in ./tmp/build/coverage/index.html\n\
 */\n\
 \n\
 \n\
@@ -50788,6 +50854,8 @@ instruction\n\
 (function () {\n\
     \"use strict\";\n\
     let consoleError;\n\
+    let isBrowser;\n\
+    let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
@@ -50803,22 +50871,18 @@ instruction\n\
             return argList[0];\n\
         };\n\
     }\n\
-    // init local\n\
-    local = {};\n\
-    local.local = local;\n\
-    globalThis.globalLocal = local;\n\
     // init isBrowser\n\
-    local.isBrowser = (\n\
+    isBrowser = (\n\
         typeof globalThis.XMLHttpRequest === \"function\"\n\
         && globalThis.navigator\n\
         && typeof globalThis.navigator.userAgent === \"string\"\n\
     );\n\
     // init isWebWorker\n\
-    local.isWebWorker = (\n\
-        local.isBrowser && typeof globalThis.importScripts === \"function\"\n\
+    isWebWorker = (\n\
+        isBrowser && typeof globalThis.importScripts === \"function\"\n\
     );\n\
     // init function\n\
-    local.assertJsonEqual = function (aa, bb) {\n\
+    function assertJsonEqual(aa, bb) {\n\
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
@@ -50847,8 +50911,8 @@ instruction\n\
         if (aa !== bb) {\n\
             throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n\
         }\n\
-    };\n\
-    local.assertOrThrow = function (passed, msg) {\n\
+    }\n\
+    function assertOrThrow(passed, msg) {\n\
     /*\n\
      * this function will throw <msg> if <passed> is falsy\n\
      */\n\
@@ -50871,8 +50935,8 @@ instruction\n\
                 : JSON.stringify(msg, undefined, 4)\n\
             )\n\
         );\n\
-    };\n\
-    local.coalesce = function (...argList) {\n\
+    }\n\
+    function coalesce(...argList) {\n\
     /*\n\
      * this function will coalesce null, undefined, or \"\" in <argList>\n\
      */\n\
@@ -50887,20 +50951,20 @@ instruction\n\
             ii += 1;\n\
         }\n\
         return arg;\n\
-    };\n\
-    local.identity = function (val) {\n\
+    }\n\
+    function identity(val) {\n\
     /*\n\
      * this function will return <val>\n\
      */\n\
         return val;\n\
-    };\n\
-    local.nop = function () {\n\
+    }\n\
+    function nop() {\n\
     /*\n\
      * this function will do nothing\n\
      */\n\
         return;\n\
-    };\n\
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n\
+    }\n\
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {\n\
     /*\n\
      * this function will if items from <tgt> are null, undefined, or \"\",\n\
      * then overwrite them with items from <src>\n\
@@ -50927,15 +50991,15 @@ instruction\n\
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
-    };\n\
-    local.onErrorThrow = function (err) {\n\
+    }\n\
+    function onErrorThrow(err) {\n\
     /*\n\
      * this function will throw <err> if exists\n\
      */\n\
         if (err) {\n\
             throw err;\n\
         }\n\
-    };\n\
+    }\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -50947,6 +51011,19 @@ instruction\n\
             throw err;\n\
         });\n\
     }\n\
+    // init local\n\
+    local = {};\n\
+    local.local = local;\n\
+    globalThis.globalLocal = local;\n\
+    local.assertJsonEqual = assertJsonEqual;\n\
+    local.assertOrThrow = assertOrThrow;\n\
+    local.coalesce = coalesce;\n\
+    local.identity = identity;\n\
+    local.isBrowser = isBrowser;\n\
+    local.isWebWorker = isWebWorker;\n\
+    local.nop = nop;\n\
+    local.objectAssignDefault = objectAssignDefault;\n\
+    local.onErrorThrow = onErrorThrow;\n\
 }());\n\
 // assets.utility2.header.js - end\n\
 \n\
@@ -52368,6 +52445,8 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 (function () {\n\
     \"use strict\";\n\
     let consoleError;\n\
+    let isBrowser;\n\
+    let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
@@ -52383,22 +52462,18 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
             return argList[0];\n\
         };\n\
     }\n\
-    // init local\n\
-    local = {};\n\
-    local.local = local;\n\
-    globalThis.globalLocal = local;\n\
     // init isBrowser\n\
-    local.isBrowser = (\n\
+    isBrowser = (\n\
         typeof globalThis.XMLHttpRequest === \"function\"\n\
         && globalThis.navigator\n\
         && typeof globalThis.navigator.userAgent === \"string\"\n\
     );\n\
     // init isWebWorker\n\
-    local.isWebWorker = (\n\
-        local.isBrowser && typeof globalThis.importScripts === \"function\"\n\
+    isWebWorker = (\n\
+        isBrowser && typeof globalThis.importScripts === \"function\"\n\
     );\n\
     // init function\n\
-    local.assertJsonEqual = function (aa, bb) {\n\
+    function assertJsonEqual(aa, bb) {\n\
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
@@ -52427,8 +52502,8 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
         if (aa !== bb) {\n\
             throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n\
         }\n\
-    };\n\
-    local.assertOrThrow = function (passed, msg) {\n\
+    }\n\
+    function assertOrThrow(passed, msg) {\n\
     /*\n\
      * this function will throw <msg> if <passed> is falsy\n\
      */\n\
@@ -52451,8 +52526,8 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
                 : JSON.stringify(msg, undefined, 4)\n\
             )\n\
         );\n\
-    };\n\
-    local.coalesce = function (...argList) {\n\
+    }\n\
+    function coalesce(...argList) {\n\
     /*\n\
      * this function will coalesce null, undefined, or \"\" in <argList>\n\
      */\n\
@@ -52467,20 +52542,20 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
             ii += 1;\n\
         }\n\
         return arg;\n\
-    };\n\
-    local.identity = function (val) {\n\
+    }\n\
+    function identity(val) {\n\
     /*\n\
      * this function will return <val>\n\
      */\n\
         return val;\n\
-    };\n\
-    local.nop = function () {\n\
+    }\n\
+    function nop() {\n\
     /*\n\
      * this function will do nothing\n\
      */\n\
         return;\n\
-    };\n\
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n\
+    }\n\
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {\n\
     /*\n\
      * this function will if items from <tgt> are null, undefined, or \"\",\n\
      * then overwrite them with items from <src>\n\
@@ -52507,15 +52582,15 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
-    };\n\
-    local.onErrorThrow = function (err) {\n\
+    }\n\
+    function onErrorThrow(err) {\n\
     /*\n\
      * this function will throw <err> if exists\n\
      */\n\
         if (err) {\n\
             throw err;\n\
         }\n\
-    };\n\
+    }\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -52527,6 +52602,19 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
             throw err;\n\
         });\n\
     }\n\
+    // init local\n\
+    local = {};\n\
+    local.local = local;\n\
+    globalThis.globalLocal = local;\n\
+    local.assertJsonEqual = assertJsonEqual;\n\
+    local.assertOrThrow = assertOrThrow;\n\
+    local.coalesce = coalesce;\n\
+    local.identity = identity;\n\
+    local.isBrowser = isBrowser;\n\
+    local.isWebWorker = isWebWorker;\n\
+    local.nop = nop;\n\
+    local.objectAssignDefault = objectAssignDefault;\n\
+    local.onErrorThrow = onErrorThrow;\n\
 }());\n\
 // assets.utility2.header.js - end\n\
 \n\
@@ -69802,6 +69890,8 @@ local.assetsDict["/assets.utility2.test.js"] = (
 (function () {\n\
     \"use strict\";\n\
     let consoleError;\n\
+    let isBrowser;\n\
+    let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
@@ -69817,22 +69907,18 @@ local.assetsDict["/assets.utility2.test.js"] = (
             return argList[0];\n\
         };\n\
     }\n\
-    // init local\n\
-    local = {};\n\
-    local.local = local;\n\
-    globalThis.globalLocal = local;\n\
     // init isBrowser\n\
-    local.isBrowser = (\n\
+    isBrowser = (\n\
         typeof globalThis.XMLHttpRequest === \"function\"\n\
         && globalThis.navigator\n\
         && typeof globalThis.navigator.userAgent === \"string\"\n\
     );\n\
     // init isWebWorker\n\
-    local.isWebWorker = (\n\
-        local.isBrowser && typeof globalThis.importScripts === \"function\"\n\
+    isWebWorker = (\n\
+        isBrowser && typeof globalThis.importScripts === \"function\"\n\
     );\n\
     // init function\n\
-    local.assertJsonEqual = function (aa, bb) {\n\
+    function assertJsonEqual(aa, bb) {\n\
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
@@ -69861,8 +69947,8 @@ local.assetsDict["/assets.utility2.test.js"] = (
         if (aa !== bb) {\n\
             throw new Error(JSON.stringify(aa) + \" !== \" + JSON.stringify(bb));\n\
         }\n\
-    };\n\
-    local.assertOrThrow = function (passed, msg) {\n\
+    }\n\
+    function assertOrThrow(passed, msg) {\n\
     /*\n\
      * this function will throw <msg> if <passed> is falsy\n\
      */\n\
@@ -69885,8 +69971,8 @@ local.assetsDict["/assets.utility2.test.js"] = (
                 : JSON.stringify(msg, undefined, 4)\n\
             )\n\
         );\n\
-    };\n\
-    local.coalesce = function (...argList) {\n\
+    }\n\
+    function coalesce(...argList) {\n\
     /*\n\
      * this function will coalesce null, undefined, or \"\" in <argList>\n\
      */\n\
@@ -69901,20 +69987,20 @@ local.assetsDict["/assets.utility2.test.js"] = (
             ii += 1;\n\
         }\n\
         return arg;\n\
-    };\n\
-    local.identity = function (val) {\n\
+    }\n\
+    function identity(val) {\n\
     /*\n\
      * this function will return <val>\n\
      */\n\
         return val;\n\
-    };\n\
-    local.nop = function () {\n\
+    }\n\
+    function nop() {\n\
     /*\n\
      * this function will do nothing\n\
      */\n\
         return;\n\
-    };\n\
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {\n\
+    }\n\
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {\n\
     /*\n\
      * this function will if items from <tgt> are null, undefined, or \"\",\n\
      * then overwrite them with items from <src>\n\
@@ -69941,15 +70027,15 @@ local.assetsDict["/assets.utility2.test.js"] = (
         };\n\
         recurse(tgt, src, depth | 0);\n\
         return tgt;\n\
-    };\n\
-    local.onErrorThrow = function (err) {\n\
+    }\n\
+    function onErrorThrow(err) {\n\
     /*\n\
      * this function will throw <err> if exists\n\
      */\n\
         if (err) {\n\
             throw err;\n\
         }\n\
-    };\n\
+    }\n\
     // bug-workaround - throw unhandledRejections in node-process\n\
     if (\n\
         typeof process === \"object\" && process\n\
@@ -69961,6 +70047,19 @@ local.assetsDict["/assets.utility2.test.js"] = (
             throw err;\n\
         });\n\
     }\n\
+    // init local\n\
+    local = {};\n\
+    local.local = local;\n\
+    globalThis.globalLocal = local;\n\
+    local.assertJsonEqual = assertJsonEqual;\n\
+    local.assertOrThrow = assertOrThrow;\n\
+    local.coalesce = coalesce;\n\
+    local.identity = identity;\n\
+    local.isBrowser = isBrowser;\n\
+    local.isWebWorker = isWebWorker;\n\
+    local.nop = nop;\n\
+    local.objectAssignDefault = objectAssignDefault;\n\
+    local.onErrorThrow = onErrorThrow;\n\
 }());\n\
 // assets.utility2.header.js - end\n\
 \n\
