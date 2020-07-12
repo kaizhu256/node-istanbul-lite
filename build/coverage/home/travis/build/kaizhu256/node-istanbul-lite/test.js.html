@@ -301,8 +301,8 @@
             Functions: 13
         </td>
         <td>
-            92.01%<br>
-            (311 / 338)
+            92.04%<br>
+            (312 / 339)
         </td>
         <td>
             86.08%<br>
@@ -313,8 +313,8 @@
             (77 / 82)
         </td>
         <td>
-            91.84%<br>
-            (304 / 331)
+            91.87%<br>
+            (305 / 332)
         </td>
     </tbody>
     </table>
@@ -1143,6 +1143,13 @@
 <a href="#l818" id="l818">818</a>
 <a href="#l819" id="l819">819</a>
 <a href="#l820" id="l820">820</a>
+<a href="#l821" id="l821">821</a>
+<a href="#l822" id="l822">822</a>
+<a href="#l823" id="l823">823</a>
+<a href="#l824" id="l824">824</a>
+<a href="#l825" id="l825">825</a>
+<a href="#l826" id="l826">826</a>
+<a href="#l827" id="l827">827</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1859,6 +1866,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2686,6 +2700,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             }
         ]
     ], function (onError) {
+        // test nonexistent-file handling-behavior
+        local.istanbul.coverageReportCreate({
+            coverage: {
+                "undefined.js": {}
+            },
+            coverageInclude: {}
+        });
         // cleanup old coverage
         <span class="missing-if-branch" title="else path not taken">E</span>if (!local.isBrowser) {
             require("child_process").spawnSync("rm", [

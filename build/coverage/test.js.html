@@ -302,7 +302,7 @@
         </td>
         <td>
             100%<br>
-            (338 / 338)
+            (339 / 339)
         </td>
         <td>
             100%<br>
@@ -314,7 +314,7 @@
         </td>
         <td>
             100%<br>
-            (331 / 331)
+            (332 / 332)
         </td>
     </tbody>
     </table>
@@ -1143,6 +1143,13 @@
 <a href="#l818" id="l818">818</a>
 <a href="#l819" id="l819">819</a>
 <a href="#l820" id="l820">820</a>
+<a href="#l821" id="l821">821</a>
+<a href="#l822" id="l822">822</a>
+<a href="#l823" id="l823">823</a>
+<a href="#l824" id="l824">824</a>
+<a href="#l825" id="l825">825</a>
+<a href="#l826" id="l826">826</a>
+<a href="#l827" id="l827">827</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1859,6 +1866,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2686,6 +2700,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             }
         ]
     ], function (onError) {
+        // test nonexistent-file handling-behavior
+        local.istanbul.coverageReportCreate({
+            coverage: {
+                "undefined.js": {}
+            },
+            coverageInclude: {}
+        });
         // cleanup old coverage
         if (!local.isBrowser) {
             require("child_process").spawnSync("rm", [

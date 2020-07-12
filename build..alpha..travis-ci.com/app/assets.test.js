@@ -718,6 +718,13 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             }
         ]
     ], function (onError) {
+        // test nonexistent-file handling-behavior
+        local.istanbul.coverageReportCreate({
+            coverage: {
+                "undefined.js": {}
+            },
+            coverageInclude: {}
+        });
         // cleanup old coverage
         if (!local.isBrowser) {
             require("child_process").spawnSync("rm", [
