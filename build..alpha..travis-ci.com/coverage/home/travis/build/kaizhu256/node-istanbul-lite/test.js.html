@@ -2694,7 +2694,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
  * this function will test
  * istanbulCoverageReportCreate's default handling-behavior
  */
-    // test null handling-behavior
+    // test null-case handling-behavior
     local.istanbul.coverageReportCreate();
     local.env.npm_config_mode_coverage_merge = "";
     local.testMock([
@@ -2732,7 +2732,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
                 // cover file
                 eval(local.istanbul.instrumentSync( // jslint ignore:line
                     // test skip handling-behavior
-                    "null",
+                    "undefined",
                     dir + "/" + file
                 ));
             });
@@ -2745,18 +2745,18 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
 <span class="cstat-no" title="statement not covered">        [</span>
             // test no content handling-behavior
             "",
-            // test uncovereed-code handling-behavior
-            "null &amp;&amp; null &amp;&amp; null",
+            // test uncovered-code handling-behavior
+            "undefined &amp;&amp; undefined &amp;&amp; undefined",
             // test trailing-whitespace handling-behavior
-            "null ",
+            "undefined ",
             // test skip handling-behavior
-            "/* istanbul ignore next */\nnull &amp;&amp; null"
+            "/* istanbul ignore next */\nundefined &amp;&amp; undefined"
         ].forEach(<span class="fstat-no" title="function not covered">function (content) {</span>
             // cleanup
 <span class="cstat-no" title="statement not covered">            local.tryCatchOnError(<span class="fstat-no" title="function not covered">function () {</span></span>
 <span class="cstat-no" title="statement not covered">                Object.keys(globalThis.__coverage__).forEach(<span class="fstat-no" title="function not covered">function (file) {</span></span>
 <span class="cstat-no" title="statement not covered">                    if (file.indexOf("zz.js") &gt;= 0) {</span>
-<span class="cstat-no" title="statement not covered">                        globalThis.__coverage__[file] = null;</span>
+<span class="cstat-no" title="statement not covered">                        delete globalThis.__coverage__[file];</span>
                     }
                 });
             }, local.nop);
@@ -2772,12 +2772,12 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         // cleanup
 <span class="cstat-no" title="statement not covered">        Object.keys(globalThis.__coverage__).forEach(<span class="fstat-no" title="function not covered">function (file) {</span></span>
 <span class="cstat-no" title="statement not covered">            if (file.indexOf("zz.js") &gt;= 0) {</span>
-<span class="cstat-no" title="statement not covered">                globalThis.__coverage__[file] = null;</span>
+<span class="cstat-no" title="statement not covered">                delete globalThis.__coverage__[file];</span>
             }
         });
 <span class="cstat-no" title="statement not covered">        onError(undefined, opt);</span>
     }, onError);
-    // report subdir
+    // test path handling-behavior
 <span class="cstat-no" title="statement not covered">    if (!local.isBrowser) {</span>
 <span class="cstat-no" title="statement not covered">        require("./test1/test1.js");</span>
 <span class="cstat-no" title="statement not covered">        require("./test1/test2/test2.js");</span>
