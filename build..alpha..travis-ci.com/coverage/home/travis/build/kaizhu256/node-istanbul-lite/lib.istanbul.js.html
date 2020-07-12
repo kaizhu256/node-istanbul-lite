@@ -23734,10 +23734,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">338</span>
+<span class="cline-any cline-yes">346</span>
 <span class="cline-any cline-yes">52</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">338</span>
+<span class="cline-any cline-yes">346</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -23767,10 +23767,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">752</span>
-<span class="cline-any cline-yes">752</span>
-<span class="cline-any cline-yes">752</span>
-<span class="cline-any cline-yes">752</span>
+<span class="cline-any cline-yes">770</span>
+<span class="cline-any cline-yes">770</span>
+<span class="cline-any cline-yes">770</span>
+<span class="cline-any cline-yes">770</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -23784,13 +23784,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32</span>
-<span class="cline-any cline-yes">32</span>
-<span class="cline-any cline-yes">75</span>
-<span class="cline-any cline-yes">75</span>
-<span class="cline-any cline-yes">75</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">79</span>
+<span class="cline-any cline-yes">79</span>
+<span class="cline-any cline-yes">79</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">33</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -35305,14 +35305,14 @@ reportTextWrite = function (node, dircoverage) {
             : str + fillStr
         );
         // colorize
-        switch (process.stdout.isTTY &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered">score)</span> {
+        switch (process.stdout.isTTY &amp;&amp; score) {
         case "high":
-<span class="cstat-no" title="statement not covered">            fmtStr = "\u001b[92m" + fmtStr + "\u001b[0m";</span>
-<span class="cstat-no" title="statement not covered">            break;</span>
-        case "low":
+            fmtStr = "\u001b[92m" + fmtStr + "\u001b[0m";
+            break;
+<span class="branch-1 cbranch-no" title="branch not covered">        case "low":</span>
 <span class="cstat-no" title="statement not covered">            fmtStr = "\u001b[91m" + fmtStr + "\u001b[0m";</span>
 <span class="cstat-no" title="statement not covered">            break;</span>
-        case "medium":
+<span class="branch-2 cbranch-no" title="branch not covered">        case "medium":</span>
 <span class="cstat-no" title="statement not covered">            fmtStr = "\u001b[93m" + fmtStr + "\u001b[0m";</span>
 <span class="cstat-no" title="statement not covered">            break;</span>
         }
