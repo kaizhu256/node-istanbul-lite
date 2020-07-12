@@ -728,7 +728,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         // cleanup old coverage
         if (!local.isBrowser) {
             require("child_process").spawnSync("rm", [
-                "-rf", "tmp/build/coverage/aa"
+                "-rf", ".tmp/build/coverage/aa"
             ], {
                 stdio: [
                     "ignore", 1, 2

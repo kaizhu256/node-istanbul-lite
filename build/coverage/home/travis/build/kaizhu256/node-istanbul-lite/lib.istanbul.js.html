@@ -35610,7 +35610,7 @@ local.coverageReportCreate = function (opt) {
         });
     };
     // 1. merge previous &lt;dirCoverage&gt;/coverage.json into &lt;opt&gt;.coverage
-    dirCoverage = path.resolve("tmp/build/coverage");
+    dirCoverage = path.resolve(".tmp/build/coverage");
     coverageInclude = opt.coverageInclude || globalThis.__coverageInclude__;
     <span class="missing-if-branch" title="else path not taken">E</span>if (!local.isBrowser &amp;&amp; process.env.npm_config_mode_coverage_merge) {
         console.error(
