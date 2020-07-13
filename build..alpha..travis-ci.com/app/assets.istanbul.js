@@ -9323,6 +9323,7 @@ committed 2016-08-21T19:53:22Z
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 */
 // hack-istanbul - inline-require
+/* istanbul ignore next */
 (function () { let module, window; module = undefined; window = local;
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
