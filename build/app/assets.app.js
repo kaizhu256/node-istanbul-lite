@@ -48822,6 +48822,7 @@ jquery|\
 log|\
 min|misc|mock|\
 node_module|\
+old|\
 raw|\rollup|\
 swp|\
 tmp|\
@@ -81547,6 +81548,7 @@ committed 2016-08-21T19:53:22Z\n\
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js\n\
 */\n\
 // hack-istanbul - inline-require\n\
+/* istanbul ignore next */\n\
 (function () { let module, window; module = undefined; window = local;\n\
 /*\n\
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.\n\
@@ -93435,6 +93437,7 @@ committed 2016-08-21T19:53:22Z
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 */
 // hack-istanbul - inline-require
+/* istanbul ignore next */
 (function () { let module, window; module = undefined; window = local;
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
