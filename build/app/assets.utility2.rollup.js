@@ -1527,7 +1527,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.istanbul.js */
 // usr/bin/env node
 /*
- * lib.istanbul.js (2020.7.12)
+ * lib.istanbul.js (2020.8.1)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -10850,6 +10850,7 @@ committed 2016-08-21T19:53:22Z
 file https://github.com/gotwarlost/istanbul/blob/v0.4.5/lib/instrumenter.js
 */
 // hack-istanbul - inline-require
+/* istanbul ignore next */
 (function () { let module, window; module = undefined; window = local;
 /*
  Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
@@ -44076,7 +44077,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.7.9)
+ * lib.utility2.js (2020.8.1)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *

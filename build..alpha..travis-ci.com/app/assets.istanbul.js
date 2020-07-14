@@ -1,6 +1,6 @@
 // usr/bin/env node
 /*
- * lib.istanbul.js (2020.7.12)
+ * lib.istanbul.js (2020.8.1)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
