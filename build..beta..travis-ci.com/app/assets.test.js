@@ -3,12 +3,12 @@
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -23,22 +23,18 @@
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -67,8 +63,8 @@
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -91,8 +87,8 @@
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -107,20 +103,20 @@
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -147,7 +143,15 @@
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
+    }
+    function onErrorThrow(err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -159,18 +163,29 @@
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
+}());
 // assets.utility2.header.js - end
 
 
-
 /* jslint utility2:true */
-/* istanbul ignore next */
 (function (local) {
 "use strict";
 
 
-
+/* istanbul ignore next */
 // run shared js-env code - init-before
 (function () {
 // init local
@@ -180,7 +195,6 @@ globalThis.local = local;
 // init test
 local.testRunDefault(local);
 }());
-
 
 
 // run shared js-env code - function
@@ -201,9 +215,9 @@ var echo = function (arg) {
     }
 };
 
-// hack-istanbul
+// hack-coverage
 tryCatch(function () {
-    throw '';
+    throw undefined;
 });
 tryCatch(function () {
 var evens = [0, 2, 4, 6];
@@ -374,7 +388,7 @@ for (var n of fibonacci) {
     console.log(n);
 }
 });
-//// try {(function () {
+//// tryCatch(function () {
 //// interface IteratorResult {
     //// done: boolean;
     //// value: any;
@@ -385,9 +399,7 @@ for (var n of fibonacci) {
 //// interface Iterable {
     //// [Symbol.iterator](): Iterator
 //// }
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
+//// });
 tryCatch(function () {
 var fibonacci = {
     [Symbol.iterator]: function*() {
@@ -407,14 +419,12 @@ for (var n of fibonacci) {
     console.log(n);
 }
 });
-//// try {(function () {
+//// tryCatch(function () {
 //// interface Generator extends Iterator {
     //// next(value?: any): IteratorResult;
     //// throw(exception: any);
 //// }
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
+//// });
 tryCatch(function () {
 // same as ES5.1
 console.assert('\ud842\udfb7'.length === 2);
@@ -429,47 +439,37 @@ for(var c of '\ud842\udfb7') {
     console.log(c);
 }
 });
-//// try {(function () {
+//// tryCatch(function () {
 //// // lib/math.js
 //// export function sum(x, y) {
     //// return x + y;
 //// }
 //// export var pi = 3.141593;
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // app.js
 //// import * as math from 'lib/math';
 //// alert('2π = ' + math.sum(math.pi, math.pi));
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // otherApp.js
 //// import {sum, pi} from 'lib/math';
 //// alert('2π = ' + sum(pi, pi));
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // lib/mathplusplus.js
 //// export * from 'lib/math';
 //// export var e = 2.71828182846;
 //// export default function(x) {
     //// return Math.log(x);
 //// }
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // app.js
 //// import ln, {pi, e} from 'lib/mathplusplus';
 //// alert('2π = ' + ln(e)*pi*2);
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
-//// try {(function () {
+//// });
+//// tryCatch(function () {
 //// // Dynamic loading – ‘System’ is default loader
 //// System.import('lib/math').then(function(m) {
     //// alert('2π = ' + m.sum(m.pi, m.pi));
@@ -478,13 +478,11 @@ for(var c of '\ud842\udfb7') {
 //// var loader = new Loader({
     //// global: fixup(window) // replace ‘console.log’
 //// });
-//// loader.eval('console.log('hello world!');');
+//// loader.eval("console.log('hello world!');");
 //// // Directly manipulate module cache
 //// System.get('jquery');
 //// System.set('jquery', Module({$: $})); // WARNING: not yet finalized
-//// }())} catch (errCaught) {
-    //// console.log(errCaught);
-//// }
+//// });
 tryCatch(function () {
 // Sets
 var s = new Set();
@@ -605,7 +603,7 @@ console.assert([1, 2, 3].findIndex(x => x === 2) === 1); // 1
 [1, 2, 3, 4, 5].copyWithin(3, 0); // [1, 2, 3, 1, 2]
 ['a', 'b', 'c'].entries(); // iterator [0, 'a'], [1,'b'], [2,'c']
 ['a', 'b', 'c'].keys(); // iterator 0, 1, 2
-//// ['a', 'b', 'c'].values(); // iterator 'a', 'b', 'c'
+['a', 'b', 'c'].values(); // iterator 'a', 'b', 'c'
 var Point = echo;
 Object.assign(Point, { origin: new Point(0,0) });
 });
@@ -654,9 +652,11 @@ local.testCase_istanbulCoverageMerge_default = function (opt, onError) {
     }
     opt = {};
     opt.data = local.istanbul.instrumentSync(
-        "(function () {\nreturn arg "
-        + "? __coverage__ "
-        + ": __coverage__;\n}());",
+        "(function () {\n"
+        + "return arg\n"
+        + "? __coverage__\n"
+        + ": __coverage__;\n"
+        + "}());\n",
         "/test"
     );
     local.arg = 0;
@@ -667,25 +667,25 @@ local.testCase_istanbulCoverageMerge_default = function (opt, onError) {
 /* jslint ignore:start */
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
-{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 // test merge-create handling-behavior
 opt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
-{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[0,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 // init opt.coverage2
 opt.coverage2 = require("vm").runInNewContext(opt.data, { arg: 1 });
 // validate opt.coverage2
 local.assertJsonEqual(opt.coverage2,
-{"/test":{"b":{"1":[1,0]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[1,0]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":1},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":1,"2":1},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 // test merge-update handling-behavior
 local.istanbul.coverageMerge(opt.coverage1, opt.coverage2);
 // validate merged opt.coverage1
 local.assertJsonEqual(opt.coverage1,
-{"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":25,"line":2},"start":{"column":13,"line":2}},{"end":{"column":40,"line":2},"start":{"column":28,"line":2}}],"type":"cond-expr"}},"code":["(function () {","return arg ? __coverage__ : __coverage__;","}());"],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":3},"start":{"column":0,"line":1}},"2":{"end":{"column":41,"line":2},"start":{"column":0,"line":2}}}}}
+{"/test":{"b":{"1":[1,1]},"branchMap":{"1":{"line":2,"locations":[{"end":{"column":14,"line":3},"start":{"column":2,"line":3}},{"end":{"column":14,"line":4},"start":{"column":2,"line":4}}],"type":"cond-expr"}},"code":["(function () {","return arg","? __coverage__",": __coverage__;","}());",""],"f":{"1":2},"fnMap":{"1":{"line":1,"loc":{"end":{"column":13,"line":1},"start":{"column":1,"line":1}},"name":"(anonymous_1)"}},"path":"/test","s":{"1":2,"2":2},"statementMap":{"1":{"end":{"column":5,"line":5},"start":{"column":0,"line":1}},"2":{"end":{"column":15,"line":4},"start":{"column":0,"line":2}}}}}
 );
 /* jslint ignore:end */
     onError(undefined, opt);
@@ -696,7 +696,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
  * this function will test
  * istanbulCoverageReportCreate's default handling-behavior
  */
-    // test null handling-behavior
+    // test null-case handling-behavior
     local.istanbul.coverageReportCreate();
     local.env.npm_config_mode_coverage_merge = "";
     local.testMock([
@@ -710,11 +710,30 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
             local.env, {
                 npm_config_mode_coverage_merge: "1"
             }
+        ],
+        // test term-color handling-behavior
+        [
+            (typeof process === "object" && process && process.stdout) || {}, {
+                isTTY: true
+            }
         ]
     ], function (onError) {
+        // test nonexistent-file handling-behavior
+        local.istanbul.coverageReportCreate({
+            coverage: {
+                "undefined.js": {}
+            },
+            coverageInclude: {}
+        });
         // cleanup old coverage
         if (!local.isBrowser) {
-            local.fsRmrfSync("tmp/build/coverage.html/aa");
+            require("child_process").spawnSync("rm", [
+                "-rf", ".tmp/build/coverage/aa"
+            ], {
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            });
         }
         // test path handling-behavior
         [
@@ -728,7 +747,7 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
                 // cover file
                 eval(local.istanbul.instrumentSync( // jslint ignore:line
                     // test skip handling-behavior
-                    "null",
+                    "undefined",
                     dir + "/" + file
                 ));
             });
@@ -739,23 +758,23 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         });
         // test file-content handling-behavior
         [
-            // test no content handling-behavior
+            // test no-content handling-behavior
             "",
-            // test uncovereed-code handling-behavior
-            "null && null && null",
+            // test uncovered-code handling-behavior
+            "undefined && undefined && undefined",
             // test trailing-whitespace handling-behavior
-            "null ",
+            "undefined ",
             // test skip handling-behavior
-            "/* istanbul ignore next */\nnull && null"
+            "/* istanbul ignore next */\nundefined && undefined",
+            // test metric-score-medium handling-behavior
+            "1\n&&1\n&&0\n&&0"
         ].forEach(function (content) {
             // cleanup
-            local.tryCatchOnError(function () {
-                Object.keys(globalThis.__coverage__).forEach(function (file) {
-                    if (file.indexOf("zz.js") >= 0) {
-                        globalThis.__coverage__[file] = null;
-                    }
-                });
-            }, local.nop);
+            Object.keys(globalThis.__coverage__).forEach(function (file) {
+                if (file.indexOf("zz.js") >= 0) {
+                    delete globalThis.__coverage__[file];
+                }
+            });
             // cover path
             eval( // jslint ignore:line
                 local.istanbul.instrumentSync(content, "zz.js")
@@ -768,11 +787,16 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
         // cleanup
         Object.keys(globalThis.__coverage__).forEach(function (file) {
             if (file.indexOf("zz.js") >= 0) {
-                globalThis.__coverage__[file] = null;
+                delete globalThis.__coverage__[file];
             }
         });
         onError(undefined, opt);
     }, onError);
+    // test path handling-behavior
+    if (!local.isBrowser) {
+        require("./test1/test1.js");
+        require("./test1/test2/test2.js");
+    }
 };
 
 local.testCase_istanbulInstrumentInPackage_default = function (opt, onError) {
