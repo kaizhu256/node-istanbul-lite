@@ -7,8 +7,7 @@ this zero-dependency package will provide browser-compatible version of istanbul
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app)
 
 
-
-[![travis-ci.com build-status](https://api.travis-ci.com/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.com/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage.html/index.html)
+[![travis-ci.com build-status](https://api.travis-ci.com/kaizhu256/node-istanbul-lite.svg)](https://travis-ci.com/kaizhu256/node-istanbul-lite) [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build/coverage/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build/coverage/index.html)
 
 [![NPM](https://nodei.co/npm/istanbul-lite.png?downloads=true)](https://www.npmjs.com/package/istanbul-lite)
 
@@ -19,13 +18,12 @@ this zero-dependency package will provide browser-compatible version of istanbul
 | test-server-github : | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/app) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app) | [![github.com test-server](https://kaizhu256.github.io/node-istanbul-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/app)|
 | test-server-heroku : | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-istanbul-lite/heroku-logo.75x25.png)](https://h1-istanbul-alpha.herokuapp.com)|
 | test-report : | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/test-report.html) | [![test-report](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/test-report.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/test-report.html)|
-| coverage : | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/coverage.html/index.html)|
+| coverage : | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/coverage/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..master..travis-ci.com/coverage/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/coverage/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/coverage/index.html) | [![coverage](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/coverage/coverage.badge.svg)](https://kaizhu256.github.io/node-istanbul-lite/build..alpha..travis-ci.com/coverage/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..master..travis-ci.com) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..beta..travis-ci.com) | [![build-artifacts](https://kaizhu256.github.io/node-istanbul-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-istanbul-lite/tree/gh-pages/build..alpha..travis-ci.com)|
 
 [![npmPackageListing](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageListing.svg)](https://github.com/kaizhu256/node-istanbul-lite)
 
 ![npmPackageDependencyTree](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageDependencyTree.svg)
-
 
 
 # table of contents
@@ -40,39 +38,35 @@ this zero-dependency package will provide browser-compatible version of istanbul
 1. [misc](#misc)
 
 
-
 # cdn download
 - [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app/assets.istanbul.js](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/app/assets.istanbul.js)
-
 
 
 # documentation
 #### api doc
 - [https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html)
 
-[![apidoc](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html)
+[![apidoc](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build..beta..travis-ci.com/apidoc.html)
 
 #### cli help
 ![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.npmPackageCliHelp.svg)
 
-#### changelog 2020.6.8
-- npm publish 2020.6.8
-- remove electron-dependency
-- migrate ci from travis-ci.org to travis-ci.com
-- istanbul - fix html-coverage-report bug showing branch-metrics instead of line-metrics
+#### changelog 2020.8.1
+- change build-dir from tmp/build to .tmp/build
+- istanbul - change coverage-directory from coverage.html/ to coverage/
+- istanbul - remove filesUnderRoot subroutine
+- istanbul - upgrade to acorn v6.4.1
+- jslint - add eslint-rule no-multiple-empty-lines
+- add limited win32-compat
+- remove globalThis polyfill
 - none
 
 #### todo
 - istanbul - inline class Instrumenter into function instrumentSync
-- istanbul - remove filesUnderRoot subroutine
 - none
-
-#### this package requires
-- darwin or linux os
 
 #### additional info
 - istanbul code derived from https://github.com/gotwarlost/istanbul/tree/v0.4.5
-
 
 
 # quickstart standalone app
@@ -98,7 +92,6 @@ PORT=8081 node ./assets.app.js
 ![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleSh.svg)
 
 
-
 # quickstart example.js
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-istanbul-lite/build/app/assets.example.html)
 
@@ -120,18 +113,17 @@ instruction
 */
 
 
-
 /* istanbul instrument in package istanbul */
 // assets.utility2.header.js - start
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
     let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
     // init debugInline
     if (!globalThis.debugInline) {
         consoleError = console.error;
@@ -146,22 +138,18 @@ instruction
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
@@ -190,8 +178,8 @@ instruction
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -214,8 +202,8 @@ instruction
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -230,20 +218,20 @@ instruction
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function nop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -270,7 +258,15 @@ instruction
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
+    }
+    function onErrorThrow(err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -282,15 +278,26 @@ instruction
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+    // init local
+    local = {};
+    local.local = local;
+    globalThis.globalLocal = local;
+    local.assertJsonEqual = assertJsonEqual;
+    local.assertOrThrow = assertOrThrow;
+    local.coalesce = coalesce;
+    local.identity = identity;
+    local.isBrowser = isBrowser;
+    local.isWebWorker = isWebWorker;
+    local.nop = nop;
+    local.objectAssignDefault = objectAssignDefault;
+    local.onErrorThrow = onErrorThrow;
+}());
 // assets.utility2.header.js - end
-
 
 
 /* jslint utility2:true */
 (function (local) {
 "use strict";
-
 
 
 // run shared js-env code - init-before
@@ -304,7 +311,6 @@ local = (
 // init exports
 globalThis.local = local;
 }());
-
 
 
 /* istanbul ignore next */
@@ -341,7 +347,6 @@ if (!local.isBrowser) {
 local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
 globalThis.domOnEventDelegateDict = local;
 }());
-
 
 
 /* istanbul ignore next */
@@ -488,7 +493,6 @@ pre {\n\
         }, 100);\n\
     });\n\
 }());\n\
-\n\
 \n\
 \n\
 // init domOnEventAjaxProgressUpdate\n\
@@ -645,7 +649,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventDelegateDict\n\
 (function () {\n\
 /*\n\
@@ -729,7 +732,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
 /*\n\
@@ -785,7 +787,6 @@ utility2-comment -->\n\
 <button class="button" data-onevent="testRunBrowser" id="buttonTestRun1">run browser-tests</button><br>\n\
 <div class="uiAnimateSlide" id="htmlTestReport1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
-\n\
 \n\
 \n\
 <!-- custom-html-start -->\n\
@@ -866,14 +867,13 @@ local.domOnEventInputChange({\n\
 <!-- custom-html-end -->\n\
 \n\
 \n\
-\n\
 <!-- utility2-comment\n\
 {{#if isRollup}}\n\
 <script src="assets.app.js"></script>\n\
 {{#unless isRollup}}\n\
 <script src="assets.utility2.rollup.js"></script>\n\
 <script>window.utility2_onReadyBefore.cnt += 1;</script>\n\
-<script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
+<script src="utility2.state.init.js"></script>\n\
 utility2-comment -->\n\
 <script src="assets.istanbul.js"></script>\n\
 <script src="assets.example.js"></script>\n\
@@ -969,16 +969,15 @@ require("http").createServer(function (req, res) {
 ![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleJs.svg)
 
 
-
 # extra screenshots
-1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
-[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
+1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)
+[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fapidoc.html.png)
 
-1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)
-[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)
+1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png)
+[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Fcoverage.lib.html.png)
 
-1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)
-[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)
+1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png)
+[![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.buildCi.browser.%252F.tmp%252Fbuild%252Ftest-report.html.png)
 
 1. [https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.deployGithub.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png)
@@ -1002,7 +1001,6 @@ require("http").createServer(function (req, res) {
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleSh.browser.%252F.png)](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.testExampleSh.browser.%252F.png)
 
 
-
 # package.json
 ```json
 {
@@ -1017,7 +1015,7 @@ require("http").createServer(function (req, res) {
     "engines": {
         "node": ">=12.0"
     },
-    "fileCount": 8,
+    "fileCount": 10,
     "homepage": "https://github.com/kaizhu256/node-istanbul-lite",
     "keywords": [
         "coverage",
@@ -1029,10 +1027,6 @@ require("http").createServer(function (req, res) {
     "nameAliasPublish": "",
     "nameLib": "istanbul",
     "nameOriginal": "istanbul-lite",
-    "os": [
-        "darwin",
-        "linux"
-    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/kaizhu256/node-istanbul-lite.git"
@@ -1047,15 +1041,13 @@ require("http").createServer(function (req, res) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2020.6.8"
+    "version": "2020.8.1"
 }
 ```
 
 
-
 # changelog of last 50 commits
 [![screenshot](https://kaizhu256.github.io/node-istanbul-lite/build/screenshot.gitLog.svg)](https://github.com/kaizhu256/node-istanbul-lite/commits)
-
 
 
 # internal build script
@@ -1081,7 +1073,6 @@ shBuildCiBefore () {(set -e
 eval "$(utility2 source)"
 shBuildCi
 ```
-
 
 
 # misc
