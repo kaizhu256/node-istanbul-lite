@@ -13,12 +13,12 @@
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -46,8 +46,7 @@
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -65,7 +64,7 @@
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -220,12 +219,12 @@
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -253,8 +252,7 @@
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -272,7 +270,7 @@
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -1541,12 +1539,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -1574,8 +1572,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -1593,7 +1590,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -13420,7 +13417,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.jslint.js */
 // usr/bin/env node
 /*
- * lib.jslint.js (2020.7.9)
+ * lib.jslint.js (2020.8.19)
  * https://github.com/kaizhu256/node-jslint-lite
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.7.2) and csslint (v2018.2.25), with working web-demo
  *
@@ -13434,12 +13431,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -13467,8 +13464,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -13486,7 +13482,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -13797,8 +13793,7 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
 /*
  * this function will recursively deep-copy <obj> with keys sorted
  */
-    let objectDeepCopyWithKeysSorted;
-    objectDeepCopyWithKeysSorted = function (obj) {
+    function objectDeepCopyWithKeysSorted(obj) {
     /*
      * this function will recursively deep-copy <obj> with keys sorted
      */
@@ -13816,7 +13811,7 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
             sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
         });
         return sorted;
-    };
+    }
     return objectDeepCopyWithKeysSorted(obj);
 };
 }());
@@ -29935,7 +29930,6 @@ jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {
         });
         break;
     case ".js":
-    case ".json":
         // de-mux - code to [code, ignoreList]
         ignoreList = [];
         code = code.replace((
@@ -30152,15 +30146,11 @@ jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {
         ), function () {
             return ignoreList.shift().trimStart();
         });
-        // autofix-json - sort-keys
-        if (fileType === ".json") {
-            code = JSON.stringify(
-                local.objectDeepCopyWithKeysSorted(JSON.parse(code)),
-                undefined,
-                4
-            );
-            break;
-        }
+        break;
+    case ".json":
+        code = JSON.stringify(local.objectDeepCopyWithKeysSorted(JSON.parse(
+            code
+        )), undefined, 4);
         break;
     case ".md":
         // autofix-md - recurse ```javascript...```
@@ -30264,7 +30254,7 @@ jslintRecurse = function (code, file, opt, {
             /^\/\*jslint\b|(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
         ),
         ".json": (
-            /^\s*?(?:\[|\{)/
+            /^\s*?\{\s*?"!!jslint_utility2":\s*?true/
         ),
         ".md": (
             /(^\/\*\u0020jslint\u0020utility2:true\u0020\*\/$)/m
@@ -30274,11 +30264,11 @@ jslintRecurse = function (code, file, opt, {
         )
     };
     // jslint - .json
-    if (fileType === ".js" && tmp[".json"].test(code)) {
+    if (fileType === ".js" && tmp[".json"].test(code.slice(0, 4096))) {
         fileType = ".json";
     }
     // init mode-utility2
-    tmp = tmp[fileType] && tmp[fileType].exec(code);
+    tmp = tmp[fileType] && tmp[fileType].exec(code.slice(0, 4096));
     opt.utility2 = Boolean((tmp && tmp[1]) || modeAutofix);
     // if not modeConditional, then do not jslint
     if ((modeConditional && !tmp) || modeCoverage) {
@@ -30786,7 +30776,9 @@ local.jslintAndPrintDir = function (dir, opt, onError) {
                     }
                     // jslint file
                     require("fs").readFile(file, "utf8", function (err, data) {
-                        local.onErrorThrow(err);
+                        if (err) {
+                            return;
+                        }
                         local.jslintAndPrint(data, file, opt);
                         errCnt += local.jslintResult.errList.length;
                         console.error(
@@ -30873,12 +30865,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -30906,8 +30898,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -30925,7 +30916,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -31304,12 +31295,12 @@ if (local.isBrowser) {
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -31337,8 +31328,7 @@ if (local.isBrowser) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -31356,7 +31346,7 @@ if (local.isBrowser) {
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -44077,7 +44067,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.8.1)
+ * lib.utility2.js (2020.8.19)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -44091,12 +44081,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -44124,8 +44114,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -44143,7 +44132,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -44327,12 +44316,12 @@ local.assetsDict["/assets.utility2.header.js"] = '\
 // run shared js-env code - init-local\n\
 (function () {\n\
     "use strict";\n\
-    let consoleError;\n\
     let isBrowser;\n\
     let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
+        let consoleError;\n\
         consoleError = console.error;\n\
         globalThis.debugInline = function (...argList) {\n\
         /*\n\
@@ -44360,8 +44349,7 @@ local.assetsDict["/assets.utility2.header.js"] = '\
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
-        let objectDeepCopyWithKeysSorted;\n\
-        objectDeepCopyWithKeysSorted = function (obj) {\n\
+        function objectDeepCopyWithKeysSorted(obj) {\n\
         /*\n\
          * this function will recursively deep-copy <obj> with keys sorted\n\
          */\n\
@@ -44379,7 +44367,7 @@ local.assetsDict["/assets.utility2.header.js"] = '\
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n\
             });\n\
             return sorted;\n\
-        };\n\
+        }\n\
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n\
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n\
         if (aa !== bb) {\n\
@@ -45226,7 +45214,6 @@ the greatest app in the world!\n\
 ![screenshot](https://kaizhu256.github.io/node-my-app-lite/build/screenshot.npmPackageCliHelp.svg)\n\
 \n\
 #### changelog 0.0.1\n\
-- npm publish 0.0.1\n\
 - update build\n\
 - none\n\
 \n\
@@ -45306,6 +45293,7 @@ PORT=8081 node ./assets.app.js\n\
 # package.json\n\
 ```json\n\
 {\n\
+    "!!jslint_utility2": true,\n\
     "author": "kai zhu <kaizhu256@gmail.com>",\n\
     "description": "the greatest app in the world!",\n\
     "devDependencies": {\n\
@@ -46833,24 +46821,43 @@ local.buildApp = function ({
         });
     };
     buildAppStandalone = function (resolve) {
-        // write assets.app.js
-        writeFile((
-            ".tmp/build/app.standalone/assets.app.js"
-        ), local.assetsDict["/assets.app.js"], function () {
-            // test-file assets.app.js
-            require("child_process").spawn("node", [
-                "assets.app.js"
-            ], {
-                cwd: ".tmp/build/app.standalone",
-                env: {
-                    PATH: process.env.PATH,
-                    PORT: port,
-                    npm_config_timeout_exit: 4000
-                },
-                stdio: [
-                    "ignore", 1, 2
-                ]
-            }).on("exit", resolve);
+        // write native-module
+        require("fs").readdir(".", function (err, fileList) {
+            onErrorThrow(err);
+            Promise.all(fileList.map(function (file) {
+                return new Promise(function (resolve) {
+                    if (require("path").extname(file) !== ".node") {
+                        resolve();
+                        return;
+                    }
+                    require("fs").copyFile(file, (
+                        ".tmp/build/app.standalone/" + file
+                    ), function (err) {
+                        onErrorThrow(err);
+                        resolve();
+                    });
+                });
+            })).then(function () {
+                // write assets.app.js
+                writeFile((
+                    ".tmp/build/app.standalone/assets.app.js"
+                ), local.assetsDict["/assets.app.js"], function () {
+                    // test-file assets.app.js
+                    require("child_process").spawn("node", [
+                        "assets.app.js"
+                    ], {
+                        cwd: ".tmp/build/app.standalone",
+                        env: {
+                            PATH: process.env.PATH,
+                            PORT: port,
+                            npm_config_timeout_exit: 4000
+                        },
+                        stdio: [
+                            "ignore", 1, 2
+                        ]
+                    }).on("exit", resolve);
+                });
+            });
         });
     };
     buildLib = function (resolve) {
@@ -48367,8 +48374,7 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
 /*
  * this function will recursively deep-copy <obj> with keys sorted
  */
-    let objectDeepCopyWithKeysSorted;
-    objectDeepCopyWithKeysSorted = function (obj) {
+    function objectDeepCopyWithKeysSorted(obj) {
     /*
      * this function will recursively deep-copy <obj> with keys sorted
      */
@@ -48386,7 +48392,7 @@ local.objectDeepCopyWithKeysSorted = function (obj) {
             sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
         });
         return sorted;
-    };
+    }
     return objectDeepCopyWithKeysSorted(obj);
 };
 
@@ -50882,12 +50888,12 @@ instruction\n\
 // run shared js-env code - init-local\n\
 (function () {\n\
     \"use strict\";\n\
-    let consoleError;\n\
     let isBrowser;\n\
     let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
+        let consoleError;\n\
         consoleError = console.error;\n\
         globalThis.debugInline = function (...argList) {\n\
         /*\n\
@@ -50915,8 +50921,7 @@ instruction\n\
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
-        let objectDeepCopyWithKeysSorted;\n\
-        objectDeepCopyWithKeysSorted = function (obj) {\n\
+        function objectDeepCopyWithKeysSorted(obj) {\n\
         /*\n\
          * this function will recursively deep-copy <obj> with keys sorted\n\
          */\n\
@@ -50934,7 +50939,7 @@ instruction\n\
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n\
             });\n\
             return sorted;\n\
-        };\n\
+        }\n\
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n\
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n\
         if (aa !== bb) {\n\
@@ -52459,7 +52464,7 @@ local.domOnEventInputChange({\n\
 local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 "// usr/bin/env node\n\
 /*\n\
- * lib.jslint.js (2020.7.9)\n\
+ * lib.jslint.js (2020.8.19)\n\
  * https://github.com/kaizhu256/node-jslint-lite\n\
  * this zero-dependency package will provide browser-compatible versions of jslint (v2020.7.2) and csslint (v2018.2.25), with working web-demo\n\
  *\n\
@@ -52473,12 +52478,12 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
 // run shared js-env code - init-local\n\
 (function () {\n\
     \"use strict\";\n\
-    let consoleError;\n\
     let isBrowser;\n\
     let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
+        let consoleError;\n\
         consoleError = console.error;\n\
         globalThis.debugInline = function (...argList) {\n\
         /*\n\
@@ -52506,8 +52511,7 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
-        let objectDeepCopyWithKeysSorted;\n\
-        objectDeepCopyWithKeysSorted = function (obj) {\n\
+        function objectDeepCopyWithKeysSorted(obj) {\n\
         /*\n\
          * this function will recursively deep-copy <obj> with keys sorted\n\
          */\n\
@@ -52525,7 +52529,7 @@ local.assetsDict["/assets.utility2.lib.jslint.js"] = (
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n\
             });\n\
             return sorted;\n\
-        };\n\
+        }\n\
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n\
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n\
         if (aa !== bb) {\n\
@@ -52836,8 +52840,7 @@ local.objectDeepCopyWithKeysSorted = function (obj) {\n\
 /*\n\
  * this function will recursively deep-copy <obj> with keys sorted\n\
  */\n\
-    let objectDeepCopyWithKeysSorted;\n\
-    objectDeepCopyWithKeysSorted = function (obj) {\n\
+    function objectDeepCopyWithKeysSorted(obj) {\n\
     /*\n\
      * this function will recursively deep-copy <obj> with keys sorted\n\
      */\n\
@@ -52855,7 +52858,7 @@ local.objectDeepCopyWithKeysSorted = function (obj) {\n\
             sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n\
         });\n\
         return sorted;\n\
-    };\n\
+    }\n\
     return objectDeepCopyWithKeysSorted(obj);\n\
 };\n\
 }());\n\
@@ -68974,7 +68977,6 @@ jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {\n\
         });\n\
         break;\n\
     case \".js\":\n\
-    case \".json\":\n\
         // de-mux - code to [code, ignoreList]\n\
         ignoreList = [];\n\
         code = code.replace((\n\
@@ -69191,15 +69193,11 @@ jslintAutofix = function (code, file, opt, {fileType, globalList, iiLine}) {\n\
         ), function () {\n\
             return ignoreList.shift().trimStart();\n\
         });\n\
-        // autofix-json - sort-keys\n\
-        if (fileType === \".json\") {\n\
-            code = JSON.stringify(\n\
-                local.objectDeepCopyWithKeysSorted(JSON.parse(code)),\n\
-                undefined,\n\
-                4\n\
-            );\n\
-            break;\n\
-        }\n\
+        break;\n\
+    case \".json\":\n\
+        code = JSON.stringify(local.objectDeepCopyWithKeysSorted(JSON.parse(\n\
+            code\n\
+        )), undefined, 4);\n\
         break;\n\
     case \".md\":\n\
         // autofix-md - recurse ```javascript...```\n\
@@ -69303,7 +69301,7 @@ jslintRecurse = function (code, file, opt, {\n\
             /^\\/\\*jslint\\b|(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
         ),\n\
         \".json\": (\n\
-            /^\\s*?(?:\\[|\\{)/\n\
+            /^\\s*?\\{\\s*?\"!!jslint_utility2\":\\s*?true/\n\
         ),\n\
         \".md\": (\n\
             /(^\\/\\*\\u0020jslint\\u0020utility2:true\\u0020\\*\\/$)/m\n\
@@ -69313,11 +69311,11 @@ jslintRecurse = function (code, file, opt, {\n\
         )\n\
     };\n\
     // jslint - .json\n\
-    if (fileType === \".js\" && tmp[\".json\"].test(code)) {\n\
+    if (fileType === \".js\" && tmp[\".json\"].test(code.slice(0, 4096))) {\n\
         fileType = \".json\";\n\
     }\n\
     // init mode-utility2\n\
-    tmp = tmp[fileType] && tmp[fileType].exec(code);\n\
+    tmp = tmp[fileType] && tmp[fileType].exec(code.slice(0, 4096));\n\
     opt.utility2 = Boolean((tmp && tmp[1]) || modeAutofix);\n\
     // if not modeConditional, then do not jslint\n\
     if ((modeConditional && !tmp) || modeCoverage) {\n\
@@ -69825,7 +69823,9 @@ local.jslintAndPrintDir = function (dir, opt, onError) {\n\
                     }\n\
                     // jslint file\n\
                     require(\"fs\").readFile(file, \"utf8\", function (err, data) {\n\
-                        local.onErrorThrow(err);\n\
+                        if (err) {\n\
+                            return;\n\
+                        }\n\
                         local.jslintAndPrint(data, file, opt);\n\
                         errCnt += local.jslintResult.errList.length;\n\
                         console.error(\n\
@@ -69918,12 +69918,12 @@ local.assetsDict["/assets.utility2.test.js"] = (
 // run shared js-env code - init-local\n\
 (function () {\n\
     \"use strict\";\n\
-    let consoleError;\n\
     let isBrowser;\n\
     let isWebWorker;\n\
     let local;\n\
     // init debugInline\n\
     if (!globalThis.debugInline) {\n\
+        let consoleError;\n\
         consoleError = console.error;\n\
         globalThis.debugInline = function (...argList) {\n\
         /*\n\
@@ -69951,8 +69951,7 @@ local.assetsDict["/assets.utility2.test.js"] = (
     /*\n\
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)\n\
      */\n\
-        let objectDeepCopyWithKeysSorted;\n\
-        objectDeepCopyWithKeysSorted = function (obj) {\n\
+        function objectDeepCopyWithKeysSorted(obj) {\n\
         /*\n\
          * this function will recursively deep-copy <obj> with keys sorted\n\
          */\n\
@@ -69970,7 +69969,7 @@ local.assetsDict["/assets.utility2.test.js"] = (
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);\n\
             });\n\
             return sorted;\n\
-        };\n\
+        }\n\
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));\n\
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));\n\
         if (aa !== bb) {\n\
@@ -70606,17 +70605,10 @@ local.testCase_buildXxx_default = function (opt, onError) {\n\
     local.testMock([\n\
         [\n\
             local, {\n\
-                //!! assetsDict: {\n\
-                    //!! \"/\": \"\"\n\
-                //!! },\n\
                 browserTest: local.nop\n\
-                //!! buildApidoc: local.nop,\n\
-                //!! fsWriteFileWithMkdirp: local.nop,\n\
             }\n\
         ]\n\
     ], function (onError) {\n\
-        //!! local._testCase_buildApidoc_default({}, local.nop);\n\
-        //!! local.assetsDict[\"/\"] = \"<script src=\\\"assets.test.js\\\"></script>\";\n\
         local._testCase_webpage_default({}, local.nop);\n\
         onError(undefined, opt);\n\
     }, onError);\n\

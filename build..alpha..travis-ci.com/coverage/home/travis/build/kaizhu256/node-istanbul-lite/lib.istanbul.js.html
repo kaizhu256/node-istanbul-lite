@@ -296,13 +296,13 @@
     </thead>
     <tbody>
         <td>
-            Statements: 3661<br>
+            Statements: 3662<br>
             Branches: 3112<br>
             Functions: 394
         </td>
         <td>
             96.95%<br>
-            (5493 / 5666)
+            (5492 / 5665)
         </td>
         <td>
             97.91%<br>
@@ -314,7 +314,7 @@
         </td>
         <td>
             96.8%<br>
-            (5234 / 5407)
+            (5233 / 5406)
         </td>
     </tbody>
     </table>
@@ -12210,7 +12210,6 @@
 <a href="#l11885" id="l11885">11885</a>
 <a href="#l11886" id="l11886">11886</a>
 <a href="#l11887" id="l11887">11887</a>
-<a href="#l11888" id="l11888">11888</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -12231,14 +12230,6 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -12247,6 +12238,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -12261,8 +12260,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4</span>
-<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -23789,10 +23787,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">339</span>
-<span class="cline-any cline-yes">52</span>
+<span class="cline-any cline-yes">338</span>
+<span class="cline-any cline-yes">51</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">339</span>
+<span class="cline-any cline-yes">338</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -23822,10 +23820,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">753</span>
-<span class="cline-any cline-yes">753</span>
-<span class="cline-any cline-yes">753</span>
-<span class="cline-any cline-yes">753</span>
+<span class="cline-any cline-yes">751</span>
+<span class="cline-any cline-yes">751</span>
+<span class="cline-any cline-yes">751</span>
+<span class="cline-any cline-yes">751</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -24118,12 +24116,12 @@
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
+<span class="cstat-skip" title="statement not covered">        let consoleError;</span>
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
 <span class="cstat-skip" title="statement not covered">        globalThis.debugInline = <span class="fstat-skip" title="function not covered">function (...argList) {</span></span>
         /*
@@ -24151,8 +24149,7 @@
     /*
      * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy &lt;obj&gt; with keys sorted
          */
@@ -24170,7 +24167,7 @@
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         <span class="skip-if-branch" title="if path not taken">I</span>if (aa !== bb) {

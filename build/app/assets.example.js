@@ -120,12 +120,12 @@ instruction
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -153,8 +153,7 @@ instruction
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy <obj> with keys sorted
          */
@@ -172,7 +171,7 @@ instruction
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
