@@ -296,13 +296,13 @@
     </thead>
     <tbody>
         <td>
-            Statements: 71<br>
+            Statements: 70<br>
             Branches: 56<br>
             Functions: 14
         </td>
         <td>
             100%<br>
-            (135 / 135)
+            (134 / 134)
         </td>
         <td>
             100%<br>
@@ -314,7 +314,7 @@
         </td>
         <td>
             100%<br>
-            (135 / 135)
+            (134 / 134)
         </td>
     </tbody>
     </table>
@@ -1284,7 +1284,6 @@
 <a href="#l959" id="l959">959</a>
 <a href="#l960" id="l960">960</a>
 <a href="#l961" id="l961">961</a>
-<a href="#l962" id="l962">962</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1411,11 +1410,11 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1424,12 +1423,6 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1437,12 +1430,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2372,12 +2370,12 @@ instruction
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
+<span class="cstat-skip" title="statement not covered">        let consoleError;</span>
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
 <span class="cstat-skip" title="statement not covered">        globalThis.debugInline = <span class="fstat-skip" title="function not covered">function (...argList) {</span></span>
         /*
@@ -2405,8 +2403,7 @@ instruction
     /*
      * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
      */
-<span class="cstat-skip" title="statement not covered">        let objectDeepCopyWithKeysSorted;</span>
-<span class="cstat-skip" title="statement not covered">        objectDeepCopyWithKeysSorted = <span class="fstat-skip" title="function not covered">function (obj) {</span></span>
+<span class="fstat-skip" title="function not covered">        function objectDeepCopyWithKeysSorted(obj) {</span>
         /*
          * this function will recursively deep-copy &lt;obj&gt; with keys sorted
          */
@@ -2424,7 +2421,7 @@ instruction
 <span class="cstat-skip" title="statement not covered">                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);</span>
             });
 <span class="cstat-skip" title="statement not covered">            return sorted;</span>
-        };
+        }
 <span class="cstat-skip" title="statement not covered">        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));</span>
 <span class="cstat-skip" title="statement not covered">        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));</span>
 <span class="cstat-skip" title="statement not covered">        if (aa !== bb) {</span>

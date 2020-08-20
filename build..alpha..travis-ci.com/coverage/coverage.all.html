@@ -299,13 +299,13 @@
     </thead>
     <tbody>
         <td>
-            Statements: 3154<br>
+            Statements: 3153<br>
             Branches: 2713<br>
             Functions: 336
         </td>
         <td>
             100%<br>
-            (6142 / 6142)
+            (6139 / 6139)
         </td>
         <td>
             100%<br>
@@ -317,7 +317,7 @@
         </td>
         <td>
             100%<br>
-            (5876 / 5876)
+            (5873 / 5873)
         </td>
     </tbody>
     </table>
@@ -345,7 +345,7 @@
         </td>
         <td>
             100%<br>
-            (135 / 135)
+            (134 / 134)
         </td>
         <td>
             100%<br>
@@ -357,7 +357,7 @@
         </td>
         <td>
             100%<br>
-            (135 / 135)
+            (134 / 134)
         </td>
     </tr>
 
@@ -368,7 +368,7 @@
         </td>
         <td>
             100%<br>
-            (5666 / 5666)
+            (5665 / 5665)
         </td>
         <td>
             100%<br>
@@ -380,7 +380,7 @@
         </td>
         <td>
             100%<br>
-            (5407 / 5407)
+            (5406 / 5406)
         </td>
     </tr>
 
@@ -391,7 +391,7 @@
         </td>
         <td>
             100%<br>
-            (339 / 339)
+            (338 / 338)
         </td>
         <td>
             100%<br>
@@ -403,7 +403,7 @@
         </td>
         <td>
             100%<br>
-            (332 / 332)
+            (331 / 331)
         </td>
     </tr>
 
@@ -767,13 +767,13 @@
     </thead>
     <tbody>
         <td>
-            Statements: 71<br>
+            Statements: 70<br>
             Branches: 56<br>
             Functions: 14
         </td>
         <td>
             100%<br>
-            (135 / 135)
+            (134 / 134)
         </td>
         <td>
             100%<br>
@@ -785,7 +785,7 @@
         </td>
         <td>
             100%<br>
-            (135 / 135)
+            (134 / 134)
         </td>
     </tbody>
     </table>
@@ -1755,7 +1755,6 @@
 <a href="#l959" id="l959">959</a>
 <a href="#l960" id="l960">960</a>
 <a href="#l961" id="l961">961</a>
-<a href="#l962" id="l962">962</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1882,11 +1881,11 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1895,12 +1894,6 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1908,12 +1901,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2843,12 +2841,12 @@ instruction
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
+<span class="cstat-skip" title="statement not covered">        let consoleError;</span>
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
 <span class="cstat-skip" title="statement not covered">        globalThis.debugInline = <span class="fstat-skip" title="function not covered">function (...argList) {</span></span>
         /*
@@ -2876,8 +2874,7 @@ instruction
     /*
      * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
      */
-<span class="cstat-skip" title="statement not covered">        let objectDeepCopyWithKeysSorted;</span>
-<span class="cstat-skip" title="statement not covered">        objectDeepCopyWithKeysSorted = <span class="fstat-skip" title="function not covered">function (obj) {</span></span>
+<span class="fstat-skip" title="function not covered">        function objectDeepCopyWithKeysSorted(obj) {</span>
         /*
          * this function will recursively deep-copy &lt;obj&gt; with keys sorted
          */
@@ -2895,7 +2892,7 @@ instruction
 <span class="cstat-skip" title="statement not covered">                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);</span>
             });
 <span class="cstat-skip" title="statement not covered">            return sorted;</span>
-        };
+        }
 <span class="cstat-skip" title="statement not covered">        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));</span>
 <span class="cstat-skip" title="statement not covered">        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));</span>
 <span class="cstat-skip" title="statement not covered">        if (aa !== bb) {</span>
@@ -3996,13 +3993,13 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
     </thead>
     <tbody>
         <td>
-            Statements: 3031<br>
+            Statements: 3032<br>
             Branches: 2617<br>
             Functions: 309
         </td>
         <td>
             100%<br>
-            (5666 / 5666)
+            (5665 / 5665)
         </td>
         <td>
             100%<br>
@@ -4014,7 +4011,7 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
         </td>
         <td>
             100%<br>
-            (5407 / 5407)
+            (5406 / 5406)
         </td>
     </tbody>
     </table>
@@ -15910,7 +15907,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <a href="#l11885" id="l11885">11885</a>
 <a href="#l11886" id="l11886">11886</a>
 <a href="#l11887" id="l11887">11887</a>
-<a href="#l11888" id="l11888">11888</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -15931,11 +15927,11 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -15944,12 +15940,6 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -15957,12 +15947,17 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6</span>
-<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -26794,36 +26789,36 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">114423</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">114369</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">73532</span>
-<span class="cline-any cline-yes">73532</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">69170</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">73532</span>
-<span class="cline-any cline-yes">5667</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">67865</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">114423</span>
-<span class="cline-any cline-yes">1305</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">113118</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">73406</span>
+<span class="cline-any cline-yes">73406</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">69077</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73406</span>
+<span class="cline-any cline-yes">5601</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">67805</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">114369</span>
+<span class="cline-any cline-yes">1272</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">113097</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">114423</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">114369</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -26832,13 +26827,13 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">55355</span>
+<span class="cline-any cline-yes">55328</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">55355</span>
-<span class="cline-any cline-yes">43891</span>
+<span class="cline-any cline-yes">55328</span>
+<span class="cline-any cline-yes">43897</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">55355</span>
-<span class="cline-any cline-yes">55355</span>
+<span class="cline-any cline-yes">55328</span>
+<span class="cline-any cline-yes">55328</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -26905,34 +26900,34 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">68</span>
 <span class="cline-any cline-yes">68</span>
 <span class="cline-any cline-yes">68</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">178167</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">178128</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">1442382</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">1442187</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">160511</span>
-<span class="cline-any cline-yes">160511</span>
+<span class="cline-any cline-yes">160472</span>
+<span class="cline-any cline-yes">160472</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1281871</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">178167</span>
-<span class="cline-any cline-yes">160513</span>
+<span class="cline-any cline-yes">1281715</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">160511</span>
-<span class="cline-any cline-yes">160511</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">178128</span>
+<span class="cline-any cline-yes">160474</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160472</span>
+<span class="cline-any cline-yes">160472</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">178167</span>
+<span class="cline-any cline-yes">178128</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27044,24 +27039,24 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">33217</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">33205</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">46707</span>
-<span class="cline-any cline-yes">46707</span>
-<span class="cline-any cline-yes">46707</span>
-<span class="cline-any cline-yes">46707</span>
-<span class="cline-any cline-yes">46707</span>
-<span class="cline-any cline-yes">11510</span>
-<span class="cline-any cline-yes">11510</span>
+<span class="cline-any cline-yes">46680</span>
+<span class="cline-any cline-yes">46680</span>
+<span class="cline-any cline-yes">46680</span>
+<span class="cline-any cline-yes">46680</span>
+<span class="cline-any cline-yes">46680</span>
+<span class="cline-any cline-yes">11477</span>
+<span class="cline-any cline-yes">11477</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">46707</span>
-<span class="cline-any cline-yes">46707</span>
+<span class="cline-any cline-yes">46680</span>
+<span class="cline-any cline-yes">46680</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27085,17 +27080,17 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-yes">68</span>
 <span class="cline-any cline-yes">68</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">177985</span>
-<span class="cline-any cline-yes">177985</span>
-<span class="cline-any cline-yes">177985</span>
+<span class="cline-any cline-yes">177946</span>
+<span class="cline-any cline-yes">177946</span>
+<span class="cline-any cline-yes">177946</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">177985</span>
-<span class="cline-any cline-yes">177985</span>
+<span class="cline-any cline-yes">177946</span>
+<span class="cline-any cline-yes">177946</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">68</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27489,10 +27484,10 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79924</span>
-<span class="cline-any cline-yes">45926</span>
+<span class="cline-any cline-yes">79885</span>
+<span class="cline-any cline-yes">45899</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79924</span>
+<span class="cline-any cline-yes">79885</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27522,10 +27517,10 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">166167</span>
-<span class="cline-any cline-yes">166167</span>
-<span class="cline-any cline-yes">166167</span>
-<span class="cline-any cline-yes">166167</span>
+<span class="cline-any cline-yes">166089</span>
+<span class="cline-any cline-yes">166089</span>
+<span class="cline-any cline-yes">166089</span>
+<span class="cline-any cline-yes">166089</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">204</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -27818,12 +27813,12 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
+<span class="cstat-skip" title="statement not covered">        let consoleError;</span>
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
 <span class="cstat-skip" title="statement not covered">        globalThis.debugInline = <span class="fstat-skip" title="function not covered">function (...argList) {</span></span>
         /*
@@ -27851,8 +27846,7 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
     /*
      * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
+        function objectDeepCopyWithKeysSorted(obj) {
         /*
          * this function will recursively deep-copy &lt;obj&gt; with keys sorted
          */
@@ -27870,7 +27864,7 @@ local.assetsDict["/assets.example.html"] = local.assetsDict["/"];
                 sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
             });
             return sorted;
-        };
+        }
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         <span class="skip-if-branch" title="if path not taken">I</span>if (aa !== bb) {
@@ -40003,13 +39997,13 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
     </thead>
     <tbody>
         <td>
-            Statements: 52<br>
+            Statements: 51<br>
             Branches: 40<br>
             Functions: 13
         </td>
         <td>
             100%<br>
-            (339 / 339)
+            (338 / 338)
         </td>
         <td>
             100%<br>
@@ -40021,7 +40015,7 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
         </td>
         <td>
             100%<br>
-            (332 / 332)
+            (331 / 331)
         </td>
     </tbody>
     </table>
@@ -40856,7 +40850,6 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <a href="#l824" id="l824">824</a>
 <a href="#l825" id="l825">825</a>
 <a href="#l826" id="l826">826</a>
-<a href="#l827" id="l827">827</a>
 </td>
         <td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -40868,11 +40861,11 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -40881,12 +40874,6 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -40894,12 +40881,17 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -41473,12 +41465,12 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">6</span>
-<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -41694,12 +41686,12 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
     // init debugInline
     <span class="skip-if-branch" title="if path not taken">I</span>if (!globalThis.debugInline) {
+<span class="cstat-skip" title="statement not covered">        let consoleError;</span>
 <span class="cstat-skip" title="statement not covered">        consoleError = console.error;</span>
 <span class="cstat-skip" title="statement not covered">        globalThis.debugInline = <span class="fstat-skip" title="function not covered">function (...argList) {</span></span>
         /*
@@ -41727,8 +41719,7 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
     /*
      * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
      */
-<span class="cstat-skip" title="statement not covered">        let objectDeepCopyWithKeysSorted;</span>
-<span class="cstat-skip" title="statement not covered">        objectDeepCopyWithKeysSorted = <span class="fstat-skip" title="function not covered">function (obj) {</span></span>
+<span class="fstat-skip" title="function not covered">        function objectDeepCopyWithKeysSorted(obj) {</span>
         /*
          * this function will recursively deep-copy &lt;obj&gt; with keys sorted
          */
@@ -41746,7 +41737,7 @@ local.cliDict.test = <span class="fstat-skip" title="function not covered">funct
 <span class="cstat-skip" title="statement not covered">                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);</span>
             });
 <span class="cstat-skip" title="statement not covered">            return sorted;</span>
-        };
+        }
 <span class="cstat-skip" title="statement not covered">        aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));</span>
 <span class="cstat-skip" title="statement not covered">        bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));</span>
 <span class="cstat-skip" title="statement not covered">        if (aa !== bb) {</span>
