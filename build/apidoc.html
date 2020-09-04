@@ -190,6 +190,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.objectDeepCopyWithKeysSorted">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>objectDeepCopyWithKeysSorted
+            <span class="apidocSignatureSpan">(obj)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.onErrorThrow">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>onErrorThrow
             <span class="apidocSignatureSpan">(err)</span>
@@ -756,26 +765,7 @@
 <span class="apidocCodeCommentSpan">/*
  * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
  */
-</span>    function objectDeepCopyWithKeysSorted(obj) {
-    /*
-     * this function will recursively deep-copy &lt;obj&gt; with keys sorted
-     */
-        let sorted;
-        if (typeof obj !== &quot;object&quot; || !obj) {
-            return obj;
-        }
-        // recursively deep-copy list with child-keys sorted
-        if (Array.isArray(obj)) {
-            return obj.map(objectDeepCopyWithKeysSorted);
-        }
-        // recursively deep-copy obj with keys sorted
-        sorted = {};
-        Object.keys(obj).sort().forEach(function (key) {
-            sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
-        });
-        return sorted;
-    }
-    aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
+</span>    aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
     bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
     if (aa !== bb) {
         throw new Error(JSON.stringify(aa) + &quot; !== &quot; + JSON.stringify(bb));
@@ -1574,6 +1564,37 @@ globalThis.domOnEventDelegateDict = local;
 // run node js-env code - init-test
 (function () {
 ...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.objectDeepCopyWithKeysSorted" id="apidoc.elem.istanbul-lite.objectDeepCopyWithKeysSorted">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>objectDeepCopyWithKeysSorted
+        <span class="apidocSignatureSpan">(obj)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function objectDeepCopyWithKeysSorted(obj) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will recursively deep-copy &lt;obj&gt; with keys sorted
+ */
+</span>    let sorted;
+    if (typeof obj !== &quot;object&quot; || !obj) {
+        return obj;
+    }
+    // recursively deep-copy list with child-keys sorted
+    if (Array.isArray(obj)) {
+        return obj.map(objectDeepCopyWithKeysSorted);
+    }
+    // recursively deep-copy obj with keys sorted
+    sorted = {};
+    Object.keys(obj).sort().forEach(function (key) {
+        sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
+    });
+    return sorted;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 

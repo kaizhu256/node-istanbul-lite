@@ -104,6 +104,16 @@ pre {
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>
 <script>
 /* jslint utility2:true */
+// polyfill globalThis
+(function () {
+/*
+ * this function will polyfill globalThis
+ */
+    "use strict";
+    window.globalThis = window.globalThis || globalThis;
+}());
+
+
 // init domOnEventWindowOnloadTimeElapsed
 (function () {
 /*
