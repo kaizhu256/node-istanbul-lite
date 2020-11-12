@@ -1,4 +1,5 @@
 {
+    "!!jslint_utility2": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
     "bin": {
         "istanbul-lite": "lib.istanbul.js"
@@ -36,5 +37,5 @@
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2020.8.1"
+    "version": "2020.11.12"
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * lib.istanbul.js (2020.8.1)
+ * lib.istanbul.js (2020.11.12)
  * https://github.com/kaizhu256/node-istanbul-lite
  * this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo
  *
@@ -14,12 +14,21 @@
 // run shared js-env code - init-local
 (function () {
     "use strict";
-    let consoleError;
     let isBrowser;
     let isWebWorker;
     let local;
+    // polyfill globalThis
+    if (!(typeof globalThis === "object" && globalThis)) {
+        if (typeof window === "object" && window && window.window === window) {
+            window.globalThis = window;
+        }
+        if (typeof global === "object" && global && global.global === global) {
+            global.globalThis = global;
+        }
+    }
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -43,30 +52,29 @@
         isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
+    function objectDeepCopyWithKeysSorted(obj) {
+    /*
+     * this function will recursively deep-copy <obj> with keys sorted
+     */
+        let sorted;
+        if (typeof obj !== "object" || !obj) {
+            return obj;
+        }
+        // recursively deep-copy list with child-keys sorted
+        if (Array.isArray(obj)) {
+            return obj.map(objectDeepCopyWithKeysSorted);
+        }
+        // recursively deep-copy obj with keys sorted
+        sorted = {};
+        Object.keys(obj).sort().forEach(function (key) {
+            sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
+        });
+        return sorted;
+    }
     function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
-        /*
-         * this function will recursively deep-copy <obj> with keys sorted
-         */
-            let sorted;
-            if (typeof obj !== "object" || !obj) {
-                return obj;
-            }
-            // recursively deep-copy list with child-keys sorted
-            if (Array.isArray(obj)) {
-                return obj.map(objectDeepCopyWithKeysSorted);
-            }
-            // recursively deep-copy obj with keys sorted
-            sorted = {};
-            Object.keys(obj).sort().forEach(function (key) {
-                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
-            });
-            return sorted;
-        };
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
@@ -119,7 +127,7 @@
      */
         return val;
     }
-    function nop() {
+    function noop() {
     /*
      * this function will do nothing
      */
@@ -173,18 +181,20 @@
         });
     }
     // init local
-    local = {};
-    local.local = local;
+    local = {
+        assertJsonEqual,
+        assertOrThrow,
+        coalesce,
+        identity,
+        isBrowser,
+        isWebWorker,
+        local,
+        noop,
+        objectAssignDefault,
+        objectDeepCopyWithKeysSorted,
+        onErrorThrow
+    };
     globalThis.globalLocal = local;
-    local.assertJsonEqual = assertJsonEqual;
-    local.assertOrThrow = assertOrThrow;
-    local.coalesce = coalesce;
-    local.identity = identity;
-    local.isBrowser = isBrowser;
-    local.isWebWorker = isWebWorker;
-    local.nop = nop;
-    local.objectAssignDefault = objectAssignDefault;
-    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -215,9 +225,11 @@ local.istanbul = local;
 
 
 /* validateLineSortedReset */
-local.cliRun = function (opt) {
+local.cliRun = function ({
+    rgxComment
+}) {
 /*
- * this function will run cli with given <opt>
+ * this function will run cli
  */
     let cliDict;
     cliDict = local.cliDict;
@@ -257,10 +269,9 @@ local.cliRun = function (opt) {
         file = __filename.replace((
             /.*\//
         ), "");
-        opt = Object.assign({}, opt);
         packageJson = require("./package.json");
         // validate comment
-        opt.rgxComment = opt.rgxComment || (
+        rgxComment = rgxComment || (
             /\)\u0020\{\n(?:|\u0020{4})\/\*\n(?:\u0020|\u0020{5})\*((?:\u0020<[^>]*?>|\u0020\.\.\.)*?)\n(?:\u0020|\u0020{5})\*\u0020(will\u0020.*?\S)\n(?:\u0020|\u0020{5})\*\/\n(?:\u0020{4}|\u0020{8})\S/
         );
         strDict = {};
@@ -278,30 +289,27 @@ local.cliRun = function (opt) {
                 commandList[ii].command.push(key);
                 return;
             }
-            try {
-                commandList[ii] = opt.rgxComment.exec(str);
-                commandList[ii] = {
-                    argList: local.coalesce(commandList[ii][1], "").trim(),
-                    command: [
-                        key
-                    ],
-                    description: commandList[ii][2]
-                };
-            } catch (ignore) {
-                local.assertOrThrow(undefined, new Error(
-                    "cliRun - cannot parse comment in COMMAND "
-                    + key
-                    + ":\nnew RegExp("
-                    + JSON.stringify(opt.rgxComment.source)
-                    + ").exec(" + JSON.stringify(str).replace((
-                        /\\\\/g
-                    ), "\u0000").replace((
-                        /\\n/g
-                    ), "\\n\\\n").replace((
-                        /\u0000/g
-                    ), "\\\\") + ");"
-                ));
-            }
+            commandList[ii] = rgxComment.exec(str);
+            local.assertOrThrow(commandList[ii], (
+                "cliRun - cannot parse comment in COMMAND "
+                + key
+                + ":\nnew RegExp("
+                + JSON.stringify(rgxComment.source)
+                + ").exec(" + JSON.stringify(str).replace((
+                    /\\\\/g
+                ), "\u0000").replace((
+                    /\\n/g
+                ), "\\n\\\n").replace((
+                    /\u0000/g
+                ), "\\\\") + ");"
+            ));
+            commandList[ii] = {
+                argList: local.coalesce(commandList[ii][1], "").trim(),
+                command: [
+                    key
+                ],
+                description: commandList[ii][2]
+            };
         });
         str = "";
         str += packageJson.name + " (" + packageJson.version + ")\n\n";
@@ -656,7 +664,7 @@ process = (
     }
     : globalThis.process
 );
-local.nop(escodegen, esprima, estraverse, esutils);
+local.noop(escodegen, esprima, estraverse, esutils);
 
 
 /*
@@ -11359,17 +11367,19 @@ local.coverageMerge = function (coverage1 = {}, coverage2 = {}) {
     return coverage1;
 };
 
-local.coverageReportCreate = function (opt) {
+local.coverageReportCreate = function ({
+    coverage,
+    coverageInclude
+}) {
 /*
  * this function will
-    // 1. merge previous <dirCoverage>/coverage.json into <opt>.coverage
-    // 2. convert <opt>.coverage to <summaryDict>
+    // 1. merge previous <dirCoverage>/coverage.json into <coverage>
+    // 2. convert <coverage> to <summaryDict>
     // 3. convert <summaryDict> to <nodeRoot>
     // 4. convert <nodeRoot> to text-report <dirCoverage>/coverage.txt
     // 5. convert <nodeRoot> to html-report <dirCoverage>/\*
     // 6. return coverage-report in html-format as single document
  */
-    let coverageInclude;
     let dirCoverage;
     let filePrefix;
     let htmlAll;
@@ -11380,9 +11390,6 @@ local.coverageReportCreate = function (opt) {
     let nodeRoot;
     let summaryDict;
     let tmp;
-    if (!(opt && opt.coverage)) {
-        return "";
-    }
     // init function
     nodeChildAdd = function (node, child) {
     /*
@@ -11508,15 +11515,15 @@ local.coverageReportCreate = function (opt) {
             );
         });
     };
-    // 1. merge previous <dirCoverage>/coverage.json into <opt>.coverage
+    // 1. merge previous <dirCoverage>/coverage.json into <coverage>
     dirCoverage = path.resolve(".tmp/build/coverage");
-    coverageInclude = opt.coverageInclude || globalThis.__coverageInclude__;
+    coverageInclude = coverageInclude || globalThis.__coverageInclude__;
     if (!local.isBrowser && process.env.npm_config_mode_coverage_merge) {
         console.error(
             "istanbul - merging file "
             + dirCoverage + "/coverage.json to coverage"
         );
-        local.coverageMerge(opt.coverage, local.fsReadFileOrDefaultSync(
+        local.coverageMerge(coverage, local.fsReadFileOrDefaultSync(
             dirCoverage + "/coverage.json",
             "json",
             {}
@@ -11529,9 +11536,9 @@ local.coverageReportCreate = function (opt) {
             coverageInclude[file] = 1;
         });
     }
-    // 2. convert <opt>.coverage to <summaryDict>
+    // 2. convert <coverage> to <summaryDict>
     summaryDict = {};
-    Object.entries(opt.coverage).forEach(function ([
+    Object.entries(coverage).forEach(function ([
         file,
         fileCoverage
     ]) {
@@ -11541,7 +11548,7 @@ local.coverageReportCreate = function (opt) {
         let summary;
         if (fileCoverage && coverageInclude.hasOwnProperty(file)) {
             // reset line-cnt
-            delete opt.coverage[file].l;
+            delete coverage[file].l;
             // init summary
             summary = {
                 branches: {
@@ -11682,11 +11689,11 @@ local.coverageReportCreate = function (opt) {
     // 4. convert <nodeRoot> to text-report <dirCoverage>/coverage.txt
     reportTextWrite(nodeRoot, dirCoverage);
     // 5. convert <nodeRoot> to html-report <dirCoverage>/\*
-    htmlAll = reportHtmlWrite(nodeRoot, dirCoverage, opt.coverage);
-    // save opt.coverage to dirCoverage/coverage.json
+    htmlAll = reportHtmlWrite(nodeRoot, dirCoverage, coverage);
+    // save coverage to dirCoverage/coverage.json
     fileWrite(
         dirCoverage + "/coverage.json",
-        JSON.stringify(opt.coverage, undefined, 4)
+        JSON.stringify(coverage, undefined, 4)
     );
     // save coverageInclude to dirCoverage/coverage.include.json
     fileWrite(
@@ -11882,7 +11889,7 @@ local.cliDict.test = function () {
 
 // run the cli
 if (module === require.main && !globalThis.utility2_rollup) {
-    local.cliRun();
+    local.cliRun({});
 }
 }());
 }());
