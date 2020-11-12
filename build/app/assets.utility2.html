@@ -320,7 +320,7 @@ pre {
         evt.targetOnEvent = evt.target.closest("[data-onevent]");
         if (
             !evt.targetOnEvent
-            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNoop"
             || evt.target.closest(".disabled,.readonly")
         ) {
             return;
@@ -454,7 +454,7 @@ pre {
      * this function will run a failed error demo
      */
         // hack-jslint
-        window.utility2.nop(opt);
+        window.utility2.noop(opt);
         onError(new Error("this is a failed error demo"));
     };
 
