@@ -8,6 +8,15 @@
     let isBrowser;
     let isWebWorker;
     let local;
+    // polyfill globalThis
+    if (!(typeof globalThis === "object" && globalThis)) {
+        if (typeof window === "object" && window && window.window === window) {
+            window.globalThis = window;
+        }
+        if (typeof global === "object" && global && global.global === global) {
+            global.globalThis = global;
+        }
+    }
     // init debugInline
     if (!globalThis.debugInline) {
         let consoleError;
@@ -109,7 +118,7 @@
      */
         return val;
     }
-    function nop() {
+    function noop() {
     /*
      * this function will do nothing
      */
@@ -163,19 +172,20 @@
         });
     }
     // init local
-    local = {};
-    local.local = local;
+    local = {
+        assertJsonEqual,
+        assertOrThrow,
+        coalesce,
+        identity,
+        isBrowser,
+        isWebWorker,
+        local,
+        noop,
+        objectAssignDefault,
+        objectDeepCopyWithKeysSorted,
+        onErrorThrow
+    };
     globalThis.globalLocal = local;
-    local.assertJsonEqual = assertJsonEqual;
-    local.assertOrThrow = assertOrThrow;
-    local.coalesce = coalesce;
-    local.identity = identity;
-    local.isBrowser = isBrowser;
-    local.isWebWorker = isWebWorker;
-    local.nop = nop;
-    local.objectAssignDefault = objectAssignDefault;
-    local.objectDeepCopyWithKeysSorted = objectDeepCopyWithKeysSorted;
-    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -696,13 +706,11 @@ local.testCase_istanbulCoverageReportCreate_default = function (opt, onError) {
  * this function will test
  * istanbulCoverageReportCreate's default handling-behavior
  */
-    // test null-case handling-behavior
-    local.istanbul.coverageReportCreate();
     local.env.npm_config_mode_coverage_merge = "";
     local.testMock([
         [
             local.istanbul, {
-                coverageMerge: local.nop
+                coverageMerge: local.noop
             }
         ],
         // test $npm_config_mode_coverage_merge handling-behavior

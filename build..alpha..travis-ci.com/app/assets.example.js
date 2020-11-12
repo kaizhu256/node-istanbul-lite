@@ -88,16 +88,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 /*
 example.js
 
@@ -123,6 +113,15 @@ instruction
     let isBrowser;
     let isWebWorker;
     let local;
+    // polyfill globalThis
+    if (!(typeof globalThis === "object" && globalThis)) {
+        if (typeof window === "object" && window && window.window === window) {
+            window.globalThis = window;
+        }
+        if (typeof global === "object" && global && global.global === global) {
+            global.globalThis = global;
+        }
+    }
     // init debugInline
     if (!globalThis.debugInline) {
         let consoleError;
@@ -224,7 +223,7 @@ instruction
      */
         return val;
     }
-    function nop() {
+    function noop() {
     /*
      * this function will do nothing
      */
@@ -278,19 +277,20 @@ instruction
         });
     }
     // init local
-    local = {};
-    local.local = local;
+    local = {
+        assertJsonEqual,
+        assertOrThrow,
+        coalesce,
+        identity,
+        isBrowser,
+        isWebWorker,
+        local,
+        noop,
+        objectAssignDefault,
+        objectDeepCopyWithKeysSorted,
+        onErrorThrow
+    };
     globalThis.globalLocal = local;
-    local.assertJsonEqual = assertJsonEqual;
-    local.assertOrThrow = assertOrThrow;
-    local.coalesce = coalesce;
-    local.identity = identity;
-    local.isBrowser = isBrowser;
-    local.isWebWorker = isWebWorker;
-    local.nop = nop;
-    local.objectAssignDefault = objectAssignDefault;
-    local.objectDeepCopyWithKeysSorted = objectDeepCopyWithKeysSorted;
-    local.onErrorThrow = onErrorThrow;
 }());
 // assets.utility2.header.js - end
 
@@ -683,7 +683,7 @@ pre {\n\
         evt.targetOnEvent = evt.target.closest("[data-onevent]");\n\
         if (\n\
             !evt.targetOnEvent\n\
-            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"\n\
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNoop"\n\
             || evt.target.closest(".disabled,.readonly")\n\
         ) {\n\
             return;\n\

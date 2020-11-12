@@ -320,7 +320,7 @@ pre {
         evt.targetOnEvent = evt.target.closest("[data-onevent]");
         if (
             !evt.targetOnEvent
-            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNoop"
             || evt.target.closest(".disabled,.readonly")
         ) {
             return;
