@@ -1,5 +1,5 @@
-<svg height="1246" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="1246" fill="#555" width="720"></rect>
+<svg height="1358" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="1358" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"># shBuildInit env</tspan>
 
@@ -22,13 +22,13 @@
 
 <tspan x="10" y="186">shBuildInit - wrote /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/README.example.js</tspan>
 
-<tspan x="10" y="202">shBuildInit - wrote /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/README.build_ci.sh</tspan>
+<tspan x="10" y="202">shBuildInit - wrote /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/README.example.sh</tspan>
 
-<tspan x="10" y="218">shBuildInit - wrote /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/README.example.sh</tspan>
+<tspan x="10" y="218">shBuildInit - wrote /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/README.build_ci.sh</tspan>
 
 <tspan x="10" y="234"></tspan>
 
-<tspan x="10" y="250">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-11-12T18:03:01.233Z - npm-testing /home/travis/bu\</tspan>
+<tspan x="10" y="250">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-11-12T18:09:11.959Z - npm-testing /home/travis/bu\</tspan>
 <tspan x="10" y="266">ild/kaizhu256/node-istanbul-lite</tspan>
 
 <tspan x="10" y="282"></tspan>
@@ -38,14 +38,14 @@
 <tspan x="10" y="314">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/\</tspan>
 <tspan x="10" y="330">build/test-report.json</tspan>
 
-<tspan x="10" y="346">&gt; http-server listening on port 54617</tspan>
+<tspan x="10" y="346">&gt; http-server listening on port 43518</tspan>
 
-<tspan x="10" y="362">apidocCreate - readExample /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
+<tspan x="10" y="362"></tspan>
 
-<tspan x="10" y="378"></tspan>
+<tspan x="10" y="378">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/\</tspan>
+<tspan x="10" y="394">build/test-report.json</tspan>
 
-<tspan x="10" y="394">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/\</tspan>
-<tspan x="10" y="410">build/test-report.json</tspan>
+<tspan x="10" y="410">apidocCreate - readExample /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
 
 <tspan x="10" y="426">jslint - 3ms - /home/travis/build/kaizhu256/node-istanbul-lite/README.md</tspan>
 
@@ -79,17 +79,17 @@
 
 <tspan x="10" y="666">apidocCreate - libFile test1/test2/test2.js</tspan>
 
-<tspan x="10" y="682">jslint - 224ms - /home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</tspan>
+<tspan x="10" y="682">jslint - 234ms - /home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js</tspan>
 
-<tspan x="10" y="698">jslint - 225ms - /home/travis/build/kaizhu256/node-istanbul-lite/npm_scripts.sh</tspan>
+<tspan x="10" y="698">jslint - 235ms - /home/travis/build/kaizhu256/node-istanbul-lite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="714">jslint - 231ms - /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
+<tspan x="10" y="714">jslint - 240ms - /home/travis/build/kaizhu256/node-istanbul-lite/package.json</tspan>
 
-<tspan x="10" y="730">jslint - 303ms - /home/travis/build/kaizhu256/node-istanbul-lite/test.js</tspan>
+<tspan x="10" y="730">jslint - 272ms - /home/travis/build/kaizhu256/node-istanbul-lite/test.js</tspan>
 
 <tspan x="10" y="746">fsWriteFileWithMkdirp - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/apidoc.html</tspan>
 
-<tspan x="10" y="762">testRunDefault - 701 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
+<tspan x="10" y="762">testRunDefault - 637 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
 
 <tspan x="10" y="778">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/test-repo\</tspan>
 <tspan x="10" y="794">rt.json</tspan>
@@ -103,45 +103,58 @@
 
 <tspan x="10" y="874">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="890">| test-report - buildApidoc - node - linux v15.2.0 - 2020-11-12T18:03:01.296Z</tspan>
+<tspan x="10" y="890">| test-report - buildApidoc - node - linux v15.2.0 - 2020-11-12T18:09:12.026Z</tspan>
 
-<tspan x="10" y="906">|     701 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="906">|     637 ms            0 failed        1 passed      |</tspan>
 
 <tspan x="10" y="922">-------------------------------------------------------</tspan>
 
 <tspan x="10" y="938">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="954">L, like Gecko) HeadlessChrome/86.0.4240.198 Safari/537.36 - 2020-11-12T18:02:56.191Z</tspan>
+<tspan x="10" y="954">L, like Gecko) HeadlessChrome/86.0.4240.198 Safari/537.36 - 2020-11-12T18:09:06.729Z</tspan>
 
-<tspan x="10" y="970">|    1439 ms            0 failed        6 passed      |</tspan>
+<tspan x="10" y="970">|    1321 ms            0 failed        6 passed      |</tspan>
 
 <tspan x="10" y="986">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="1002">| test-report - npmTest - node - linux v15.2.0 - 2020-11-12T18:02:52.305Z</tspan>
+<tspan x="10" y="1002">| test-report - npmTest - node - linux v15.2.0 - 2020-11-12T18:09:03.055Z</tspan>
 
-<tspan x="10" y="1018">|    6141 ms            0 failed        9 passed      |</tspan>
+<tspan x="10" y="1018">|    6193 ms            0 failed        9 passed      |</tspan>
 
 <tspan x="10" y="1034">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="1050"></tspan>
+<tspan x="10" y="1050">| test-report - npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537\</tspan>
+<tspan x="10" y="1066">.36 (KHTML, like Gecko) HeadlessChrome/86.0.4240.198 Safari/537.36 - 2020-11-12T18:08:27.144Z</tspan>
 
-<tspan x="10" y="1066">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/test-repo\</tspan>
-<tspan x="10" y="1082">rt.html</tspan>
+<tspan x="10" y="1082">|    1498 ms            0 failed        6 passed      |</tspan>
 
-<tspan x="10" y="1098">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/build.bad\</tspan>
-<tspan x="10" y="1114">ge.svg</tspan>
+<tspan x="10" y="1098">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="1130">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/test-repo\</tspan>
-<tspan x="10" y="1146">rt.badge.svg</tspan>
+<tspan x="10" y="1114">| test-report - npmTestPublished - node - linux v15.2.0 - 2020-11-12T18:08:22.647Z</tspan>
+
+<tspan x="10" y="1130">|    6420 ms            0 failed        9 passed      |</tspan>
+
+<tspan x="10" y="1146">-------------------------------------------------------</tspan>
 
 <tspan x="10" y="1162"></tspan>
 
-<tspan x="10" y="1178">buildApidoc - 0 failed tests</tspan>
+<tspan x="10" y="1178">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/test-repo\</tspan>
+<tspan x="10" y="1194">rt.html</tspan>
 
-<tspan x="10" y="1194"></tspan>
+<tspan x="10" y="1210">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/build.bad\</tspan>
+<tspan x="10" y="1226">ge.svg</tspan>
 
-<tspan x="10" y="1210"></tspan>
+<tspan x="10" y="1242">fsWriteFileWithMkdirpSync - /home/travis/build/kaizhu256/node-istanbul-lite/.tmp/build/test-repo\</tspan>
+<tspan x="10" y="1258">rt.badge.svg</tspan>
 
-<tspan x="10" y="1226">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-11-12T18:03:02.287Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="1274"></tspan>
+
+<tspan x="10" y="1290">buildApidoc - 0 failed tests</tspan>
+
+<tspan x="10" y="1306"></tspan>
+
+<tspan x="10" y="1322"></tspan>
+
+<tspan x="10" y="1338">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-11-12T18:09:12.929Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>
