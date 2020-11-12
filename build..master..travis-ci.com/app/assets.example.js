@@ -92,19 +92,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 example.js
 
@@ -120,20 +107,28 @@ instruction
 */
 
 
-
 /* istanbul instrument in package istanbul */
 // assets.utility2.header.js - start
 /* jslint utility2:true */
 /* istanbul ignore next */
 // run shared js-env code - init-local
-(function (globalThis) {
+(function () {
     "use strict";
-    let consoleError;
+    let isBrowser;
+    let isWebWorker;
     let local;
-    // init globalThis
-    globalThis.globalThis = globalThis.globalThis || globalThis;
+    // polyfill globalThis
+    if (!(typeof globalThis === "object" && globalThis)) {
+        if (typeof window === "object" && window && window.window === window) {
+            window.globalThis = window;
+        }
+        if (typeof global === "object" && global && global.global === global) {
+            global.globalThis = global;
+        }
+    }
     // init debugInline
     if (!globalThis.debugInline) {
+        let consoleError;
         consoleError = console.error;
         globalThis.debugInline = function (...argList) {
         /*
@@ -146,52 +141,47 @@ instruction
             return argList[0];
         };
     }
-    // init local
-    local = {};
-    local.local = local;
-    globalThis.globalLocal = local;
     // init isBrowser
-    local.isBrowser = (
+    isBrowser = (
         typeof globalThis.XMLHttpRequest === "function"
         && globalThis.navigator
         && typeof globalThis.navigator.userAgent === "string"
     );
     // init isWebWorker
-    local.isWebWorker = (
-        local.isBrowser && typeof globalThis.importScripts === "function"
+    isWebWorker = (
+        isBrowser && typeof globalThis.importScripts === "function"
     );
     // init function
-    local.assertJsonEqual = function (aa, bb) {
+    function objectDeepCopyWithKeysSorted(obj) {
+    /*
+     * this function will recursively deep-copy <obj> with keys sorted
+     */
+        let sorted;
+        if (typeof obj !== "object" || !obj) {
+            return obj;
+        }
+        // recursively deep-copy list with child-keys sorted
+        if (Array.isArray(obj)) {
+            return obj.map(objectDeepCopyWithKeysSorted);
+        }
+        // recursively deep-copy obj with keys sorted
+        sorted = {};
+        Object.keys(obj).sort().forEach(function (key) {
+            sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
+        });
+        return sorted;
+    }
+    function assertJsonEqual(aa, bb) {
     /*
      * this function will assert JSON.stringify(<aa>) === JSON.stringify(<bb>)
      */
-        let objectDeepCopyWithKeysSorted;
-        objectDeepCopyWithKeysSorted = function (obj) {
-        /*
-         * this function will recursively deep-copy <obj> with keys sorted
-         */
-            let sorted;
-            if (typeof obj !== "object" || !obj) {
-                return obj;
-            }
-            // recursively deep-copy list with child-keys sorted
-            if (Array.isArray(obj)) {
-                return obj.map(objectDeepCopyWithKeysSorted);
-            }
-            // recursively deep-copy obj with keys sorted
-            sorted = {};
-            Object.keys(obj).sort().forEach(function (key) {
-                sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
-            });
-            return sorted;
-        };
         aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
         bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
         if (aa !== bb) {
             throw new Error(JSON.stringify(aa) + " !== " + JSON.stringify(bb));
         }
-    };
-    local.assertOrThrow = function (passed, msg) {
+    }
+    function assertOrThrow(passed, msg) {
     /*
      * this function will throw <msg> if <passed> is falsy
      */
@@ -214,8 +204,8 @@ instruction
                 : JSON.stringify(msg, undefined, 4)
             )
         );
-    };
-    local.coalesce = function (...argList) {
+    }
+    function coalesce(...argList) {
     /*
      * this function will coalesce null, undefined, or "" in <argList>
      */
@@ -230,20 +220,20 @@ instruction
             ii += 1;
         }
         return arg;
-    };
-    local.identity = function (val) {
+    }
+    function identity(val) {
     /*
      * this function will return <val>
      */
         return val;
-    };
-    local.nop = function () {
+    }
+    function noop() {
     /*
      * this function will do nothing
      */
         return;
-    };
-    local.objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    }
+    function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
     /*
      * this function will if items from <tgt> are null, undefined, or "",
      * then overwrite them with items from <src>
@@ -270,7 +260,15 @@ instruction
         };
         recurse(tgt, src, depth | 0);
         return tgt;
-    };
+    }
+    function onErrorThrow(err) {
+    /*
+     * this function will throw <err> if exists
+     */
+        if (err) {
+            throw err;
+        }
+    }
     // bug-workaround - throw unhandledRejections in node-process
     if (
         typeof process === "object" && process
@@ -282,15 +280,28 @@ instruction
             throw err;
         });
     }
-}((typeof globalThis === "object" && globalThis) || window));
+    // init local
+    local = {
+        assertJsonEqual,
+        assertOrThrow,
+        coalesce,
+        identity,
+        isBrowser,
+        isWebWorker,
+        local,
+        noop,
+        objectAssignDefault,
+        objectDeepCopyWithKeysSorted,
+        onErrorThrow
+    };
+    globalThis.globalLocal = local;
+}());
 // assets.utility2.header.js - end
-
 
 
 /* jslint utility2:true */
 (function (local) {
 "use strict";
-
 
 
 // run shared js-env code - init-before
@@ -304,7 +315,6 @@ local = (
 // init exports
 globalThis.local = local;
 }());
-
 
 
 /* istanbul ignore next */
@@ -341,7 +351,6 @@ if (!local.isBrowser) {
 local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
 globalThis.domOnEventDelegateDict = local;
 }());
-
 
 
 /* istanbul ignore next */
@@ -462,6 +471,16 @@ pre {\n\
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
 <script>\n\
 /* jslint utility2:true */\n\
+// polyfill globalThis\n\
+(function () {\n\
+/*\n\
+ * this function will polyfill globalThis\n\
+ */\n\
+    "use strict";\n\
+    window.globalThis = window.globalThis || globalThis;\n\
+}());\n\
+\n\
+\n\
 // init domOnEventWindowOnloadTimeElapsed\n\
 (function () {\n\
 /*\n\
@@ -488,7 +507,6 @@ pre {\n\
         }, 100);\n\
     });\n\
 }());\n\
-\n\
 \n\
 \n\
 // init domOnEventAjaxProgressUpdate\n\
@@ -645,7 +663,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventDelegateDict\n\
 (function () {\n\
 /*\n\
@@ -670,7 +687,7 @@ pre {\n\
         evt.targetOnEvent = evt.target.closest("[data-onevent]");\n\
         if (\n\
             !evt.targetOnEvent\n\
-            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"\n\
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNoop"\n\
             || evt.target.closest(".disabled,.readonly")\n\
         ) {\n\
             return;\n\
@@ -729,7 +746,6 @@ pre {\n\
 }());\n\
 \n\
 \n\
-\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
 /*\n\
@@ -785,7 +801,6 @@ utility2-comment -->\n\
 <button class="button" data-onevent="testRunBrowser" id="buttonTestRun1">run browser-tests</button><br>\n\
 <div class="uiAnimateSlide" id="htmlTestReport1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
-\n\
 \n\
 \n\
 <!-- custom-html-start -->\n\
@@ -866,14 +881,13 @@ local.domOnEventInputChange({\n\
 <!-- custom-html-end -->\n\
 \n\
 \n\
-\n\
 <!-- utility2-comment\n\
 {{#if isRollup}}\n\
 <script src="assets.app.js"></script>\n\
 {{#unless isRollup}}\n\
 <script src="assets.utility2.rollup.js"></script>\n\
 <script>window.utility2_onReadyBefore.cnt += 1;</script>\n\
-<script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
+<script src="utility2.state.init.js"></script>\n\
 utility2-comment -->\n\
 <script src="assets.istanbul.js"></script>\n\
 <script src="assets.example.js"></script>\n\

@@ -104,6 +104,16 @@ pre {
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>
 <script>
 /* jslint utility2:true */
+// polyfill globalThis
+(function () {
+/*
+ * this function will polyfill globalThis
+ */
+    "use strict";
+    window.globalThis = window.globalThis || globalThis;
+}());
+
+
 // init domOnEventWindowOnloadTimeElapsed
 (function () {
 /*
@@ -130,7 +140,6 @@ pre {
         }, 100);
     });
 }());
-
 
 
 // init domOnEventAjaxProgressUpdate
@@ -287,7 +296,6 @@ pre {
 }());
 
 
-
 // init domOnEventDelegateDict
 (function () {
 /*
@@ -312,7 +320,7 @@ pre {
         evt.targetOnEvent = evt.target.closest("[data-onevent]");
         if (
             !evt.targetOnEvent
-            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNoop"
             || evt.target.closest(".disabled,.readonly")
         ) {
             return;
@@ -371,7 +379,6 @@ pre {
 }());
 
 
-
 // init domOnEventSelectAllWithinPre
 (function () {
 /*
@@ -427,7 +434,6 @@ utility2-comment -->
 <button class="button" data-onevent="testRunBrowser" id="buttonTestRun1">run browser-tests</button><br>
 <div class="uiAnimateSlide" id="htmlTestReport1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>
 utility2-comment -->
-
 
 
 <!-- custom-html-start -->
@@ -508,14 +514,13 @@ local.domOnEventInputChange({
 <!-- custom-html-end -->
 
 
-
 <!-- utility2-comment
 {{#if isRollup}}
 <script src="assets.app.js"></script>
 {{#unless isRollup}}
 <script src="assets.utility2.rollup.js"></script>
 <script>window.utility2_onReadyBefore.cnt += 1;</script>
-<script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>
+<script src="utility2.state.init.js"></script>
 utility2-comment -->
 <script src="assets.istanbul.js"></script>
 <script src="assets.example.js"></script>

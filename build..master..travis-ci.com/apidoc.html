@@ -52,7 +52,7 @@
 
         href="https://github.com/kaizhu256/node-istanbul-lite"
 
-    >istanbul-lite (2020.6.8)</a>
+    >istanbul-lite (2020.11.12)</a>
 </h1>
 <h4>this zero-dependency package will provide browser-compatible version of istanbul coverage-tool (v0.4.5), with working web-demo</h4>
 <div class="apidocSectionDiv"><a
@@ -93,7 +93,7 @@
 
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.cliRun">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>cliRun
-            <span class="apidocSignatureSpan">(opt)</span>
+            <span class="apidocSignatureSpan">({ rgxComment })</span>
             </a>
 
         </li>
@@ -120,7 +120,7 @@
 
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.coverageReportCreate">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>coverageReportCreate
-            <span class="apidocSignatureSpan">(opt)</span>
+            <span class="apidocSignatureSpan">({ coverage, coverageInclude })</span>
             </a>
 
         </li>
@@ -138,7 +138,7 @@
 
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>fsWriteFileWithMkdirpSync
-            <span class="apidocSignatureSpan">(pathname, data, msg)</span>
+            <span class="apidocSignatureSpan">(pathname, data)</span>
             </a>
 
         </li>
@@ -172,8 +172,8 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.nop">
-            function <span class="apidocSignatureSpan">istanbul-lite.</span>nop
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.noop">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>noop
             <span class="apidocSignatureSpan">()</span>
             </a>
 
@@ -184,6 +184,24 @@
             <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.objectAssignDefault">
             function <span class="apidocSignatureSpan">istanbul-lite.</span>objectAssignDefault
             <span class="apidocSignatureSpan">(tgt = {}, src = {}, depth = 0)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.objectDeepCopyWithKeysSorted">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>objectDeepCopyWithKeysSorted
+            <span class="apidocSignatureSpan">(obj)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.istanbul-lite.onErrorThrow">
+            function <span class="apidocSignatureSpan">istanbul-lite.</span>onErrorThrow
+            <span class="apidocSignatureSpan">(err)</span>
             </a>
 
         </li>
@@ -218,12 +236,6 @@
         <li>
 
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">istanbul-lite.</span>istanbul</span>
-
-        </li>
-
-        <li>
-
-            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">istanbul-lite.</span>local</span>
 
         </li>
 
@@ -743,31 +755,11 @@
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">assertJsonEqual = function (aa, bb) {
+    <li>description and source-code<pre class="apidocCodePre">function assertJsonEqual(aa, bb) {
 <span class="apidocCodeCommentSpan">/*
  * this function will assert JSON.stringify(&lt;aa&gt;) === JSON.stringify(&lt;bb&gt;)
  */
-</span>    let objectDeepCopyWithKeysSorted;
-    objectDeepCopyWithKeysSorted = function (obj) {
-    /*
-     * this function will recursively deep-copy &lt;obj&gt; with keys sorted
-     */
-        let sorted;
-        if (typeof obj !== &quot;object&quot; || !obj) {
-            return obj;
-        }
-        // recursively deep-copy list with child-keys sorted
-        if (Array.isArray(obj)) {
-            return obj.map(objectDeepCopyWithKeysSorted);
-        }
-        // recursively deep-copy obj with keys sorted
-        sorted = {};
-        Object.keys(obj).sort().forEach(function (key) {
-            sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
-        });
-        return sorted;
-    };
-    aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
+</span>    aa = JSON.stringify(objectDeepCopyWithKeysSorted(aa));
     bb = JSON.stringify(objectDeepCopyWithKeysSorted(bb));
     if (aa !== bb) {
         throw new Error(JSON.stringify(aa) + &quot; !== &quot; + JSON.stringify(bb));
@@ -783,30 +775,30 @@
 // validate opt.coverage1
 local.<span class="apidocCodeKeywordSpan">assertJsonEqual</span>(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 );
 // test merge-create handling-behavior
 opt.coverage1 = local.istanbul.coverageMerge({}, opt.coverage1);
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 ...</pre></li>
     </ul>
 
@@ -819,7 +811,7 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">assertOrThrow = function (passed, msg) {
+    <li>description and source-code<pre class="apidocCodePre">function assertOrThrow(passed, msg) {
 <span class="apidocCodeCommentSpan">/*
  * this function will throw &lt;msg&gt; if &lt;passed&gt; is falsy
  */
@@ -844,21 +836,21 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
     );
 }</pre></li>
     <li>example use<pre class="apidocCodePre">...
-        argList: local.coalesce(commandList[ii][1], &quot;&quot;).trim(),
-        command: [
-            key
-        ],
-        description: commandList[ii][2]
-    };
-} catch (ignore) {
-    local.<span class="apidocCodeKeywordSpan">assertOrThrow</span>(undefined, new Error(
-        &quot;cliRun - cannot parse comment in COMMAND &quot;
-        + key
-        + &quot;:\nnew RegExp(&quot;
-        + JSON.stringify(opt.rgxComment.source)
-        + &quot;).exec(&quot; + JSON.stringify(str).replace((
-            /\\\\/g
-        ), &quot;\u0000&quot;).replace((
+strDict[str] = strDict[str] || (ii + 2);
+ii = strDict[str];
+if (commandList[ii]) {
+    commandList[ii].command.push(key);
+    return;
+}
+commandList[ii] = rgxComment.exec(str);
+local.<span class="apidocCodeKeywordSpan">assertOrThrow</span>(commandList[ii], (
+    &quot;cliRun - cannot parse comment in COMMAND &quot;
+    + key
+    + &quot;:\nnew RegExp(&quot;
+    + JSON.stringify(rgxComment.source)
+    + &quot;).exec(&quot; + JSON.stringify(str).replace((
+        /\\\\/g
+    ), &quot;\u0000&quot;).replace((
 ...</pre></li>
     </ul>
 
@@ -867,13 +859,13 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
     <h2>
         <a href="#apidoc.elem.istanbul-lite.cliRun" id="apidoc.elem.istanbul-lite.cliRun">
         function <span class="apidocSignatureSpan">istanbul-lite.</span>cliRun
-        <span class="apidocSignatureSpan">(opt)</span>
+        <span class="apidocSignatureSpan">({ rgxComment })</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">cliRun = function (opt) {
+    <li>description and source-code<pre class="apidocCodePre">cliRun = function ({ rgxComment }) {
 <span class="apidocCodeCommentSpan">/*
- * this function will run cli with given &lt;opt&gt;
+ * this function will run cli
  */
 </span>    let cliDict;
     cliDict = local.cliDict;
@@ -913,10 +905,9 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
         file = __filename.replace((
             /.*\//
         ), &quot;&quot;);
-        opt = Object.assign({}, opt);
         packageJson = require(&quot;./package.json&quot;);
         // validate comment
-        opt.rgxComment = opt.rgxComment || (
+        rgxComment = rgxComment || (
             /\)\u0020\{\n(?:|\u0020{4})\/\*\n(?:\u0020|\u0020{5})\*((?:\u0020&lt;[^&gt;]*?&gt;|\u0020\.\.\.)*?)\n(?:\u0020|\u0020{5})\*\u0020
 (will\u0020.*?\S)\n(?:\u0020|\u0020{5})\*\/\n(?:\u0020{4}|\u0020{8})\S/
         );
@@ -935,30 +926,27 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
                 commandList[ii].command.push(key);
                 return;
             }
-            try {
-                commandList[ii] = opt.rgxComment.exec(str);
-                commandList[ii] = {
-                    argList: local.coalesce(commandList[ii][1], &quot;&quot;).trim(),
-                    command: [
-                        key
-                    ],
-                    description: commandList[ii][2]
-                };
-            } catch (ignore) {
-                local.assertOrThrow(undefined, new Error(
-                    &quot;cliRun - cannot parse comment in COMMAND &quot;
-                    + key
-                    + &quot;:\nnew RegExp(&quot;
-                    + JSON.stringify(opt.rgxComment.source)
-                    + &quot;).exec(&quot; + JSON.stringify(str).replace((
-                        /\\\\/g
-                    ), &quot;\u0000&quot;).replace((
-                        /\\n/g
-                    ), &quot;\\n\\\n&quot;).replace((
-                        /\u0000/g
-                    ), &quot;\\\\&quot;) + &quot;);&quot;
-                ));
-            }
+            commandList[ii] = rgxComment.exec(str);
+            local.assertOrThrow(commandList[ii], (
+                &quot;cliRun - cannot parse comment in COMMAND &quot;
+                + key
+                + &quot;:\nnew RegExp(&quot;
+                + JSON.stringify(rgxComment.source)
+                + &quot;).exec(&quot; + JSON.stringify(str).replace((
+                    /\\\\/g
+                ), &quot;\u0000&quot;).replace((
+                    /\\n/g
+                ), &quot;\\n\\\n&quot;).replace((
+                    /\u0000/g
+                ), &quot;\\\\&quot;) + &quot;);&quot;
+            ));
+            commandList[ii] = {
+                argList: local.coalesce(commandList[ii][1], &quot;&quot;).trim(),
+                command: [
+                    key
+                ],
+                description: commandList[ii][2]
+            };
         });
         str = &quot;&quot;;
         str += packageJson.name + &quot; (&quot; + packageJson.version + &quot;)\n\n&quot;;
@@ -984,7 +972,12 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
                 );
             }
             return (
-                elem.description + &quot;\n  &quot; + file...</pre></li>
+                elem.description + &quot;\n  &quot; + file
+                + &quot;  &quot; + elem.command.sort().join(&quot;|&quot;) + &quot;  &quot;
+                + elem.argList.join(&quot;  &quot;)
+            );
+        }).join(&quot;\n\n&quot;);
+        console.log(str);...</pre></li>
     <li>example use<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
@@ -997,7 +990,7 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">coalesce = function (...argList) {
+    <li>description and source-code<pre class="apidocCodePre">function coalesce(...argList) {
 <span class="apidocCodeCommentSpan">/*
  * this function will coalesce null, undefined, or &quot;&quot; in &lt;argList&gt;
  */
@@ -1014,12 +1007,12 @@ quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&qu
     return arg;
 }</pre></li>
     <li>example use<pre class="apidocCodePre">...
-if (commandList[ii]) {
-    commandList[ii].command.push(key);
-    return;
-}
-try {
-    commandList[ii] = opt.rgxComment.exec(str);
+        ), &quot;\u0000&quot;).replace((
+            /\\n/g
+        ), &quot;\\n\\\n&quot;).replace((
+            /\u0000/g
+        ), &quot;\\\\&quot;) + &quot;);&quot;
+    ));
     commandList[ii] = {
         argList: local.<span class="apidocCodeKeywordSpan">coalesce</span>(commandList[ii][1], &quot;&quot;).trim(),
         command: [
@@ -1027,8 +1020,8 @@ try {
         ],
         description: commandList[ii][2]
     };
-} catch (ignore) {
-    local.assertOrThrow(undefined, new Error(
+});
+str = &quot;&quot;;
 ...</pre></li>
     </ul>
 
@@ -1086,30 +1079,30 @@ try {
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 );
 // test merge-create handling-behavior
 opt.coverage1 = local.istanbul.<span class="apidocCodeKeywordSpan">coverageMerge</span>({}, opt.coverage1);
 // validate opt.coverage1
 local.assertJsonEqual(opt.coverage1,
 {&quot;/test&quot;:{&quot;b&quot;:{&quot;1&quot;:[0,1]},&quot;branchMap&quot;:{&quot;1&quot;:{&quot;line&quot;:2,&quot;locations
-&quot;:[{&quot;end&quot;:{&quot;column&quot;:25,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:13,&quot;line&quot;:2}},{&
-quot;end&quot;:{&quot;column&quot;:40,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:28,&quot;line&quot;:2}}],&quot;type
-&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg ? __coverage__ : __coverage__;&quot
-;,&quot;}());&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line&quot;:1,&quot;loc&quot;:{&quot
-;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot;line&quot;:1}},&quot;name&quot
-;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&quot;2&quot;:1},&quot;statementMap
-&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:0,&quot;line
-&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:41,&quot;line&quot;:2},&quot;start&quot;:{&quot;column&quot;:0,&quot
-;line&quot;:2}}}}}
+&quot;:[{&quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:3},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:3}},{&
+quot;end&quot;:{&quot;column&quot;:14,&quot;line&quot;:4},&quot;start&quot;:{&quot;column&quot;:2,&quot;line&quot;:4}}],&quot;type
+&quot;:&quot;cond-expr&quot;}},&quot;code&quot;:[&quot;(function () {&quot;,&quot;return arg&quot;,&quot;? __coverage__&quot;,&quot
+;: __coverage__;&quot;,&quot;}());&quot;,&quot;&quot;],&quot;f&quot;:{&quot;1&quot;:1},&quot;fnMap&quot;:{&quot;1&quot;:{&quot;line
+&quot;:1,&quot;loc&quot;:{&quot;end&quot;:{&quot;column&quot;:13,&quot;line&quot;:1},&quot;start&quot;:{&quot;column&quot;:1,&quot
+;line&quot;:1}},&quot;name&quot;:&quot;(anonymous_1)&quot;}},&quot;path&quot;:&quot;/test&quot;,&quot;s&quot;:{&quot;1&quot;:1,&
+quot;2&quot;:1},&quot;statementMap&quot;:{&quot;1&quot;:{&quot;end&quot;:{&quot;column&quot;:5,&quot;line&quot;:5},&quot;start&quot
+;:{&quot;column&quot;:0,&quot;line&quot;:1}},&quot;2&quot;:{&quot;end&quot;:{&quot;column&quot;:15,&quot;line&quot;:4},&quot;start
+&quot;:{&quot;column&quot;:0,&quot;line&quot;:2}}}}}
 );
 // init opt.coverage2
 opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
@@ -1122,24 +1115,22 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
     <h2>
         <a href="#apidoc.elem.istanbul-lite.coverageReportCreate" id="apidoc.elem.istanbul-lite.coverageReportCreate">
         function <span class="apidocSignatureSpan">istanbul-lite.</span>coverageReportCreate
-        <span class="apidocSignatureSpan">(opt)</span>
+        <span class="apidocSignatureSpan">({ coverage, coverageInclude })</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">coverageReportCreate = function (opt) {
+    <li>description and source-code<pre class="apidocCodePre">coverageReportCreate = function ({ coverage, coverageInclude }) {
 <span class="apidocCodeCommentSpan">/*
  * this function will
-    // 1. merge previous &lt;dirCoverage&gt;/coverage.json into &lt;opt&gt;.coverage
-    // 2. convert &lt;opt&gt;.coverage to &lt;summaryDict&gt;
+    // 1. merge previous &lt;dirCoverage&gt;/coverage.json into &lt;coverage&gt;
+    // 2. convert &lt;coverage&gt; to &lt;summaryDict&gt;
     // 3. convert &lt;summaryDict&gt; to &lt;nodeRoot&gt;
     // 4. convert &lt;nodeRoot&gt; to text-report &lt;dirCoverage&gt;/coverage.txt
     // 5. convert &lt;nodeRoot&gt; to html-report &lt;dirCoverage&gt;/\*
     // 6. return coverage-report in html-format as single document
  */
-</span>    let coverageInclude;
-    let dirCoverage;
+</span>    let dirCoverage;
     let filePrefix;
-    let filesUnderRoot;
     let htmlAll;
     let nodeChildAdd;
     let nodeCreate;
@@ -1148,10 +1139,6 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
     let nodeRoot;
     let summaryDict;
     let tmp;
-    let tmpChildren;
-    if (!(opt &amp;&amp; opt.coverage)) {
-        return &quot;&quot;;
-    }
     // init function
     nodeChildAdd = function (node, child) {
     /*
@@ -1249,7 +1236,13 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
                     metric = node.metrics[key];
                     metric.total += child.metrics[key].total;
                     metric.covered += child.metrics[key].covered;
-                    metric.skipped += child.metrics[key].skipped;...</pre></li>
+                    metric.skipped += child.metrics[key].skipped;
+                });
+            });
+        }
+        // calculate pct and score
+        [
+            &quot;lines&quot;, &quot;statement...</pre></li>
     <li>example use<pre class="apidocCodePre">...
             &quot;/inputTextarea1.js&quot;\n\
         );\n\
@@ -1283,13 +1276,13 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
  * this function will sync-read &lt;pathname&gt; with given &lt;type&gt; and &lt;dflt&gt;
  */
 </span>    let fs;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require(&quot;fs&quot;);
+        pathname = require(&quot;path&quot;).resolve(pathname);
     } catch (ignore) {
         return dflt;
     }
-    pathname = require(&quot;path&quot;).resolve(pathname);
     // try to read pathname
     try {
         return (
@@ -1309,27 +1302,25 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
     <h2>
         <a href="#apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync" id="apidoc.elem.istanbul-lite.fsWriteFileWithMkdirpSync">
         function <span class="apidocSignatureSpan">istanbul-lite.</span>fsWriteFileWithMkdirpSync
-        <span class="apidocSignatureSpan">(pathname, data, msg)</span>
+        <span class="apidocSignatureSpan">(pathname, data)</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">fsWriteFileWithMkdirpSync = function (pathname, data, msg) {
+    <li>description and source-code<pre class="apidocCodePre">fsWriteFileWithMkdirpSync = function (pathname, data) {
 <span class="apidocCodeCommentSpan">/*
  * this function will sync write &lt;data&gt; to &lt;pathname&gt; with &quot;mkdir -p&quot;
  */
 </span>    let fs;
-    let success;
-    // do nothing if module does not exist
+    // do nothing if module not exists
     try {
         fs = require(&quot;fs&quot;);
+        pathname = require(&quot;path&quot;).resolve(pathname);
     } catch (ignore) {
         return;
     }
-    pathname = require(&quot;path&quot;).resolve(pathname);
     // try to write pathname
     try {
         fs.writeFileSync(pathname, data);
-        success = true;
     } catch (ignore) {
         // mkdir -p
         fs.mkdirSync(require(&quot;path&quot;).dirname(pathname), {
@@ -1337,12 +1328,9 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
         });
         // re-write pathname
         fs.writeFileSync(pathname, data);
-        success = true;
     }
-    if (success &amp;&amp; msg) {
-        console.error(msg.replace(&quot;{{pathname}}&quot;, pathname));
-    }
-    return success;
+    console.error(&quot;fsWriteFileWithMkdirpSync - &quot; + pathname);
+    return true;
 }</pre></li>
     <li>example use<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -1356,7 +1344,7 @@ opt.coverage2 = require(&quot;vm&quot;).runInNewContext(opt.data, { arg: 1 });
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">identity = function (val) {
+    <li>description and source-code<pre class="apidocCodePre">function identity(val) {
 <span class="apidocCodeCommentSpan">/*
  * this function will return &lt;val&gt;
  */
@@ -1454,10 +1442,11 @@ local.testCase_istanbulInstrumentInPackage_default = function (opt, onError) {
 </span>    // 1. normalize &lt;file&gt;
     file = path.resolve(file);
     // 2. save &lt;code&gt; to __coverageInclude__[&lt;file&gt;] for future html-report
-    globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};
-    globalThis.__coverageInclude__[file] = 1;
     // 3. return instrumented-code
-    return new local.Instrumenter({
+    return (
+        &quot;globalThis.__coverageInclude__ = globalThis.__coverageInclude__ || {};&quot;
+        + &quot;globalThis.__coverageInclude__[&quot; + JSON.stringify(file) + &quot;] = 1;\n&quot;
+    ) + new local.Instrumenter({
         embedSource: true,
         esModules: true,
         noAutoWrap: true
@@ -1485,19 +1474,34 @@ try {\n\
 
 
     <h2>
-        <a href="#apidoc.elem.istanbul-lite.nop" id="apidoc.elem.istanbul-lite.nop">
-        function <span class="apidocSignatureSpan">istanbul-lite.</span>nop
+        <a href="#apidoc.elem.istanbul-lite.noop" id="apidoc.elem.istanbul-lite.noop">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>noop
         <span class="apidocSignatureSpan">()</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">nop = function () {
+    <li>description and source-code<pre class="apidocCodePre">function noop() {
 <span class="apidocCodeCommentSpan">/*
  * this function will do nothing
  */
 </span>    return;
 }</pre></li>
-    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    <li>example use<pre class="apidocCodePre">...
+    local.isBrowser
+    ? {
+        env: {},
+        stdout: {}
+    }
+    : globalThis.process
+);
+local.<span class="apidocCodeKeywordSpan">noop</span>(escodegen, esprima, estraverse, esutils);
+
+
+/*
+repo https://github.com/acornjs/acorn/tree/6.4.1
+committed 2020-03-09T10:38:41Z
+*/
+...</pre></li>
     </ul>
 
 
@@ -1509,7 +1513,7 @@ try {\n\
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">objectAssignDefault = function (tgt = {}, src = {}, depth = 0) {
+    <li>description and source-code<pre class="apidocCodePre">function objectAssignDefault(tgt = {}, src = {}, depth = 0) {
 <span class="apidocCodeCommentSpan">/*
  * this function will if items from &lt;tgt&gt; are null, undefined, or &quot;&quot;,
  * then overwrite them with items from &lt;src&gt;
@@ -1550,10 +1554,61 @@ globalThis.domOnEventDelegateDict = local;
 }());
 
 
-
 /* istanbul ignore next */
 // run node js-env code - init-test
+(function () {
 ...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.objectDeepCopyWithKeysSorted" id="apidoc.elem.istanbul-lite.objectDeepCopyWithKeysSorted">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>objectDeepCopyWithKeysSorted
+        <span class="apidocSignatureSpan">(obj)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function objectDeepCopyWithKeysSorted(obj) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will recursively deep-copy &lt;obj&gt; with keys sorted
+ */
+</span>    let sorted;
+    if (typeof obj !== &quot;object&quot; || !obj) {
+        return obj;
+    }
+    // recursively deep-copy list with child-keys sorted
+    if (Array.isArray(obj)) {
+        return obj.map(objectDeepCopyWithKeysSorted);
+    }
+    // recursively deep-copy obj with keys sorted
+    sorted = {};
+    Object.keys(obj).sort().forEach(function (key) {
+        sorted[key] = objectDeepCopyWithKeysSorted(obj[key]);
+    });
+    return sorted;
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.istanbul-lite.onErrorThrow" id="apidoc.elem.istanbul-lite.onErrorThrow">
+        function <span class="apidocSignatureSpan">istanbul-lite.</span>onErrorThrow
+        <span class="apidocSignatureSpan">(err)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function onErrorThrow(err) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will throw &lt;err&gt; if exists
+ */
+</span>    if (err) {
+        throw err;
+    }
+}</pre></li>
+    <li>example use<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -1702,8 +1757,6 @@ case &quot;eachTrimEndComma&quot;:
             /,$/
 ...</pre></li>
     </ul>
-
-
 
 
 
@@ -2105,7 +2158,7 @@ case &quot;eachTrimEndComma&quot;:
         nodeStart = node.range[0],
         hint;
     this.currentState.currentHint = null;
-    // hack-coverage - allow top-level istanbul-ignore-next
+    // hack-istanbul - allow top-level istanbul-ignore-next
     if (node.type === &quot;Program&quot;) { return; }
     while (i &lt; hints.length) {
         hint = hints[i];
@@ -2461,7 +2514,7 @@ case &quot;eachTrimEndComma&quot;:
         code = LEADER_WRAP + code + TRAILER_WRAP;
     }
     try {
-        // hack-coverage - acorn opt
+        // hack-istanbul - inline acorn-opt
         let opt = {
             locations: true,
             onComment: [],
@@ -2923,15 +2976,12 @@ Reference.prototype.remove = function remove() {
     moduleExtensionsJs = tmp._extensions[&quot;.js&quot;];
     tmp._extensions[&quot;.js&quot;] = function (module, file) {
         if (typeof file === &quot;string&quot; &amp;&amp; (
-            file.indexOf(process.env.npm_config_mode_coverage_dir) === 0 || (
-                file.indexOf(process.cwd() + require(&quot;path&quot;).sep) === 0
-                &amp;&amp; (
-                    process.env.npm_config_mode_coverage === &quot;node_modules&quot;
-                    || file.indexOf(
-                        require(&quot;path&quot;).resolve(&quot;node_modules&quot;)
-                        + require(&quot;path&quot;).sep
-                    ) !== 0
-                )
+            file.indexOf(process.cwd() + require(&quot;path&quot;).sep) === 0 &amp;&amp; (
+                process.env.npm_config_mode_coverage === &quot;node_modules&quot;
+                || file.indexOf(
+                    require(&quot;path&quot;).resolve(&quot;node_modules&quot;)
+                    + require(&quot;path&quot;).sep
+                ) !== 0
             )
         )) {
             module._compile(local.instrumentInPackage(

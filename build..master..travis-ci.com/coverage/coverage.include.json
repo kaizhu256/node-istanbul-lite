@@ -1,0 +1,13 @@
+{
+    "/home/travis/build/kaizhu256/node-istanbul-lite/test.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/lib.istanbul.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/example.js": 1,
+    "/zz.js": 1,
+    "/aa/zz.js": 1,
+    "/aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/zz.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/aa/zz.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/aa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/zz.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/test1/test1.js": 1,
+    "/home/travis/build/kaizhu256/node-istanbul-lite/test1/test2/test2.js": 1
+}
