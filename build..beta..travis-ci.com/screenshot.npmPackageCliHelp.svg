@@ -1,0 +1,83 @@
+<svg height="654" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="654" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26">istanbul-lite (2020.6.8)</tspan>
+
+<tspan x="10" y="42"></tspan>
+
+<tspan x="10" y="58">usage:</tspan>
+
+<tspan x="10" y="74">  lib.istanbul.js  &lt;arg1&gt;  &lt;arg2&gt;  ...</tspan>
+
+<tspan x="10" y="90"></tspan>
+
+<tspan x="10" y="106">example:</tspan>
+
+<tspan x="10" y="122">  lib.istanbul.js  --eval  'console.log("hello world")'</tspan>
+
+<tspan x="10" y="138"></tspan>
+
+<tspan x="10" y="154"># COMMAND --eval</tspan>
+
+<tspan x="10" y="170"># will eval &lt;code&gt;</tspan>
+
+<tspan x="10" y="186">  lib.istanbul.js  --eval|-e  &lt;code&gt;</tspan>
+
+<tspan x="10" y="202"></tspan>
+
+<tspan x="10" y="218"># COMMAND --help</tspan>
+
+<tspan x="10" y="234"># will print help</tspan>
+
+<tspan x="10" y="250">  lib.istanbul.js  --help|-h|help  </tspan>
+
+<tspan x="10" y="266"></tspan>
+
+<tspan x="10" y="282"># COMMAND --interactive</tspan>
+
+<tspan x="10" y="298"># will start interactive-mode</tspan>
+
+<tspan x="10" y="314">  lib.istanbul.js  --interactive|-i  </tspan>
+
+<tspan x="10" y="330"></tspan>
+
+<tspan x="10" y="346"># COMMAND --version</tspan>
+
+<tspan x="10" y="362"># will print version</tspan>
+
+<tspan x="10" y="378">  lib.istanbul.js  --version|-v  </tspan>
+
+<tspan x="10" y="394"></tspan>
+
+<tspan x="10" y="410"># COMMAND cover</tspan>
+
+<tspan x="10" y="426"># will run and cover &lt;script&gt;</tspan>
+
+<tspan x="10" y="442">  lib.istanbul.js  cover  &lt;script&gt;</tspan>
+
+<tspan x="10" y="458"></tspan>
+
+<tspan x="10" y="474"># COMMAND instrument</tspan>
+
+<tspan x="10" y="490"># will instrument &lt;script&gt; and print result to stdout</tspan>
+
+<tspan x="10" y="506">  lib.istanbul.js  instrument  &lt;script&gt;</tspan>
+
+<tspan x="10" y="522"></tspan>
+
+<tspan x="10" y="538"># COMMAND report</tspan>
+
+<tspan x="10" y="554"># will create coverage-report from file &lt;coverageJson&gt;</tspan>
+
+<tspan x="10" y="570">  lib.istanbul.js  report  &lt;coverageJson&gt;</tspan>
+
+<tspan x="10" y="586"></tspan>
+
+<tspan x="10" y="602"># COMMAND test</tspan>
+
+<tspan x="10" y="618"># will run and cover &lt;script&gt; if env-var $npm_config_mode_coverage is set</tspan>
+
+<tspan x="10" y="634">  lib.istanbul.js  test  &lt;script&gt;</tspan>
+
+</text>
+</svg>

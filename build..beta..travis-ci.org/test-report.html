@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- "" -->
+<title>test-report</title>
+<style>
+/* jslint utility2:true */
+/*csslint
+*/
+/* csslint ignore:start */
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+.uiAnimateSlide {
+    overflow-y: hidden;
+    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;
+}
+/* csslint ignore:end */
+@keyframes uiAnimateSpin {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
+a {
+    overflow-wrap: break-word;
+}
+body {
+    background: #f7f7f7;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    margin: 0 40px;
+}
+body > div,
+body > input,
+body > pre,
+body > .button,
+body > .textarea {
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+body > input,
+body > .button {
+    width: 20rem;
+}
+body > .readonly {
+    background: #ddd;
+}
+body > .textarea {
+    height: 10rem;
+    resize: vertical;
+    width: 100%;
+}
+code,
+pre,
+.textarea {
+    font-family: Consolas, Menlo, monospace;
+    font-size: smaller;
+}
+pre {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+.button {
+    background: #ddd;
+    border: 1px solid #999;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 5px;
+    text-align: center;
+    text-decoration: none;
+}
+.button:hover {
+    background: #bbb;
+}
+.colorError {
+    color: #d00;
+}
+.textarea {
+    background: #fff;
+    border: 1px solid #999;
+    border-radius: 0;
+    cursor: auto;
+    overflow: auto;
+    padding: 2px;
+}
+.zeroPixel {
+    border: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    width: 0;
+}
+/* jslint utility2:true */
+/*csslint
+*/
+.testReportDiv img {
+    border: 1px solid #999;
+    margin: 5px 0 5px 0;
+    max-height: 256px;
+    max-width: 512px;
+}
+.testReportDiv pre {
+    background: #fdd;
+    border-top: 1px solid #999;
+    margin-bottom: 0;
+    padding: 10px;
+}
+.testReportDiv span {
+    display: inline-block;
+    width: 120px;
+}
+.testReportDiv table {
+    border-top: 1px solid #999;
+    text-align: left;
+    width: 100%;
+}
+.testReportDiv table > tbody > tr:nth-child(odd) {
+    background: #bfb;
+}
+.testReportDiv .displayNone {
+    display: none;
+}
+.testReportDiv .footer {
+    text-align: center;
+}
+.testReportDiv .platform {
+    background: #fff;
+    border: 1px solid #999;
+    margin-bottom: 20px;
+    padding: 0 10px 10px 10px;
+    text-align: left;
+}
+.testReportDiv .summary {
+    background: #bfb;
+}
+.testReportDiv .testFailed {
+    background: #f99;
+}
+.testReportDiv .testPending {
+    background: #99f;
+}
+</style>
+</head>
+<body>
+<div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>
+<script>
+/* jslint utility2:true */
+// init domOnEventWindowOnloadTimeElapsed
+(function () {
+/*
+ * this function will measure and print time-elapsed for window.onload
+ */
+    "use strict";
+    if (!(
+        typeof window === "object" && window && window.document
+        && typeof document.addEventListener === "function"
+    ) || window.domOnEventWindowOnloadTimeElapsed) {
+        return;
+    }
+    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;
+    window.addEventListener("load", function () {
+        setTimeout(function () {
+            window.domOnEventWindowOnloadTimeElapsed = (
+                Date.now()
+                - window.domOnEventWindowOnloadTimeElapsed
+            );
+            console.error(
+                "domOnEventWindowOnloadTimeElapsed = "
+                + window.domOnEventWindowOnloadTimeElapsed
+            );
+        }, 100);
+    });
+}());
+
+
+
+// init domOnEventAjaxProgressUpdate
+(function () {
+/*
+ * this function will display incrementing ajax-progress-bar
+ */
+    "use strict";
+    let opt;
+    let styleBar0;
+    let styleBar;
+    let styleModal0;
+    let styleModal;
+    let timeStart;
+    let timerInterval;
+    let timerTimeout;
+    let tmp;
+    let width;
+    try {
+        if (
+            window.domOnEventAjaxProgressUpdate
+            || !document.getElementById("domElementAjaxProgressBar1").style
+        ) {
+            return;
+        }
+    } catch (ignore) {
+        return;
+    }
+    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {
+        gotoState = (gotoState | 0) + 1;
+        switch (gotoState) {
+        // ajaxProgress - show
+        case 1:
+            // init timerInterval and timerTimeout
+            if (!timerTimeout) {
+                timeStart = Date.now();
+                timerInterval = setInterval(opt, 2000, 1, onError);
+                timerTimeout = setTimeout(opt, opt.timeout, 2, onError);
+            }
+            // show ajaxProgressBar
+            if (width !== -1) {
+                styleBar.background = styleBar0.background;
+            }
+            setTimeout(opt, 50, gotoState, onError);
+            break;
+        // ajaxProgress - increment
+        case 2:
+            // show ajaxProgressBar
+            if (width === -1) {
+                break;
+            }
+            styleBar.background = styleBar0.background;
+            // reset ajaxProgress if it reaches end
+            if ((styleBar.width.slice(0, -1) | 0) > 95) {
+                width = 0;
+            }
+            // this algorithm will indefinitely increment ajaxProgress
+            // with successively smaller increments without reaching 100%
+            width += 1;
+            styleBar.width = Math.max(
+                100 - 75 * Math.exp(-0.125 * width),
+                styleBar.width.slice(0, -1) | 0
+            ) + "%";
+            // show ajaxProgressModal
+            styleModal.height = "100%";
+            styleModal.opacity = styleModal0.opacity;
+            if (!opt.cnt) {
+                setTimeout(opt, 0, gotoState, onError);
+            }
+            break;
+        // ajaxProgress - 100%
+        case 3:
+            width = -1;
+            styleBar.width = "100%";
+            setTimeout(opt, 1000, gotoState, onError);
+            break;
+        // ajaxProgress - hide
+        case 4:
+            // debug timeElapsed
+            tmp = Date.now();
+            console.error(
+                "domOnEventAjaxProgressUpdate - timeElapsed - "
+                + (tmp - timeStart)
+                + " ms"
+            );
+            // cleanup timerInterval and timerTimeout
+            timeStart = tmp;
+            clearInterval(timerInterval);
+            timerInterval = undefined;
+            clearTimeout(timerTimeout);
+            timerTimeout = undefined;
+            // hide ajaxProgressBar
+            styleBar.background = "transparent";
+            // hide ajaxProgressModal
+            styleModal.opacity = "0";
+            if (onError) {
+                onError();
+            }
+            setTimeout(opt, 250, gotoState);
+            break;
+        // ajaxProgress - reset
+        default:
+            opt.cnt = 0;
+            width = 0;
+            styleBar.width = "0%";
+            styleModal.height = "0";
+        }
+    };
+    opt = window.domOnEventAjaxProgressUpdate;
+    opt.end = function (onError) {
+        opt.cnt = 0;
+        window.domOnEventAjaxProgressUpdate(2, onError);
+    };
+    // init styleBar
+    styleBar = document.getElementById("domElementAjaxProgressBar1").style;
+    styleBar0 = Object.assign({}, styleBar);
+    Object.entries({
+        background: "#d00",
+        height: "2px",
+        left: "0",
+        margin: "0",
+        padding: "0",
+        position: "fixed",
+        top: "0",
+        transition: "background 250ms, width 750ms",
+        width: "0%",
+        "z-index": "1"
+    }).forEach(function (entry) {
+        styleBar[entry[0]] = styleBar[entry[0]] || entry[1];
+    });
+    // init styleModal
+    styleModal = document.getElementById("domElementAjaxProgressModal1") || {};
+    styleModal = styleModal.style || {};
+    styleModal0 = Object.assign({}, styleModal);
+    Object.entries({
+        height: "0",
+        left: "0",
+        margin: "0",
+        padding: "0",
+        position: "fixed",
+        top: "0",
+        transition: "opacity 125ms",
+        width: "100%",
+        "z-index": "1"
+    }).forEach(function (entry) {
+        styleModal[entry[0]] = styleModal[entry[0]] || entry[1];
+    });
+    // init state
+    width = 0;
+    opt.cnt = 0;
+    opt.timeout = 30000;
+    // init ajaxProgress
+    window.domOnEventAjaxProgressUpdate();
+}());
+
+
+
+// init domOnEventDelegateDict
+(function () {
+/*
+ * this function will handle delegated dom-evt
+ */
+    "use strict";
+    let debounce;
+    let timerTimeout;
+    debounce = function () {
+        return setTimeout(function () {
+            timerTimeout = undefined;
+        }, 30);
+    };
+    if (!(
+        typeof window === "object" && window && window.document
+        && typeof document.addEventListener === "function"
+    ) || window.domOnEventDelegateDict) {
+        return;
+    }
+    window.domOnEventDelegateDict = {};
+    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {
+        evt.targetOnEvent = evt.target.closest("[data-onevent]");
+        if (
+            !evt.targetOnEvent
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"
+            || evt.target.closest(".disabled,.readonly")
+        ) {
+            return;
+        }
+        // filter evt-change
+        switch (evt.type !== "change" && evt.target.type) {
+        case "checkbox":
+        case "file":
+        case "select-one":
+        case "radio":
+            return;
+        }
+        // filter evt-keyup
+        switch (evt.type) {
+        case "keyup":
+            if (!timerTimeout && (
+                evt.target.tagName === "INPUT"
+                || evt.target.tagName === "TEXTAREA"
+            )) {
+                timerTimeout = debounce();
+                if (evt.target.dataset.valueOld !== evt.target.value) {
+                    evt.target.dataset.valueOld = evt.target.value;
+                    break;
+                }
+            }
+            return;
+        }
+        switch (evt.targetOnEvent.tagName) {
+        case "BUTTON":
+        case "FORM":
+            evt.preventDefault();
+            break;
+        }
+        evt.stopPropagation();
+        // handle domOnEventClickTarget
+        if (evt.targetOnEvent.dataset.onevent === "domOnEventClickTarget") {
+            document.querySelector(
+                evt.targetOnEvent.dataset.clickTarget
+            ).click();
+            return;
+        }
+        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);
+    };
+    // handle evt
+    [
+        "change",
+        "click",
+        "keyup",
+        "submit"
+    ].forEach(function (eventType) {
+        document.addEventListener(
+            eventType,
+            window.domOnEventDelegateDict.domOnEventDelegate
+        );
+    });
+}());
+
+
+
+// init domOnEventSelectAllWithinPre
+(function () {
+/*
+ * this function will limit select-all within <pre tabIndex="0"> elem
+ * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
+ */
+    "use strict";
+    if (!(
+        typeof window === "object" && window && window.document
+        && typeof document.addEventListener === "function"
+    ) || window.domOnEventSelectAllWithinPre) {
+        return;
+    }
+    window.domOnEventSelectAllWithinPre = function (evt) {
+        let range;
+        let selection;
+        if (
+            evt && (evt.ctrlKey || evt.metaKey) && evt.key === "a"
+            && evt.target.closest("pre")
+        ) {
+            range = document.createRange();
+            range.selectNodeContents(evt.target.closest("pre"));
+            selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            evt.preventDefault();
+        }
+    };
+    // handle evt
+    document.addEventListener(
+        "keydown",
+        window.domOnEventSelectAllWithinPre
+    );
+}());
+</script>
+<div class="testReportDiv">
+<h1>test-report for
+    <a
+        
+        href="https://github.com/kaizhu256/node-istanbul-lite"
+        
+    >
+        istanbul-lite (2020.5.31)
+    </a>
+</h1>
+<div class="platform summary">
+<h2>summary</h2>
+<h4>
+    <span>version</span>-
+        2020.5.31<br>
+    <span>test date</span>- 2020-06-02T17:03:51.158Z<br>
+    <span>commit info</span>-
+        
+        e8708ea2aa1b4ec48d072a02cdb97e3315f03d87 - <br>
+        
+</h4>
+<table>
+<thead>
+    <tr>
+        <th>total time-elapsed</th>
+        <th>total tests failed</th>
+        <th>total tests passed</th>
+        <th>total tests pending</th>
+    </tr>
+</thead>
+<tbody><tr>
+    <td>129036 ms</td>
+    <td class="testPassed">0</td>
+    <td>53</td>
+    <td>0</td>
+</tr></tbody>
+</table>
+</div>
+
+<div class="platform">
+<h4>
+    1. buildApidoc - node - linux v14.3.0 - 2020-06-02T17:02:35.013Z<br>
+    
+    
+    <span>time-elapsed</span>- 78181 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 1<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>1</td>
+    <td>7076 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    2. deployGithubTest - browser - /node-istanbul-lite/build..beta..travis-ci.org/app/ - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.61 Safari/537.36 - 2020-06-02T17:03:33.954Z<br>
+    
+    <a href="screenshot.deployGithubTest.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png">
+        <img alt="screenshot.deployGithubTest.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png" src="screenshot.deployGithubTest.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png">
+    </a>
+    <br>
+    
+    
+    <span>time-elapsed</span>- 19188 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 5<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>2</td>
+    <td>87 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>3</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>4</td>
+    <td>43 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>5</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>6</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    3. deployGithubTest - browser - /node-istanbul-lite/build..beta..travis-ci.org/app/ - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.61 Safari/537.36 - 2020-06-02T17:03:33.977Z<br>
+    
+    <a href="screenshot.deployGithubTest.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png">
+        <img alt="screenshot.deployGithubTest.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png" src="screenshot.deployGithubTest.browser.%252Fnode-istanbul-lite%252Fbuild%252Fapp.png">
+    </a>
+    <br>
+    
+    
+    <span>time-elapsed</span>- 18978 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 5<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>7</td>
+    <td>382 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>8</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>9</td>
+    <td>20 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>10</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>11</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    4. deployHerokuTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.61 Safari/537.36 - 2020-06-02T17:03:52.236Z<br>
+    
+    <a href="screenshot.deployHerokuTest.browser.%252F.png">
+        <img alt="screenshot.deployHerokuTest.browser.%252F.png" src="screenshot.deployHerokuTest.browser.%252F.png">
+    </a>
+    <br>
+    
+    
+    <span>time-elapsed</span>- 920 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 5<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>12</td>
+    <td>141 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>13</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>14</td>
+    <td>41 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>15</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>16</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    5. deployHerokuTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.61 Safari/537.36 - 2020-06-02T17:03:52.629Z<br>
+    
+    <a href="screenshot.deployHerokuTest.browser.%252F.png">
+        <img alt="screenshot.deployHerokuTest.browser.%252F.png" src="screenshot.deployHerokuTest.browser.%252F.png">
+    </a>
+    <br>
+    
+    
+    <span>time-elapsed</span>- 464 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 5<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>17</td>
+    <td>119 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>18</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>19</td>
+    <td>16 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>20</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>21</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    6. npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.61 Safari/537.36 - 2020-06-02T17:02:28.537Z<br>
+    
+    <a href="screenshot.npmTest.browser.%252F.png">
+        <img alt="screenshot.npmTest.browser.%252F.png" src="screenshot.npmTest.browser.%252F.png">
+    </a>
+    <br>
+    
+    
+    <span>time-elapsed</span>- 84224 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 5<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>22</td>
+    <td>188 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>23</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>24</td>
+    <td>170 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>25</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>26</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    7. npmTest - node - linux v14.3.0 - 2020-06-02T17:02:24.324Z<br>
+    
+    
+    <span>time-elapsed</span>- 86807 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 11<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>27</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+<tr>
+    <td>28</td>
+    <td>7067 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+<tr>
+    <td>29</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildLib_default</td>
+</tr>
+
+<tr>
+    <td>30</td>
+    <td>5 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildReadme_default</td>
+</tr>
+
+<tr>
+    <td>31</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildTest_default</td>
+</tr>
+
+<tr>
+    <td>32</td>
+    <td>8 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>33</td>
+    <td>20 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>34</td>
+    <td>1232 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>35</td>
+    <td>5 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>36</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+<tr>
+    <td>37</td>
+    <td>1890 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_webpage_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    8. npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/83.0.4103.61 Safari/537.36 - 2020-06-02T17:01:46.516Z<br>
+    
+    <a href="screenshot.npmTestPublished.browser.%252F.png">
+        <img alt="screenshot.npmTestPublished.browser.%252F.png" src="screenshot.npmTestPublished.browser.%252F.png">
+    </a>
+    <br>
+    
+    
+    <span>time-elapsed</span>- 126254 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 5<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>38</td>
+    <td>132 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>39</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>40</td>
+    <td>196 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>41</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>42</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    9. npmTestPublished - node - linux v14.3.0 - 2020-06-02T17:01:41.620Z<br>
+    
+    
+    <span>time-elapsed</span>- 129036 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 11<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>43</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+<tr>
+    <td>44</td>
+    <td>7225 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+<tr>
+    <td>45</td>
+    <td>3 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildLib_default</td>
+</tr>
+
+<tr>
+    <td>46</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildReadme_default</td>
+</tr>
+
+<tr>
+    <td>47</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildTest_default</td>
+</tr>
+
+<tr>
+    <td>48</td>
+    <td>7 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_coverage_es6</td>
+</tr>
+
+<tr>
+    <td>49</td>
+    <td>18 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageMerge_default</td>
+</tr>
+
+<tr>
+    <td>50</td>
+    <td>1268 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulCoverageReportCreate_default</td>
+</tr>
+
+<tr>
+    <td>51</td>
+    <td>3 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_istanbulInstrumentSync_default</td>
+</tr>
+
+<tr>
+    <td>52</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+<tr>
+    <td>53</td>
+    <td>2014 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_webpage_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone" tabIndex="0">
+
+</pre>
+</div>
+
+<div class="footer">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body>
+</html>

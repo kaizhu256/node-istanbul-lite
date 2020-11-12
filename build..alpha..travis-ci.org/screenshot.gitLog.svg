@@ -1,0 +1,436 @@
+<svg height="3486" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="3486" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26">2020-06-03 14:43:12 -0500</tspan>
+
+<tspan x="10" y="42">- istanbul - fix html-coverage-report bug showing branch-metrics instead of line-metrics</tspan>
+
+<tspan x="10" y="58"></tspan>
+
+<tspan x="10" y="74">2020-06-03 12:11:44 -0500</tspan>
+
+<tspan x="10" y="90">unline.fsWriteFileWithMkdirp</tspan>
+
+<tspan x="10" y="106"></tspan>
+
+<tspan x="10" y="122">2020-06-03 11:54:08 -0500</tspan>
+
+<tspan x="10" y="138">touch</tspan>
+
+<tspan x="10" y="154"></tspan>
+
+<tspan x="10" y="170">2020-06-03 11:53:55 -0500</tspan>
+
+<tspan x="10" y="186">touch</tspan>
+
+<tspan x="10" y="202"></tspan>
+
+<tspan x="10" y="218">2020-06-03 03:26:03 -0500</tspan>
+
+<tspan x="10" y="234">improve.coverage</tspan>
+
+<tspan x="10" y="250"></tspan>
+
+<tspan x="10" y="266">2020-06-03 03:03:12 -0500</tspan>
+
+<tspan x="10" y="282">fix.branches.covered</tspan>
+
+<tspan x="10" y="298"></tspan>
+
+<tspan x="10" y="314">2020-06-03 02:38:59 -0500</tspan>
+
+<tspan x="10" y="330">fix.branches.covered</tspan>
+
+<tspan x="10" y="346"></tspan>
+
+<tspan x="10" y="362">2020-06-03 02:17:25 -0500</tspan>
+
+<tspan x="10" y="378">fix.branches.covered</tspan>
+
+<tspan x="10" y="394"></tspan>
+
+<tspan x="10" y="410">2020-06-03 02:15:14 -0500</tspan>
+
+<tspan x="10" y="426">improve.coverage</tspan>
+
+<tspan x="10" y="442"></tspan>
+
+<tspan x="10" y="458">2020-06-03 02:07:55 -0500</tspan>
+
+<tspan x="10" y="474">improve.coverage</tspan>
+
+<tspan x="10" y="490"></tspan>
+
+<tspan x="10" y="506">2020-06-03 01:48:34 -0500</tspan>
+
+<tspan x="10" y="522">- remove polyfills String.prototype.trimStart, String.prototype.trimEnd</tspan>
+
+<tspan x="10" y="538"></tspan>
+
+<tspan x="10" y="554">2020-06-03 01:18:13 -0500</tspan>
+
+<tspan x="10" y="570">revert.local.__coverageInclude__</tspan>
+
+<tspan x="10" y="586"></tspan>
+
+<tspan x="10" y="602">2020-06-03 01:02:35 -0500</tspan>
+
+<tspan x="10" y="618">local.__coverageInclude__</tspan>
+
+<tspan x="10" y="634"></tspan>
+
+<tspan x="10" y="650">2020-06-03 00:35:27 -0500</tspan>
+
+<tspan x="10" y="666">disable.shnpmtestpublished</tspan>
+
+<tspan x="10" y="682"></tspan>
+
+<tspan x="10" y="698">2020-06-03 05:26:44 +0000</tspan>
+
+<tspan x="10" y="714">update.build</tspan>
+
+<tspan x="10" y="730"></tspan>
+
+<tspan x="10" y="746">2020-06-02 12:03:13 -0500</tspan>
+
+<tspan x="10" y="762">[build clean]</tspan>
+
+<tspan x="10" y="778"></tspan>
+
+<tspan x="10" y="794">2020-06-02 11:44:29 -0500</tspan>
+
+<tspan x="10" y="810">[npm publish] - npm publish 2020.5.31</tspan>
+
+<tspan x="10" y="826">- replace process.cwd() with path.resolve()</tspan>
+
+<tspan x="10" y="842">- replace function fsReadFileOrEmptyStringSync with fsReadFileOrDefaultSync</tspan>
+
+<tspan x="10" y="858">- remove dependency to file lib.swgg.js</tspan>
+
+<tspan x="10" y="874">- istanbul - inline function templateRender</tspan>
+
+<tspan x="10" y="890"></tspan>
+
+<tspan x="10" y="906">2020-05-25 22:42:56 -0500</tspan>
+
+<tspan x="10" y="922">[npm publish] - npm publish 2020.5.25</tspan>
+
+<tspan x="10" y="938">- istanbul - rename __coverageCodeDict__ to __coverageInclude__</tspan>
+
+<tspan x="10" y="954">- istanbul - inline function coverageReportCreate</tspan>
+
+<tspan x="10" y="970">- remove excessive "the" from comments</tspan>
+
+<tspan x="10" y="986">- update build</tspan>
+
+<tspan x="10" y="1002"></tspan>
+
+<tspan x="10" y="1018">2019-09-15 21:49:38 -0500</tspan>
+
+<tspan x="10" y="1034">[npm publish] - npm publish 2019.9.8</tspan>
+
+<tspan x="10" y="1050"></tspan>
+
+<tspan x="10" y="1066">2019-09-15 18:49:45 -0500</tspan>
+
+<tspan x="10" y="1082">- streamline evt-handling in example.js</tspan>
+
+<tspan x="10" y="1098">- migrate browser-testing from electron to headless-chromium</tspan>
+
+<tspan x="10" y="1114">- rename rm -fr to rm -rf</tspan>
+
+<tspan x="10" y="1130">- revamp function local.ajaxProgressUpdate with window.domOnEventAjaxProgressUpdate</tspan>
+
+<tspan x="10" y="1146">- istanbul - switch parser from esprima to acorn v6.3.0</tspan>
+
+<tspan x="10" y="1162"></tspan>
+
+<tspan x="10" y="1178">2019-08-13 01:32:42 -0500</tspan>
+
+<tspan x="10" y="1194">- istanbul - upgrade to escodegen v1.12.0</tspan>
+
+<tspan x="10" y="1210"></tspan>
+
+<tspan x="10" y="1226">2019-08-13 00:30:29 -0500</tspan>
+
+<tspan x="10" y="1242">- istanbul - upgrade to estools/lib/code.js v2.0.1</tspan>
+
+<tspan x="10" y="1258"></tspan>
+
+<tspan x="10" y="1274">2019-08-13 04:18:54 +0000</tspan>
+
+<tspan x="10" y="1290">- istanbul - upgrade to esprima v4.0.1</tspan>
+
+<tspan x="10" y="1306"></tspan>
+
+<tspan x="10" y="1322">2019-08-10 21:30:07 +0000</tspan>
+
+<tspan x="10" y="1338">[npm publish] - npm publish 2019.8.9</tspan>
+
+<tspan x="10" y="1354">- istanbul - add clickable id-fragment to lines in html-coverage</tspan>
+
+<tspan x="10" y="1370">- istanbul - enable es-module support</tspan>
+
+<tspan x="10" y="1386">- upgrade to estravers.js v4.2.0</tspan>
+
+<tspan x="10" y="1402"></tspan>
+
+<tspan x="10" y="1418">2018-09-10 19:20:08 +0700</tspan>
+
+<tspan x="10" y="1434">[npm publish] - npm publish 2018.9.10</tspan>
+
+<tspan x="10" y="1450">- revamp files with new jslint-lite</tspan>
+
+<tspan x="10" y="1466">- change footer-date to GMT</tspan>
+
+<tspan x="10" y="1482">- add BigInt-support for istanbul</tspan>
+
+<tspan x="10" y="1498"></tspan>
+
+<tspan x="10" y="1514">2018-08-08 22:24:03 +0700</tspan>
+
+<tspan x="10" y="1530">- add BigInt-support for istanbul</tspan>
+
+<tspan x="10" y="1546"></tspan>
+
+<tspan x="10" y="1562">2018-08-07 13:56:24 +0700</tspan>
+
+<tspan x="10" y="1578">[npm publish] - npm publish 2018.8.7</tspan>
+
+<tspan x="10" y="1594">- migrate from modeJs -&gt; isBrowser</tspan>
+
+<tspan x="10" y="1610">- embed script in html to limit select-all insde &lt;pre tabIndex="0"&gt; elements</tspan>
+
+<tspan x="10" y="1626"></tspan>
+
+<tspan x="10" y="1642">2018-04-25 23:49:51 +0800</tspan>
+
+<tspan x="10" y="1658">[npm publish] - npm publish v2018.4.25</tspan>
+
+<tspan x="10" y="1674">- update build</tspan>
+
+<tspan x="10" y="1690"></tspan>
+
+<tspan x="10" y="1706">2018-03-29 15:09:03 +0900</tspan>
+
+<tspan x="10" y="1722">[npm publish] - npm publish v2018.3.28</tspan>
+
+<tspan x="10" y="1738">- revamp css</tspan>
+
+<tspan x="10" y="1754"></tspan>
+
+<tspan x="10" y="1770">2017-11-22 16:43:33 +0800</tspan>
+
+<tspan x="10" y="1786">[npm publish] - npm publish 2017.11.21</tspan>
+
+<tspan x="10" y="1802">- update build</tspan>
+
+<tspan x="10" y="1818"></tspan>
+
+<tspan x="10" y="1834">2017-10-05 15:59:13 +0800</tspan>
+
+<tspan x="10" y="1850">[npm publish] - npm publish 2017.10.4</tspan>
+
+<tspan x="10" y="1866">- add cli-help doc to README.md</tspan>
+
+<tspan x="10" y="1882"></tspan>
+
+<tspan x="10" y="1898">2017-09-04 17:56:03 +0800</tspan>
+
+<tspan x="10" y="1914">[npm publish] - npm publish 2017.9.1</tspan>
+
+<tspan x="10" y="1930">- add cli help command</tspan>
+
+<tspan x="10" y="1946">- normalize local.fs module hook</tspan>
+
+<tspan x="10" y="1962">- update README.md</tspan>
+
+<tspan x="10" y="1978"></tspan>
+
+<tspan x="10" y="1994">2017-05-28 17:54:04 +0800</tspan>
+
+<tspan x="10" y="2010">[npm publish] - npm publish 2017.5.27</tspan>
+
+<tspan x="10" y="2026">- deduplicate file assets.istanbul.rollup.js</tspan>
+
+<tspan x="10" y="2042">- merge file lib.example.es6.js into test.js</tspan>
+
+<tspan x="10" y="2058">- upgrade to esprima v2.7.3</tspan>
+
+<tspan x="10" y="2074">- upgrade to escodegen v1.8.1</tspan>
+
+<tspan x="10" y="2090">- upgrade to istanbul v0.4.5</tspan>
+
+<tspan x="10" y="2106">- add README section 'all screenshots'</tspan>
+
+<tspan x="10" y="2122">- add README section 'quickstart standalone app'</tspan>
+
+<tspan x="10" y="2138">- auto-create README section 'table of contents'</tspan>
+
+<tspan x="10" y="2154"></tspan>
+
+<tspan x="10" y="2170">2017-04-14 14:13:59 +0800</tspan>
+
+<tspan x="10" y="2186">[npm publish] - npm publish 2017.4.14</tspan>
+
+<tspan x="10" y="2202">- remove build-function shBuildCiTestPre</tspan>
+
+<tspan x="10" y="2218">- rename name api-doc -&gt; apidoc</tspan>
+
+<tspan x="10" y="2234"></tspan>
+
+<tspan x="10" y="2250">2017-03-01 17:41:54 +0800</tspan>
+
+<tspan x="10" y="2266">- npm publish 2017.2.28</tspan>
+
+<tspan x="10" y="2282">- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage</tspan>
+
+<tspan x="10" y="2298"></tspan>
+
+<tspan x="10" y="2314">2017-02-19 01:52:31 +0800</tspan>
+
+<tspan x="10" y="2330">- npm publish 2017.2.18</tspan>
+
+<tspan x="10" y="2346">- add file assets.istanbul.rollup.js</tspan>
+
+<tspan x="10" y="2362">- add heroku-postbuild npm-script</tspan>
+
+<tspan x="10" y="2378">- do not auto-uglify js-assets in production</tspan>
+
+<tspan x="10" y="2394">- revamp README.md</tspan>
+
+<tspan x="10" y="2410"></tspan>
+
+<tspan x="10" y="2426">2016-12-15 21:57:13 +0800</tspan>
+
+<tspan x="10" y="2442">- npm publish 2016.12.2</tspan>
+
+<tspan x="10" y="2458">- fix color regression bug in text-report</tspan>
+
+<tspan x="10" y="2474"></tspan>
+
+<tspan x="10" y="2490">2016-12-13 12:56:29 +0800</tspan>
+
+<tspan x="10" y="2506">- npm publish 2016.12.1</tspan>
+
+<tspan x="10" y="2522">- re-uglify lib.istanbul.js</tspan>
+
+<tspan x="10" y="2538">- globalize local.codeDict to global.__coverageCodeDict__</tspan>
+
+<tspan x="10" y="2554">- add in-file config-var /* istanbul ignore all */ to ignore the file</tspan>
+
+<tspan x="10" y="2570">- rename file index.js -&gt; lib.istanbul.js</tspan>
+
+<tspan x="10" y="2586"></tspan>
+
+<tspan x="10" y="2602">2016-11-12 19:23:42 +0800</tspan>
+
+<tspan x="10" y="2618">- npm publish 2016.10.3</tspan>
+
+<tspan x="10" y="2634">- add env-variable npm_config_mode_coverage_append to allow appending coverage to previous repor\</tspan>
+<tspan x="10" y="2650">ts</tspan>
+
+<tspan x="10" y="2666">- change behavior of =all to cover all files</tspan>
+
+<tspan x="10" y="2682">- none</tspan>
+
+<tspan x="10" y="2698"></tspan>
+
+<tspan x="10" y="2714">2016-11-07 23:54:22 +0800</tspan>
+
+<tspan x="10" y="2730">- npm publish 2016.10.2</tspan>
+
+<tspan x="10" y="2746">- add es6-syntax support and test</tspan>
+
+<tspan x="10" y="2762"></tspan>
+
+<tspan x="10" y="2778">2016-11-04 00:26:52 +0800</tspan>
+
+<tspan x="10" y="2794">- npm publish 2016.10.1</tspan>
+
+<tspan x="10" y="2810">- fix cli 'cover' command to auto-cover and create test-report, requiring only  env variable</tspan>
+
+<tspan x="10" y="2826">- README.md - add cdn-download links</tspan>
+
+<tspan x="10" y="2842">- README.md - replace alpha api-doc with beta api-doc</tspan>
+
+<tspan x="10" y="2858"></tspan>
+
+<tspan x="10" y="2874">2016-10-17 21:15:37 +0800</tspan>
+
+<tspan x="10" y="2890">- npm publish 2016.7.3</tspan>
+
+<tspan x="10" y="2906">- add 'hide internal test' button to demo</tspan>
+
+<tspan x="10" y="2922"></tspan>
+
+<tspan x="10" y="2938">2016-08-27 06:13:49 +0800</tspan>
+
+<tspan x="10" y="2954">- npm publish 2015.7.2</tspan>
+
+<tspan x="10" y="2970">- streamline build</tspan>
+
+<tspan x="10" y="2986"></tspan>
+
+<tspan x="10" y="3002">2016-08-10 01:46:47 +0200</tspan>
+
+<tspan x="10" y="3018">- npm publish 2015.7.1</tspan>
+
+<tspan x="10" y="3034">- update build</tspan>
+
+<tspan x="10" y="3050">- display instrumented-code in web-ui</tspan>
+
+<tspan x="10" y="3066"></tspan>
+
+<tspan x="10" y="3082">2015-09-25 22:34:19 +0800</tspan>
+
+<tspan x="10" y="3098">- npm publish 2015.9.1</tspan>
+
+<tspan x="10" y="3114">- auto-embed sourceCode in coverage</tspan>
+
+<tspan x="10" y="3130">- remove handlebars dependency</tspan>
+
+<tspan x="10" y="3146">- based on istanbul@0.3.15 - https://github.com/gotwarlost/istanbul/compare/v0.3.15...master</tspan>
+
+<tspan x="10" y="3162"></tspan>
+
+<tspan x="10" y="3178">2015-09-16 21:47:12 +0800</tspan>
+
+<tspan x="10" y="3194">fix pathHtml</tspan>
+
+<tspan x="10" y="3210"></tspan>
+
+<tspan x="10" y="3226">2015-09-16 02:12:05 +0800</tspan>
+
+<tspan x="10" y="3242">cull handlebars</tspan>
+
+<tspan x="10" y="3258"></tspan>
+
+<tspan x="10" y="3274">2015-09-05 02:35:22 +0800</tspan>
+
+<tspan x="10" y="3290">- npm publish 2015.8.2</tspan>
+
+<tspan x="10" y="3306">- update README.md</tspan>
+
+<tspan x="10" y="3322"></tspan>
+
+<tspan x="10" y="3338">2015-08-20 16:34:26 +0800</tspan>
+
+<tspan x="10" y="3354">- npm publish 2015.8.1</tspan>
+
+<tspan x="10" y="3370">- add api documentation</tspan>
+
+<tspan x="10" y="3386">- update dependencies</tspan>
+
+<tspan x="10" y="3402"></tspan>
+
+<tspan x="10" y="3418">2015-07-31 16:40:34 +0800</tspan>
+
+<tspan x="10" y="3434">- npm publish 2015.6.2</tspan>
+
+<tspan x="10" y="3450">- update README.md</tspan>
+
+<tspan x="10" y="3466">- update dependencies</tspan>
+
+</text>
+</svg>
